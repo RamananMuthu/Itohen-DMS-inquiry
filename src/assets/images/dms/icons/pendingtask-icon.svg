@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="pendingtask-icon" transform="translate(-6202 12390)">
+    <g id="Group_18238" data-name="Group 18238" transform="translate(-12)">
+      <g id="Group_18237" data-name="Group 18237" transform="translate(-44 1)">
+        <rect id="Rectangle_9414" data-name="Rectangle 9414" width="24" height="24" transform="translate(6258 -12391)" fill="none"/>
+      </g>
+    </g>
+    <g id="Group_10124" data-name="Group 10124" transform="translate(6019.601 -13522)">
+      <g id="tasks" transform="translate(185.04 1135)">
+        <path id="Path_5394" data-name="Path 5394" d="M18.134,2H.585A.616.616,0,0,0,0,2.643V6.3a.616.616,0,0,0,.585.643H18.134a.616.616,0,0,0,.585-.643V2.643A.616.616,0,0,0,18.134,2Zm-.585,3.656h-5V3.285h5Zm.585,2.873H.585A.616.616,0,0,0,0,9.172v3.657a.616.616,0,0,0,.585.643H18.134a.616.616,0,0,0,.585-.643V9.172A.616.616,0,0,0,18.134,8.529Zm-.585,3.657H8.761V9.815h8.788Zm.585,2.872H.585A.615.615,0,0,0,0,15.7v3.657A.616.616,0,0,0,.585,20H18.134a.616.616,0,0,0,.585-.643V15.7A.616.616,0,0,0,18.134,15.058Zm-.585,3.657H15.939V16.343h1.609Z" transform="translate(0 -2)" fill="#324877"/>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+  <g id="filtter" transform="translate(-0.35)">
+    <g id="Ellipse_1253" data-name="Ellipse 1253" transform="translate(0.35)" fill="#fff" stroke="#b8c1c7" stroke-width="1">
+      <circle cx="18" cy="18" r="18" stroke="none"/>
+      <circle cx="18" cy="18" r="17.5" fill="none"/>
+    </g>
+    <g id="Group_18452" data-name="Group 18452" transform="translate(11.422 13.18)">
+      <g id="Group_16639" data-name="Group 16639" transform="translate(0 0)">
+        <g id="filter-results-button">
+          <g id="filter" transform="translate(0)">
+            <path id="Path_11375" data-name="Path 11375" d="M5.3,85.59h3.03V84.075H5.3ZM0,76.5v1.515H13.636V76.5Zm2.273,5.3h9.09V80.288H2.273Z" transform="translate(0 -76.5)" fill="#b8c1c7" stroke="#b8c1c7" stroke-width="0.5"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

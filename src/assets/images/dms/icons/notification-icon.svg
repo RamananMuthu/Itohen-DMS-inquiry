@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="notification-icon" transform="translate(-6258 12360)">
+    <g id="Group_18244" data-name="Group 18244" transform="translate(44 30)">
+      <g id="Group_18237" data-name="Group 18237" transform="translate(-44 1)">
+        <rect id="Rectangle_9414" data-name="Rectangle 9414" width="24" height="24" transform="translate(6258 -12391)" fill="none"/>
+      </g>
+    </g>
+    <g id="Iconly_Bold_Notification" data-name="Iconly/Bold/Notification" transform="translate(6257.354 -12361.083)">
+      <g id="Notification" transform="translate(3.646 2.083)">
+        <path id="Notification-2" data-name="Notification" d="M8.61,21.535a3.9,3.9,0,0,1-1.848-.79,1.673,1.673,0,0,1-.75-1.265c0-.544.5-.792.959-.9a27.993,27.993,0,0,1,4.364,0c.461.107.959.355.959.9a1.675,1.675,0,0,1-.749,1.266,3.921,3.921,0,0,1-1.847.789,4.309,4.309,0,0,1-.551.036A3.955,3.955,0,0,1,8.61,21.535ZM4.059,16.984A4.891,4.891,0,0,1,.932,15.46,3.9,3.9,0,0,1,0,12.895,3.633,3.633,0,0,1,.788,10.4,4.1,4.1,0,0,0,1.935,7.33V6.871A6.067,6.067,0,0,1,3.319,2.709,7.629,7.629,0,0,1,9.12,0h.1a7.594,7.594,0,0,1,5.9,2.831A5.981,5.981,0,0,1,16.4,6.871V7.33A4.194,4.194,0,0,0,17.547,10.4a3.628,3.628,0,0,1,.788,2.492A3.9,3.9,0,0,1,17.4,15.46a4.9,4.9,0,0,1-3.128,1.524c-1.695.144-3.391.266-5.109.266A44.964,44.964,0,0,1,4.059,16.984Z" transform="translate(0)" fill="#734d9c"/>
+      </g>
+    </g>
+  </g>
+</svg>

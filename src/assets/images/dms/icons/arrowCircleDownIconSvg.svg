@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="21" height="21" viewBox="0 0 21 21">
+  <defs>
+    <clipPath id="clip-path">
+      <rect x="-1" y="4" width="17" height="7" fill="none"/>
+    </clipPath>
+    <clipPath id="clip-path-2">
+      <rect y="1" width="17" height="8" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="arrowCircleDownIcon" transform="translate(-127.369 -163.4)">
+    <g id="More_details_icon" data-name="More details icon" transform="translate(127.869 163.4)">
+      <g id="Ellipse_12" data-name="Ellipse 12" transform="translate(-0.5)" fill="#fff" stroke="#7a7a7a" stroke-width="1">
+        <circle cx="10.5" cy="10.5" r="10.5" stroke="none"/>
+        <circle cx="10.5" cy="10.5" r="10" fill="none"/>
+      </g>
+    </g>
+    <g id="Scroll_Group_1" data-name="Scroll Group 1" transform="translate(130.369 167.4)" clip-path="url(#clip-path)" style="isolation: isolate">
+      <g id="Scroll_Group_2" data-name="Scroll Group 2" transform="translate(-1 2)" clip-path="url(#clip-path-2)" style="isolation: isolate">
+        <g id="Polygon_22" data-name="Polygon 22" transform="translate(17 9) rotate(180)" fill="#fff">
+          <path d="M 15.26004695892334 8.25 L 1.739954829216003 8.25 L 8.500000953674316 1.092304110527039 L 15.26004695892334 8.25 Z" stroke="none"/>
+          <path d="M 8.500000953674316 2.184608459472656 L 3.47990894317627 7.5 L 13.52009296417236 7.5 L 8.500000953674316 2.184608459472656 M 8.500000953674316 0 L 17 9 L 1.9073486328125e-06 9 L 8.500000953674316 0 Z" stroke="none" fill="#707070"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

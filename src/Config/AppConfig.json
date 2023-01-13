@@ -1,0 +1,17 @@
+{
+    "auth0": {
+        "domain": "Auth Domain",
+        "clientID": "Auth clientID",
+        "redirectUri": "Auth redirectUri"
+    },
+    "firebase": {
+        "apiKey": "Your Apikey",
+        "authDomain": "Your authDomain",
+        "projectId": "Your projectId",
+        "storageBucket": "Your storageBucket",
+        "messagingSenderId": "Your messagingSenderId",
+        "appId": "Your appId",
+        "measurementId": "Your measurementId"
+    },
+    "jwt_token": ""
+}

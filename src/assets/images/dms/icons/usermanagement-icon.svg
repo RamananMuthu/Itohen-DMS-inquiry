@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="usermanagement-icon" transform="translate(-6338 12390)">
+    <g id="Group_18248" data-name="Group 18248">
+      <g id="Group_18243" data-name="Group 18243" transform="translate(124)">
+        <g id="Group_18237" data-name="Group 18237" transform="translate(-44 1)">
+          <rect id="Rectangle_9414" data-name="Rectangle 9414" width="24" height="24" transform="translate(6258 -12391)" fill="none"/>
+        </g>
+      </g>
+      <g id="Group_10713" data-name="Group 10713" transform="translate(6296.171 -13018.666)">
+        <g id="Iconly_Bulk_3_User" data-name="Iconly/Bulk/3 User" transform="translate(43.972 629.737)">
+          <g id="_3_User" data-name="3 User">
+            <path id="Fill_1" data-name="Fill 1" d="M7.839,0C3.587,0,0,1,0,4.864s3.61,4.83,7.839,4.83c4.251,0,7.839-1,7.839-4.864S12.067,0,7.839,0" transform="translate(0 10.115)" fill="#50cbd8"/>
+            <path id="Fill_3" data-name="Fill 3" d="M4.244,9.183A4.413,4.413,0,0,0,8.489,4.592,4.412,4.412,0,0,0,4.244,0,4.412,4.412,0,0,0,0,4.592,4.413,4.413,0,0,0,4.244,9.183" transform="translate(3.594)" fill="#50cbd8" opacity="0.4"/>
+          </g>
+        </g>
+        <g id="Group_10638" data-name="Group 10638" transform="translate(54.936 641.922)">
+          <g id="Iconly_Bulk_Setting" data-name="Iconly/Bulk/Setting" transform="translate(0 0)">
+            <g id="Setting" transform="translate(0)">
+              <path id="Path" d="M1.414,2.753A1.39,1.39,0,0,1,0,1.379,1.394,1.394,0,0,1,1.414,0a1.377,1.377,0,1,1,0,2.753" transform="translate(3.22 3.498)" fill="#200e32"/>
+              <path id="Path-2" data-name="Path" d="M9.126,6.027a1.122,1.122,0,0,0-.4-.385.754.754,0,0,1-.309-.312.888.888,0,0,1,.319-1.218A.988.988,0,0,0,9.1,2.733l-.334-.575a1.029,1.029,0,0,0-1.4-.37.961.961,0,0,1-1.255-.336A.753.753,0,0,1,6,1.023.866.866,0,0,0,5.864.507,1.049,1.049,0,0,0,4.978,0h-.7a1.069,1.069,0,0,0-.881.507.87.87,0,0,0-.139.516.753.753,0,0,1-.115.429.956.956,0,0,1-1.25.336,1.035,1.035,0,0,0-1.4.37l-.334.575A1,1,0,0,0,.522,4.112.894.894,0,0,1,.845,5.33a.8.8,0,0,1-.314.312,1.032,1.032,0,0,0-.4.385.972.972,0,0,0,.01,1l.344.585a1.04,1.04,0,0,0,.886.507A1.053,1.053,0,0,0,1.9,7.971a.773.773,0,0,1,.438-.112.922.922,0,0,1,.916.887,1.009,1.009,0,0,0,1.036,1h.677A1.007,1.007,0,0,0,6,8.745a.93.93,0,0,1,.921-.887.794.794,0,0,1,.438.112A1.022,1.022,0,0,0,8.767,7.61l.349-.585a.983.983,0,0,0,.01-1" transform="translate(0)" fill="#007985"/>
+            </g>
+          </g>
+          <ellipse id="Ellipse_549" data-name="Ellipse 549" cx="2.397" cy="2.342" rx="2.397" ry="2.342" transform="translate(2.232 2.53)" fill="#fff"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

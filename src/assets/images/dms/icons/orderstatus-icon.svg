@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="orderstatus-icon" transform="translate(-6174 12390)">
+    <g id="Group_18236" data-name="Group 18236" transform="translate(-40)">
+      <g id="Group_18237" data-name="Group 18237" transform="translate(-44 1)">
+        <rect id="Rectangle_9414" data-name="Rectangle 9414" width="24" height="24" transform="translate(6258 -12391)" fill="none"/>
+        <g id="Iconly_Bulk_Chart" data-name="Iconly/Bulk/Chart" transform="translate(6260 -12389)">
+          <g id="Chart" transform="translate(0.001)">
+            <path id="Subtraction_5" data-name="Subtraction 5" d="M-10127.325,11341.5h-9.342a5.365,5.365,0,0,1-3.944-1.39,5.365,5.365,0,0,1-1.39-3.944v-9.333a5.365,5.365,0,0,1,1.39-3.944,5.365,5.365,0,0,1,3.944-1.39h9.342a5.349,5.349,0,0,1,3.94,1.39,5.369,5.369,0,0,1,1.385,3.944v9.333a5.369,5.369,0,0,1-1.385,3.944A5.349,5.349,0,0,1-10127.325,11341.5Zm-.034-9.006a.837.837,0,0,0-.837.837v3.245a.827.827,0,0,0,.828.825.83.83,0,0,0,.834-.825v-3.245A.832.832,0,0,0-10127.359,11332.5Zm-4.605-6.905a.831.831,0,0,0-.826.834v10.15a.828.828,0,0,0,.826.828.833.833,0,0,0,.837-.828v-10.15A.836.836,0,0,0-10131.965,11325.59Zm-4.665,3.279a.834.834,0,0,0-.829.837v6.871a.828.828,0,0,0,.829.825.83.83,0,0,0,.834-.825v-6.871A.836.836,0,0,0-10136.63,11328.869Z" transform="translate(10142 -11321.5)" fill="#46a0e5" stroke="rgba(0,0,0,0)" stroke-miterlimit="10" stroke-width="1"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

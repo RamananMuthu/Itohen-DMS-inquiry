@@ -1,0 +1,521 @@
+import React, { Fragment, useState, useEffect } from "react";
+import { Container, Row, Col, CardBody, Card, Form, FormGroup, Label, Input, Button } from "reactstrap";
+import { Breadcrumbs, H6 } from "../../../AbstractElements";
+import { useTranslation } from 'react-i18next';
+import axios from "axios";
+import Swal from "sweetalert2";
+import { getLoginCompanyId, getWorkspaceId, getLoginUserId } from '../../../Constant/LoginConstant';
+import { ServerUrl } from "../../../Constant";
+import { getColorSizeQtyInquiry, decode } from "../../../helper";
+import parse from 'html-react-parser';
+import { useSearchParams, Link } from "react-router-dom";
+import CKEditors from 'react-ckeditor-component';
+
+
+const FactoryDetailInquiry = () => {
+  var getInputParams = {};
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [inquiry_id, setOrderId] = useState(decode(searchParams.get("id")));
+  getInputParams['company_id'] = getLoginCompanyId;
+  getInputParams['workspace_id'] = getWorkspaceId;
+  getInputParams['factory_id'] = getLoginUserId;
+  getInputParams['inquiry_id'] = inquiry_id;
+
+  const [factoryInquiryDetails, setFactoryInquiryDetails] = useState([]);
+  const [getColor, setGetColor] = React.useState([]);
+  const [getSize, setGetSize] = React.useState([]);
+  const [measurementSheet, setMeasurementSheet] = useState([]);
+  const [sampleFormatImage, setSampleFormat] = useState([]);
+  const [printImage, setPrintImage] = useState([]);
+  const [mainLableImage, setMainLable] = useState([]);
+  const [washCareLableImage, setWashCareLable] = useState([]);
+  const [hangtagImage, setHangtag] = useState([]);
+  const [barcodeStickersIamge, setBarcodeStickers] = useState([]);
+  const [awsUrl, setAwsUrl] = useState();
+  const [price, setPrice] = useState('');
+  const [comments, setComments] = useState('');
+  const [validerrors, setValiderrors] = React.useState({});
+  const [sampleRequirementsHtmlString, setHtmlString] = useState('');
+  const [specialRequesHtmlString, setSpecialRequesHtmlString] = useState('');
+  const [testingRequirementsHtmlString, setTestingRequirementsHtmlString] = useState('');
+  const [specialFinishHtmlString, setSpecialFinishHtmlString] = useState('');
+  const [styleArticleDescriptionHtmlString, setStyleArticleDescriptionHtmlString] = useState('');
+  const [paymentTermsHtmlString, setPaymentTermsHtmlString] = useState('');
+  const [trimsNotificationsHtmlString, setTrimsNotificationsHtmlString] = useState('');
+  const [orderskuDetails, setOrderskuDetails] = React.useState([]);
+  const [inquiryResponse, setInquiryResponse] = React.useState([]);
+  const { t } = useTranslation();
+  var measurementSheetData = [];
+  var sampleFormatData = [];
+  var printImageData = [];
+  var washCareData = [];
+  var mainLableData = [];
+  var hangtagData = [];
+  var barcodeStickersData = [];
+
+  useEffect(() => {
+    axios
+      .post(ServerUrl + "/inquiry-details", getInputParams)
+      .then((response) => {
+        setFactoryInquiryDetails(response.data.data[0]);
+        setSpecialFinishHtmlString(parse(response.data.data[0].special_finish));
+        setSpecialRequesHtmlString(parse(response.data.data[0].sample_requirements));
+        setHtmlString(parse(response.data.data[0].special_requests));
+        setTestingRequirementsHtmlString(parse(response.data.data[0].testing_requirements));
+        setStyleArticleDescriptionHtmlString(parse(response.data.data[0].style_article_description));
+        setTrimsNotificationsHtmlString(parse(response.data.data[0].trims_nominations));
+        setPaymentTermsHtmlString(parse(response.data.data[0].payment_terms));
+      })
+
+    axios
+      .post(ServerUrl + "/factory-inquiry-response", getInputParams)
+      .then((response) => {
+        setInquiryResponse(response.data.data[0] ? response.data.data[0] : "");
+        setPrice(response.data.data[0].price ? response.data.data[0].price : "");
+        setComments(response.data.data[0].comments ? response.data.data[0].comments : "");
+      })
+
+    axios
+      .post(ServerUrl + "/inquiry-media", getInputParams)
+      .then((response) => {
+        (response.data.data.files).map((mapData) => {
+          if (mapData.media_type == "MeasurementSheet") {
+            var getMeasurementDetails = mapData.filepath;
+            measurementSheetData.push(getMeasurementDetails);
+            setMeasurementSheet(measurementSheetData)
+            setAwsUrl(response.data.data.serverURL)
+          }
+          if (mapData.media_type == "SampleFormat") {
+            var getDetails = mapData.filepath;
+            sampleFormatData.push(getDetails);
+            setSampleFormat(sampleFormatData)
+            setAwsUrl(response.data.data.serverURL)
+          }
+          if (mapData.media_type == "PrintImage") {
+            var getDetails = mapData.filepath;
+            printImageData.push(getDetails);
+            setPrintImage(printImageData)
+            setAwsUrl(response.data.data.serverURL)
+          }
+          if (mapData.media_type == "MainLabel") {
+            var getDetails = mapData.filepath;
+            mainLableData.push(getDetails);
+            setMainLable(mainLableData)
+            setAwsUrl(response.data.data.serverURL)
+          }
+          if (mapData.media_type == "WashCareLabel") {
+            var getDetails = mapData.filepath;
+            washCareData.push(getDetails);
+            setWashCareLable(washCareData)
+            setAwsUrl(response.data.data.serverURL)
+          }
+          if (mapData.media_type == "Hangtag") {
+            var getDetails = mapData.filepath;
+            hangtagData.push(getDetails);
+            setHangtag(hangtagData)
+            setAwsUrl(response.data.data.serverURL)
+          }
+          if (mapData.media_type == "BarcodeStickers") {
+            var getDetails = mapData.filepath;
+            barcodeStickersData.push(getDetails);
+            setBarcodeStickers(barcodeStickersData)
+            setAwsUrl(response.data.data.serverURL)
+          }
+        })
+      })
+
+    axios
+      .post(ServerUrl + "/inquiry-sku", getInputParams)
+      .then((response) => {
+        setOrderskuDetails(response.data.data.sku);
+        setGetColor(response.data.data.colors);
+        setGetSize(response.data.data.sizes);
+      })
+    setValiderrors(() => "")
+  }, [])
+
+  const submitFactoryInquiryForm = (e) => {
+    let retval = validation();
+    if (Object.keys(retval).length == 0) {
+      var inquiryFormInputParams = {};
+      inquiryFormInputParams['company_id'] = getLoginCompanyId;
+      inquiryFormInputParams['workspace_id'] = getWorkspaceId;
+      inquiryFormInputParams['inquiry_id'] = inquiry_id;
+      inquiryFormInputParams['factory_id'] = getLoginUserId;
+      inquiryFormInputParams['price'] = price;
+      inquiryFormInputParams['comments'] = comments;
+
+      axios.post(ServerUrl + "/save-inquiry-factory-response", inquiryFormInputParams)
+        .then((response) => {
+          if (response.data.status_code === 200) {
+            Swal.fire({
+              title: t("Inquiry Response Added Successfully"),
+              icon: "success",
+              button: t("okLabel"),
+              allowOutsideClick: false
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.href = '/factoryviewinquiry';
+              }
+            })
+          }
+          if (response.data.status_code === 401) {
+            alert("Error")
+            Swal.fire({
+              title:
+                (response.data.errors.price),
+              text: t("fieldMissing"),
+              icon: "Warning",
+              button: t("tryAgain"),
+            });
+          }
+        })
+    }
+  }
+
+  const onChangeCommentsRequest = (e) => {
+    const newContent = e.editor.getData();
+    setComments(newContent);
+  };
+
+  const validation = (data) => {
+    let validerrors = {};
+    if (!price.trim()) {
+      validerrors.price = ("Please Enter Price");
+    }
+    if (!comments.trim()) {
+      validerrors.comments = ("Please Enter Comments");
+    }
+
+    setValiderrors(validerrors);
+    return validerrors
+  }
+
+  return (
+    <Fragment>
+      <Row className="pgbgcolor">
+        <Breadcrumbs mainTitle={t("factoryDetailInquiry")} parent={t("factoryDetailInquiry")}
+          title={t("factoryDetailInquiry")} subTitle={t("factoryDetailInquiry")} />
+      </Row>
+
+      <Container fluid={true} className="general-widget topaln">
+        <Row>
+          <Col sm="12">
+            <Card>
+              <CardBody>
+                <Row className="g-12 m-t-20">
+                  <Col md="12" lg="12" sm="12">
+                    <Row className="g-12">
+                      <div className="table-responsive">
+                        <table className="table shadow shadow-showcase table-striped table-bordered">
+                          <thead className="bg-primary">
+                            <tr>
+                              <th className="centerAlign"> {t("factoryResponse")} </th>
+                              <th className="centerAlign"> {t("details")} </th>
+                            </tr>
+                          </thead>
+                          <tbody id="htmlStringListCSS">
+                            <tr>
+                              <td className="text-left">{t("articleName")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.article_name} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("styleNo")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.style_no} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("sampleFormat")}  </td>
+                              <td className="text-left">
+                                {sampleFormatImage.map((obj) => (
+                                  < img src={awsUrl + obj} alt={t("printImage")} width="80px" height="80px"
+                                    className="p-r-5 rounded" />
+                                ))}
+                              </td>
+                            </tr><tr>
+                              <td className="text-left">{t("fabricType")} </td>
+                              <td className="text-left"> {factoryInquiryDetails.fabric_type} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("fabricGSM")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.fabric_GSM} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("yarnCount")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.yarn_count} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("measurementSheet")}  </td>
+                              <td className="text-left">
+                                <a href={awsUrl + measurementSheet} target="_blank"> {measurementSheet} </a>
+                              </td>
+                            </tr><tr>
+                              <td className="text-left">{t("targetPrice")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.target_price} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("incomeTerms")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.incoterms} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("paymentTerms")}  </td>
+                              <td className="text-left"> {paymentTermsHtmlString} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("inquiryDueDate")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.due_date} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("styleArticleDescription")}  </td>
+                              <td className="text-left"> {styleArticleDescriptionHtmlString} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("specialFinishers")}  </td>
+                              <td className="text-left"> {specialFinishHtmlString} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("totalQuantity")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.total_qty} </td>
+                            </tr><tr>
+                              <td className="text-left" colSpan={3}>
+                                <Col className="table-responsive" md="12" sm="12" lg="12">
+                                  <Card>
+                                    <CardBody>
+                                      <Form className="needs-validation" noValidate="">
+                                        <H6 className="ordersubhead">{t("sKUDetails")}</H6>
+                                        <Row className="g-12">
+                                          <div className="table-responsive">
+                                            <table className="table">
+                                              <thead>
+                                                <tr>
+                                                  <th scope="col">{t("colorSize")}</th>
+                                                  {getSize.map((option) => {
+                                                    return <th>{option.name}</th>;
+                                                  })}
+                                                  {/* <th scope="col">Total</th> */}
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                {Object.values(getColor).map((optionc) => {
+                                                  return (
+                                                    <tr>
+                                                      <th>{optionc.name}</th>
+                                                      {getSize.map((option) => {
+                                                        return (
+                                                          <th style={{ fontWeight: 500 }}>
+                                                            {getColorSizeQtyInquiry(orderskuDetails, optionc.id, option.id)}
+                                                          </th>
+                                                        );
+                                                      })}
+                                                      {/* <th>{optionc.quantity}</th> */}
+                                                    </tr>
+                                                  );
+                                                })}
+                                              </tbody>
+                                            </table>
+                                          </div>
+                                        </Row>
+                                      </Form>
+                                    </CardBody>
+                                  </Card>
+                                </Col>
+                              </td>
+                            </tr><tr>
+                              <td className="text-left">{t("patterns")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.patterns} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("placeofJurisdiction")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.jurisdiction} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("customsDeclarationDocument")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.customs_declaraion_document} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("penaltyLabel")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.penality} </td>
+                            </tr><tr>
+                              <td className="text-left" colSpan="3">
+                                <H6 className="ordersubhead">{t("printInformation")}</H6>  </td>
+                            </tr><tr>
+                              <td className="text-left">{t("printType")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.print_type} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("printSize")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.print_size} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("noOfColors")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.print_no_of_colors} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("printImage")}  </td>
+                              <td className="text-left">
+                                {printImage.map((obj) => (
+                                  < img src={awsUrl + obj} alt={t("printImage")} width="80px" height="80px"
+                                    className="p-r-5 rounded" />
+                                ))}
+                              </td>
+                            </tr><tr>
+                              <td className="text-left" colSpan="2">
+                                <H6 className="ordersubhead">{t("trimsInformation")}</H6></td>
+                            </tr><tr>
+                              <td className="text-left">{t("mainLabel")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.main_lable} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("mainLabelSample")}</td>
+                              <td className="text-left">
+                                {mainLableImage.map((obj) => (
+                                  < img src={awsUrl + obj} alt={t("Main Lable")} width="80px" height="80px"
+                                    className="p-r-5 rounded" />
+                                ))}
+                              </td>
+                            </tr><tr>
+                              <td className="text-left">{t("washCareLabel")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.washcare_lable} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("washCareLabelSample")}  </td>
+                              <td className="text-left">
+                                {washCareLableImage.map((obj) => (
+                                  < img src={awsUrl + obj} alt={t("washCareLabel")} width="80px" height="80px"
+                                    className="p-r-5 rounded" />
+                                ))}
+                              </td>
+                            </tr><tr>
+                              <td className="text-left">{t("hangtag")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.hangtag_lable} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("hangtagSample")}  </td>
+                              <td className="text-left">
+                                {hangtagImage.map((obj) => (
+                                  < img src={awsUrl + obj} alt={t("hangtag")} width="80px" height="80px"
+                                    className="p-r-5 rounded" />
+                                ))}
+                              </td>
+                            </tr><tr>
+                              <td className="text-left">{t("barcodeStickers")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.barcode_lable} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("barcodeStickersSample")}  </td>
+                              <td className="text-left">
+                                {barcodeStickersIamge.map((obj) => (
+                                  < img src={awsUrl + obj} alt={t("barcodeStickersSample")} width="80px" height="80px"
+                                    className="p-r-5 rounded" />
+                                ))}
+                              </td>
+                            </tr><tr>
+                              <td className="text-left">{t("trimsNotificationsSpecify")}  </td>
+                              <td className="text-left"> {trimsNotificationsHtmlString} </td>
+                            </tr><tr>
+                              <td className="text-left" colSpan="2">
+                                <H6 className="ordersubhead">{t("packingInformation")}</H6> </td>
+                            </tr><tr>
+                              <td className="text-left">{t("polybagSizeThickness")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.poly_bag_size} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("polybagMaterial")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.poly_bag_material} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("printDetailsPolybag")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.poly_bag_size} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("cartonBoxDimensions")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.carton_bag_dimensions} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("cartonColor")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.carton_color} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("cartonMaterial")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.carton_material} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("cartonEdgeFinish")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.barcode_lable} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("cartonMarkDetails")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.carton_edge_finish} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("makeUp")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.make_up} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("filmsCD")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.films_cd} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("pictureCard")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.picture_card} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("innerCardboard")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.inner_cardboard} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("estimatedDeliveryDate")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.estimate_delivery_date} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("shippingSize")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.shipping_size} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("airFreight")}  </td>
+                              <td className="text-left"> {factoryInquiryDetails.air_frieght} </td>
+                            </tr><tr>
+                              <td className="text-left" colSpan="3">
+                                <H6 className="ordersubhead">{t("others")}</H6> </td>
+                            </tr><tr>
+                              <td className="text-left">{t("testingRequirement")}  </td>
+                              <td className="text-left"> {testingRequirementsHtmlString} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("SampleRequirements")}  </td>
+                              <td className="text-left"> {specialRequesHtmlString} </td>
+                            </tr><tr>
+                              <td className="text-left">{t("specialRequestIfAny")}  </td>
+                              <td className="text-left"> {sampleRequirementsHtmlString} </td>
+                            </tr>
+
+                          </tbody>
+                        </table>
+                      </div>
+                    </Row>
+                  </Col>
+                </Row>
+
+                <Row className="mt-5">
+                  <Form>
+                    <Col xl="4" lg="6" md="6" sm="12">
+                      <FormGroup>
+                        <Label>{t("price")}</Label><sup className="font-danger">*</sup>
+                        <Input name="price" placeholder={t("pleaseEnterPrice")}
+                          disabled={price ? true : false}
+                          maxLength="20"
+                          defaultValue={price}
+                          onChange={(e) => setPrice(e.target.value)}>
+                        </Input>
+                        {validerrors.price && (
+                          <span className="error-msg">{validerrors.price}</span>
+                        )}
+                      </FormGroup>
+                    </Col>
+
+                    <Col xl="4" lg="6" md="6" sm="12">
+                      <FormGroup>
+                        <Label className="form-label">{t("comments")}</Label><sup className="font-danger">*</sup>
+                        <CKEditors
+                          activeclassName="p10"
+                          content={(comments).toString()}
+                          events={{ 'change': onChangeCommentsRequest }}
+                          onchange={(e) => setComments(e.target.value)}
+                          config={{
+                            toolbar: [
+                              ["Bold", "Italic", 'NumberedList', 'BulletedList', "Strike Through"],
+                              ["Cut", "Copy", "Paste", "Pasteasplaintext", "FormattingStyles", "Undo", "Redo"],
+                              ["List", "Indent", "Blocks", "Align", "Bidi", "Paragraph"],
+                              ["Find", "Selection", "Spellchecker", "Editing"]
+                            ],
+                          }
+                          }
+                        />
+                        {validerrors.comments && (
+                          <span className="error-msg">{validerrors.comments}</span>
+                        )}
+                      </FormGroup>
+                    </Col>
+
+                    <FormGroup className="f-right">
+                      {inquiryResponse.length >= 0 ?
+                        <Button
+                          className="btn btn-primary" onClick={() => { submitFactoryInquiryForm() }} >
+                          {t("sentQuote")}
+                        </Button> : ""}
+                    </FormGroup>
+                  </Form>
+                </Row>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </Fragment>
+  );
+}
+
+export default FactoryDetailInquiry

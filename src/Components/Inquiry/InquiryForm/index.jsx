@@ -1,0 +1,2949 @@
+import React, { Fragment, useState, useEffect } from "react";
+import {
+  Form,
+  Label,
+  Card,
+  CardBody,
+  Col,
+  Row,
+  Input,
+  InputGroup,
+  InputGroupText,
+  Button,
+  FormGroup,
+  Media,
+  Container,
+  Table,
+} from "reactstrap";
+import axios from "axios";
+import {
+  getLoginCompanyId,
+  getWorkspaceId,
+  getLoginUserId,
+  getWorkspaceType,
+  getStaff,
+  getStaffPermission,
+  getLoginStaffId,
+} from "../../../Constant/LoginConstant";
+import { encode, decode, apiencrypt, apidecrypt } from "../../../helper";
+import addIcon from "../../../assets/images/dms/icons/addIcon.svg";
+import imgUpload from "../../../assets/images/dms/icons/imgUpload.svg";
+import quantity from "../../../assets/images/dms/icons/quantity.svg";
+import imgUploadGreen from "../../../assets/images/dms/icons/imgUploadGreen.svg";
+import docIcon from "../../../assets/images/dms/icons/inquiryDocIcon.svg";
+import infoIcon from "../../../assets/images/dms/icons/inquiryInfoIcon.svg";
+import deleteIcon from"../../../assets/images/dms/inquiryDelIcon.svg";
+// import deleteIcon from"../../../assets/images/dms/icons/imgUpload.svg";
+import { Breadcrumbs, H6, Btn, Image } from "../../../AbstractElements";
+import { useTranslation } from "react-i18next";
+import Swal from "sweetalert2";
+import { maxFileUpload, maxUploadFileSize, ServerUrl } from "../../../Constant";
+import CKEditors from "react-ckeditor-component";
+import Files from "react-files";
+import AddArticleModal from "./AddArticleModal";
+import AddColorModal from "./AddColorModal";
+import AddSizeModal from "./AddSizeModal";
+import AddFabricModal from "./AddFabricModal";
+import InfoCanvas from "./InquiryInfoOffCanvas";
+import { SelectSingleImageUpload } from "../../../Constant";
+
+const index = () => {
+  const workspace_id = getWorkspaceId;
+  const company_id = getLoginCompanyId;
+  const UserId = getLoginUserId;
+  const dataToSendAtStarting = {
+    company_id: company_id,
+    workspace_id: workspace_id,
+  };
+  const [color, setColor] = React.useState([]);
+  const [size, setSize] = React.useState([]);
+  const [files, setFiles] = useState([]);
+  const [fileSampleFormat, setFileSampleFormat] = useState([]);
+  const [filePrintImage, setFilePrintImage] = useState([]);
+  const [fileMainLabel, setFileMainLabel] = useState([]);
+  const [fileWashCareLabel, setFileWashCareLabel] = useState([]);
+  const [fileHangtag, setFileHangtag] = useState([]);
+  const [fileBarcodeStickers, setFileBarcodeStickers] = useState([]);
+  const [fileMeasurementSheet, setFileMeasurementSheet] = useState([]);
+  const [articles, setArticles] = useState([]);
+  const [fabrics, setFabrics] = useState([]);
+  const [sampleFormatImg, setSampleFormatImg] = useState("");
+  const [incomeTerms, setIncomeTerms] = useState([]);
+  const [incomeTerm, setIncomeTerm] = useState();
+  // const [content, setContent] = useState('content');
+  // const [orderId, setOrderId] = useState(decode(searchParams.get("id")));
+  const [getColor, setGetColor] = React.useState([]);
+  const [getSize, setGetSize] = React.useState([]);
+  const [article, setArticle] = useState("");
+  const [fabric, setFabric] = useState("");
+  const [styleNo, setStyleNo] = useState("");
+  const [sampleFormat, setSampleFormat] = useState("");
+  const [MeasurementSheet, setMeasurementSheet] = useState("");
+  const [fabricGSM, setFabricGSM] = useState("");
+  const [yarnCount, setYarnCount] = useState("");
+  const [targetPrice, setTargetPrice] = useState("");
+  // const [incoterms,setIncoterms] = useState('');
+  // const [paymentTerms,setPaymentTerms] =useState('');
+  const [paymentTerm, setPaymentTerm] = useState("");
+
+  const [inquiryDueDate, setInquiryDueDate] = useState("");
+  const [styleArtcileDesc, setStyleArticleDesc] = useState("");
+  const [specialFinishes, setSpecialFinishes] = useState("");
+  const [totalQuantity, setTotalQuantity] = useState("");
+  const [patterns, setPatterns] = useState("");
+  const [placesOfJurisdiction, setPlaceOfJurisdiction] = useState("");
+  const [customsDeclarationDoc, setCustomsDeclarationDoc] = useState("");
+  const [penalty, setPenalty] = useState("");
+  const [printType, setPrintType] = useState("");
+  const [printSize, setPrintSize] = useState("");
+  const [noOfColors, setNoOfColors] = useState("");
+  const [printImage, setPrintImage] = useState("");
+  const [mainLabel, setMainLabel] = useState("");
+  const [washCareLabel, setWashCareLabel] = useState("");
+  const [hangtag, setHangtag] = useState("");
+  const [barcodeStickers, setBarcodeStickers] = useState("");
+  const [trimsNotification, setTrimsNotification] = useState("");
+  const [polybagSizeThickness, setPolybagSizeThickness] = useState("");
+  const [polybagMaterial, setPolybagMaterial] = useState("");
+  const [printDetailsPolybag, setPrintDetailsPolybag] = useState("");
+  const [cartonBoxDimension, setCartonBoxDimension] = useState("");
+  const [cartonColors, setCartonColors] = useState("");
+  const [cartonMaterial, setCartonMaterial] = useState("");
+  const [cartonEdgeFinish, setCartonEdgeFinish] = useState("");
+  const [cartonMarkDetails, setCartonMarkDetails] = useState("");
+  const [makeUp, setMakeUp] = useState("");
+  const [flimsCD, setFlimsCD] = useState("");
+  const [pictureCard, setPictureCard] = useState("");
+  const [innerCardBoard, setInnerCardBoard] = useState("");
+  const [estimatedDeliveryDate, setEstimatedDeliveryDate] = useState("");
+  const [shippingSize, setShippingSize] = useState("");
+  const [airFrieght, setAirFrieght] = useState("");
+  const [forbiddenSubstancesInfo, setForbiddenSubstancesInfo] = useState("");
+  const [testingRequirement, setTestingRequirement] = useState("");
+  const [sampleRequirement, setSampleRequirement] = useState("");
+  const [specialRequest, setSpecialRequest] = useState("");
+  const [modalArt, setModalArt] = useState(false);
+  const [modalfabric, setModalfabric] = useState(false);
+  const [modalClr, setModalClr] = useState(false);
+  const [modalSize, setModalSize] = useState(false);
+  const [showColor, setShowColor] = React.useState([]);
+  const [showSize, setShowSize] = React.useState([]);
+  const [measurementSheetImg, setMeasurementSheetImg] = React.useState("");
+  const [printImg, setPrintImg] = React.useState("");
+  const [mainLabelSampleImg, setMainLabelSampleImg] = React.useState("");
+  const [washCareLabelSampleImg, setWashCareLabelSampleImg] =React.useState("");
+  const [hangtagSampleImg, setHangtagSampleImg] = React.useState("");
+  const [barcodeStickersSampleImg, setBarcodeStickersSampleImg] =React.useState("");
+  const [referenceId, setReferenceId] = useState(Date.now());
+  const [awsUrl, setAwsUrl] = useState();
+  const [sampleSheetImg, setSampleSheetImg] = useState("");
+  const [showInfoCanvas, setShowInfoCanvas] = useState(false);
+  const [infoDetails, setInfoDetails] = useState([]);
+  const [masterType, setMasterType] = useState();
+  const [currencies, setCurrencies] = useState([]);
+  const [currency, setCurrency] = useState("");
+  // const[mediaId,setMediaId] = useState('');
+  // const [infoCanvas, setInfoCanvas] = useState(false);
+  const toggleart = () => setModalArt(!modalArt);
+  const togglefabric = () => setModalfabric(!modalfabric);
+  const toggleclr = () => setModalClr(!modalClr);
+  const togglesize = () => setModalSize(!modalSize);
+  const toggleInfoCanvas = () => setShowInfoCanvas(!showInfoCanvas);
+  const [validerrors, setValiderros] = React.useState({});
+
+  const { t } = useTranslation();
+  //var ImgTempID = Date.now();9\
+  // var imgUrl ="https://new-dms-dev.s3.us-west-2.amazonaws.com";
+
+  var getInputParams = {};
+  getInputParams["company_id"] = getLoginCompanyId;
+  getInputParams["workspace_id"] = getWorkspaceId;
+  getInputParams["user_id"] = getLoginUserId;
+  getInputParams["staff_id"] = getLoginStaffId;
+  getInputParams["order_id"] = "1";
+  getInputParams["sku"] = [{}];
+  
+  const checkedVal = (valueType) => {
+    // console.log("TYPE", valueType);
+    var params = {};
+    params["type"] = valueType;
+    axios.post(ServerUrl + "/get-inquiry-master", params).then((response) => {
+      // console.log("Value", response.data.data);
+      setInfoDetails(response.data.data);
+    });
+    setMasterType(valueType);
+    toggleInfoCanvas();
+  };
+
+  const onFilesChange = (files) => {
+    setFiles(files);
+  };
+  
+  const validation = (data) => {
+    let validerrors = {};
+    if (!article) {
+      validerrors.article = t("Please Select Article Name");
+    }
+    if (!styleNo.trim()) {
+      validerrors.styleNo = t("enterStyleNumber");
+    }
+    if (!fabric) {
+      validerrors.fabric = t("Please Select Fabric Type");
+    }
+    if (!totalQuantity) {
+      validerrors.totalQuantity = t("Please enter Total Quantity");
+    }
+    setValiderros(validerrors);
+    return validerrors;
+  };
+
+  const deleteColor = (e) => {
+    var getColor = e.target.id;
+    Swal.fire({
+      title: t("colorDeleteAlert"),
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: t("delete"),
+      confirmButtonColor: "#d33",
+      allowOutsideClick: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setShowColor((current) =>
+          current.filter((showcolor, v) => {
+            return showcolor !== getColor;
+          })
+        );
+        setColor((currentv) =>
+          currentv.filter((color, vf) => {
+            return color.name !== getColor;
+          })
+        );
+        // console.log("final==>",showcolor,"e.target.id==>>",getColor,"===",color);
+        document.getElementById("Overall_total_quantity").value = 0;
+        getTotalColorWise("delete");
+        getTotalSizeWise("delete");
+        getOverallTotal("delete");
+      }
+    });
+  };
+
+  const deleteSize = (e) => {
+    var getSize = e.target.id;
+    Swal.fire({
+      title: t("sizeDeleteAlert"),
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: t("delete"),
+      confirmButtonColor: "#d33",
+      allowOutsideClick: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setShowSize((current) =>
+          current.filter((showSize, v) => {
+            return showSize !== getSize;
+          })
+        );
+
+        setSize((currentv) =>
+          currentv.filter((size, vf) => {
+            return size.name !== getSize;
+          })
+        );
+        document.getElementById("Overall_total_quantity").value = 0;
+        getTotalColorWise("delete");
+        getTotalSizeWise("delete");
+        getOverallTotal("delete");
+      }
+    });
+  };
+
+  const addQty = (e) => {
+    var idv = e.target.id;
+    var value = e.target.value;
+
+    /***** Split the ID values of Size and Color *****/
+    var sptv = idv.split("#");
+    var color_id = sptv[0];
+    var size_id = sptv[1];
+    var totQty = 0;
+    size.forEach((e) => {
+      var getsizeid = e.id;
+      var t = document.getElementById(color_id + "#" + getsizeid).value;
+      if (parseInt(t) > 0) {
+        totQty += parseInt(t);
+      }
+      document.getElementById("totqty_" + color_id).value = totQty;
+    });
+    overallTotalQty(e);
+    sizeTotalQty(e);
+  };
+
+  const getQtyDetails = (e) => {
+    var skuDet = [];
+    const breakOut = false;
+    var g = -1;
+    color.forEach((c) => {
+      size.forEach((e) => {
+        g++;
+        var t = document.getElementById(c.id + "#" + e.id).value;
+        var skuData = {};
+        skuData["color_id"] = c.id;
+        skuData["size_id"] = e.id;
+        skuData["quantity"] = t == "" ? 0 : t;
+        skuDet[g] = skuData;
+      });
+    });
+    return skuDet;
+  };
+
+  const overallTotalQty = (e) => {
+    var id = e.target.id;
+    var value = e.target.value;
+
+    var splitId = id.split("#");
+    var color_id = splitId[0];
+    var size_id = splitId[1];
+
+    var sum = 0;
+    color.forEach((data) => {
+      var totalQtyValue = document.getElementById("totqty_" + data.id).value;
+      if (parseInt(totalQtyValue) > 0) {
+        sum += parseInt(totalQtyValue);
+      }
+    });
+    document.getElementById("Overall_total_quantity").value = sum;
+  };
+
+  const sizeTotalQty = (e) => {
+    var id = e.target.id;
+    var value = e.target.value;
+
+    var splitId = id.split("#");
+    var color_id = splitId[0];
+    var size_id = splitId[1];
+
+    var tot = 0;
+    color.forEach((e) => {
+      var colorId = e.id;
+      var qtyValue = document.getElementById(colorId + "#" + size_id).value;
+      if (parseInt(qtyValue) > 0) {
+        tot += parseInt(qtyValue);
+      }
+      document.getElementById("SizeId_total_quantity" + size_id).value = tot;
+    });
+  };
+
+  useEffect(() => {
+    axios
+      .post(ServerUrl + "/get-color", apiencrypt(getInputParams))
+      .then((response) => {
+        response.data = apidecrypt(response.data);
+        setGetColor(response.data.data);
+      });
+    axios
+      .post(ServerUrl + "/get-user-article", apiencrypt(dataToSendAtStarting))
+      .then((response) => {
+        response.data = apidecrypt(response.data);
+        setArticles(response.data.data);
+      });
+    axios
+      .post(ServerUrl + "/get-user-fabric", apiencrypt(dataToSendAtStarting))
+      .then((response) => {
+        response.data = apidecrypt(response.data);
+        setFabrics(response.data.data);
+      });
+    axios
+      .post(ServerUrl + "/get-size", apiencrypt(getInputParams))
+      .then((response) => {
+        response.data = apidecrypt(response.data);
+        setGetSize(response.data.data);
+      });
+    axios.get(ServerUrl + "/get-income-terms").then((response) => {
+      response.data = apidecrypt(response.data);
+      setIncomeTerms(response.data.data);
+    });
+    axios.get(ServerUrl + "/get-currencies").then((response) => {
+      response.data = apidecrypt(response.data);
+      setCurrencies(response.data.data);
+    });
+  }, []);
+  // const uploadImageApiCall = (imageType, file) =>{
+  //   console.log("uploadImage:", imageType);
+  //   axios.post( ServerUrl + "/inquiry-file-upload",
+  //   {
+  //    type: imageType,
+  //    referenceId: referenceId,
+  //    file: file[0],
+  //    "company_id": company_id,
+  //   "workspace_id": workspace_id
+  //   },{
+  //     headers: {
+  //       'Content-Type': 'multipart/form-data'
+  //     }
+  //   })
+  //   .then((response) => {
+  //     console.log("Status code:",response.data.status_code);
+
+  //     // console.log("UPLOAD:",response.data.files[0].filepath);
+  //     if( response.data.status_code == 200){
+  //       setSampleSheetImg('0');
+  //        if(imageType == "SampleFormat")
+  //        {
+  //         // setSampleSheetImg(response.data.files[0].filepath);
+  //         //console.log("Files Ramana Maharishi",response.data.files);
+  //         setFileSampleFormat(response.data.files.files);
+  //         setAwsUrl(response.data.files.serverURL)
+  //        }
+  //        else if(imageType == "MeasurementSheet"){
+  //       setMeasurementSheetImg(response.data.files.files);
+  //       setAwsUrl(response.data.files.serverURL)
+  //        }
+  //        else if(imageType== "PrintImage"){
+  //       // setPrintImg(response.data.files[0].filepath);
+  //       setFilePrintImage(response.data.files.files);
+  //       setAwsUrl(response.data.files.serverURL)
+  //        }
+  //        else if(imageType == "MainLable"){
+  //       setMainLableSampleImg(response.data.files.files);
+  //       setAwsUrl(response.data.files.serverURL)
+  //        }
+  //        else if(imageType== "WashCareLable"){
+  //         setWashCareLableSampleImg(response.data.files.files);
+  //         setAwsUrl(response.data.files.serverURL)
+  //         }
+  //         else if(imageType== "Hangtag"){
+  //           setHangtagSampleImg(response.data.files.files);
+  //           setAwsUrl(response.data.files.serverURL)
+  //         }
+  //         else if(imageType== "BarcodeStickers"){
+  //           setBarcodeStickersSampleImg(response.data.files.files);
+  //           setAwsUrl(response.data.files.serverURL)
+  //         }
+  //       // console.log("!!!",  response.data.files[0].filepath);
+  //       setSampleSheetImg('1');
+  //     }
+  //   })
+
+  // }
+  
+  const uploadImageApiCall = (imageType, file) => {
+    // console.log("uploadImage:", imageType);
+    axios
+      .post(
+        ServerUrl + "/inquiry-file-upload",
+        {
+          type: imageType,
+          referenceId: referenceId,
+          file: file[0],
+          company_id: company_id,
+          workspace_id: workspace_id,
+        },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
+      .then((response) => {
+        // console.log("Status code:",response.data);
+        if (response.data.status_code == 200) {
+          // setSampleSheetImg('0');
+          if (imageType == "SampleFormat") {
+            // setSampleSheetImg(response.data.files[0].filepath);
+            //console.log("Files Ramana Maharishi",response.data.files.files.length );
+            setFileSampleFormat(response.data.files.files);
+            setAwsUrl(response.data.files.serverURL);
+            console.log("Files Ramana==>",fileSampleFormat);
+          } else if (imageType == "MeasurementSheet") {
+            setFileMeasurementSheet(response.data.files.files);
+            setAwsUrl(response.data.files.serverURL);
+          } else if (imageType == "PrintImage") {
+            // setPrintImg(response.data.files[0].filepath);
+            setFilePrintImage(response.data.files.files);
+            setAwsUrl(response.data.files.serverURL);
+          } else if (imageType == "MainLabel") {
+            setFileMainLabel(response.data.files.files);
+            setAwsUrl(response.data.files.serverURL);
+          } else if (imageType == "WashCareLabel") {
+            setFileWashCareLabel(response.data.files.files);
+            setAwsUrl(response.data.files.serverURL);
+          } else if (imageType == "Hangtag") {
+            setFileHangtag(response.data.files.files);
+            setAwsUrl(response.data.files.serverURL);
+          } else if (imageType == "BarcodeStickers") {
+            setFileBarcodeStickers(response.data.files.files);
+            setAwsUrl(response.data.files.serverURL);
+          }
+          // console.log("!!!",  response.data.files[0].filepath);
+          // setSampleSheetImg('1');
+        }
+      });
+  };
+
+
+  const deleteImageFiles = (imageType, file) => {
+    // console.log("deleteImageFiles:",file.media_id);
+    var media ={};
+    media["media_id"]= file.media_id;
+    Swal.fire({
+      title: "Are you sure, Do you want to delete this image??",
+      icon: "warning",
+      showCancelButton: true,
+      button: t("okLabel"),
+    }).then((result) => {
+      if (result.isConfirmed) 
+      { 
+        
+        axios
+        .post(ServerUrl+"/delete-inquiry-media",media)
+        .then((response) => {
+          if(response.data.status_code == 200){
+            Swal.fire({
+              title: response.data.meassage,
+              icon: "success",
+              showCancelButton: true,
+              button: t("okLabel"),
+              
+            }).then((result) => {
+              if(result.isConfirmed){
+                uploadImageApiCall(imageType, file);
+              }
+            }
+            )
+          }
+        })
+
+          console.log("deleteImageFiles:",file);
+      }
+    });
+
+
+  };
+
+  function handleEnter(event) {
+    if (
+      (event.keyCode === 13 || event.keyCode === 9) &&
+      event.target.nodeName === "INPUT"
+    ) {
+      const form = event.target.form;
+      const index = Array.prototype.indexOf.call(form, event.target);
+
+      if (form.elements[index + 1].readOnly == false) {
+        form.elements[index + 1].focus();
+      } else {
+        if (form.elements[index + 2].readOnly == false) {
+          form.elements[index + 2].focus();
+        } else {
+          // let index=0;
+          if (form.elements[index + 3].readOnly == false) {
+            form.elements[index + 3].focus();
+          } else {
+            if (form.elements[index + 4].readOnly == false) {
+              let indexv = index + 4;
+              form.elements[indexv].focus();
+            } else {
+              let index = 0;
+              form.elements[index].focus();
+            }
+          }
+        }
+      }
+    }
+    // event.preventDefault();
+  };
+
+  function handleKeyPress(e) {
+    var key = e.key;
+    var regex = /[0-9]/;
+    if (!regex.test(key)) {
+      e.preventDefault();
+    }
+  };
+
+  const handleChangeColor = (e) => {
+    var id = e.nativeEvent.target.selectedIndex;
+    var idvc = e.nativeEvent.target[id].value;
+    var name = e.nativeEvent.target[id].text;
+    var colorary = [];
+    colorary["id"] = idvc;
+    colorary["name"] = name;
+    var t = showColor;
+    var index = t.indexOf(name);
+    if (index == -1) {
+      setShowColor([...showColor, name]);
+      setColor([...color, colorary]);
+    }
+  };
+
+  const handleChangeSize = (e) => {
+    var id = e.nativeEvent.target.selectedIndex;
+    var idvs = e.nativeEvent.target[id].value;
+    var name = e.nativeEvent.target[id].text;
+    var sizeary = [];
+    sizeary["id"] = idvs;
+    sizeary["name"] = name;
+
+    var t = showSize;
+    var index = t.indexOf(name);
+    if (index == -1) {
+      setShowSize([...showSize, name]);
+      setSize([...size, sizeary]);
+    }
+  };
+
+  const onChangeArticleDescription = (e) => {
+    const newContent = e.editor.getData();
+    setStyleArticleDesc(newContent);
+  };
+ 
+  const onChangePaymentTerms = (e) => {
+    const newContent = e.editor.getData();
+    setPaymentTerm(newContent);
+  };
+
+  const onChangeSpecialFinshers = (e) => {
+    const newContent = e.editor.getData();
+    setSpecialFinishes(newContent);
+  };
+
+  const onChangeTrimsNotifications = (e) => {
+    const newContent = e.editor.getData();
+    setTrimsNotification(newContent);
+  };
+
+  const onChangeForbiddenSubstancesInfo = (e) => {
+    const newContent = e.editor.getData();
+    setForbiddenSubstancesInfo(newContent);
+  };
+
+  const onChangeTestingRequirement = (e) => {
+    const newContent = e.editor.getData();
+    setTestingRequirement(newContent);
+  };
+
+  const onChangeSampleRequirement = (e) => {
+    const newContent = e.editor.getData();
+    setSampleRequirement(newContent);
+  };
+
+  const onChangeSpecialRequest = (e) => {
+    const newContent = e.editor.getData();
+    setSpecialRequest(newContent);
+  };
+
+  const SampleFormatImg = (files) => {
+    files.map((sampleFormatImg) => {
+      // console.log(sampleFormatImg);
+      if (
+        sampleFormatImg.extension == "jpeg" ||
+        sampleFormatImg.extension == "jpg" ||
+        sampleFormatImg.extension == "png"
+      ) {
+        const getFileSize = Math.round(sampleFormatImg.size / 1024);
+        if (getFileSize > maxUploadFileSize) {
+          Swal.fire({
+            title: t("sizeExceededTitleAlert"),
+            text: t("uploadFileTalidationText", {
+              fileSize: maxUploadFileSize / 1024,
+            }),
+            // text: t("uploadFileWithinTextAlert1") + " " + (maxUploadFileSize / 1024) + " " + t("uploadFileWithinTextAlert2"),
+            icon: "warning",
+            button: t("okLabel"),
+          });
+        } else {
+          let responseData = uploadImageApiCall("SampleFormat", files);
+          setSampleFormatImg(sampleFormatImg.name);
+        }
+      } else {
+        Swal.fire({
+          title: t("wrongFileFormat"),
+          text: t("validFileFormatsImages"),
+          icon: "warning",
+          button: t("okLabel"),
+        });
+      }
+    });
+  };
+
+  const MeasurementImg = (files) => {
+    // console.log(files);
+
+    files.map((measureImg) => {
+      if (
+        measureImg.extension == "docx" ||
+        measureImg.extension == "pdf" ||
+        measureImg.extension == "xlsx"
+      ) {
+        const getFileSize = Math.round(measureImg.size / 1024);
+        if (getFileSize > maxUploadFileSize) {
+          Swal.fire({
+            title: t("sizeExceededTitleAlert"),
+            text: t("uploadFileTalidationText", {
+              fileSize: maxUploadFileSize / 1024,
+            }),
+            // text: t("uploadFileWithinTextAlert1") + " " + (maxUploadFileSize / 1024) + " " + t("uploadFileWithinTextAlert2"),
+            icon: "warning",
+            button: t("okLabel"),
+          });
+        } else {
+          let responseData = uploadImageApiCall("MeasurementSheet", files);
+          setMeasurementSheetImg(measureImg.name);
+        }
+      } else {
+        Swal.fire({
+          title: t("wrongFileFormat"),
+          text: t("ValidFileFormatsDocuments"),
+          icon: "warning",
+          button: t("okLabel"),
+        });
+      }
+    });
+  };
+
+  const PrintImage = (files) => {
+    // console.log(files);
+    files.map((printImg) => {
+      if (
+        printImg.extension == "jpeg" ||
+        printImg.extension == "jpg" ||
+        printImg.extension == "png"
+      ) {
+        const getFileSize = Math.round(printImg.size / 1024);
+        if (getFileSize > maxUploadFileSize) {
+          Swal.fire({
+            title: t("sizeExceededTitleAlert"),
+            text: t("uploadFileTalidationText", {
+              fileSize: maxUploadFileSize / 1024,
+            }),
+            // text: t("uploadFileWithinTextAlert1") + " " + (maxUploadFileSize / 1024) + " " + t("uploadFileWithinTextAlert2"),
+            icon: "warning",
+            button: t("okLabel"),
+          });
+        } else {
+          let responseData = uploadImageApiCall("PrintImage", files);
+          setPrintImg(printImg.name);
+        }
+      } else {
+        Swal.fire({
+          title: t("wrongFileFormat"),
+          text: t("validFileFormatsImages"),
+          icon: "warning",
+          button: t("okLabel"),
+        });
+      }
+    });
+  };
+
+  const MainLabelSample = (files) => {
+    files.map((mainLabelSample) => {
+      if (
+        mainLabelSample.extension == "jpeg" ||
+        mainLabelSample.extension == "jpg" ||
+        mainLabelSample.extension == "png"
+      ) {
+        const getFileSize = Math.round(mainLabelSample.size / 1024);
+        if (getFileSize > maxUploadFileSize) {
+          Swal.fire({
+            title: t("sizeExceededTitleAlert"),
+            text: t("uploadFileTalidationText", {
+              fileSize: maxUploadFileSize / 1024,
+            }),
+            // text: t("uploadFileWithinTextAlert1") + " " + (maxUploadFileSize / 1024) + " " + t("uploadFileWithinTextAlert2"),
+            icon: "warning",
+            button: t("okLabel"),
+          });
+        } else {
+          let responseData = uploadImageApiCall("MainLabel", files);
+          setMainLabelSampleImg(mainLabelSample.name);
+        }
+      } else {
+        Swal.fire({
+          title: t("wrongFileFormat"),
+          text: t("validFileFormatsImages"),
+          icon: "warning",
+          button: t("okLabel"),
+        });
+      }
+    });
+  };
+
+  const WashCareLabelSample = (files) => {
+    files.map((washCareLabelSample) => {
+      if (
+        washCareLabelSample.extension == "jpeg" ||
+        washCareLabelSample.extension == "jpg" ||
+        washCareLabelSample.extension == "png"
+      ) {
+        const getFileSize = Math.round(washCareLabelSample.size / 1024);
+        if (getFileSize > maxUploadFileSize) {
+          Swal.fire({
+            title: t("sizeExceededTitleAlert"),
+            text: t("uploadFileTalidationText", {
+              fileSize: maxUploadFileSize / 1024,
+            }),
+            // text: t("uploadFileWithinTextAlert1") + " " + (maxUploadFileSize / 1024) + " " + t("uploadFileWithinTextAlert2"),
+            icon: "warning",
+            button: t("okLabel"),
+          });
+        } else {
+          let responseData = uploadImageApiCall("WashCareLabel", files);
+          setWashCareLabelSampleImg(washCareLabelSample.name);
+        }
+      } else {
+        Swal.fire({
+          title: t("wrongFileFormat"),
+          text: t("validFileFormatsImages"),
+          icon: "warning",
+          button: t("okLabel"),
+        });
+      }
+    });
+  };
+
+  const HangtagSample = (files) => {
+    files.map((hangtagSample) => {
+      if (
+        hangtagSample.extension == "jpeg" ||
+        hangtagSample.extension == "jpg" ||
+        hangtagSample.extension == "png"
+      ) {
+        const getFileSize = Math.round(hangtagSample.size / 1024);
+        if (getFileSize > maxUploadFileSize) {
+          Swal.fire({
+            title: t("sizeExceededTitleAlert"),
+            text: t("uploadFileTalidationText", {
+              fileSize: maxUploadFileSize / 1024,
+            }),
+            // text: t("uploadFileWithinTextAlert1") + " " + (maxUploadFileSize / 1024) + " " + t("uploadFileWithinTextAlert2"),
+            icon: "warning",
+            button: t("okLabel"),
+          });
+        } else {
+          let responseData = uploadImageApiCall("Hangtag", files);
+          setHangtagSampleImg(hangtagSample.name);
+        }
+      } else {
+        Swal.fire({
+          title: t("wrongFileFormat"),
+          text: t("validFileFormatsImages"),
+          icon: "warning",
+          button: t("okLabel"),
+        });
+      }
+    });
+  };
+
+  const BarcodeStickersSample = (files) => {
+    files.map((barcodeStickersSample) => {
+      if (
+        barcodeStickersSample.extension == "jpeg" ||
+        barcodeStickersSample.extension == "jpg" ||
+        barcodeStickersSample.extension == "png"
+      ) {
+        const getFileSize = Math.round(barcodeStickersSample.size / 1024);
+        if (getFileSize > maxUploadFileSize) {
+          Swal.fire({
+            title: t("sizeExceededTitleAlert"),
+            text: t("uploadFileTalidationText", {
+              fileSize: maxUploadFileSize / 1024,
+            }),
+            // text: t("uploadFileWithinTextAlert1") + " " + (maxUploadFileSize / 1024) + " " + t("uploadFileWithinTextAlert2"),
+            icon: "warning",
+            button: t("okLabel"),
+          });
+        } else {
+          let responseData = uploadImageApiCall("BarcodeStickers", files);
+          setBarcodeStickersSampleImg(barcodeStickersSample.name);
+        }
+      } else {
+        Swal.fire({
+          title: "wrongFileFormat",
+          text: "validFileFormatsImages",
+          icon: "warning",
+          button: t("okLabel"),
+        });
+      }
+    });
+  };
+
+  const submitInquiryForm = (e) => {
+    let retval = validation();
+    if (Object.keys(retval).length == 0) {
+      let sku = getQtyDetails();
+      var inquiryFormInputParams = {};
+      inquiryFormInputParams["company_id"] = getLoginCompanyId;
+      inquiryFormInputParams["workspace_id"] = getWorkspaceId;
+      inquiryFormInputParams["user_id"] = UserId;
+      inquiryFormInputParams["article_id"] = article;
+      inquiryFormInputParams["style_no"] = styleNo;
+
+      inquiryFormInputParams["fabric_type_id"] = fabric;
+      inquiryFormInputParams["fabric_GSM"] = fabricGSM;
+      inquiryFormInputParams["yarn_count"] = yarnCount;
+      inquiryFormInputParams["style_article_description"] = styleArtcileDesc;
+      inquiryFormInputParams["special_finish"] = specialFinishes;
+      inquiryFormInputParams["total_qty"] = totalQuantity;
+      inquiryFormInputParams["patterns"] = patterns;
+      inquiryFormInputParams["jurisdiction"] = placesOfJurisdiction;
+      inquiryFormInputParams["customs_declaraion_document"] =
+        customsDeclarationDoc;
+      inquiryFormInputParams["penality"] = penalty;
+      inquiryFormInputParams["print_image"] = printImage;
+      inquiryFormInputParams["print_size"] = printSize;
+      inquiryFormInputParams["print_type"] = printType;
+      inquiryFormInputParams["print_no_of_colors"] = noOfColors;
+      inquiryFormInputParams["main_lable"] = mainLabel;
+      //inquiryFormInputParams['main_lable_info'] = mainLabelSampleImg;
+      inquiryFormInputParams["washcare_lable"] = washCareLabel;
+
+      //inquiryFormInputParams['washcare_lable_info'] = washCareLabelSampleImg
+
+      inquiryFormInputParams["hangtag_lable"] = hangtag;
+      //inquiryFormInputParams['hangtag_lable_info'] = hangtagSampleImg;
+      inquiryFormInputParams["barcode_lable"] = barcodeStickers;
+
+      //inquiryFormInputParams['barcode_lable_info'] =barcodeStickersSampleImg;
+      inquiryFormInputParams["trims_nominations"] = trimsNotification;
+      inquiryFormInputParams["poly_bag_size"] = polybagSizeThickness;
+      inquiryFormInputParams["poly_bag_material"] = polybagMaterial;
+      inquiryFormInputParams["poly_bag_price"] = inquiryFormInputParams[
+        "carton_bag_dimensions"
+      ] = cartonBoxDimension;
+      inquiryFormInputParams["carton_color"] = cartonColors;
+      inquiryFormInputParams["carton_material"] = cartonMaterial;
+      inquiryFormInputParams["carton_edge_finish"] = cartonEdgeFinish;
+      inquiryFormInputParams["carton_mark"] = cartonMarkDetails;
+      inquiryFormInputParams["make_up"] = makeUp;
+      inquiryFormInputParams["films_cd"] = flimsCD;
+      inquiryFormInputParams["picture_card"] = pictureCard;
+
+      inquiryFormInputParams["inner_cardboard"] = innerCardBoard;
+      inquiryFormInputParams["shipping_size"] = shippingSize;
+
+      inquiryFormInputParams["air_frieght"] = airFrieght;
+      inquiryFormInputParams["estimate_delivery_date"] = estimatedDeliveryDate;
+      inquiryFormInputParams["due_date"] = inquiryDueDate;
+      inquiryFormInputParams["incoterms"] = incomeTerm;
+      inquiryFormInputParams["payment_terms"] = paymentTerm;
+      inquiryFormInputParams["target_price"] = targetPrice;
+      inquiryFormInputParams["forbidden_substance_info"] =
+        forbiddenSubstancesInfo;
+      inquiryFormInputParams["testing_requirements"] = testingRequirement;
+      inquiryFormInputParams["sample_requirements"] = sampleRequirement;
+      inquiryFormInputParams["special_requests"] = specialRequest;
+
+      inquiryFormInputParams["sku_details"] = sku;
+
+      inquiryFormInputParams["referenceId"] = referenceId.toString();
+
+      axios
+        .post(ServerUrl + "/save-inquiry", inquiryFormInputParams)
+        .then((response) => {
+          // console.log(response);
+          // console.log(response.data.status_code);
+          if (response.data.status_code === 200) {
+            Swal.fire({
+              title: t("inquiryAddedSuccessfully"),
+              // text: t(response.data.message),
+              icon: "success",
+              button: t("okLabel"),
+              allowOutsideClick: false,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.href = "/inquiry/viewinquiry";
+              }
+            });
+          }
+          if (response.data.status_code === 401) {
+            Swal.fire({
+              // title:
+              //     t(response.data.errors.company_id) ||
+              //     t(response.data.errors.workspace_id) ||
+              //     t(response.data.errors.article_id)||
+              //     t(response.data.errors.style_no)||
+              //     t(response.data.errors.fabric_type_id)||
+              //     t(response.data.errors.total_qty),
+              title:
+                // (response.data.errors.company_id) ||
+                // (response.data.errors.workspace_id) ||
+                response.data.errors.article_id ||
+                response.data.errors.style_no ||
+                response.data.errors.fabric_type_id ||
+                response.data.errors.total_qty,
+              text: t("fieldMissing"),
+              icon: "Warning",
+              button: t("tryAgain"),
+            });
+          }
+        });
+    }
+  };
+
+ 
+  return (
+    <Fragment>
+      <Row className="pgbgcolor">
+        <Breadcrumbs
+          mainTitle={t("inquiry")}
+          parent="inquiry"
+          title="Inquiry"
+        />
+      </Row>
+      <Container fluid={true} className="general-widget topaln">
+        <Col md="12" sm="12" lg="12">
+          <Card>
+            <CardBody>
+              <Form>
+                <Col lg="12">
+                  <Row>
+                    {/* Article Name, Style Number ,Sample Image*/}
+
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label style={{ color: "#5F5F5F" }}>
+                          {t("articleName")}
+                        </Label>
+                        <sup className="font-danger">*</sup>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="article"
+                            type="select"
+                            defaultValue=""
+                            onChange={(e) => setArticle(e.target.value)}
+                          >
+                            <option Value="" disabled>
+                              {t("selectArticle")}
+                            </option>
+
+                            {articles.map((article) => (
+                              <option value={article.id}>{article.name}</option>
+                            ))}
+                          </Input>
+                          <InputGroupText
+                            style={{ cursor: "pointer" }}
+                            onClick={toggleart}
+                          >
+                            {/* <span className="btn" onClick="" > */}
+                            <img
+                              src={addIcon}
+                              width="15px"
+                              height="15px"
+                              onClick={toggleart}
+                            ></img>
+                            {/* </span> */}
+                          </InputGroupText>
+
+                          <AddArticleModal
+                            modal={modalArt}
+                            toggle={toggleart}
+                            companyId={company_id}
+                            workspaceId={workspace_id}
+                            article={setArticles}
+                          />
+                        </InputGroup>
+                        {validerrors.article && (
+                          <span className="error-msg">
+                            {validerrors.article}
+                          </span>
+                        )}
+                      </FormGroup>
+                    </Col>
+
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("styleNo")}</Label>
+                        <sup className="font-danger">*</sup>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="style Number"
+                            placeholder={t("enterStyleNumber")}
+                            onChange={(e) => setStyleNo(e.target.value)}
+                          ></Input>
+                        </InputGroup>
+                        {validerrors.styleNo && (
+                          <span className="error-msg">
+                            {validerrors.styleNo}
+                          </span>
+                        )}
+                      </FormGroup>
+                    </Col>
+
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label style={{ color: "#5F5F5F" }}>
+                          {t("sampleFormat")}
+                        </Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Sample Image"
+                            value={sampleFormatImg ? sampleFormatImg : ""}
+                            placeholder={t("attachSampleFormat")}
+                            onchange={(e) => setSampleFormat(e.target.value)}
+                            disabled
+                          ></Input>
+
+                          <Files
+                            className="files-dropzone fileContainer"
+                            // onChange={nonFilesChange}
+                            // onError={nonFilesError}
+                            accept=".png,.jpg,.jpeg"
+                            multiple={false}
+                            canCancel={false}
+                            onChange={SampleFormatImg}
+                            // onSubmit={handleSubmit}
+                            clickable
+                          >
+                            <InputGroupText className=" btn imgBackground">
+                              <img
+                                src={imgUpload}
+                                width="25px"
+                                height="25px"
+                                type="file"
+                              ></img>
+                              
+                            </InputGroupText>
+                          </Files>
+                          {/* {files.length > 0 ?
+                                                            <span className="ritemargine" style={{ float: "Center" }} >
+
+                                                                <Btn attrBtn={{ className: "mt-2", color: 'primary', type: "button", onClick: () => deleteFile(files) }} >
+                                                                    {t("delete")}
+                                                                </Btn></span> : " "}  */}
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                </Col>
+
+                {/* Fabric Type,Fabric GSM, */}
+
+                <Col lg="12">
+                  <Row>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("fabricType")}</Label>
+                        <sup className="font-danger">*</sup>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="fabric"
+                            type="select"
+                            defaultValue=""
+                            onChange={(e) => setFabric(e.target.value)}
+                          >
+                            <option Value="" disabled>
+                              {t("selectFabricType")}
+                            </option>
+                            {fabrics.map((fabric) => (
+                              <option value={fabric.id}>{fabric.name}</option>
+                            ))}
+                          </Input>
+                          <InputGroupText
+                            style={{ cursor: "pointer" }}
+                            onClick={togglefabric}
+                          >
+                            {/* <span className="btn" onClick="" > */}
+                            <img
+                              src={addIcon}
+                              width="15px"
+                              height="15px"
+                              onClick={togglefabric}
+                            ></img>
+                            {/* </span> */}
+                          </InputGroupText>
+                        </InputGroup>
+                        {validerrors.fabric && (
+                          <span className="error-msg">
+                            {validerrors.fabric}
+                          </span>
+                        )}
+                        <AddFabricModal
+                          modal={modalfabric}
+                          toggle={togglefabric}
+                          companyId={company_id}
+                          workspaceId={workspace_id}
+                          fabric={setFabrics}
+                        />
+                      </FormGroup>
+                    </Col>
+
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("fabricGSM")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Fabric GSM"
+                            placeholder={t("enterFabricGSM")}
+                            onChange={(e) => setFabricGSM(e.target.value)}
+                          ></Input>
+                          {/* <option Value="">Select Fabric GSM</option>
+                    <option Value="">Mon</option> 
+                    <option value=""> Tues</option>
+                    </Input>
+                    <InputGroupText >
+                    
+                      <img src={addIcon} width="15px" height="15px"></img>
+                    
+                    </InputGroupText> */}
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                    {/* Sample Format Image Preview */}
+                    <Col lg="4">
+                      {fileSampleFormat.length > 0 ? 
+                          fileSampleFormat.map((file) => (
+                            <>
+                           
+                              {/* {console.log("FILEEEEEEEEE", awsUrl+file.filepath )} */}
+                              <img
+                                src={awsUrl + file.filepath}
+                                width="100px"
+                                height="100px"
+                                className="m-10"
+                                style={{ cursor: 'pointer' }}
+                                onClick={()=>
+                                  {deleteImageFiles("SampleFormat", file)}
+                              }
+                              />
+                              {/* <div className="m-t-15 m-r-15">
+                              
+                                  <img  
+                                      src={deleteIcon} 
+                                      width="50px" 
+                                      height="50px" 
+                                      style={{ cursor: 'pointer' }}>
+                                  </img>
+                               
+                              </div> */}
+                            
+                              {/* <img src={file.preview.url} width="100px" />   */}
+                           
+                            </>
+                          ))
+                      : (
+                        <div>{/* Varala */}</div>
+                      )}
+                    </Col>
+                  </Row>
+                </Col>
+                {/* <div 
+                  className="files-gallery profile-pic">
+                    <img
+                      src={testImage}
+                      width="100px"
+                      height="100px"
+                      className="m-10"
+                    />
+                  <div className="edit m-t-15 m-r-15">
+                    <img 
+                          src={deleteIcon} 
+                          width="50px" 
+                          height="50px" 
+                          style={{ cursor: 'pointer' }}>
+                    </img>
+                  </div>
+                </div> */}
+
+                {/*  */}
+
+                {/* Yarn Count,Measurement Sheet,Target Price */}
+
+                <Row>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("yarnCount")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Yarn Count"
+                          placeholder={t("enterYarnCount")}
+                          onChange={(e) => setYarnCount(e.target.value)}
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label> {t("measurementSheet")} </Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Measurement Sheet"
+                          value={measurementSheetImg ? measurementSheetImg : ""}
+                          placeholder={t("attachMeasurementSheet")}
+                          onChange={(e) => setMeasurementSheet(e.target.value)}
+                          disabled
+                        ></Input>
+                        <Files
+                          className="files-dropzone fileContainer"
+                          // onChange={nonFilesChange}
+                          // onError={nonFilesError}
+                          accept=".docx,.doc,.xls,.xlsx,.txt,.pdf"
+                          multiple={false}
+                          canCancel={false}
+                          onChange={MeasurementImg}
+                          // onSubmit={handleSubmit}
+                          clickable
+                        >
+                          <InputGroupText className=" btn imgBackground">
+                            <img
+                              src={docIcon}
+                              width="25px"
+                              height="25px"
+                              type="file"
+                            ></img>
+                          </InputGroupText>
+                        </Files>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("inquiryDueDate")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Inquiry Due Date"
+                          type="date"
+                          placeholder={t("selectInquiryDueDate")}
+                          onChange={(e) => setInquiryDueDate(e.target.value)}
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                </Row>
+
+                {/* Incoterms,Payment Terms,Inquiry Due Date */}
+
+                <Row>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("incomeTerms")}</Label>
+                      <InputGroup>
+                        <Input
+                          type="select"
+                          // placeholder={t("selectStatus")}
+                          className="form-control digits selectheight"
+                          name="Income Terms"
+                          defaultValue=""
+                          onChange={(e) => setIncomeTerm(e.target.value)}
+                        >
+                          <option Value="" disabled>
+                            {t("selectIncomeTerms")}
+                          </option>
+                          {incomeTerms.map((incomeTerm) => (
+                            <option
+                              value={incomeTerm.id}
+                              title={incomeTerm.description}
+                            >
+                              {incomeTerm.name}
+                            </option>
+                          ))}
+                        </Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("targetPrice")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Target Price"
+                          placeholder={t("enterTargetPrice")}
+                          onChange={(e) => setTargetPrice(e.target.value)}
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label> {t("currency")} </Label>
+                      <InputGroup>
+                        <Input
+                          type="select"
+                          // placeholder={t("selectStatus")}
+                          className="form-control digits selectheight"
+                          name="Currency"
+                          defaultValue=""
+                          onChange={(e) => setCurrency(e.target.value)}
+                        >
+                          <option value="" disabled>
+                            {t("selectCurrency")}
+                          </option>
+                          {currencies.map((currency) => (
+                            <option value={currency.name}>
+                              {currency.symbol + " " + currency.name}
+                            </option>
+                          ))}
+                        </Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col lg="6">
+                    <FormGroup>
+                      <Label className="form-label">{t("paymentTerms")}</Label>
+                      <span
+                        className="m-l-20"
+                        style={{ cursor: "pointer" }}
+                        value
+                        onClick={() => {
+                          checkedVal("PaymentTerms");
+                        }}
+                      >
+                        {" "}
+                        <img src={infoIcon} width="25px" height="25px"></img>
+                      </span>
+                      {/* {console.log("PaymentTerms",paymentTerm,masterType)} */}
+
+                      <CKEditors
+                        activeclassName="p10"
+                        id="PaymentTerms"
+                        name="PaymentTerms"
+                        content={paymentTerm}
+                        events={{
+                          change: onChangePaymentTerms
+                        }}
+                        // onchange ={(e) => setStyleArticleDesc(e.target.value)}
+                        config={{
+                          //plugins: [ Font],
+                          toolbar: [
+                            [
+                              "Bold",
+                              "Italic",
+                              "NumberedList",
+                              "BulletedList",
+                              "Strike",
+                            ],
+                            [
+                              "Cut",
+                              "Copy",
+                              "Paste",
+                              "Pasteasplaintext",
+                              "FormattingStyles",
+                              "Undo",
+                              "Redo",
+                            ],
+                            [
+                              "List",
+                              "Indent",
+                              "Blocks",
+                              "Align",
+                              "Bidi",
+                              "Paragraph",
+                            ],
+                            ["Find", "Selection", "Spellchecker", "Editing"],
+                          ],
+                          
+                        }}
+                      />
+                      {/* <InputGroup>
+                      <Input className='' name="Payment Terms" 
+                     placeholder={t("enterPaymentTerms")}  onChange={(e) => setPaymentTerm(e.target.value)}>
+                      
+                      </Input>
+                      </InputGroup> */}
+                    </FormGroup>
+                  </Col>
+                </Row>
+
+                {/* Style/Article Description,Special Finishers -if any */}
+
+                <Row>
+                  <Col lg="6">
+                    <FormGroup>
+                      <Label className="form-label">
+                        {t("styleArticleDescription")}
+                      </Label>
+
+                      <CKEditors
+                        activeclassName="p10"
+                        content={styleArtcileDesc}
+                        events={{
+                          change: onChangeArticleDescription,
+                        }}
+                        // onchange ={(e) => setStyleArticleDesc(e.target.value)}
+                        config={{
+                          toolbar: [
+                            [
+                              "Bold",
+                              "Italic",
+                              "NumberedList",
+                              "BulletedList",
+                              "Strike",
+                            ],
+                            [
+                              "Cut",
+                              "Copy",
+                              "Paste",
+                              "Pasteasplaintext",
+                              "FormattingStyles",
+                              "Undo",
+                              "Redo",
+                            ],
+                            [
+                              "List",
+                              "Indent",
+                              "Blocks",
+                              "Align",
+                              "Bidi",
+                              "Paragraph",
+                            ],
+                            ["Find", "Selection", "Spellchecker", "Editing"],
+                          ],
+                        }}
+                      />
+                      {/* <Input type="textarea" className="form-control" rows="5" placeholder="Enter About your description" /> */}
+                    </FormGroup>
+                  </Col>
+                  <Col lg="6">
+                    <FormGroup>
+                      <Label className="form-label">
+                        {t("specialFinishers")}
+                      </Label>
+
+                      <CKEditors
+                        activeclassName="p10"
+                        events={{
+                          change: onChangeSpecialFinshers,
+                        }}
+                        content={specialFinishes}
+                        // events={{
+                        //     'change': onChange
+                        // }}
+                        //onChange={(e) => setSpecialFinishes(e.target.value)}
+                        config={{
+                          toolbar: [
+                            [
+                              "Bold",
+                              "Italic",
+                              "NumberedList",
+                              "BulletedList",
+                              "Strike",
+                            ],
+                            [
+                              "Cut",
+                              "Copy",
+                              "Paste",
+                              "Pasteasplaintext",
+                              "FormattingStyles",
+                              "Undo",
+                              "Redo",
+                            ],
+                            [
+                              "List",
+                              "Indent",
+                              "Blocks",
+                              "Align",
+                              "Bidi",
+                              "Paragraph",
+                            ],
+                            ["Find", "Selection", "Spellchecker", "Editing"],
+                          ],
+                        }}
+                      />
+                      {/* <Input type="textarea" className="form-control" rows="5" placeholder="Enter About your description" /> */}
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row>
+                  {/* Total Quantity,Color,Size */}
+
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label> {t("totalQuantity")}</Label>
+                      <sup className="font-danger">*</sup>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Total Quantity"
+                          placeholder={t("enterTotalQuantity")}
+                          onChange={(e) => setTotalQuantity(e.target.value)}
+                        ></Input>
+                        <InputGroupText>
+                          {/* <span className="btn" onClick="" > */}
+                          <img
+                            src={quantity}
+                            width="15px"
+                            height="15px"
+                            type="file"
+                          ></img>
+                          {/* </span> */}
+                        </InputGroupText>
+                      </InputGroup>
+                      {validerrors.totalQuantity && (
+                        <span className="error-msg">
+                          {validerrors.totalQuantity}
+                        </span>
+                      )}
+                    </FormGroup>
+                  </Col>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("color")}</Label>
+                      <InputGroup>
+                        <Input
+                          type="select"
+                          className="js-example-basic-single form-control"
+                          isMulti
+                          onChange={(e) => {
+                            handleChangeColor(e);
+                          }}
+                        >
+                          <option selected disabled>
+                            {t("selectColor")}
+                          </option>
+                          {getColor.map((colorList) => (
+                            <option key={colorList.id} value={colorList.id}>
+                              {colorList.name}
+                            </option>
+                          ))}
+                        </Input>
+                        <InputGroupText
+                          style={{ cursor: "pointer" }}
+                          onClick={toggleclr}
+                        >
+                          {/* <span className="btn" onClick="" > */}
+                          <img
+                            src={addIcon}
+                            width="15px"
+                            height="15px"
+                            onClick={toggleclr}
+                          ></img>
+                          {/* </span> */}
+                        </InputGroupText>
+                        <AddColorModal
+                          modal={modalClr}
+                          toggle={toggleclr}
+                          inputParams={getInputParams}
+                          color={setGetColor}
+                        />
+                      </InputGroup>
+                    </FormGroup>
+                    {showColor.map((colour, i) => (
+                      <span
+                        className="btn btn-primary m-r-5 m-t-5 p-b-10"
+                        id={colour}
+                        name={colour}
+                        onClick={(e) => deleteColor(e)}
+                      >
+                        {colour}
+                      </span>
+                    ))}
+                  </Col>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("size")}</Label>
+                      <InputGroup>
+                        <Input
+                          type="select"
+                          className="js-example-basic-single form-control"
+                          onChange={(e) => {
+                            handleChangeSize(e);
+                          }}
+                        >
+                          <option selected disabled>
+                            {t("selectSize")}
+                          </option>
+                          {getSize.map((sizeList) => (
+                            <option
+                              key={sizeList.id}
+                              value={sizeList.id}
+                              attr-name={sizeList.name}
+                            >
+                              {sizeList.name}
+                            </option>
+                          ))}
+                        </Input>
+                        <InputGroupText
+                          style={{ cursor: "pointer" }}
+                          onClick={togglesize}
+                        >
+                          {/* <span className="btn" onClick="" > */}
+                          <img
+                            src={addIcon}
+                            width="15px"
+                            height="15px"
+                            onClick={togglesize}
+                          ></img>
+                          {/* </span> */}
+                        </InputGroupText>
+                        <AddSizeModal
+                          modal={modalSize}
+                          toggle={togglesize}
+                          inputParams={getInputParams}
+                          size={setGetSize}
+                        />
+                      </InputGroup>
+                    </FormGroup>
+                    {showSize.map((sizes) => (
+                      <span
+                        className="btn btn-primary m-r-5 m-t-5 p-b-20"
+                        id={sizes}
+                        onClick={(e) => deleteSize(e)}
+                      >
+                        {sizes}
+                      </span>
+                    ))}
+                  </Col>
+                </Row>
+
+                {/* Color,Size table View */}
+
+                {color.length > 0 && size.length > 0 ? (
+                  <>
+                    <Row className="g-12">
+                      <Col lg="12" md="12" sm="12" xs="12">
+                        <span className="subTitleLine3 f-left">
+                          <H6 className="ordersubhead">
+                            {t("addQuantityRatio")}
+                          </H6>
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row className="p-b-20">
+                      <Col md="12" lg="12" sm="12">
+                        <Row className="g-12">
+                          <div className="table-responsive">
+                            <form id="countQty">
+                              <table className="table">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">
+                                      {" "}
+                                      {t("color/sizeLabel")}{" "}
+                                    </th>
+                                    {size.map((option) => {
+                                      return (
+                                        <th className="middle">
+                                          {" "}
+                                          {option.name}
+                                        </th>
+                                      );
+                                    })}
+                                    <th scope="col">{t("totalLabel")}</th>{" "}
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {color.map((optionc) => {
+                                    return (
+                                      <tr>
+                                        <th className="middle">
+                                          {optionc.name}
+                                        </th>
+                                        {/* <input 
+                                       style={{ width: '90px' }}
+                                       className="form-control inpwidthsmall"
+                                       type="number"
+                                        placeholder="0"
+                                        autocomplete="off"
+                                        min="0"
+                                        onKeyDown={handleEnter}
+                                        onKeyPress={(e) => handleKeyPress(e)}
+                                      /> */}
+                                        {size.map((option) => {
+                                          return (
+                                            <th>
+                                              <Row>
+                                                <Row>
+                                                  <Table className="table table-striped">
+                                                    {/* <tr><td style={{ fontWeight:'400', fontSize:'11px' }}>Qty</td><td>Final Qty</td></tr> */}
+                                                    <tr>
+                                                      <td>
+                                                        <table>
+                                                          <tbody className="f-w-600 text-center">
+                                                            <tr>
+                                                              <td
+                                                                style={{
+                                                                  padding:
+                                                                    "0.1em",
+                                                                }}
+                                                              >
+                                                                <input
+                                                                  style={{
+                                                                    width:
+                                                                      "90px",
+                                                                  }}
+                                                                  className=" form-control inpwidthsmall middle"
+                                                                  name="userName"
+                                                                  id={
+                                                                    optionc.id +
+                                                                    "#" +
+                                                                    option.id
+                                                                  }
+                                                                  type="number"
+                                                                  placeholder="0"
+                                                                  autocomplete="off"
+                                                                  min="0"
+                                                                  onChange={(
+                                                                    e
+                                                                  ) => {
+                                                                    addQty(e);
+                                                                  }}
+                                                                  onKeyDown={
+                                                                    handleEnter
+                                                                  }
+                                                                  onKeyPress={(
+                                                                    e
+                                                                  ) =>
+                                                                    handleKeyPress(
+                                                                      e
+                                                                    )
+                                                                  }
+                                                                />
+
+                                                                <input
+                                                                  type="hidden"
+                                                                  style={{
+                                                                    width:
+                                                                      "90px",
+                                                                  }}
+                                                                  id={
+                                                                    optionc.id +
+                                                                    "+" +
+                                                                    option.id
+                                                                  }
+                                                                  className=" form-control inpwidthsmall"
+                                                                  readOnly
+                                                                />
+                                                              </td>
+                                                            </tr>
+                                                            <tr>
+                                                              <td
+                                                                style={{
+                                                                  padding:
+                                                                    "0.1em",
+                                                                }}
+                                                                className="showperqty"
+                                                              >
+                                                                <span
+                                                                  id={
+                                                                    optionc.id +
+                                                                    "v" +
+                                                                    option.id
+                                                                  }
+                                                                  className="showperqty"
+                                                                ></span>
+                                                              </td>
+                                                            </tr>
+                                                          </tbody>
+                                                        </table>
+                                                      </td>
+                                                      <td>
+                                                        <input
+                                                          type="hidden"
+                                                          style={{
+                                                            width: "90px",
+                                                            marginLeft: "10px",
+                                                          }}
+                                                          id={
+                                                            optionc.id +
+                                                            "@" +
+                                                            option.id
+                                                          }
+                                                          className=" form-control inpwidthsmall"
+                                                          readOnly
+                                                        />
+                                                      </td>
+                                                    </tr>
+                                                  </Table>
+                                                </Row>
+                                              </Row>
+                                            </th>
+                                          );
+                                        })}
+                                        <th>
+                                          <input
+                                            className="form-control inpwidthsmall mt-3"
+                                            name="totalQuantity"
+                                            type="number"
+                                            readOnly
+                                            placeholder={t("totalQty")}
+                                            id={"totqty_" + optionc.id}
+                                          />
+                                        </th>
+                                      </tr>
+                                    );
+                                  })}
+
+                                  <tr>
+                                    <th></th>
+                                    {size.map((data) => {
+                                      return (
+                                        <>
+                                          <th>
+                                            <input
+                                              className="form-control inpwidthsmall"
+                                              id={
+                                                "SizeId_total_quantity" +
+                                                data.id
+                                              }
+                                              type="number"
+                                              placeholder="0"
+                                              autocomplete="on"
+                                              readOnly
+                                              onKeyDown={handleEnter}
+                                            />
+                                          </th>
+                                        </>
+                                      );
+                                    })}
+                                    <th>
+                                      <input
+                                        className="form-control inpwidthsmall"
+                                        id="Overall_total_quantity"
+                                        type="number"
+                                        placeholder="0"
+                                        autocomplete="off"
+                                        readOnly
+                                      />
+                                    </th>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </form>
+                          </div>
+                        </Row>
+                      </Col>
+                    </Row>
+                  </>
+                ) : (
+                  <div></div>
+                )}
+
+                {/* Patterns,Place of Jurisdiction,Customs Declaration Document */}
+
+                <Row>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("patterns")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Patterns"
+                          placeholder={t("enterPatterns")}
+                          onChange={(e) => setPatterns(e.target.value)}
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("placeofJurisdiction")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Place of Jurisdiction"
+                          placeholder={t("enterPlaceofJurisdiction")}
+                          onChange={(e) =>
+                            setPlaceOfJurisdiction(e.target.value)
+                          }
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("customsDeclarationDocument")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Customs Declaration Document"
+                          placeholder={t("enterCustomsDeclarationDocument")}
+                          onChange={(e) =>
+                            setCustomsDeclarationDoc(e.target.value)
+                          }
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                </Row>
+
+                {/* Penalty */}
+
+                <Row>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("penaltyLabel")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Penalty"
+                          placeholder={t("enterPenalty")}
+                          onChange={(e) => setPenalty(e.target.value)}
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                </Row>
+
+                {/* Print Information:Print Type,Print Price,No of Colors */}
+
+                <Row className="g-12">
+                  <Col lg="12" md="12" sm="12" xs="12">
+                    <span>
+                      <H6 className="ordersubhead">{t("printInformation")}</H6>
+                    </span>
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("printType")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Print Type"
+                          placeholder={t("enterPrintType")}
+                          onChange={(e) => setPrintType(e.target.value)}
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("printSize")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Print Size"
+                          placeholder={t("enterPrintSize")}
+                          onChange={(e) => setPrintSize(e.target.value)}
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("noOfColors")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="No of Colors"
+                          placeholder={t("enterNumberofcolors")}
+                          onChange={(e) => setNoOfColors(e.target.value)}
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                </Row>
+
+                {/* Print Information: Print Image */}
+
+                <Row>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("printImage")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Print Image"
+                          placeholder={t("attachPrintImage")}
+                          value={printImg ? printImg : ""}
+                          onChange={(e) => setPrintImage(e.target.value)}
+                          disabled
+                        ></Input>
+                        <Files
+                          className="files-dropzone fileContainer"
+                          // onChange={nonFilesChange}
+                          // onError={nonFilesError}
+                          accept=".png,.jpg,.jpeg"
+                          multiple={false}
+                          canCancel={false}
+                          onChange={PrintImage}
+                          // onSubmit={handleSubmit}
+                          clickable
+                        >
+                          <InputGroupText className=" btn imgBackground">
+                            <img
+                              src={imgUpload}
+                              width="25px"
+                              height="25px"
+                              type="file"
+                            ></img>
+                          </InputGroupText>
+                        </Files>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                  <Col lg="4">
+                    {filePrintImage.length > 0 ? (
+                          filePrintImage.map((file) => (
+                            <>
+                              {/* { console.log("@@@", sampleSheetImg )} */}
+                              <img
+                                src={awsUrl + file.filepath}
+                                width="100px"
+                                height="100px"
+                                className="m-10"
+                                style={{ cursor: 'pointer' }}
+                                onClick={ () => {deleteImageFiles("PrintImage", file)}}
+                              />
+
+                              {/* <img src={file.preview.url} width="100px" />   */}
+                            </>
+                          ))
+                    ) : (
+                      <div>{/* Varala */}</div>
+                    )}
+                  </Col>
+                  <Col lg="4"></Col>
+                </Row>
+
+                {/* Trims Information: Main Label,Main Label Sample */}
+
+                <Row className="g-12">
+                  <Col lg="12" md="12" sm="12" xs="12">
+                    <span>
+                      <H6 className="ordersubhead">{t("trimsInformation")}</H6>
+                    </span>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("mainLabel")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Main Label"
+                          placeholder={t("enterMainLabel")}
+                          onChange={(e) => setMainLabel(e.target.value)}
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("mainLabelSample")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Main Label Sample"
+                          placeholder={t("attachMainLabelSample")}
+                          value={mainLabelSampleImg ? mainLabelSampleImg : ""}
+                          onChange={(e) => {
+                            setMainLabelSampleImg(e.target.value);
+                          }}
+                          disabled
+                        ></Input>
+                        <InputGroupText className=" btn imgBackground">
+                          <Files
+                            className="files-dropzone fileContainer"
+                            // onChange={nonFilesChange}
+                            // onError={nonFilesError}
+                            accept=".png,.jpg,.jpeg"
+                            multiple={false}
+                            canCancel={false}
+                            onChange={MainLabelSample}
+                            // onSubmit={handleSubmit}
+                            clickable
+                          >
+                            <img
+                              src={imgUpload}
+                              width="25px"
+                              height="25px"
+                              type="file"
+                            ></img>
+                          </Files>
+                        </InputGroupText>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                  <Col lg="4">
+                    {fileMainLabel.length > 0 ? (
+                     
+                        fileMainLabel.map((file) => (
+                          <>
+                            {/* { console.log("@@@", sampleSheetImg )} */}
+                            <img
+                              src={awsUrl + file.filepath}
+                              width="100px"
+                              height="100px"
+                              className="m-10"
+                              style={{ cursor: 'pointer' }}
+                              onClick={ ()=> {deleteImageFiles("MainLabel", file)}}
+                            />
+
+                            {/* <img src={file.preview.url} width="100px" />   */}
+                          </>
+                        ))
+                     
+                    ) : (
+                      <div>{/* Varala */}</div>
+                    )}
+                  </Col>
+                </Row>
+
+                {/* Trims Information : Wash Care Label,Wash Care Label Sample */}
+
+                <Row>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("washCareLabel")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Wash Care Label"
+                          placeholder={t("enterWashCareLabel")}
+                          onChange={(e) => setWashCareLabel(e.target.value)}
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("washCareLabelSample")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Wash Care Label Sample"
+                          placeholder={t("attachWashCareLabelSample")}
+                          value={
+                            washCareLabelSampleImg ? washCareLabelSampleImg : ""
+                          }
+                          onChange={(e) =>
+                            setWashCareLabelSampleImg(e.target.value)
+                          }
+                          disabled
+                        ></Input>
+                        <Files
+                          className="files-dropzone fileContainer"
+                          // onChange={nonFilesChange}
+                          // onError={nonFilesError}
+                          accept=".png,.jpg,.jpeg"
+                          multiple={false}
+                          canCancel={false}
+                          onChange={WashCareLabelSample}
+                          // onSubmit={handleSubmit}
+                          clickable
+                        >
+                          <InputGroupText className=" btn imgBackground">
+                            <img
+                              src={imgUpload}
+                              width="25px"
+                              height="25px"
+                              type="file"
+                            ></img>
+                          </InputGroupText>
+                        </Files>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                  <Col lg="4">
+                    {fileWashCareLabel.length > 0 ? (
+                      
+                        fileWashCareLabel.map((file) => (
+                          <>
+                            {/* { console.log("@@@", sampleSheetImg )} */}
+                            <img
+                              src={awsUrl + file.filepath}
+                              width="100px"
+                              height="100px"
+                              className="m-10"
+                              style={{ cursor: 'pointer' }}
+                              onClick={ () => {deleteImageFiles("WashCareLabel", file)}}
+                            />
+
+                            {/* <img src={file.preview.url} width="100px" />   */}
+                          </>
+                        ))
+                      
+                    ) : (
+                      <div>{/* Varala */}</div>
+                    )}
+                  </Col>
+                </Row>
+
+                {/* Trims Information : Hangtag,Hangtag Sample */}
+                <Row>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("hangtag")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Hangtag"
+                          placeholder={t("enterHangtag")}
+                          onChange={(e) => setHangtag(e.target.value)}
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("hangtagSample")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Hangtag Sample"
+                          placeholder={t("attachHangtagSample")}
+                          value={hangtagSampleImg ? hangtagSampleImg : ""}
+                          onChange={(e) => setHangtagSampleImg(e.target.value)}
+                          disabled
+                        ></Input>
+                        <Files
+                          className="files-dropzone fileContainer"
+                          // onChange={nonFilesChange}
+                          // onError={nonFilesError}
+                          accept=".png,.jpg,.jpeg"
+                          multiple={false}
+                          canCancel={false}
+                          onChange={HangtagSample}
+                          // onSubmit={handleSubmit}
+                          clickable
+                        >
+                          <InputGroupText className=" btn imgBackground">
+                            <img
+                              src={imgUpload}
+                              width="25px"
+                              height="25px"
+                              type="file"
+                            ></img>
+                          </InputGroupText>
+                        </Files>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                  <Col lg="4">
+                    {fileHangtag.length > 0 ? (
+                     
+                        fileHangtag.map((file) => (
+                          <>
+                            {/* { console.log("@@@", sampleSheetImg )} */}
+                            <img
+                              src={awsUrl + file.filepath}
+                              width="100px"
+                              height="100px"
+                              className="m-10"
+                              style={{ cursor: 'pointer' }}
+                              // onClick={}
+                            />
+
+                            {/* <img src={file.preview.url} width="100px" />   */}
+                          </>
+                        ))
+                     
+                    ) : (
+                      <div>{/* Varala */}</div>
+                    )}
+                  </Col>
+                </Row>
+
+                {/* Trims Information : Barcode Stickers,Barcode Stickers Sample */}
+
+                <Row>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("barcodeStickers")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Barcode Stickers"
+                          placeholder={t("enterBarcodestickers")}
+                          onChange={(e) => setBarcodeStickers(e.target.value)}
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("barcodeStickersSample")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Barcode Stickers Sample"
+                          placeholder={t("attachBarcodeStickersSample")}
+                          value={
+                            barcodeStickersSampleImg
+                              ? barcodeStickersSampleImg
+                              : ""
+                          }
+                          onChange={(e) =>
+                            setBarcodeStickersSampleImg(e.target.value)
+                          }
+                          disabled
+                        ></Input>
+                        <Files
+                          className="files-dropzone fileContainer"
+                          // onChange={nonFilesChange}
+                          // onError={nonFilesError}
+                          accept=".png,.jpg,.jpeg"
+                          multiple={false}
+                          canCancel={false}
+                          onChange={BarcodeStickersSample}
+                          // onSubmit={handleSubmit}
+                          clickable
+                        >
+                          <InputGroupText className=" btn imgBackground">
+                            <img
+                              src={imgUpload}
+                              width="25px"
+                              height="25px"
+                              type="file"
+                            ></img>
+                          </InputGroupText>
+                        </Files>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                  <Col lg="4">
+                    {fileBarcodeStickers.length > 0 ? (
+                    
+                        fileBarcodeStickers.map((file) => (
+                          <>
+                            {/* { console.log("@@@", sampleSheetImg )} */}
+                            <img
+                              src={awsUrl + file.filepath}
+                              width="100px"
+                              height="100px"
+                              className="m-10"
+                              style={{ cursor: 'pointer' }}
+                            />
+
+                            {/* <img src={file.preview.url} width="100px" />   */}
+                          </>
+                        ))
+                     
+                    ) : (
+                      <div>{/* Varala */}</div>
+                    )}
+                  </Col>
+                </Row>
+
+                {/* Trims Notifications- Specify If any */}
+
+                <Row>
+                  <Col lg="12">
+                    <FormGroup>
+                      <Label className="form-label">
+                        {t("trimsNotificationsSpecify")}
+                      </Label>
+                      <CKEditors
+                        activeclassName="p10"
+                        events={{
+                          change: onChangeTrimsNotifications,
+                        }}
+                        content={trimsNotification}
+                        // events={{
+                        //     'change': onChange
+                        // }}
+                        //onchange={(e) => setTrimsNotification(e.target.value)}
+                        config={{
+                          toolbar: [
+                            [
+                              "Bold",
+                              "Italic",
+                              "NumberedList",
+                              "BulletedList",
+                              "Strike",
+                            ],
+                            [
+                              "Cut",
+                              "Copy",
+                              "Paste",
+                              "Pasteasplaintext",
+                              "FormattingStyles",
+                              "Undo",
+                              "Redo",
+                            ],
+                            [
+                              "List",
+                              "Indent",
+                              "Blocks",
+                              "Align",
+                              "Bidi",
+                              "Paragraph",
+                            ],
+                            ["Find", "Selection", "Spellchecker", "Editing"],
+                          ],
+                        }}
+                      />
+                    </FormGroup>
+                  </Col>
+                </Row>
+
+                {/* Packing Information: Polybag Size & thickness,Polybag Material,Print details on Polybag  */}
+
+                <Row className="g-12">
+                  <Col lg="12" md="12" sm="12" xs="12">
+                    <span>
+                      <H6 className="ordersubhead">
+                        {t("packingInformation")}
+                      </H6>
+                    </span>
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("polybagSizeThickness")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Polybag Size & thickness"
+                          placeholder={t("enterPolybagSizeThickness")}
+                          onChange={(e) =>
+                            setPolybagSizeThickness(e.target.value)
+                          }
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("polybagMaterial")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Polybag Material"
+                          placeholder={t("enterPolybagMaterial")}
+                          onChange={(e) => setPolybagMaterial(e.target.value)}
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("printDetailsPolybag")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name=" Print Details on Polybag "
+                          placeholder={t("enterPrintDetailsPolybag")}
+                          onChange={(e) =>
+                            setPrintDetailsPolybag(e.target.value)
+                          }
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                </Row>
+
+                {/* Packing Information: Carton Box Dimensions,Carton Color,Carton Material */}
+
+                <Row>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("cartonBoxDimensions")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Carton Box Dimensions"
+                          placeholder={t("enterCartonBoxDimensions")}
+                          onChange={(e) =>
+                            setCartonBoxDimension(e.target.value)
+                          }
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("cartonColor")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Carton Color"
+                          placeholder={t("enterCartonColor")}
+                          onChange={(e) => setCartonColors(e.target.value)}
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("cartonMaterial")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Carton Material"
+                          placeholder={t("enterCartonMaterial")}
+                          onChange={(e) => setCartonMaterial(e.target.value)}
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                </Row>
+
+                {/* Packing Information: Carton Edge Finish,Carton Mark Details,Make-Up */}
+
+                <Row>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("cartonEdgeFinish")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Carton Edge Finish"
+                          placeholder={t("enterCartonEdgeFinish")}
+                          onChange={(e) => setCartonEdgeFinish(e.target.value)}
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("cartonMarkDetails")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Carton Mark Details"
+                          placeholder={t("enterCartonMarkDetails")}
+                          onChange={(e) => setCartonMarkDetails(e.target.value)}
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("makeUp")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Make-Up"
+                          placeholder={t("enterMakeUp")}
+                          onChange={(e) => setMakeUp(e.target.value)}
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                </Row>
+
+                {/* Packing Information: Films/CD,Picture-Card,Inner Cardboard */}
+
+                <Row>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("filmsCD")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Films/CD"
+                          placeholder={t("enterFilmsCD")}
+                          onChange={(e) => setFlimsCD(e.target.value)}
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("pictureCard")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Picture-Card"
+                          placeholder={t("enterPictureCard")}
+                          onChange={(e) => setPictureCard(e.target.value)}
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("innerCardboard")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Inner Cardboard"
+                          placeholder={t("enterInnerCardboard")}
+                          onChange={(e) => setInnerCardBoard(e.target.value)}
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                </Row>
+
+                {/* Packing Information: Estimated Delivery Date,Shipping Size,Air Freight */}
+                <Row>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("estimatedDeliveryDate")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Estimated Delivery Date"
+                          placeholder={t("estimatedDeliveryDateETAETD")}
+                          type="date"
+                          onChange={(e) =>
+                            setEstimatedDeliveryDate(e.target.value)
+                          }
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("shippingSize")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Shipping Size"
+                          placeholder={t("enterShippingSize")}
+                          onChange={(e) => setShippingSize(e.target.value)}
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("airFreight")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Air Freight"
+                          placeholder={t("enterAirFreight")}
+                          onChange={(e) => setAirFrieght(e.target.value)}
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                </Row>
+
+                {/* Others: Forbidden Substances Information,Testing Requirement */}
+
+                <Row className="g-12">
+                  <Col lg="12" md="12" sm="12" xs="12">
+                    <span>
+                      <H6 className="ordersubhead">{t("others")}</H6>
+                    </span>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col lg="6">
+                    <FormGroup>
+                      <Label className="form-label">
+                        {t("forbiddenSubstancesInformation")}
+                      </Label>
+                      <CKEditors
+                        activeclassName="p10"
+                        events={{
+                          change: onChangeForbiddenSubstancesInfo,
+                        }}
+                        content={forbiddenSubstancesInfo}
+                        // events={{
+                        //     'change': onChange
+                        // }}
+                        //onChange={(e) => setForbiddenSubstancesInfo<(e.target.value)}
+                        config={{
+                          toolbar: [
+                            [
+                              "Bold",
+                              "Italic",
+                              "NumberedList",
+                              "BulletedList",
+                              "Strike",
+                            ],
+                            [
+                              "Cut",
+                              "Copy",
+                              "Paste",
+                              "Pasteasplaintext",
+                              "FormattingStyles",
+                              "Undo",
+                              "Redo",
+                            ],
+                            [
+                              "List",
+                              "Indent",
+                              "Blocks",
+                              "Align",
+                              "Bidi",
+                              "Paragraph",
+                            ],
+                            ["Find", "Selection", "Spellchecker", "Editing"],
+                          ],
+                        }}
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col lg="6">
+                    <FormGroup>
+                      <Label className="form-label">
+                        {t("testingRequirement")}
+                      </Label>
+                      <CKEditors
+                        activeclassName="p10"
+                        events={{
+                          change: onChangeTestingRequirement,
+                        }}
+                        content={testingRequirement}
+                        // events={{
+                        //     'change': onChange
+                        // }}
+                        onChange={(e) => setTestingRequirement(e.target.value)}
+                        config={{
+                          toolbar: [
+                            [
+                              "Bold",
+                              "Italic",
+                              "NumberedList",
+                              "BulletedList",
+                              "Strike",
+                            ],
+                            [
+                              "Cut",
+                              "Copy",
+                              "Paste",
+                              "Pasteasplaintext",
+                              "FormattingStyles",
+                              "Undo",
+                              "Redo",
+                            ],
+                            [
+                              "List",
+                              "Indent",
+                              "Blocks",
+                              "Align",
+                              "Bidi",
+                              "Paragraph",
+                            ],
+                            ["Find", "Selection", "Spellchecker", "Editing"],
+                          ],
+                        }}
+                      />
+                    </FormGroup>
+                  </Col>
+
+                  {/* Others: Sample Requirements,Special Request -If any */}
+                </Row>
+                <Row>
+                  <Col lg="6">
+                    <FormGroup>
+                      <Label className="form-label">
+                        {t("SampleRequirements")}
+                      </Label>
+                      <CKEditors
+                        activeclassName="p10"
+                        events={{
+                          change: onChangeSampleRequirement,
+                        }}
+                        content={sampleRequirement}
+                        // events={{
+                        //     'change': onChange
+                        // }}
+                        onChange={(e) => setSampleRequirement(e.target.value)}
+                        config={{
+                          toolbar: [
+                            [
+                              "Bold",
+                              "Italic",
+                              "NumberedList",
+                              "BulletedList",
+                              "Strike",
+                            ],
+                            [
+                              "Cut",
+                              "Copy",
+                              "Paste",
+                              "Pasteasplaintext",
+                              "FormattingStyles",
+                              "Undo",
+                              "Redo",
+                            ],
+                            [
+                              "List",
+                              "Indent",
+                              "Blocks",
+                              "Align",
+                              "Bidi",
+                              "Paragraph",
+                            ],
+                            ["Find", "Selection", "Spellchecker", "Editing"],
+                          ],
+                        }}
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col lg="6">
+                    <FormGroup>
+                      <Label className="form-label">
+                        {t("specialRequestIfAny")}
+                      </Label>
+                      <CKEditors
+                        activeclassName="p10"
+                        events={{
+                          change: onChangeSpecialRequest,
+                        }}
+                        content={specialRequest}
+                        // events={{
+                        //     'change': onChange
+                        // }}
+                        onChange={(e) => setSpecialRequest(e.target.value)}
+                        config={{
+                          toolbar: [
+                            [
+                              "Bold",
+                              "Italic",
+                              "NumberedList",
+                              "BulletedList",
+                              "Strike",
+                            ],
+                            [
+                              "Cut",
+                              "Copy",
+                              "Paste",
+                              "Pasteasplaintext",
+                              "FormattingStyles",
+                              "Undo",
+                              "Redo",
+                            ],
+                            [
+                              "List",
+                              "Indent",
+                              "Blocks",
+                              "Align",
+                              "Bidi",
+                              "Paragraph",
+                            ],
+                            ["Find", "Selection", "Spellchecker", "Editing"],
+                          ],
+                        }}
+                      />
+                    </FormGroup>
+                  </Col>
+                </Row>
+
+                <FormGroup className="f-right">
+                  <Button
+                    // href={`${process.env.PUBLIC_URL}/ordersku`}
+                    className="btn btn-primary "
+                    onClick={() => {
+                      submitInquiryForm();
+                    }}
+                  >
+                    Save
+                  </Button>
+                </FormGroup>
+              </Form>
+            </CardBody>
+          </Card>
+        </Col>
+      </Container>
+      <InfoCanvas
+        modal={showInfoCanvas}
+        toggle={toggleInfoCanvas}
+        infoDetails={infoDetails}
+        masterType={masterType}
+        setPaymentTerm={setPaymentTerm}
+        setShowInfoCanvas={setShowInfoCanvas}
+        showInfoCanvas={showInfoCanvas}
+        PaymentTerm={paymentTerm}
+      />
+    </Fragment>
+  );
+};
+
+export default index;

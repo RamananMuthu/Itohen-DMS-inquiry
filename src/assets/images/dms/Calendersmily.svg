@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+  <g id="cal" transform="translate(10594 1772)">
+    <g id="Group_20983" data-name="Group 20983" transform="translate(-11719 -2431)">
+      <g id="Group_19561" data-name="Group 19561" transform="translate(1125 658.852)">
+        <circle id="Ellipse_1278" data-name="Ellipse 1278" cx="11" cy="11" r="11" transform="translate(0 0.148)" fill="#368c0e" opacity="0.1"/>
+      </g>
+    </g>
+    <g id="Icon_feather-calendar" data-name="Icon feather-calendar" transform="translate(-10594.026 -1771.695)">
+      <path id="Path_13838" data-name="Path 13838" d="M6.017,6H16.634a1.517,1.517,0,0,1,1.517,1.517V18.134a1.517,1.517,0,0,1-1.517,1.517H6.017A1.517,1.517,0,0,1,4.5,18.134V7.517A1.517,1.517,0,0,1,6.017,6Z" transform="translate(0 -1.483)" fill="none" stroke="#368c0e" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <path id="Path_13839" data-name="Path 13839" d="M24,3V6.034" transform="translate(-9.641 0)" fill="none" stroke="#368c0e" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <path id="Path_13840" data-name="Path 13840" d="M12,3V6.034" transform="translate(-3.708 0)" fill="none" stroke="#368c0e" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <path id="Path_13841" data-name="Path 13841" d="M4.5,15H18.151" transform="translate(0 -5.933)" fill="none" stroke="#368c0e" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+    </g>
+  </g>
+</svg>

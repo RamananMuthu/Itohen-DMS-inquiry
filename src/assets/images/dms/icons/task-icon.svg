@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="task-icon" transform="translate(-6229 12390)">
+    <g id="Group_18239" data-name="Group 18239" transform="translate(15)">
+      <g id="Group_18237" data-name="Group 18237" transform="translate(-44 1)">
+        <rect id="Rectangle_9414" data-name="Rectangle 9414" width="24" height="24" transform="translate(6258 -12391)" fill="none"/>
+      </g>
+    </g>
+    <g id="Iconly_Bulk_Activity" data-name="Iconly/Bulk/Activity" transform="translate(6230 -12389)">
+      <g id="Activity">
+        <path id="Path_34168" d="M13.928,19.8H5.881a5.956,5.956,0,0,1-4.33-1.553A5.942,5.942,0,0,1,0,13.927V5.891A5.971,5.971,0,0,1,1.551,1.562,5.94,5.94,0,0,1,5.881,0h8.763a4.3,4.3,0,0,0-.077.812A4.432,4.432,0,0,0,19,5.235a4.556,4.556,0,0,0,.8-.077v8.769a5.946,5.946,0,0,1-1.55,4.32A5.942,5.942,0,0,1,13.928,19.8ZM7.944,7.787a.827.827,0,0,0-.108.007.815.815,0,0,0-.543.319L4.043,12.3a.8.8,0,0,0-.174.5.813.813,0,0,0,1.5.473L8.086,9.764,11.1,12.131a.821.821,0,0,0,.511.18.815.815,0,0,0,.651-.325L15.408,7.93V7.91a.825.825,0,0,0-.154-1.149.8.8,0,0,0-1.141.164l-2.65,3.41L8.445,7.959A.816.816,0,0,0,7.944,7.787Z" transform="translate(0 2.2)" fill="#d4313c"/>
+        <circle id="Ellipse_742" cx="2.75" cy="2.75" r="2.75" transform="translate(16.5)" fill="#d4313c" opacity="0.4"/>
+      </g>
+    </g>
+  </g>
+</svg>

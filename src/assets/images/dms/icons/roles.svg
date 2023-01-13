@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="roles" transform="translate(-6293 12148)">
+    <g id="Group_18241" data-name="Group 18241" transform="translate(79 242)">
+      <g id="Group_18237" data-name="Group 18237" transform="translate(-44 1)">
+        <g id="Group_18255" data-name="Group 18255">
+          <rect id="Rectangle_9414" data-name="Rectangle 9414" width="24" height="24" transform="translate(6258 -12391)" fill="none"/>
+        </g>
+      </g>
+    </g>
+    <g id="Iconly_Bold_Password" data-name="Iconly/Bold/Password" transform="translate(6294 -12147)">
+      <g id="Password">
+        <path id="Password-2" data-name="Password" d="M6.233,22C2.5,22,0,19.385,0,15.493V6.508C0,2.616,2.5,0,6.233,0h9.536C19.5,0,22,2.616,22,6.508v8.984C22,19.385,19.5,22,15.768,22Zm7.992-10.175h1.462v1.213a.825.825,0,1,0,1.649,0V11a.826.826,0,0,0-.825-.825H10.251a2.862,2.862,0,1,0,0,1.649h2.324v1.213a.825.825,0,0,0,1.65,0V11.826h0ZM6.313,11a1.212,1.212,0,1,1,1.212,1.211A1.214,1.214,0,0,1,6.313,11Z" fill="#ce5d7d"/>
+      </g>
+    </g>
+  </g>
+</svg>

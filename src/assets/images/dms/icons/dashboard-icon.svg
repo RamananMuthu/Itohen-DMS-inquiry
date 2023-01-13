@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="dashboard-icon" transform="translate(-6288 12360)">
+    <g id="Group_18246" data-name="Group 18246" transform="translate(30)">
+      <g id="Group_18244" data-name="Group 18244" transform="translate(44 30)">
+        <g id="Group_18237" data-name="Group 18237" transform="translate(-44 1)">
+          <rect id="Rectangle_9414" data-name="Rectangle 9414" width="24" height="24" transform="translate(6258 -12391)" fill="none"/>
+        </g>
+      </g>
+    </g>
+    <g id="Iconly_Bulk_Category" data-name="Iconly/Bulk/Category" transform="translate(6290 -12358)">
+      <g id="Category">
+        <path id="Fill_1" data-name="Fill 1" d="M2.539,0H5.924A2.549,2.549,0,0,1,8.463,2.56V5.974a2.549,2.549,0,0,1-2.539,2.56H2.539A2.549,2.549,0,0,1,0,5.974V2.56A2.549,2.549,0,0,1,2.539,0" transform="translate(11.537)" fill="#4E90DE" opacity="0.48"/>
+        <path id="Combined_Shape" data-name="Combined Shape" d="M14.075,20a2.549,2.549,0,0,1-2.538-2.56V14.026a2.549,2.549,0,0,1,2.538-2.56h3.387A2.549,2.549,0,0,1,20,14.026V17.44A2.549,2.549,0,0,1,17.462,20ZM2.539,20A2.55,2.55,0,0,1,0,17.44V14.026a2.55,2.55,0,0,1,2.539-2.56H5.925a2.549,2.549,0,0,1,2.538,2.56V17.44A2.549,2.549,0,0,1,5.925,20Zm0-11.465A2.549,2.549,0,0,1,0,5.974V2.56A2.549,2.549,0,0,1,2.539,0H5.925A2.548,2.548,0,0,1,8.463,2.56V5.974a2.549,2.549,0,0,1-2.538,2.56Z" transform="translate(0 0)" fill="#4E90DE"/>
+      </g>
+    </g>
+  </g>
+</svg>

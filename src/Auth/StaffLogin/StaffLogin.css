@@ -1,0 +1,55 @@
+/**********************************************/
+/****************GENERAL**********************/
+/**********************************************/
+
+input:hover {
+    border-color: #4E90DE;
+  }
+
+
+.registerScreen{
+    overflow: hidden;
+    background-color: #ffffff ;
+}
+
+.firstColumn{
+    margin-left: 50px;
+    margin-top: 100px;
+}
+
+.logo{
+    width: auto;
+}
+
+.registerImage
+{
+    height: 100vh;
+    float: right;
+}
+
+.form-control{
+    background-color: transparent;
+}
+.form-control:focus {
+    border-color: #4E90DE;
+  
+}
+.form-control:valid{
+    background-color: #ffffff;
+}
+
+.verifyOtpBtn{
+    /* float: right; */
+    background-color: #4E90DE!important;
+    border-color: #4E90DE!important;
+}
+
+.verifyOtpBtn:hover{
+    background-color: #038073;
+    border-color: #4E90DE;
+
+}
+
+.loader{
+    color: #4E90DE;
+}
