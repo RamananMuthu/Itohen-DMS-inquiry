@@ -1058,18 +1058,32 @@ td.text-left {
   } 
   .profile-pic:hover {
     z-index: 1000;
-    background-color: #f2f2f2 !important;
+    // background-color: grey !important;
   }
 
   .profile-pic:hover .edit {
     display: block;
   }
 
+  .profile-pic:hover .test {
+    z-index: -1000;
+  }
+
   .edit {
-      position: absolute;
-      right: 15%;
-      top: 10%;
-      display: none;
+    position: absolute;
+    right: 15%;
+    top: 10%;
+    display: none;
+  }
+
+  .paddingZero{
+    padding: 0!important;
+  }
+  .width-100{
+    width:100%!important;
+  }
+  .ratingModel table th, .ratingModel table td {
+    padding:7px 5px;
   }
 /******************************************************/
 

@@ -111,7 +111,14 @@ import {
                         icon: "success",
                         button: t("okLabel"),
                         allowOutsideClick: false,
-                    });
+                    })
+                    .then((result)=>
+                    {
+                        window.location.href="/inquiry/viewinquiry";
+                        if( result.isConfirmed ){
+                            window.location.href="/inquiry/viewinquiry";
+                        }
+                    })
                 }
             });
         }

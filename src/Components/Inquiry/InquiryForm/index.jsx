@@ -450,10 +450,8 @@ const index = () => {
           // setSampleSheetImg('0');
           if (imageType == "SampleFormat") {
             // setSampleSheetImg(response.data.files[0].filepath);
-            //console.log("Files Ramana Maharishi",response.data.files.files.length );
             setFileSampleFormat(response.data.files.files);
             setAwsUrl(response.data.files.serverURL);
-            console.log("Files Ramana==>",fileSampleFormat);
           } else if (imageType == "MeasurementSheet") {
             setFileMeasurementSheet(response.data.files.files);
             setAwsUrl(response.data.files.serverURL);
@@ -474,19 +472,17 @@ const index = () => {
             setFileBarcodeStickers(response.data.files.files);
             setAwsUrl(response.data.files.serverURL);
           }
-          // console.log("!!!",  response.data.files[0].filepath);
-          // setSampleSheetImg('1');
         }
       });
   };
 
 
   const deleteImageFiles = (imageType, file) => {
-    // console.log("deleteImageFiles:",file.media_id);
     var media ={};
     media["media_id"]= file.media_id;
     Swal.fire({
-      title: "Are you sure, Do you want to delete this image??",
+      title: "Are you sure, you want to delete this image?",
+      text: "You can't revert this back",
       icon: "warning",
       showCancelButton: true,
       button: t("okLabel"),
@@ -513,7 +509,7 @@ const index = () => {
           }
         })
 
-          console.log("deleteImageFiles:",file);
+          // console.log("deleteImageFiles:",file);
       }
     });
 
@@ -1197,18 +1193,29 @@ const index = () => {
                       {fileSampleFormat.length > 0 ? 
                           fileSampleFormat.map((file) => (
                             <>
-                           
-                              {/* {console.log("FILEEEEEEEEE", awsUrl+file.filepath )} */}
-                              <img
-                                src={awsUrl + file.filepath}
-                                width="100px"
-                                height="100px"
-                                className="m-10"
-                                style={{ cursor: 'pointer' }}
-                                onClick={()=>
-                                  {deleteImageFiles("SampleFormat", file)}
-                              }
-                              />
+                              <div className="profile-pic">
+                                <img
+                                  src={awsUrl + file.filepath}
+                                  width="100px"
+                                  height="100px"
+                                  className="m-10"
+                                />
+                                 <div className="edit m-t-15 m-r-15">
+                                  <img 
+                                    src={deleteIcon} 
+                                    width="50px" 
+                                    height="50px" 
+                                    style={{ cursor: 'pointer' }} 
+                                    onClick={()=>
+                                      {
+                                        deleteImageFiles("SampleFormat", file)
+                                      }
+                                      }
+                                  />
+                                
+                                 </div>
+                              </div>
+
                               {/* <div className="m-t-15 m-r-15">
                               
                                   <img  
@@ -2081,17 +2088,28 @@ const index = () => {
                     {filePrintImage.length > 0 ? (
                           filePrintImage.map((file) => (
                             <>
-                              {/* { console.log("@@@", sampleSheetImg )} */}
+                             <div className="profile-pic">
                               <img
                                 src={awsUrl + file.filepath}
                                 width="100px"
                                 height="100px"
                                 className="m-10"
-                                style={{ cursor: 'pointer' }}
-                                onClick={ () => {deleteImageFiles("PrintImage", file)}}
                               />
-
-                              {/* <img src={file.preview.url} width="100px" />   */}
+                              <div className="edit m-t-15 m-r-15">
+                                  <img 
+                                    src={deleteIcon} 
+                                    width="50px" 
+                                    height="50px" 
+                                    style={{ cursor: 'pointer' }} 
+                                    onClick={()=>
+                                      {
+                                        deleteImageFiles("PrintImage", file)
+                                      }
+                                      }
+                                  />
+                                
+                                 </div>
+                              </div>
                             </>
                           ))
                     ) : (
@@ -2166,17 +2184,28 @@ const index = () => {
                      
                         fileMainLabel.map((file) => (
                           <>
-                            {/* { console.log("@@@", sampleSheetImg )} */}
+                          <div className="profile-pic">
                             <img
                               src={awsUrl + file.filepath}
                               width="100px"
                               height="100px"
                               className="m-10"
-                              style={{ cursor: 'pointer' }}
-                              onClick={ ()=> {deleteImageFiles("MainLabel", file)}}
                             />
-
-                            {/* <img src={file.preview.url} width="100px" />   */}
+                            <div className="edit m-t-15 m-r-15">
+                                  <img 
+                                    src={deleteIcon} 
+                                    width="50px" 
+                                    height="50px" 
+                                    style={{ cursor: 'pointer' }} 
+                                    onClick={()=>
+                                      {
+                                        deleteImageFiles("MainLabel", file)
+                                      }
+                                      }
+                                  />
+                                
+                            </div>
+                          </div>
                           </>
                         ))
                      
@@ -2246,17 +2275,28 @@ const index = () => {
                       
                         fileWashCareLabel.map((file) => (
                           <>
-                            {/* { console.log("@@@", sampleSheetImg )} */}
-                            <img
-                              src={awsUrl + file.filepath}
-                              width="100px"
-                              height="100px"
-                              className="m-10"
-                              style={{ cursor: 'pointer' }}
-                              onClick={ () => {deleteImageFiles("WashCareLabel", file)}}
-                            />
-
-                            {/* <img src={file.preview.url} width="100px" />   */}
+                          <div className="profile-pic">
+                              <img
+                                src={awsUrl + file.filepath}
+                                width="100px"
+                                height="100px"
+                                className="m-10"
+                              />
+                              <div className="edit m-t-15 m-r-15">
+                                    <img 
+                                      src={deleteIcon} 
+                                      width="50px" 
+                                      height="50px" 
+                                      style={{ cursor: 'pointer' }} 
+                                      onClick={()=>
+                                        {
+                                          deleteImageFiles("WashCareLabel", file)
+                                        }
+                                        }
+                                    />
+                                  
+                              </div>
+                          </div>
                           </>
                         ))
                       
@@ -2317,21 +2357,31 @@ const index = () => {
                     </FormGroup>
                   </Col>
                   <Col lg="4">
-                    {fileHangtag.length > 0 ? (
-                     
+                    {fileHangtag.length > 0 ? ( 
                         fileHangtag.map((file) => (
                           <>
-                            {/* { console.log("@@@", sampleSheetImg )} */}
-                            <img
-                              src={awsUrl + file.filepath}
-                              width="100px"
-                              height="100px"
-                              className="m-10"
-                              style={{ cursor: 'pointer' }}
-                              // onClick={}
-                            />
-
-                            {/* <img src={file.preview.url} width="100px" />   */}
+                            <div className="profile-pic">
+                              <img
+                                src={awsUrl + file.filepath}
+                                width="100px"
+                                height="100px"
+                                className="m-10"
+                              />
+                            <div className="edit m-t-15 m-r-15">
+                                  <img 
+                                    src={deleteIcon} 
+                                    width="50px" 
+                                    height="50px" 
+                                    style={{ cursor: 'pointer' }} 
+                                    onClick={()=>
+                                      {
+                                        deleteImageFiles("Hangtag", file)
+                                      }
+                                      }
+                                  />
+                                
+                                 </div>
+                            </div>
                           </>
                         ))
                      
@@ -2403,16 +2453,29 @@ const index = () => {
                     
                         fileBarcodeStickers.map((file) => (
                           <>
-                            {/* { console.log("@@@", sampleSheetImg )} */}
-                            <img
-                              src={awsUrl + file.filepath}
-                              width="100px"
-                              height="100px"
-                              className="m-10"
-                              style={{ cursor: 'pointer' }}
-                            />
-
-                            {/* <img src={file.preview.url} width="100px" />   */}
+                            <div className="profile-pic">
+                              <img
+                                src={awsUrl + file.filepath}
+                                width="100px"
+                                height="100px"
+                                className="m-10"
+                              />
+                              <div className="edit m-t-15 m-r-15">
+                                  <img 
+                                    src={deleteIcon} 
+                                    width="50px" 
+                                    height="50px" 
+                                    style={{ cursor: 'pointer' }} 
+                                    onClick={()=>
+                                      {
+                                        deleteImageFiles("BarcodeStickers", file)
+                                      }
+                                      }
+                                  />
+                                
+                                 </div>
+                              </div>
+                           
                           </>
                         ))
                      
