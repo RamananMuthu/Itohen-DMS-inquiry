@@ -7,7 +7,7 @@ const SidebarLogo = () => {
 
   return (
     <div className="logo-icon-wrapper">
-      <Link to={`${process.env.PUBLIC_URL}/inquiry/inquiryform/default`}>
+      <Link to={`${process.env.PUBLIC_URL}/inquiryform/default`}>
         <Image
           attrImage={{ className: 'img-fluid for-dark', src: `${logo}`, alt: '' }} />
       </Link>

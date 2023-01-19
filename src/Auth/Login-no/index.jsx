@@ -65,7 +65,7 @@ const Login = ({ selected }) => {
                 setValue(man);
                 setName('Emay Walter');
                 localStorage.setItem('token', Jwt_token);
-                window.location.href = `${process.env.PUBLIC_URL}/inquiry/inquiryform/default`;
+                window.location.href = `${process.env.PUBLIC_URL}/inquiryform/default`;
                 return user;
             });
     };

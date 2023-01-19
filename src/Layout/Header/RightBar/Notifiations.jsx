@@ -31,7 +31,7 @@ const Notifications = () => {
                 } else {
                     localStorage.setItem("dateFormat", '');
                 }
-                window.location.href = "/inquiry/inquiryform";
+                window.location.href = "/inquiryform";
             }
         }
     }
@@ -75,7 +75,7 @@ const Notifications = () => {
                         </LI>
                     )) :
                         <LI attrLI={{ className: 'noti-primary' }} >
-                            <Link to={`${process.env.PUBLIC_URL}/inquiry/inquiryform`}>
+                            <Link to={`${process.env.PUBLIC_URL}/inquiryform`}>
                                 <div className="media">
                                     <div className="media-body">
                                         <P>{getWorkspaceName}</P>

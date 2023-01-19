@@ -218,7 +218,7 @@ const UserLogin = () => {
                   }
                     // setTimeout(() => {
                   if (parseInt(response.data.company_id)>0 ) {
-                      window.location.href = "/inquiry/inquiryform";
+                      window.location.href = "/inquiryform";
                   } else {
                     window.location.href = "/companysetting";
                   }
@@ -280,7 +280,7 @@ const UserLogin = () => {
                 }
                   // setTimeout(() => {
                 if (parseInt(response.data.company_id)>0 ) {
-                    window.location.href = "/inquiry/inquiryform";
+                    window.location.href = "/inquiryform";
                 } else {
                   window.location.href = "/companysetting";
                 }

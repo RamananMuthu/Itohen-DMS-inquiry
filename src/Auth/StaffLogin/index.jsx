@@ -259,7 +259,7 @@ const StaffLogin = () => {
                             i18n.changeLanguage(response.data.language);
                             setTimeout(() => {
                                 if (response.data.company_id !== 'null') {
-                                    window.location.href = '/inquiry/inquiryform';
+                                    window.location.href = '/inquiryform';
                                 } else {
                                     window.location.href = '/companysetting';
                                 }
