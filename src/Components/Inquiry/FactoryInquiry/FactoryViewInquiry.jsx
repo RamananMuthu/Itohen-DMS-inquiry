@@ -20,7 +20,6 @@ const FactoryViewInquiry = () => {
   const [inquiryDetails, setInquiryDetails] = useState([]);
   const [inquiryId, setInquiryId] = useState("");
   const { t } = useTranslation();
-  const [factory, setFactory] = useState([]);
   const [inquiryResponse, setInquiryResponse] = useState([]);
 
   useEffect(() => {
@@ -30,17 +29,11 @@ const FactoryViewInquiry = () => {
         setInquiryDetails(response.data.data);
         setInquiryResponse(response.data.response);
       })
-
-    axios.post(ServerUrl + "/get-inquiry-factory", getInputParams)
-      .then((response) => {
-        // response.data = apidecrypt(response.data)
-        setFactory(response.data.data);
-      });
   }, [])
 
   const factoryDetails = (inquiryId) => {
     <FactoryDetailInquiry inquiryId={inquiryId} />
-    window.location.href = '/factorydetailinquiry?id=' + encode(inquiryId);
+      window.location.href = '/inquiry/factorydetailinquiry?id=' + encode(inquiryId);
   }
 
 
@@ -59,7 +52,7 @@ const FactoryViewInquiry = () => {
                   <Col md="12" lg="12" sm="12">
                     <Row className="g-12">
                       <div className="table-responsive">
-                        <table className="table shadow shadow-showcase table-striped table-bordered">
+                        <table className="table shadow shadow-showcase  table-bordered">
                           <thead className="bg-primary">
                             <tr>
                               <th scope="col" className="centerAlign">{t("serialNo")}</th>
@@ -96,7 +89,7 @@ const FactoryViewInquiry = () => {
                                 </td>
                               </tr>
                             )) : <>
-                              <tr className="text-center"><td colSpan="6">{t("ListInquiryDetails")}</td></tr>
+                              <tr className="text-center"><td colSpan="7">{t("ListInquiryDetails")}</td></tr>
                             </>
                             }
                           </tbody>

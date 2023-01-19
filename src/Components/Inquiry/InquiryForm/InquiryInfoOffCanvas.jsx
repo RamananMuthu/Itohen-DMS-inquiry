@@ -110,7 +110,7 @@ const InquiryInfoOffCanvas = ({
                       infoDetails.map((info) => (
                         <Row>
                           <FormGroup className="m-t-15 ">
-                            <div className="checkbox checkbox-solid-success">
+                            <div className="checkbox">
                               <Input
                                 id={info.id}
                                 type="checkbox"
@@ -132,18 +132,6 @@ const InquiryInfoOffCanvas = ({
                         <div>No Data Found</div>
                       </>
                     )}
-                    <FormGroup>
-                      <Button
-                        style={{ textAlign: "center" }}
-                        width="40px"
-                        height="20px"
-                        onClick={() => {
-                          saveChecked({ infoDetails });
-                        }}
-                      >
-                        Save
-                      </Button>
-                    </FormGroup>
                   </Row>
                 </Col>
 
@@ -153,6 +141,20 @@ const InquiryInfoOffCanvas = ({
           </Row>
         </Form>
       </OffcanvasBody>
+      <OffcanvasHeader>
+      <FormGroup className="f-right m-r-20">
+        <Button
+          style={{ textAlign: "center" }}
+          width="40px"
+          height="20px"
+          onClick={() => {
+            saveChecked({ infoDetails });
+          }}
+        >
+          Save
+        </Button>
+      </FormGroup>
+      </OffcanvasHeader>
     </Offcanvas>
   );
 };

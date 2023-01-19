@@ -125,31 +125,31 @@ const ViewFactoryModal = ({ modal, toggle, inquiryId, factory, setFactory, selec
                                         <tr key= {fact.id} id={"factoryId"+fact.id}>
                                             { selectedFactoriesList.includes(fact.id) ?  
                                                 <td scope="row" className="centerAlign" 
-                                                    style={{ backgroundColor: '#E7F4F3' }}>{index+1}</td> 
+                                                    style={{ backgroundColor: '#EDF4FC' }}>{index+1}</td> 
                                                 :
                                                 <td scope="row" className="centerAlign">{index+1}</td>}
                                             { selectedFactoriesList.includes(fact.id) ? 
                                                 <td className="centerAlign"
-                                                    style={{ backgroundColor: '#E7F4F3' }}>{fact.factory}</td>
+                                                    style={{ backgroundColor: '#EDF4FC' }}>{fact.factory}</td>
                                                 :
                                                 <td className="centerAlign">{fact.factory}</td>}
                                             { selectedFactoriesList.includes(fact.id) ? 
                                               <td className="centerAlign"
-                                                  style={{ backgroundColor: '#E7F4F3' }}>{fact.contact_person}</td>
+                                                  style={{ backgroundColor: '#EDF4FC' }}>{fact.contact_person}</td>
                                               :
                                               <td className="centerAlign">{fact.contact_person}</td>}
                                             { selectedFactoriesList.includes(fact.id) ?  
                                               <td className="centerAlign"
-                                                  style={{ backgroundColor: '#E7F4F3' }}>{fact.contact_number}</td>
+                                                  style={{ backgroundColor: '#EDF4FC' }}>{fact.contact_number}</td>
                                               :
                                               <td className="centerAlign">{fact.contact_number}</td>}
                                             { selectedFactoriesList.includes(fact.id) ? 
                                               <td className="centerAlign"
-                                                  style={{ backgroundColor: '#E7F4F3' }}>{fact.contact_email}</td>
+                                                  style={{ backgroundColor: '#EDF4FC' }}>{fact.contact_email}</td>
                                               :
                                               <td className="centerAlign">{fact.contact_email}</td>} 
                                               { selectedFactoriesList.includes(fact.id) ? 
-                                                  <td className="centerAlign" style={{ backgroundColor: '#E7F4F3' }}>
+                                                  <td className="centerAlign" style={{ backgroundColor: '#EDF4FC' }}>
                                                     <div className="checkbox checkbox-primary marg-min-top-10">
                                                         <Input
                                                           disabled

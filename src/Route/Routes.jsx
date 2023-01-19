@@ -8,17 +8,16 @@ import InquiryContacts from '../Components/Inquiry/InquiryContacts/index';
 import FeedbackForm from '../Components/Inquiry/InquiryForm/FeedbackFormInquiry';
 import FactoryResponse from '../Components/Inquiry/InquiryForm/FactoryResponse';
 
-axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem("apiToken");;
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem("apiToken");
 
 export const routes = [
-        { path: `${process.env.PUBLIC_URL}/inquiry/inquiryform`, Component: <InquiryForm/>  },
+        { path: `${process.env.PUBLIC_URL}/inquiryform`, Component: <InquiryForm/>  },
         { path: `${process.env.PUBLIC_URL}/inquiry/viewinquiry`, Component: <ViewInquiry/>  },
         { path: `${process.env.PUBLIC_URL}/inquiry/factorydetailinquiry`, Component: <FactoryDetailInquiry/>  },
-        { path: `${process.env.PUBLIC_URL}/inquiry/factoryviewinquiry`, Component: <FactoryViewInquiry/>  },
-        { path: `${process.env.PUBLIC_URL}/inquiry/inquirycontacts`, Component: <InquiryContacts/>  },
-        { path: `${process.env.PUBLIC_URL}/inquiry/feedbackform`, Component: <FeedbackForm/>},    
+        { path: `${process.env.PUBLIC_URL}/factoryviewinquiry`, Component: <FactoryViewInquiry/>  },
+        { path: `${process.env.PUBLIC_URL}/inquirycontacts`, Component: <InquiryContacts/>  },
+        { path: `${process.env.PUBLIC_URL}/feedbackform`, Component: <FeedbackForm/>},    
         { path: `${process.env.PUBLIC_URL}/inquiry/factoryresponse`, Component: <FactoryResponse/>}
-        
 ];
 
 

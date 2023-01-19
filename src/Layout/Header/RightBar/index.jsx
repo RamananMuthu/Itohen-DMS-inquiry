@@ -64,7 +64,7 @@ const Rightbar = () => {
                 .then( (result ) => 
                 {
                     if( result.isConfirmed){
-                        window.location.href = '/inquiry/inquiryform';
+                        window.location.href = '/inquiryform';
                     }
                 })
             }  
@@ -131,7 +131,7 @@ const Rightbar = () => {
                 // <img src={plusicon}/>  {t('addNewOrder')} 
                 //  </Link>
 
-                <Link to={`${process.env.PUBLIC_URL}/inquiry/inquiryform`}
+                <Link to={`${process.env.PUBLIC_URL}/inquiryform`}
                 onClick={ () => { planValidation() }} className= 'btn-pill btn btn-outline-primary btn-md  btn-primary-light' >
                 <img src={plusicon}/>
                     {/* {t('addNewOrder')}  */}

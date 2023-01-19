@@ -10,6 +10,7 @@ import InquiryNoIcon from "../../../assets/images/dms/icons/inquiryNoIcon.svg";
 import {  maxFileUpload, maxUploadFileSize, ServerUrl } from "../../../Constant";
 import FactoryResponseRatingIcon from '../../../assets/images/dms/icons/factoryResponseRatingIcon.svg';
 import FactoryResponseRatingModal from "./FactoryResponseRatingModal";
+import { useTranslation } from "react-i18next";
 const FactoryResponse = (  ) => {
 
     const [searchParams, setSearchParams] = useSearchParams(); 
@@ -23,7 +24,7 @@ const FactoryResponse = (  ) => {
     const togglRating = () => setModalRating(!modalRating);
 
     const [ factoryRatingData, setFactoryRatingData] = useState([]);
-
+    const { t } = useTranslation();
     const getInputParams ={};
     getInputParams["inquiry_id"] = "26";
 
@@ -54,7 +55,7 @@ const FactoryResponse = (  ) => {
    <Fragment>
     <Loader />
     <Row className="pgbgcolor">
-        <Breadcrumbs mainTitle ="Factory Response" parent = "Factory Response" />
+        <Breadcrumbs mainTitle ={t("Factory Response")} parent ={t("Factory Response")} />
     </Row>
     <Container fluid={true} className="general-widget topaln">
         <Row>
@@ -88,13 +89,13 @@ const FactoryResponse = (  ) => {
                                         <table className="table shadow shadow-showcase table-striped table-bordered">
                                             <thead  className="bg-primary">
                                                 <tr>
-                                                <th scope="col" className="centerAlign">S.No</th>
-                                                <th  >Factory</th>
-                                                <th  >Contact Name</th>
-                                                <th  className="centerAlign">Phone Number</th>
-                                                <th  className="centerAlign">Price</th>
-                                                <th  className="centerAlign">Comment</th>
-                                                <th  className="centerAlign">Rating</th>
+                                                <th scope="col" className="centerAlign">{t("serialNo")}</th>
+                                                <th  >{t("Factory")}</th>
+                                                <th  >{t("contactName")}</th>
+                                                <th  className="centerAlign">{t("phoneNumber")}</th>
+                                                <th  className="centerAlign">{t("price")}</th>
+                                                <th  className="centerAlign">{t("comments")}</th>
+                                                <th  className="centerAlign">{t("rating")}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -108,6 +109,7 @@ const FactoryResponse = (  ) => {
                                                         <td className="centerAlign">{factRes.price}</td>
                                                         <td className="centerAlign">{factRes.comments}</td>  
                                                         <td className="centerAlign"> 
+                                           
                                                         <img src={FactoryResponseRatingIcon} 
                                                             style={{ cursor: 'pointer'}} 
                                                             width="23px" 
@@ -117,7 +119,7 @@ const FactoryResponse = (  ) => {
                                                     </tr>
                                                     )):
                                                     <>
-                                                        <tr className="text-center"><td colSpan="6">List Factory Response Details</td></tr>
+                                                        <tr className="text-center"><td colSpan="7">{t("listFactoryResDeatils")}</td></tr>
                                                     </>
                                                 }
                                                 < FactoryResponseRatingModal

@@ -10,7 +10,7 @@ const LayoutRoutes = () => {
       <Routes>
         {routes.map(({ path, Component }, i) => (
           <Route element={<AppLayout />} key={i}>
-            <Route path={'/'} element={<Navigate to={`${process.env.PUBLIC_URL}/inquiry/inquiryform`} />} />
+            <Route path={'/'} element={<Navigate to={`${process.env.PUBLIC_URL}/inquiryform`} />} />
             <Route path={path} element={Component} />
           </Route>
         ))}

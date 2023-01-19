@@ -8,8 +8,8 @@ export const MENUITEMS = [
         menutitle: 'DMS',
         menucontent: 'Dashboards,Widgets',
         Items: [
-            { path: `${process.env.PUBLIC_URL}/inquiry/inquiryform`, icon: Home, type: 'link', active: false, title: 'Inquiry List'},
-            { path: `${process.env.PUBLIC_URL}/inquiry/factoryviewinquiry`, icon: Home, type: 'link', active: false, title: 'Factory View Inquiry'},
+            { path: `${process.env.PUBLIC_URL}/inquiry/viewinquiry`, icon: Home, type: 'link', active: false, title: 'Inquiry List'},
+            { path: `${process.env.PUBLIC_URL}/factoryviewinquiry`, icon: Home, type: 'link', active: false, title: 'Factory View Inquiry'},
         ]
     },
 ]

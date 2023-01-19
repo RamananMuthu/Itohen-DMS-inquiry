@@ -24,7 +24,6 @@ const Routers = () => {
         // const authValidate = cookies.apiToken;
 
         return (
-               
                         <BrowserRouter basename='/' >
                                 <>
                                         <Suspense fallback={<Loader />}>
@@ -34,7 +33,7 @@ const Routers = () => {
                                                                
                                                                         <Route exact
                                                                                 path={`${process.env.PUBLIC_URL}`}
-                                                                                element={<Navigate to={`${process.env.PUBLIC_URL}/inquiry/inquiryform`} />}
+                                                                                element={<Navigate to={`${process.env.PUBLIC_URL}/inquiryform`} />}
                                                                         /> : ''}
                                                                 <Route path={`/*`} element={<LayoutRoutes />} />
                                                         </Route>

@@ -114,9 +114,9 @@ import {
                     })
                     .then((result)=>
                     {
-                        window.location.href="/inquiry/viewinquiry";
+                        window.location.href="/viewinquiry";
                         if( result.isConfirmed ){
-                            window.location.href="/inquiry/viewinquiry";
+                            window.location.href="/viewinquiry";
                         }
                     })
                 }
@@ -125,8 +125,8 @@ import {
     return (
         <Fragment>
                 <Row className="pgbgcolor">
-                <Breadcrumbs mainTitle= "Feed Back" parent="Inquiry" 
-                title="Inquiry" />
+                <Breadcrumbs mainTitle= {t("feedBack")} parent={t("feedBack")}
+                title={t("feedBack")} />
                 </Row>  
                 <Container fluid ={true} className="general-widget topaln">
                     <Col md='12' sm='12' lg='12'>
@@ -137,11 +137,11 @@ import {
                 <Row>
                     <Col lg='4'>
                         <FormGroup>
-                            <Label style={{ color: "#5F5F5F" }}>Inquiry ID</Label>
+                            <Label style={{ color: "#5F5F5F" }}>{t("inquiryId")}</Label>
                             <Input  className="" name="Inquiry Id" type ="select" defaultValue ="" 
                                     onChange={(e)=>{setInquiryID(e.target.value),
                             factoryCall(e.target.value)}}>
-                                <option value = "" disabled>Select Inquiry ID</option>
+                                <option value = "" disabled>{t("selectInquiryId")}</option>
                             {inquiryIds.map((inqryId)=>(
                                 <option value={inqryId.id}>{"IN-" + inqryId.id +"("+ inqryId.style_no +")" }</option>
                             ))}
@@ -151,10 +151,10 @@ import {
                     </Col>
                     <Col lg='4'>
                         <FormGroup>
-                        <Label style={{ color: "#5F5F5F" }}>Factory</Label>
+                        <Label style={{ color: "#5F5F5F" }}>{t("factory")}</Label>
                         <Input  className="" name="Factory                   
                         " type ="select" defaultValue ="" onChange={(e)=>setFactory(e.target.value)}>
-                        <option value= "" disabled >Select Factory</option>
+                        <option value= "" disabled >{t("selectFactory")}</option>
                     {factoriesListData.map((factry)=>(
                         <option value={factry.id}>{factry.factory}</option>
                     ))}
@@ -167,7 +167,7 @@ import {
                 <Row>
                     <Col lg='4'>
                         <FormGroup>
-                            <Label style={{ color: "#5F5F5F" }}>Lowest Price</Label>
+                            <Label style={{ color: "#5F5F5F" }}>{t("lowestPrice")}</Label>
                             <Row className="mb-2">
                             <Rating 
                                     className="starColor"
@@ -182,7 +182,7 @@ import {
                             </Col>
                             <Col lg='4'>
                             <FormGroup>
-                            <Label style={{ color: "#5F5F5F" }}>Efficient Communication</Label>
+                            <Label style={{ color: "#5F5F5F" }}>{t("effiCommunication")}</Label>
                             <Row className="mb-2">
                             <Rating 
                                         className="starColor"
@@ -201,7 +201,7 @@ import {
                 <Row>
                     <Col lg='4'>
                         <FormGroup>
-                            <Label style={{ color: "#5F5F5F" }}>Reliable on Time Delivery in the Post</Label>
+                            <Label style={{ color: "#5F5F5F" }}>{t("reliableTimeDelivery")}</Label>
                             <Row className="mb-2">
                             <Rating 
                                     className="starColor"
@@ -216,7 +216,7 @@ import {
                             </Col>
                             <Col lg='4'>
                             <FormGroup>
-                            <Label style={{ color: "#5F5F5F" }}>Less Quantity Issues</Label>
+                            <Label style={{ color: "#5F5F5F" }}>{t("lessQuantityIssues")}</Label>
                             <Row className="mb-2">
                             <Rating 
                             className="starColor"
@@ -235,7 +235,7 @@ import {
                 <Row>
                     <Col lg='4'>
                         <FormGroup>
-                            <Label style={{ color: "#5F5F5F" }}>Vendor/Buyer Relationship Longetivy</Label>
+                            <Label style={{ color: "#5F5F5F" }}>{t("vbRelations")}</Label>
                             <Row className="mb-2">
                             <Rating 
                             className="starColor"
@@ -250,7 +250,7 @@ import {
                             </Col>
                             <Col lg='4'>
                             <FormGroup>
-                            <Label style={{ color: "#5F5F5F" }}>Good Sell Through's</Label>
+                            <Label style={{ color: "#5F5F5F" }}>{t("goodSell")}</Label>
                             <Row className="mb-2">
                             <Rating 
                             className="starColor"
@@ -269,7 +269,7 @@ import {
                 <Row>
                     <Col lg='4'>
                         <FormGroup>
-                            <Label style={{ color: "#5F5F5F" }}>On time Sample Submissions</Label>
+                            <Label style={{ color: "#5F5F5F" }}>{t("onTimeSampleSub")}</Label>
                             <Row className="mb-2">
                             <Rating 
                             className="starColor"
@@ -284,7 +284,7 @@ import {
                             </Col>
                             <Col lg='4'>
                             <FormGroup>
-                            <Label style={{ color: "#5F5F5F" }}>Collaborative Approach</Label>
+                            <Label style={{ color: "#5F5F5F" }}>{t("collabApproach")}</Label>
                             <Row className="mb-2">
                             <Rating 
                             className="starColor"
@@ -308,7 +308,7 @@ import {
                         style={{ backgroundColor:'#4E90DE',color:"#FFFFFF" }}
                         onClick={()=>{onSaveHandle()}}
                         >
-                        Save Feedback</a>
+                        {t("saveFeedback")}</a>
                     {/* <Button className="btn"   onClick= {() => onSaveHandle()} > Save FeedBack </Button>  */}
                     </FormGroup>
                 </Row>

@@ -355,10 +355,10 @@ const FactoryResponseRatingModal = ({ modal, toggle, factoryRatingData }) =>
                                             <table className="table shadow shadow-showcase table-striped table-bordered">
                                                 <thead>
                                                     <tr>
-                                                    <th scope="col" className="centerAlign">Order ID</th>
-                                                    <th className="centerAlign">Style No</th>
-                                                    <th className="centerAlign">Rating</th>
-                                                    <th className="centerAlign">Comments</th>
+                                                    <th scope="col" className="centerAlign">{t("orderId")}</th>
+                                                    <th className="centerAlign">{t("styleNo")}</th>
+                                                    <th className="centerAlign">{t("rating")}</th>
+                                                    <th className="centerAlign">{t("comments")}</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>

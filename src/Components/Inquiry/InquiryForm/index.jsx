@@ -46,6 +46,7 @@ import AddSizeModal from "./AddSizeModal";
 import AddFabricModal from "./AddFabricModal";
 import InfoCanvas from "./InquiryInfoOffCanvas";
 import { SelectSingleImageUpload } from "../../../Constant";
+// import Font from '@ckeditor/ckeditor5-font/src/font';
 
 const index = () => {
   const workspace_id = getWorkspaceId;
@@ -65,6 +66,8 @@ const index = () => {
   const [fileHangtag, setFileHangtag] = useState([]);
   const [fileBarcodeStickers, setFileBarcodeStickers] = useState([]);
   const [fileMeasurementSheet, setFileMeasurementSheet] = useState([]);
+  const [filePolybagImg,setFilePolyBagImg]=useState([]);
+  const [fileCartonImg,setFileCartonImg]=useState([]);
   const [articles, setArticles] = useState([]);
   const [fabrics, setFabrics] = useState([]);
   const [sampleFormatImg, setSampleFormatImg] = useState("");
@@ -134,6 +137,8 @@ const index = () => {
   const [washCareLabelSampleImg, setWashCareLabelSampleImg] =React.useState("");
   const [hangtagSampleImg, setHangtagSampleImg] = React.useState("");
   const [barcodeStickersSampleImg, setBarcodeStickersSampleImg] =React.useState("");
+  const[polybagSampleImg, setPolybagSampleImg] = React.useState("");
+  const[cartonSampleImg, setCartonSampleImg] = React.useState("");
   const [referenceId, setReferenceId] = useState(Date.now());
   const [awsUrl, setAwsUrl] = useState();
   const [sampleSheetImg, setSampleSheetImg] = useState("");
@@ -364,6 +369,7 @@ const index = () => {
     });
     axios.get(ServerUrl + "/get-currencies").then((response) => {
       response.data = apidecrypt(response.data);
+      console.log(response.data.data);
       setCurrencies(response.data.data);
     });
   }, []);
@@ -471,9 +477,15 @@ const index = () => {
           } else if (imageType == "BarcodeStickers") {
             setFileBarcodeStickers(response.data.files.files);
             setAwsUrl(response.data.files.serverURL);
-          }
+          } else if( imageType == "Polybag"){
+            setFilePolyBagImg(response.data.files.files);
+            setAwsUrl(response.data.files.serverURL);
+          } else if( imageType == "Carton"){
+            setFileCartonImg(response.data.files.files);
+            setAwsUrl(response.data.files.serverURL);
         }
-      });
+      }
+    });
   };
 
 
@@ -481,8 +493,8 @@ const index = () => {
     var media ={};
     media["media_id"]= file.media_id;
     Swal.fire({
-      title: "Are you sure, you want to delete this image?",
-      text: "You can't revert this back",
+      title: t("deleteThisImage"),
+      text: t("cantRevertBack"),
       icon: "warning",
       showCancelButton: true,
       button: t("okLabel"),
@@ -853,8 +865,72 @@ const index = () => {
         }
       } else {
         Swal.fire({
-          title: "wrongFileFormat",
-          text: "validFileFormatsImages",
+          title: t("wrongFileFormat"),
+          text: t("validFileFormatsImages"),
+          icon: "warning",
+          button: t("okLabel"),
+        });
+      }
+    });
+  };
+  const PolyBagSample = (files) => {
+    files.map((polyBagSample) => {
+      if (
+        polyBagSample.extension == "jpeg" ||
+        polyBagSample.extension == "jpg" ||
+        polyBagSample.extension == "png"
+      ) {
+        const getFileSize = Math.round(polyBagSample.size / 1024);
+        if (getFileSize > maxUploadFileSize) {
+          Swal.fire({
+            title: t("sizeExceededTitleAlert"),
+            text: t("uploadFileTalidationText", {
+              fileSize: maxUploadFileSize / 1024,
+            }),
+            // text: t("uploadFileWithinTextAlert1") + " " + (maxUploadFileSize / 1024) + " " + t("uploadFileWithinTextAlert2"),
+            icon: "warning",
+            button: t("okLabel"),
+          });
+        } else {
+          let responseData = uploadImageApiCall("Polybag", files);
+          setPolybagSampleImg(polyBagSample.name);
+        }
+      } else {
+        Swal.fire({
+          title: t("wrongFileFormat"),
+          text: t("validFileFormatsImages"),
+          icon: "warning",
+          button: t("okLabel"),
+        });
+      }
+    });
+  };
+  const CartonSample = (files) => {
+    files.map((cartonSample) => {
+      if (
+        cartonSample.extension == "jpeg" ||
+        cartonSample.extension == "jpg" ||
+        cartonSample.extension == "png"
+      ) {
+        const getFileSize = Math.round(cartonSample.size / 1024);
+        if (getFileSize > maxUploadFileSize) {
+          Swal.fire({
+            title: t("sizeExceededTitleAlert"),
+            text: t("uploadFileTalidationText", {
+              fileSize: maxUploadFileSize / 1024,
+            }),
+            // text: t("uploadFileWithinTextAlert1") + " " + (maxUploadFileSize / 1024) + " " + t("uploadFileWithinTextAlert2"),
+            icon: "warning",
+            button: t("okLabel"),
+          });
+        } else {
+          let responseData = uploadImageApiCall("Carton", files);
+          setCartonSampleImg(cartonSample.name);
+        }
+      } else {
+        Swal.fire({
+          title: t("wrongFileFormat"),
+          text: t("validFileFormatsImages"),
           icon: "warning",
           button: t("okLabel"),
         });
@@ -902,9 +978,8 @@ const index = () => {
       inquiryFormInputParams["trims_nominations"] = trimsNotification;
       inquiryFormInputParams["poly_bag_size"] = polybagSizeThickness;
       inquiryFormInputParams["poly_bag_material"] = polybagMaterial;
-      inquiryFormInputParams["poly_bag_price"] = inquiryFormInputParams[
-        "carton_bag_dimensions"
-      ] = cartonBoxDimension;
+      // inquiryFormInputParams["poly_bag_price"] = printDetailsPolybag;
+      inquiryFormInputParams["carton_bag_dimensions"] = cartonBoxDimension;
       inquiryFormInputParams["carton_color"] = cartonColors;
       inquiryFormInputParams["carton_material"] = cartonMaterial;
       inquiryFormInputParams["carton_edge_finish"] = cartonEdgeFinish;
@@ -1354,21 +1429,7 @@ const index = () => {
                         </Input>
                       </InputGroup>
                     </FormGroup>
-                  </Col>
-
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("targetPrice")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Target Price"
-                          placeholder={t("enterTargetPrice")}
-                          onChange={(e) => setTargetPrice(e.target.value)}
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
+                  </Col>                
                   <Col lg="4">
                     <FormGroup>
                       <Label> {t("currency")} </Label>
@@ -1385,7 +1446,7 @@ const index = () => {
                             {t("selectCurrency")}
                           </option>
                           {currencies.map((currency) => (
-                            <option value={currency.name}>
+                            <option value={currency.symbol}>
                               {currency.symbol + " " + currency.name}
                             </option>
                           ))}
@@ -1393,9 +1454,24 @@ const index = () => {
                       </InputGroup>
                     </FormGroup>
                   </Col>
+                  <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("targetPrice")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Target Price"
+                          placeholder={t("enterTargetPrice")}
+                          onChange={(e) => setTargetPrice(e.target.value)}
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
                 </Row>
                 <Row>
-                  <Col lg="6">
+                  <Col lg="6" 
+                  // style={{ backgroundColor: '#abcdef', height: '150px' }}
+                  >
                     <FormGroup>
                       <Label className="form-label">{t("paymentTerms")}</Label>
                       <span
@@ -1412,23 +1488,25 @@ const index = () => {
                       {/* {console.log("PaymentTerms",paymentTerm,masterType)} */}
 
                       <CKEditors
-                        activeclassName="p10"
+                        className="p10 ck"
                         id="PaymentTerms"
                         name="PaymentTerms"
                         content={paymentTerm}
                         events={{
                           change: onChangePaymentTerms
                         }}
+                        
                         // onchange ={(e) => setStyleArticleDesc(e.target.value)}
                         config={{
                           //plugins: [ Font],
+                          height: 100,
                           toolbar: [
                             [
                               "Bold",
                               "Italic",
                               "NumberedList",
                               "BulletedList",
-                              "Strike",
+                              "Strike"
                             ],
                             [
                               "Cut",
@@ -1447,6 +1525,7 @@ const index = () => {
                               "Bidi",
                               "Paragraph",
                             ],
+                            [ 'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'],
                             ["Find", "Selection", "Spellchecker", "Editing"],
                           ],
                           
@@ -1472,13 +1551,16 @@ const index = () => {
                       </Label>
 
                       <CKEditors
+                        FontColor
                         activeclassName="p10"
                         content={styleArtcileDesc}
                         events={{
                           change: onChangeArticleDescription,
                         }}
+                        rows="5"
                         // onchange ={(e) => setStyleArticleDesc(e.target.value)}
                         config={{
+                          height: 100,
                           toolbar: [
                             [
                               "Bold",
@@ -1528,6 +1610,7 @@ const index = () => {
                         // }}
                         //onChange={(e) => setSpecialFinishes(e.target.value)}
                         config={{
+                          height: 100,
                           toolbar: [
                             [
                               "Bold",
@@ -2488,7 +2571,7 @@ const index = () => {
                 {/* Trims Notifications- Specify If any */}
 
                 <Row>
-                  <Col lg="12">
+                  <Col lg="8">
                     <FormGroup>
                       <Label className="form-label">
                         {t("trimsNotificationsSpecify")}
@@ -2504,6 +2587,7 @@ const index = () => {
                         // }}
                         //onchange={(e) => setTrimsNotification(e.target.value)}
                         config={{
+                          height: 100,
                           toolbar: [
                             [
                               "Bold",
@@ -2584,7 +2668,7 @@ const index = () => {
                       <InputGroup>
                         <Input
                           className=""
-                          name=" Print Details on Polybag "
+                          name="Print Details on Polybag"
                           placeholder={t("enterPrintDetailsPolybag")}
                           onChange={(e) =>
                             setPrintDetailsPolybag(e.target.value)
@@ -2592,6 +2676,84 @@ const index = () => {
                         ></Input>
                       </InputGroup>
                     </FormGroup>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col lg ="4">
+                    <FormGroup>
+                      <Label>Polybag Sample Image</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Polybag Image"
+                          placeholder= "Please attach Polybag Sample Image"
+                          value={
+                            polybagSampleImg
+                              ? polybagSampleImg
+                              : ""
+                          }
+                          onChange={(e) =>
+                            setPolybagSampleImg(e.target.value)
+                          }
+                          disabled
+                        ></Input>
+                        <Files
+                          className="files-dropzone fileContainer"
+                          // onChange={nonFilesChange}
+                          // onError={nonFilesError}
+                          accept=".png,.jpg,.jpeg"
+                          multiple={false}
+                          canCancel={false}
+                          onChange={PolyBagSample}
+                          // onSubmit={handleSubmit}
+                          clickable
+                        >
+                          <InputGroupText className=" btn imgBackground">
+                            <img
+                              src={imgUpload}
+                              width="25px"
+                              height="25px"
+                              type="file"
+                            ></img>
+                          </InputGroupText>
+                        </Files>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                  <Col lg="4">
+                    {filePolybagImg.length > 0 ? (
+                    
+                    filePolybagImg.map((file) => (
+                          <>
+                            <div className="profile-pic">
+                              <img
+                                src={awsUrl + file.filepath}
+                                width="100px"
+                                height="100px"
+                                className="m-10"
+                              />
+                              <div className="edit m-t-15 m-r-15">
+                                  <img 
+                                    src={deleteIcon} 
+                                    width="50px" 
+                                    height="50px" 
+                                    style={{ cursor: 'pointer' }} 
+                                    onClick={()=>
+                                      {
+                                        deleteImageFiles("Polybag", file)
+                                      }
+                                      }
+                                  />
+                                
+                                 </div>
+                              </div>
+                           
+                          </>
+                        ))
+                     
+                    ) : (
+                      <div>{/* Varala */}</div>
+                    )}
                   </Col>
                 </Row>
 
@@ -2670,7 +2832,91 @@ const index = () => {
                       </InputGroup>
                     </FormGroup>
                   </Col>
-                  <Col lg="4">
+                  <Col lg="2">
+                  <FormGroup>
+                      <Label>Carton Sample Image</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Carton Sample"
+                          placeholder="Please attach Carton Sample Image"
+                          value={
+                            cartonSampleImg
+                              ? cartonSampleImg
+                              : ""
+                          }
+                          onChange={(e) =>
+                            setCartonSampleImg(e.target.value)
+                          }
+                          disabled
+                        ></Input>
+                        <Files
+                          className="files-dropzone fileContainer"
+                          // onChange={nonFilesChange}
+                          // onError={nonFilesError}
+                          accept=".png,.jpg,.jpeg"
+                          multiple={false}
+                          canCancel={false}
+                          onChange={CartonSample}
+                          // onSubmit={handleSubmit}
+                          clickable
+                        >
+                          <InputGroupText className=" btn imgBackground">
+                            <img
+                              src={imgUpload}
+                              width="25px"
+                              height="25px"
+                              type="file"
+                            ></img>
+                          </InputGroupText>
+                        </Files>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+                  <Col lg="2">
+              
+                    {fileCartonImg.length > 0 ? (
+                    
+                    fileCartonImg
+                    .map((file) => (
+                          <>
+                            <div className="profile-pic">
+                              <img
+                                src={awsUrl + file.filepath}
+                                width="100px"
+                                height="100px"
+                                className="m-10"
+                              />
+                              <div className="edit m-t-15 m-r-15">
+                                  <img 
+                                    src={deleteIcon} 
+                                    width="50px" 
+                                    height="50px" 
+                                    style={{ cursor: 'pointer' }} 
+                                    onClick={()=>
+                                      {
+                                        deleteImageFiles("Carton", file)
+                                      }
+                                      }
+                                  />
+                                
+                                 </div>
+                              </div>
+                           
+                          </>
+                        ))
+                     
+                    ) : (
+                      <div>{/* Varala */}</div>
+                    )}
+                  
+                  </Col>
+                </Row>
+
+                {/* Packing Information: Films/CD,Picture-Card,Inner Cardboard */}
+
+                <Row>
+                <Col lg="4">
                     <FormGroup>
                       <Label>{t("makeUp")}</Label>
                       <InputGroup>
@@ -2683,11 +2929,6 @@ const index = () => {
                       </InputGroup>
                     </FormGroup>
                   </Col>
-                </Row>
-
-                {/* Packing Information: Films/CD,Picture-Card,Inner Cardboard */}
-
-                <Row>
                   <Col lg="4">
                     <FormGroup>
                       <Label>{t("filmsCD")}</Label>
@@ -2714,7 +2955,12 @@ const index = () => {
                       </InputGroup>
                     </FormGroup>
                   </Col>
-                  <Col lg="4">
+                 
+                </Row>
+
+                {/* Packing Information: Estimated Delivery Date,Shipping Size,Air Freight */}
+                <Row>
+                <Col lg="4">
                     <FormGroup>
                       <Label>{t("innerCardboard")}</Label>
                       <InputGroup>
@@ -2727,10 +2973,6 @@ const index = () => {
                       </InputGroup>
                     </FormGroup>
                   </Col>
-                </Row>
-
-                {/* Packing Information: Estimated Delivery Date,Shipping Size,Air Freight */}
-                <Row>
                   <Col lg="4">
                     <FormGroup>
                       <Label>{t("estimatedDeliveryDate")}</Label>
@@ -2760,7 +3002,10 @@ const index = () => {
                       </InputGroup>
                     </FormGroup>
                   </Col>
-                  <Col lg="4">
+                 
+                </Row>
+                <Row>
+                <Col lg="4">
                     <FormGroup>
                       <Label>{t("airFreight")}</Label>
                       <InputGroup>
@@ -2801,6 +3046,7 @@ const index = () => {
                         // }}
                         //onChange={(e) => setForbiddenSubstancesInfo<(e.target.value)}
                         config={{
+                          height: 100,
                           toolbar: [
                             [
                               "Bold",
@@ -2848,6 +3094,7 @@ const index = () => {
                         // }}
                         onChange={(e) => setTestingRequirement(e.target.value)}
                         config={{
+                          height: 100,
                           toolbar: [
                             [
                               "Bold",
@@ -2899,6 +3146,7 @@ const index = () => {
                         // }}
                         onChange={(e) => setSampleRequirement(e.target.value)}
                         config={{
+                          height: 100,
                           toolbar: [
                             [
                               "Bold",
@@ -2946,6 +3194,7 @@ const index = () => {
                         // }}
                         onChange={(e) => setSpecialRequest(e.target.value)}
                         config={{
+                          height: 100,
                           toolbar: [
                             [
                               "Bold",
