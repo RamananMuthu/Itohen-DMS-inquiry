@@ -55,7 +55,7 @@ const PrivateRoute = () => {
        
              <Outlet />
              :
-             <Navigate exact to={`${process.env.PUBLIC_URL}/inquiry/stafflogin`} />
+             <Navigate exact to={`${process.env.PUBLIC_URL}/adminlogin`} />
         
     );
 }
