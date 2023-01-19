@@ -73,7 +73,7 @@ const FactoryDetailInquiry = () => {
       .post(ServerUrl + "/factory-inquiry-response", getInputParams)
       .then((response) => {
         setInquiryResponse(response.data.data[0] ? response.data.data[0] : "");
-        setPrice(response.data.data[0].price ? ( currencySymbol +" "+response.data.data[0].price) : "");
+        setPrice(response.data.data[0].price ? (response.data.data[0].price) : "");
         setComments(response.data.data[0].comments ? response.data.data[0].comments : "");
       })
 
@@ -293,7 +293,7 @@ const FactoryDetailInquiry = () => {
                             </>
                             :  ""}
                             </tr><tr>
-                            {factoryInquiryDetails.due_date ? 
+                            {factoryInquiryDetails.due_date && (factoryInquiryDetails.due_date != "0000-00-00" ) ? 
                             <>
                             <td className="text-left">{t("inquiryDueDate")}  </td>
                             <td className="text-left"> {factoryInquiryDetails.due_date} </td>
@@ -593,7 +593,8 @@ const FactoryDetailInquiry = () => {
                             </>
                             :  ""}
                             </tr><tr>
-                            {factoryInquiryDetails.estimate_delivery_date ? 
+                            {factoryInquiryDetails.estimate_delivery_date && 
+                              (factoryInquiryDetails.estimate_delivery_date != "0000-00-00" ) ? 
                             <>
                             <td className="text-left">{t("estimatedDeliveryDate")}  </td>
                             <td className="text-left"> {factoryInquiryDetails.estimate_delivery_date} </td>
@@ -614,13 +615,15 @@ const FactoryDetailInquiry = () => {
                             </>
                             :  ""}
                             </tr><tr>
-                            {factoryInquiryDetails.testing_requirements || factoryInquiryDetails.sample_requirements ||
+                            {/* {factoryInquiryDetails.testing_requirements || factoryInquiryDetails.sample_requirements ||
                             factoryInquiryDetails.sample_requirements || factoryInquiryDetails.special_requests ? 
                             <>
                             <td className="text-left" colSpan="3">
                               <H6 className="ordersubhead">{t("others")}</H6> </td>
                             </>
-                            :  ""}
+                            :  ""} */}
+                            <td className="text-left" colSpan="3">
+                              <H6 className="ordersubhead">{t("others")}</H6> </td>
                             </tr><tr>
                             {factoryInquiryDetails.testing_requirements ? 
                             <>
@@ -655,7 +658,7 @@ const FactoryDetailInquiry = () => {
                   <Form>
                     <Col xl="4" lg="6" md="6" sm="12">
                       <FormGroup>
-                        <Label>{t("price")}</Label><sup className="font-danger">*</sup>
+                        <Label>{t("price")}</Label> (in {currencySymbol})<sup className="font-danger">*</sup>
                         <Input name="price" placeholder={t("pleaseEnterPrice")}
                           // disabled={price ? true : false}
                           maxLength="20"
