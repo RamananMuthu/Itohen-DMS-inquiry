@@ -157,12 +157,12 @@ const ViewInquiry = () => {
                                     <a href={inquiryDownloadPath + inquirydtls.id + ".pdf"}
                                       target="_blank">
                                       <img style={{ cursor: "pointer" }} className="m-r-30"
-                                        title="Inquiry Details Download" src={InquiryDowloadIcon}
+                                        title={t("inquiryDetailsDownload")} src={InquiryDowloadIcon}
                                       />
                                     </a>
                                     <img name="inquiryId"
                                       value={inquirydtls.id}
-                                      title="Select Factory"
+                                      title={t("selectFactory")}
                                       width="20px" className="m-r-30"
                                       style={{ cursor: "pointer" }}
                                       src={addIcon}
@@ -177,7 +177,7 @@ const ViewInquiry = () => {
                                     <img
                                       style={{ cursor: "pointer" }}
                                       className="m-r-30"
-                                      title="Inquiry Sent To"
+                                      title={t("inquirySentTo")}
                                       value={inquirydtls.id}
                                       src={DocumentIcon}
                                       onClick={() => {
@@ -191,7 +191,7 @@ const ViewInquiry = () => {
                                     <img
                                       style={{ cursor: "pointer" }}
                                       className="m-r-30"
-                                      title="Factory Response"
+                                      title={t("factoryResponse")}
                                       value={inquirydtls.id}
                                       src={shareIcon}
                                       onClick={() => {
@@ -202,7 +202,7 @@ const ViewInquiry = () => {
                                       style={{ cursor: "pointer" }}
                                       className="m-r-30"
                                       value={inquirydtls.id}
-                                      title="Delete"
+                                      title={t("delete")}
                                       src={deleteIcon}
                                       onClick={() => {
                                         deleteInquiry(inquirydtls.id);
