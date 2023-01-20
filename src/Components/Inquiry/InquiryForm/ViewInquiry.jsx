@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { Container, Row, Col, CardBody, Card } from "reactstrap";
-import { Breadcrumbs, H5, P, Btn, H6 } from "../../../AbstractElements";
+import { Breadcrumbs } from "../../../AbstractElements";
 import InquiryDowloadIcon from "../../../assets/images/dms/icons/inquirydownload.svg";
 import addIcon from "../../../assets/images/dms/icons/addIcon.svg";
 import DocumentIcon from "../../../assets/images/dms/icons/inquiryDocumentIcon.svg";
@@ -8,29 +8,12 @@ import shareIcon from "../../../assets/images/dms/icons/inquiryShareIcon.svg";
 import deleteIcon from "../../../assets/images/dms/icons/inquiryDeleteIcon.svg";
 import axios from "axios";
 import ViewFactoryModal from "./ViewFactoryModal";
-import {
-  encode,
-  decode,
-  calculateDateDiffCountFromCurrentDate,
-  apiencrypt,
-  apidecrypt,
-} from "../../../helper";
-import {
-  getLoginCompanyId,
-  getWorkspaceId,
-  getLoginUserId,
-  getWorkspaceType,
-  getStaff,
-  getStaffPermission,
-  getLoginStaffId,
-} from "../../../Constant/LoginConstant";
+import { encode, apiencrypt, } from "../../../helper";
+import { getLoginCompanyId, getWorkspaceId, } from "../../../Constant/LoginConstant";
 import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
-import { maxFileUpload, maxUploadFileSize, ServerUrl } from "../../../Constant";
+import { ServerUrl } from "../../../Constant";
 import InquirySentToModal from "./InquirySentToModal";
-import { array } from "prop-types";
-
-// import { Container } from "reactstrap";
 
 const ViewInquiry = () => {
   const workspace_id = getWorkspaceId;
@@ -38,7 +21,6 @@ const ViewInquiry = () => {
   var getInputParams = {};
   getInputParams["company_id"] = getLoginCompanyId;
   getInputParams["workspace_id"] = getWorkspaceId;
-  const [articles, setArticles] = useState([]);
   //const [article, setArticle] = useState('');
   const [modalart, setModalart] = useState(false);
   const [inquiryDetails, setInquiryDetails] = useState([]);
@@ -90,7 +72,7 @@ const ViewInquiry = () => {
     getInputParams["company_id"] = getLoginCompanyId;
     getInputParams["workspace_id"] = getWorkspaceId;
     Swal.fire({
-      title: "Are you sure you want to delete ?",
+      title: t("deleteConfirmation"),
       icon: "warning",
       button: t("okLabel"),
       showCancelButton: true,
@@ -140,12 +122,7 @@ const ViewInquiry = () => {
   return (
     <Fragment>
       <Row className="pgbgcolor">
-        <Breadcrumbs
-          mainTitle="View Inquiry"
-          parent="View Inquiry"
-          title="View Inquiry Details"
-          subTitle="View Inquiry Details"
-        />
+        <Breadcrumbs mainTitle={t("viewInquiry")} parent={t("viewInquiry")} />
       </Row>
       <Container fluid={true} className="general-widget topaln">
         <Row>
@@ -159,60 +136,35 @@ const ViewInquiry = () => {
                         <table className="table shadow shadow-showcase table-striped table-bordered">
                           <thead className="bg-primary">
                             <tr>
-                              <th scope="col" className="centerAlign">
-                                S.No
-                              </th>
-                              <th className="centerAlign">Inquiry No</th>
-                              <th className="centerAlign">Style No</th>
-                              <th className="centerAlign">Date</th>
-                              <th className="centerAlign">
-                                Items/Article Name
-                              </th>
-                              <th className="centerAlign">Action</th>
+                              <th scope="col" className="centerAlign">{t("serialNo")}</th>
+                              <th className="centerAlign">{t("inquiryNo")}</th>
+                              <th className="centerAlign">{t("styleNo")}</th>
+                              <th className="centerAlign">{t("date")}</th>
+                              <th className="centerAlign">{t("itemsArticleName")}</th>
+                              <th className="centerAlign">{t("action")}</th>
                             </tr>
                           </thead>
                           <tbody>
                             {inquiryDetails.length > 0 ? (
                               inquiryDetails.map((inquirydtls, index) => (
                                 <tr>
-                                  <td scope="row" className="centerAlign">
-                                    {index + 1}
-                                  </td>
+                                  <td scope="row" className="centerAlign"> {index + 1} </td>
+                                  <td className="centerAlign"> {"IN-" + inquirydtls.id} </td>
+                                  <td className="centerAlign"> {inquirydtls.style_no} </td>
+                                  <td className="centerAlign"> {inquirydtls.created_date} </td>
+                                  <td className="centerAlign"> {inquirydtls.name} </td>
                                   <td className="centerAlign">
-                                    {"IN-" + inquirydtls.id}
-                                  </td>
-                                  <td className="centerAlign">
-                                    {inquirydtls.style_no}
-                                  </td>
-                                  <td className="centerAlign">
-                                    {inquirydtls.created_date}
-                                  </td>
-                                  <td className="centerAlign">
-                                    {inquirydtls.name}
-                                  </td>
-                                  <td className="centerAlign">
-                                    <a
-                                      href={
-                                        inquiryDownloadPath +
-                                        inquirydtls.id +
-                                        ".pdf"
-                                      }
-                                      target="_blank"
-                                    >
-                                      <img
-                                        style={{ cursor: "pointer" }}
-                                        className="m-r-30"
-                                        title="Inquiry Details Download"
-                                        src={InquiryDowloadIcon}
+                                    <a href={inquiryDownloadPath + inquirydtls.id + ".pdf"}
+                                      target="_blank">
+                                      <img style={{ cursor: "pointer" }} className="m-r-30"
+                                        title="Inquiry Details Download" src={InquiryDowloadIcon}
                                       />
                                     </a>
-                                    <img
-                                      name="inquiryId"
+                                    <img name="inquiryId"
                                       value={inquirydtls.id}
                                       title="Select Factory"
-                                      width="20px"
+                                      width="20px" className="m-r-30"
                                       style={{ cursor: "pointer" }}
-                                      className="m-r-30"
                                       src={addIcon}
                                       onClick={() => {
                                         setSelectedFactoriesList(() => "");
@@ -262,7 +214,7 @@ const ViewInquiry = () => {
                             ) : (
                               <>
                                 <tr className="text-center">
-                                  <td colSpan="7">List Inquiry Details</td>
+                                  <td colSpan="7">{t("ListInquiryDetails")}</td>
                                 </tr>
                               </>
                             )}

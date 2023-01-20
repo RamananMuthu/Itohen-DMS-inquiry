@@ -938,5 +938,7 @@
     "goodSell":"Good Sell Through's",
     "onTimeSampleSub":"On time Sample Submissions",
     "collabApproach":"Collaborative Approach",
-    "saveFeedback":"Save Feedback"
+    "saveFeedback":"Save Feedback",
+    "viewInquiry": "View Inquiry",
+    "deleteConfirmation": "Are you sure you want to delete ?"
 }
