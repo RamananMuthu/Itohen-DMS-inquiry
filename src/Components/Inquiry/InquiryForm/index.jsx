@@ -2067,13 +2067,13 @@ const index = () => {
                 )}
 
                 {/* Measuement Show based on sku*/}
-                {/* {color.length > 0 && size.length > 0 ? (
+                {color.length > 0 && size.length > 0 ? (
                   <>
                   <Row  className="g-12">
                     <Col lg="12" md="12" sm="12" xs="12">
                                         <span className="subTitleLine3 f-left">
                                           <H6 className="ordersubhead">
-                                            Measurement Chart 
+                                            {t("measurementChart")}
                                           </H6>
                                         </span>
                                       </Col>
@@ -2086,9 +2086,9 @@ const index = () => {
                             <table className="table">
                               <thead>
                                                   <tr>
-                                                    <th scope="col">Position</th>
-                                                    <th scope="col" colSpan="3">Description</th>
-                                                    <th scope="col">Tolerance</th>
+                                                    <th scope="col">{t("position")}</th>
+                                                    <th scope="col" colSpan="3">{t("description")}</th>
+                                                    <th scope="col">{t("tolerance")}</th>
                                                     {size.map((option) => {
                                                       return (
                                                         <th scope="col">
@@ -2166,16 +2166,14 @@ const index = () => {
                                                   </>
                                                   )
                                                 }
-                                                )}
-                                                
-                                              
+                                                )}                                             
                             </table>
                           
                         </div>
                       </Row>
                     </Col>
                   </Row>
-                  </>):(<div></div>)} */}
+                  </>):(<div></div>)}
 
                 {/* Patterns,Place of Jurisdiction,Customs Declaration Document */}
 
@@ -2849,12 +2847,12 @@ const index = () => {
                 <Row>
                   <Col lg ="4">
                     <FormGroup>
-                      <Label>Polybag Sample Image</Label>
+                      <Label>{t("polySamImg")}</Label>
                       <InputGroup>
                         <Input
                           className=""
                           name="Polybag Image"
-                          placeholder= "Please attach Polybag Sample Image"
+                          placeholder= {t("PlsPolySamImg")}
                           value={
                             polybagSampleImg
                               ? polybagSampleImg
@@ -3002,12 +3000,12 @@ const index = () => {
                   </Col>
                   <Col lg="2">
                   <FormGroup>
-                      <Label>Carton Sample Image</Label>
+                      <Label>{t("cartonSamImage")}</Label>
                       <InputGroup>
                         <Input
                           className=""
                           name="Carton Sample"
-                          placeholder="Please attach Carton Sample Image"
+                          placeholder={t("plsCartonSamImage")}
                           value={
                             cartonSampleImg
                               ? cartonSampleImg
