@@ -4,7 +4,7 @@ import { Breadcrumbs } from "../../../AbstractElements";
 import Loader from "../../../Layout/Loader/index";
 import { getLoginUserId } from '../../../Constant/LoginConstant';
 import { encode, decode, } from "../../../helper"
-import { useSearchParams,  } from "react-router-dom";
+import { useSearchParams, } from "react-router-dom";
 import axios from "axios";
 import InquiryNoIcon from "../../../assets/images/dms/icons/inquiryNoIcon.svg";
 import { ServerUrl } from "../../../Constant";
@@ -60,18 +60,24 @@ const FactoryResponse = () => {
                                 <Col sm="12">
                                     <Row>
                                         <Col sm="6" md="6" lg="3">
-                                            <div style={{ backgroundColor: "#4E90DE", borderRadius: "30px", 
-                                                height: "47px", padding: "10px" }} >
+                                            <div style={{
+                                                backgroundColor: "#4E90DE", borderRadius: "30px",
+                                                height: "47px", padding: "10px"
+                                            }} >
                                                 <span className="m-y-auto">
                                                     <span>
-                                                        <img src={InquiryNoIcon} width="20px" height="20px" 
-                                                         style={{ verticalAlign: "middle" }} />
+                                                        <img src={InquiryNoIcon} width="20px" height="20px"
+                                                            style={{ verticalAlign: "middle" }} />
                                                     </span>
-                                                    <span style={{ color: "white", fontSize: "18px", 
-                                                        verticalAlign: "middle" }}> {t("inquiryNo")}
+                                                    <span style={{
+                                                        color: "white", fontSize: "18px",
+                                                        verticalAlign: "middle"
+                                                    }}> {t("inquiryNo")}
                                                     </span>
-                                                    <span className="f-right" style={{ color: "white", fontSize: "18px", 
-                                                        verticalAlign: "middle" }}> {"IN-" + inquiryId}
+                                                    <span className="f-right" style={{
+                                                        color: "white", fontSize: "18px",
+                                                        verticalAlign: "middle"
+                                                    }}> {"IN-" + inquiryId}
                                                     </span>
                                                 </span>
                                             </div>
@@ -108,8 +114,10 @@ const FactoryResponse = () => {
                                                                     <img src={FactoryResponseRatingIcon}
                                                                         style={{ cursor: 'pointer' }}
                                                                         width="23px"
-                                                                        onClick={() => { setFactoryId(factRes.factory_id), 
-                                                                            apiCallFactoryRating(), setModalRating(!modalRating) }}
+                                                                        onClick={() => {
+                                                                            setFactoryId(factRes.factory_id),
+                                                                            apiCallFactoryRating(), setModalRating(!modalRating)
+                                                                        }}
                                                                     />
                                                                 </td>
                                                             </tr>

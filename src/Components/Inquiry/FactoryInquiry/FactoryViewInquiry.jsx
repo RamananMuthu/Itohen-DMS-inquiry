@@ -3,7 +3,7 @@ import { Container, Row, Col, CardBody, Card, } from "reactstrap";
 import { Breadcrumbs } from "../../../AbstractElements";
 import DocumentIcon from "../../../assets/images/dms/icons/inquiryDocumentIcon.svg";
 import axios from "axios";
-import { encode, apiencrypt, } from "../../../helper"
+import { encode,  } from "../../../helper"
 import { getLoginCompanyId, getWorkspaceId, getLoginUserId } from '../../../Constant/LoginConstant';
 import { useTranslation } from 'react-i18next';
 import { ServerUrl } from "../../../Constant";
@@ -18,7 +18,6 @@ const FactoryViewInquiry = () => {
   getInputParams['factory_id'] = getLoginUserId;
 
   const [inquiryDetails, setInquiryDetails] = useState([]);
-  const [inquiryId, setInquiryId] = useState("");
   const { t } = useTranslation();
   const [inquiryResponse, setInquiryResponse] = useState([]);
 
@@ -33,9 +32,8 @@ const FactoryViewInquiry = () => {
 
   const factoryDetails = (inquiryId) => {
     <FactoryDetailInquiry inquiryId={inquiryId} />
-      window.location.href = '/inquiry/factorydetailinquiry?id=' + encode(inquiryId);
+    window.location.href = '/inquiry/factorydetailinquiry?id=' + encode(inquiryId);
   }
-
 
   return (
     <Fragment>
@@ -55,13 +53,13 @@ const FactoryViewInquiry = () => {
                         <table className="table shadow shadow-showcase  table-bordered">
                           <thead className="bg-primary">
                             <tr>
-                              <th scope="col" className="centerAlign">{t("serialNo")}</th>
-                              <th className="centerAlign">{t("inquiryNo")}</th>
-                              <th className="centerAlign">{t("styleNo")}</th>
-                              <th className="centerAlign">{t("inquiryDate")}</th>
-                              <th className="centerAlign">{t("itemsArticleName")}</th>
-                              <th className="centerAlign">{t("response")}</th>
-                              <th className="centerAlign">{t("action")}</th>
+                              <th scope="col" className="centerAlign"> {t("serialNo")} </th>
+                              <th className="centerAlign"> {t("inquiryNo")} </th>
+                              <th className="centerAlign"> {t("styleNo")} </th>
+                              <th className="centerAlign"> {t("inquiryDate")} </th>
+                              <th className="centerAlign"> {t("itemsArticleName")} </th>
+                              <th className="centerAlign"> {t("response")} </th>
+                              <th className="centerAlign"> {t("action")} </th>
                             </tr>
                           </thead>
                           <tbody>

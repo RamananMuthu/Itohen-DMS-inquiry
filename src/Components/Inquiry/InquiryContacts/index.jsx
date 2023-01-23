@@ -2,12 +2,10 @@ import {
   Container, Row, Col, CardBody, Card, CardHeader, FormGroup,
   Form, Label, Input, Button
 } from "reactstrap";
-import React, { Fragment, useContext, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { Breadcrumbs, H5, H6, } from "../../../AbstractElements";
-import { useNavigate, Link } from "react-router-dom";
 import { getLoginUserId, getLoginCompanyId, getWorkspaceId, }
   from '../../../Constant/LoginConstant';
-import { apidecrypt, encode } from "../../../../src/helper"
 import { useTranslation } from 'react-i18next';
 import Swal from 'sweetalert2';
 import axios from "axios";
@@ -58,7 +56,7 @@ const InquiryContacts = () => {
           if (response.data.status_code === 200) {
             // localStorage.setItem("factoryId", encode(response.data.factory));
             Swal.fire({
-              title: factory,
+              title: t("inquiryContactSetting"),
               text: t(response.data.message),
               icon: "success",
               button: t("okLabel"),
@@ -144,39 +142,39 @@ const InquiryContacts = () => {
   const inquirySettingValidation = (data) => {
     let errors = {};
     if (!factory && !document.getElementById("factoryName").value) {
-      errors.factory = ("enterFactoryName");
+      errors.factory = t("The factory field is required.");
     }
     else if (!(factory).match(/^[@&0-9a-zA-Z_-\s]+$/g)) {
-      errors.factory = ("numbersCharactersAllowed");
+      errors.factory = t("numbersCharactersAllowed");
     }
     if (!contact_person) {
-      errors.contact_person = ("enterContactPersonName");
+      errors.contact_person = t("The contact person field is required.");
     } else if (!(contact_person).match(/^[a-zA-Z\s]+$/g)) {
-      errors.contact_person = ("allowedCharactersSpace");
+      errors.contact_person = t("allowedCharactersSpace");
     }
     if (!contact_number || contact_number.length == 0) {
-      errors.contact_number = ("enterMobileNumber");
+      errors.contact_number = t("The contact number field is required.");
     } else if (!/^[0-9]+$/.test(contact_number)) {
-      errors.contact_number = ("numbersOnlyAllowed");
+      errors.contact_number = t("numbersOnlyAllowed");
     }
     if (((contact_number.length != null && contact_number.length != 'null' && contact_number.length != ''
       && (parseInt(contact_number.length) < 10) || (parseInt(contact_number.length) > 15)))) {
-      errors.contact_number = ("enter10DigitsMobileNumber");
+      errors.contact_number = t("enter10DigitsMobileNumber");
     }
     if (!contact_email) {
-      errors.contact_email = ("enterEmailAddress");
+      errors.contact_email = t("The contact email field is required.");
     } else if (!(contact_email).match(/^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i)) {
-      errors.contact_email = ("enterValidEmailAddress");
+      errors.contact_email = t("enterValidEmailAddress");
     }
 
     if (!city) {
-      errors.city = t("enterCityName");
+      errors.city = t("The city field is required.");
     } else if (!(city).match(/^[a-zA-Z\s]+$/g)) {
       errors.city = ("allowedCharactersSpace");
     }
 
     if (!address) {
-      errors.address = t("enterAddress");
+      errors.address = t("The address field is required.");
     }
     // else if (!(address).match(/^[a-zA-Z\s]+$/g)) {
     //   errors.address = ("allowedCharactersSpace");
@@ -247,7 +245,7 @@ const InquiryContacts = () => {
                       </Col>
                       <Col sm="12" md="4" lg="4" xs="12">
                         <FormGroup>
-                          <Label htmlFor="exampleInputPassword2">
+                          <Label htmlFor="contact_number">
                             {t("contactNumber")}{" "}<sup className="font-danger">*</sup>
                           </Label>
                           <Input
@@ -268,7 +266,7 @@ const InquiryContacts = () => {
 
                       <Col sm="12" md="4" lg="4" xs="12">
                         <FormGroup>
-                          <Label htmlFor="exampleFormControlInput1">
+                          <Label htmlFor="contact_email">
                             {t("contactEmail")} <sup className="font-danger">*</sup>
                           </Label>
                           <Input

@@ -1,67 +1,33 @@
 import React, { useState } from "react";
-// import {
-//     Offcanvas,
-//     OffcanvasBody,
-//     OffcanvasHeader
-//   } from "reactstrap";
 import {
-  Form,
-  Label,
-  Card,
-  CardBody,
-  Col,
-  Row,
-  Input,
-  InputGroup,
-  InputGroupText,
-  Button,
-  FormGroup,
-  Media,
-  Container,
-  Table,
-  Offcanvas,
-  OffcanvasBody,
-  OffcanvasHeader,
+  Form, Label, Col, Row, Input, Button, FormGroup,
+  Offcanvas, OffcanvasBody, OffcanvasHeader,
 } from "reactstrap";
-// import { getLoginCompanyId, getWorkspaceId } from "../../Constant/LoginConstant";
 import { useTranslation } from "react-i18next";
-import { Btn } from "../../../AbstractElements";
 import Swal from "sweetalert2";
-// import { apiencrypt, apidecrypt } from "../../helper";
-const InquiryInfoOffCanvas = ({
-  modal,
-  toggle,
-  infoDetails,
-  masterType,
-  setPaymentTerm,
-  setShowInfoCanvas,
-  showInfoCanvas,
-  PaymentTerm
-}) => {
+
+const InquiryInfoOffCanvas = ({ modal, toggle, infoDetails, masterType,
+  setPaymentTerm, setShowInfoCanvas, showInfoCanvas, PaymentTerm }) => {
   const [checkedValue, setCheckedValue] = useState("");
   const { t } = useTranslation();
 
   const saveChecked = (checkedData) => {
     var checkboxeschecked = [];
     var markedCheckbox = document.querySelectorAll('input[type="checkbox"]');
-    // alert(markedCheckbox.length);
-    // console.log("LEngth",markedCheckbox.length);
-
     var checkboxLength = markedCheckbox.length;
-    var content=PaymentTerm + "<ul>";
+    var content = PaymentTerm + "<ul>";
     for (var i = 0; i < checkboxLength; i++) {
-      // console.log("Hello");
       //var checkbox = markedCheckbox[i];
       if (markedCheckbox[i].checked) {
-        // console.log("&&&&",markedCheckbox[i].checked)
         checkboxeschecked.push(markedCheckbox[i].value);
-        content = content+ '<li>'+markedCheckbox[i].value+'</li>';
+        content = content + '<li>' + markedCheckbox[i].value + '</li>';
       }
-      content = content+ '</ul>';
+      content = content + '</ul>';
     }
+
     if (checkboxeschecked.length > 0) {
       Swal.fire({
-        title: "Selected Payment Terms Added Successfully",
+        title: t("Selected Payment Terms Added Successfully"),
         icon: "success",
         showCancelButton: true,
         button: t("okLabel"),
@@ -74,29 +40,20 @@ const InquiryInfoOffCanvas = ({
       });
     } else {
       Swal.fire({
-        title: "Check Atleast One Before Save",
+        title: t("Check Atleast One Before Save"),
         icon: "warning",
         button: t("okLabel"),
       });
     }
   };
+
   return (
-    <Offcanvas
-      isOpen={modal}
-      toggle={toggle}
-      direction={"end"}
-      className="offcanvas-width"
-    >
+    <Offcanvas className="offcanvas-width" isOpen={modal} toggle={toggle} direction={"end"} >
       <OffcanvasHeader className="bg-primary offcanvas-header">
         {masterType === "PaymentTerms" ? "Payment Terms" : ""}
-        <span
-          className="f-right cursor-pointer"
-          title={t("close")}
-          tooltip={t("close")}
-          alt={t("close")}
-          onClick={toggle}
-        >
-          X
+        <span className="f-right cursor-pointer"
+          title={t("close")} tooltip={t("close")}
+          alt={t("close")} onClick={toggle} > X
         </span>
       </OffcanvasHeader>
       <OffcanvasBody>
@@ -111,16 +68,11 @@ const InquiryInfoOffCanvas = ({
                         <Row>
                           <FormGroup className="m-t-15 ">
                             <div className="checkbox">
-                              <Input
-                                id={info.id}
-                                type="checkbox"
-                                name="CheckBox"
+                              <Input id={info.id}
+                                type="checkbox" name="CheckBox"
                                 value={info.content}
                               />
-                              <Label
-                                for={info.id}
-                                style={{ textColor: "#4E90DE" }}
-                              >
+                              <Label for={info.id} style={{ textColor: "#4E90DE" }}>
                                 {info.content}
                               </Label>
                             </div>
@@ -128,13 +80,10 @@ const InquiryInfoOffCanvas = ({
                         </Row>
                       ))
                     ) : (
-                      <>
-                        <div>No Data Found</div>
-                      </>
+                      <> <div> {t("noDataFound")} </div> </>
                     )}
                   </Row>
                 </Col>
-
                 <Col></Col>
               </Row>
             </Col>
@@ -142,18 +91,13 @@ const InquiryInfoOffCanvas = ({
         </Form>
       </OffcanvasBody>
       <OffcanvasHeader>
-      <FormGroup className="f-right m-r-20">
-        <Button
-          style={{ textAlign: "center" }}
-          width="40px"
-          height="20px"
-          onClick={() => {
-            saveChecked({ infoDetails });
-          }}
-        >
-          Save
-        </Button>
-      </FormGroup>
+        <FormGroup className="f-right m-r-20">
+          <Button style={{ textAlign: "center" }}
+            width="40px" height="20px"
+            onClick={() => { saveChecked({ infoDetails }); }}
+          > {t("save")}
+          </Button>
+        </FormGroup>
       </OffcanvasHeader>
     </Offcanvas>
   );

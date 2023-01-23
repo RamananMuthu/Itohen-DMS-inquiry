@@ -920,6 +920,13 @@
     "quoteSent": "Quote Sent",
     "deleteThisImage":"Are you Sure, You want to Delete this Image?",
     "cantRevertBack":"You can't Revert this Back",
+    "The address field is required.": "The address field is required.",
+    "The city field is required.": "The city field is required.",
+    "The contact email field is required.": "The contact email field is required.",
+    "The contact number field is required.":"The contact number field is required.",
+    "The contact person field is required.":"The contact person field is required.",
+    "The factory field is required.":"The factory field is required.",
+    "Contact Updated Successfully": "Contact Updated Successfully",
     "********** Inquiry Factory Response **********": "********** Inquiry Factory Response **********",
     "contactName":"Contact Name",
     "phoneNumber": "Phone Number",
@@ -942,5 +949,10 @@
     "viewInquiry": "View Inquiry",
     "deleteConfirmation": "Are you sure you want to delete ?",
     "inquiryDetailsDownload": "Inquiry Details Download",
-    "inquirySentTo": "Inquiry Sent To"
+    "inquirySentTo": "Inquiry Sent To",
+    "FeedBack Added Successfully": "FeedBack Added Successfully",
+    "Check Atleast One Before Save": "Check Atleast One Before Save",
+    "Selected Payment Terms Added Successfully": "Selected Payment Terms Added Successfully",
+    "send" : "Send",
+    "listFactories" : "List Factories"
 }

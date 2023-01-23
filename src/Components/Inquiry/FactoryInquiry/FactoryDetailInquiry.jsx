@@ -183,10 +183,10 @@ const FactoryDetailInquiry = () => {
   const validation = (data) => {
     let validerrors = {};
     if (!price.trim()) {
-      validerrors.price = ("Please Enter Price");
+      validerrors.price = t("pleaseEnterPrice");
     }
     if (!comments.trim()) {
-      validerrors.comments = ("Please Enter Comments");
+      validerrors.comments = t("enteryourComments");
     }
 
     setValiderrors(validerrors);

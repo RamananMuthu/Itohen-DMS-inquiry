@@ -1,17 +1,13 @@
 import React , {useState}from 'react';
-import { Modal,
-  ModalBody,
-  ModalFooter,
-  ModalHeader, Input, Label } from 'reactstrap';
+import { Modal,  ModalBody,  ModalFooter,  ModalHeader, Input, Label } from 'reactstrap';
 import { Btn } from '../../../AbstractElements';
-import { Close, SaveChanges, ServerUrl } from '../../../Constant';
+import { ServerUrl } from '../../../Constant';
 import  axios  from "axios";
 import Swal from "sweetalert2";
-
 import {useTranslation} from "react-i18next";
 import { apidecrypt, apiencrypt } from '../../../helper';
-const FormAddFabricModal = ({ modal, toggle, companyId, workspaceId, fabric }) =>{
-  
+
+const FormAddFabricModal = ({ modal, toggle, companyId, workspaceId, fabric }) =>{  
   const {t} = useTranslation();
   const [fabricName, setFabricName] = useState("");
   const onSaveHandle = () => {
@@ -75,16 +71,13 @@ const FormAddFabricModal = ({ modal, toggle, companyId, workspaceId, fabric }) =
         {t("addFabric")}
         </Label>
         <Input
-          className="form-control"
-          type="text"
+          className="form-control" type="text"
           onChange={(e) => setFabricName(e.target.value)}
         />
       </ModalBody>
       <ModalFooter>
         <Btn attrBtn={{ color: "btn secondaryBtn btn-sm", onClick: toggle }}> {t("close")} </Btn>
-        <Btn attrBtn={{ color: "primary btn-sm", onClick: () => onSaveHandle() }}>
-        {t("save")}
-        </Btn>
+        <Btn attrBtn={{ color: "primary btn-sm", onClick: () => onSaveHandle() }}> {t("save")}</Btn>
       </ModalFooter>
     </Modal>
   );
