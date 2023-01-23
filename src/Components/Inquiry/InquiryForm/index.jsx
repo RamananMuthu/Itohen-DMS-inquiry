@@ -147,6 +147,7 @@ const index = () => {
   const [masterType, setMasterType] = useState();
   const [currencies, setCurrencies] = useState([]);
   const [currency, setCurrency] = useState("");
+  const [measurementChart, setMeasurementChart] = useState([]);
   // const[mediaId,setMediaId] = useState('');
   // const [infoCanvas, setInfoCanvas] = useState(false);
   const toggleart = () => setModalArt(!modalArt);
@@ -369,7 +370,7 @@ const index = () => {
     });
     axios.get(ServerUrl + "/get-currencies").then((response) => {
       response.data = apidecrypt(response.data);
-      console.log(response.data.data);
+      // console.log(response.data.data);
       setCurrencies(response.data.data);
     });
   }, []);
@@ -446,9 +447,9 @@ const index = () => {
         },
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/pdf",
           },
-        }
+        },
       )
       .then((response) => {
         // console.log("Status code:",response.data);
@@ -678,8 +679,8 @@ const index = () => {
 
     files.map((measureImg) => {
       if (
-        measureImg.extension == "docx" ||
         measureImg.extension == "pdf" ||
+        measureImg.extension == "xls" ||
         measureImg.extension == "xlsx"
       ) {
         const getFileSize = Math.round(measureImg.size / 1024);
@@ -873,6 +874,7 @@ const index = () => {
       }
     });
   };
+
   const PolyBagSample = (files) => {
     files.map((polyBagSample) => {
       if (
@@ -905,6 +907,7 @@ const index = () => {
       }
     });
   };
+
   const CartonSample = (files) => {
     files.map((cartonSample) => {
       if (
@@ -938,6 +941,28 @@ const index = () => {
     });
   };
 
+  const addTableRows=()=>{
+    // console.log("&&7");
+    setMeasurementChart([...measurementChart,measurementChart])
+  };
+
+  const measurementChartData = (index,e) =>
+  {
+    // console.log(index, "***DATA***", e );
+      var measurementChartData = {};
+      measurementChartData['position'] = e;
+      measurementChartData['beschreibung'] = e;
+      measurementChartData['tolerance'] = e;
+    // console.log(measurementChart.length, "^^^");
+    // setMeasurementChart(measurementChartInput);
+  };
+
+  const deleteTableRows = (index)=>{
+    const rows = [...measurementChart];
+    rows.splice(index, 1);
+    setMeasurementChart(rows);
+  };
+
   const submitInquiryForm = (e) => {
     let retval = validation();
     if (Object.keys(retval).length == 0) {
@@ -965,6 +990,7 @@ const index = () => {
       inquiryFormInputParams["print_type"] = printType;
       inquiryFormInputParams["print_no_of_colors"] = noOfColors;
       inquiryFormInputParams["main_lable"] = mainLabel;
+
       //inquiryFormInputParams['main_lable_info'] = mainLabelSampleImg;
       inquiryFormInputParams["washcare_lable"] = washCareLabel;
 
@@ -1002,7 +1028,7 @@ const index = () => {
       inquiryFormInputParams["testing_requirements"] = testingRequirement;
       inquiryFormInputParams["sample_requirements"] = sampleRequirement;
       inquiryFormInputParams["special_requests"] = specialRequest;
-
+      inquiryFormInputParams["currency"] = currency;
       inquiryFormInputParams["sku_details"] = sku;
 
       inquiryFormInputParams["referenceId"] = referenceId.toString();
@@ -1056,8 +1082,8 @@ const index = () => {
       <Row className="pgbgcolor">
         <Breadcrumbs
           mainTitle={t("inquiry")}
-          parent="inquiry"
-          title="Inquiry"
+          parent={t("inquiry")}
+          title={t("inquiry")}
         />
       </Row>
       <Container fluid={true} className="general-widget topaln">
@@ -2008,6 +2034,116 @@ const index = () => {
                 ) : (
                   <div></div>
                 )}
+
+                {/* Measuement Show based on sku                */}
+                {color.length > 0 && size.length > 0 ? (
+                  <>
+                  <Row  className="g-12">
+                    <Col lg="12" md="12" sm="12" xs="12">
+                                        <span className="subTitleLine3 f-left">
+                                          <H6 className="ordersubhead">
+                                            Measurement Chart 
+                                          </H6>
+                                        </span>
+                                      </Col>
+                  </Row>
+                  <Row className="p-b-20">
+                    <Col md="12" lg="12" sm="12">
+                      <Row className="g-12">
+                        <div className="table-responsive">
+                        
+                            <table className="table">
+                              <thead>
+                                                  <tr>
+                                                    <th scope="col">Position</th>
+                                                    <th scope="col" colSpan="3">Beschreibung</th>
+                                                    <th scope="col">Tolerance</th>
+                                                    {size.map((option) => {
+                                                      return (
+                                                        <th scope="col">
+                                                          {" "}
+                                                          {option.name}
+                                                        </th>
+                                                      );
+                                                    })}
+                                                  <th>
+                                                    <div 
+                                                    className="btn btn-outline-success" 
+                                                    onClick={()=>addTableRows()} >+</div>
+                                                  </th>
+                                                  </tr>
+                                                </thead>
+
+                                                {measurementChart.map((measureChart, index)=>
+                                                {
+                                                const {position, 	beschreibung, tolerance} = measureChart;
+                                                return(
+                                                  <>
+                                                  <tbody id="measurementshow">
+                                                  <tr key={index}>
+                                                  <td>
+                                                    <input
+                                                        className="form-control "
+                                                        id=""
+                                                        type="text"
+                                                        autocomplete="on"
+                                                        onChange={(e)=>{ measurementChartData(index, e.target.value)}}
+                                                        value={position}
+                                                        onKeyDown={handleEnter}
+                                                      />
+                                                    </td>
+                                                  <td  colSpan="3">
+                                                    <input
+                                                      className="form-control "
+                                                      id=""
+                                                      type="text"
+                                                      autocomplete="on"
+                                                      value={beschreibung}
+                                                      onChange={()=>{}}
+                                                      onKeyDown={handleEnter}
+                                                    />
+                                                  </td>
+                                                  <td>
+                                                    <input
+                                                      className="form-control "
+                                                      id=""
+                                                      type="text"
+                                                      autocomplete="on"
+                                                      value={tolerance}
+                                                      onChange={()=>{}}
+                                                      onKeyDown={handleEnter}
+                                                    />
+                                                  </td>
+                                                  {size.map((option) => {
+                                                    return (
+                                                      <td>
+                                                      <input
+                                                        className="form-control "
+                                                        id=""
+                                                        type="text"
+                                                        autocomplete="on"
+                                                        onChange={()=>{}}
+                                                        onKeyDown={handleEnter}
+                                                      />
+                                                    </td>
+                                                    );
+                                                  })}
+                                                  <td><div className="btn btn-outline-danger" onClick={()=>(deleteTableRows(index))}>-</div></td>
+                                                </tr>
+                                              </tbody> 
+                                                  </>
+                                                  )
+                                                }
+                                                )}
+                                                
+                                              
+                            </table>
+                          
+                        </div>
+                      </Row>
+                    </Col>
+                  </Row>
+                  </>):(<div></div>)}
 
                 {/* Patterns,Place of Jurisdiction,Customs Declaration Document */}
 
