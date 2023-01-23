@@ -170,7 +170,7 @@ const index = () => {
   getInputParams["sku"] = [{}];
   
   const checkedVal = (valueType) => {
-    // console.log("TYPE", valueType);
+
     var params = {};
     params["type"] = valueType;
     axios.post(ServerUrl + "/get-inquiry-master", params).then((response) => {
@@ -447,7 +447,7 @@ const index = () => {
         },
         {
           headers: {
-            "Content-Type": "application/pdf",
+            'Content-Type': 'multipart/form-data',
           },
         },
       )
@@ -946,16 +946,45 @@ const index = () => {
     setMeasurementChart([...measurementChart,measurementChart])
   };
 
-  const measurementChartData = (index,e) =>
-  {
-    // console.log(index, "***DATA***", e );
-      var measurementChartData = {};
-      measurementChartData['position'] = e;
-      measurementChartData['beschreibung'] = e;
-      measurementChartData['tolerance'] = e;
-    // console.log(measurementChart.length, "^^^");
-    // setMeasurementChart(measurementChartInput);
+
+  const measurementChartData = () => {
+  
+   var measureChart =[];
+    for(let i=0;i<measurementChart.length;i++){
+      var measurementChartRowData ={};
+      measurementChartRowData['position'] = document.getElementById("position_"+i).value;
+      measurementChartRowData['description'] = document.getElementById("description_"+i).value;
+      measurementChartRowData['tolerance'] = document.getElementById("tolerance_"+i).value;
+      size.map((sizeMapData)=>{
+        measurementChartRowData[sizeMapData.name]=document.getElementById(i+"_size_id_"+sizeMapData.id).value;
+      });
+      measureChart.push(measurementChartRowData);
+    }
+    return measureChart;
   };
+
+  // const measurementChartData = () =>
+  // {
+  //     var measurementChartOverallValues = [];
+ 
+  //     for( let i=0; i<measurementChart.length; i++)
+  //     {
+  //       var measurementChartRowData = {};
+  //       var sizeData = {};
+  //       measurementChartRowData["position"] = document.getElementById("position_"+i).value;
+  //       measurementChartRowData["description"]= document.getElementById("description_"+i).value;
+  //       measurementChartRowData["tolerance"] = document.getElementById("tolerance_"+i).value;
+        
+  //       size.map((mapData) => {
+  //         sizeData[mapData.name] = document.getElementById(i+"_size_id_"+mapData.id).value ? document.getElementById(i+"_size_id_"+mapData.id).value : "0";
+  //       }); 
+  //     // measurementChartRowData["size_quantity"] = sizeData;
+  //       measurementChartOverallValues.push(measurementChartRowData);
+  //       }
+  
+  //       return measurementChartOverallValues;
+
+  // };
 
   const deleteTableRows = (index)=>{
     const rows = [...measurementChart];
@@ -964,8 +993,10 @@ const index = () => {
   };
 
   const submitInquiryForm = (e) => {
+  
     let retval = validation();
     if (Object.keys(retval).length == 0) {
+      let measure_chart_array = measurementChartData();
       let sku = getQtyDetails();
       var inquiryFormInputParams = {};
       inquiryFormInputParams["company_id"] = getLoginCompanyId;
@@ -1032,7 +1063,7 @@ const index = () => {
       inquiryFormInputParams["sku_details"] = sku;
 
       inquiryFormInputParams["referenceId"] = referenceId.toString();
-
+      inquiryFormInputParams['measurement_Chart']= measure_chart_array;
       axios
         .post(ServerUrl + "/save-inquiry", inquiryFormInputParams)
         .then((response) => {
@@ -1047,7 +1078,7 @@ const index = () => {
               allowOutsideClick: false,
             }).then((result) => {
               if (result.isConfirmed) {
-                window.location.href = "/inquiry/viewinquiry";
+                window.location.href = "/viewinquiry";
               }
             });
           }
@@ -1076,7 +1107,7 @@ const index = () => {
     }
   };
 
- 
+
   return (
     <Fragment>
       <Row className="pgbgcolor">
@@ -2035,8 +2066,8 @@ const index = () => {
                   <div></div>
                 )}
 
-                {/* Measuement Show based on sku                */}
-                {color.length > 0 && size.length > 0 ? (
+                {/* Measuement Show based on sku*/}
+                {/* {color.length > 0 && size.length > 0 ? (
                   <>
                   <Row  className="g-12">
                     <Col lg="12" md="12" sm="12" xs="12">
@@ -2056,7 +2087,7 @@ const index = () => {
                               <thead>
                                                   <tr>
                                                     <th scope="col">Position</th>
-                                                    <th scope="col" colSpan="3">Beschreibung</th>
+                                                    <th scope="col" colSpan="3">Description</th>
                                                     <th scope="col">Tolerance</th>
                                                     {size.map((option) => {
                                                       return (
@@ -2076,7 +2107,7 @@ const index = () => {
 
                                                 {measurementChart.map((measureChart, index)=>
                                                 {
-                                                const {position, 	beschreibung, tolerance} = measureChart;
+                                                const {position, 	description, tolerance} = measureChart;
                                                 return(
                                                   <>
                                                   <tbody id="measurementshow">
@@ -2084,10 +2115,10 @@ const index = () => {
                                                   <td>
                                                     <input
                                                         className="form-control "
-                                                        id=""
+                                                        id={"position_"+index}
                                                         type="text"
                                                         autocomplete="on"
-                                                        onChange={(e)=>{ measurementChartData(index, e.target.value)}}
+                                                        // onChange={(e)=>{ measurementChartData(index, e.target.value)}}
                                                         value={position}
                                                         onKeyDown={handleEnter}
                                                       />
@@ -2095,34 +2126,35 @@ const index = () => {
                                                   <td  colSpan="3">
                                                     <input
                                                       className="form-control "
-                                                      id=""
+                                                      id={"description_"+index}
                                                       type="text"
                                                       autocomplete="on"
-                                                      value={beschreibung}
-                                                      onChange={()=>{}}
+                                                      value={description}
+                                                      // onChange={(e)=>{ measurementChartData(index, e.target.value)}}
                                                       onKeyDown={handleEnter}
                                                     />
                                                   </td>
                                                   <td>
                                                     <input
                                                       className="form-control "
-                                                      id=""
+                                                      id={"tolerance_"+index}
                                                       type="text"
                                                       autocomplete="on"
                                                       value={tolerance}
-                                                      onChange={()=>{}}
+                                                      // onChange={(e)=>{ measurementChartData(index, e.target.value)}}
                                                       onKeyDown={handleEnter}
                                                     />
                                                   </td>
-                                                  {size.map((option) => {
+                                                  {size.map((sizeMapData) => {
+                                                  
                                                     return (
                                                       <td>
                                                       <input
                                                         className="form-control "
-                                                        id=""
+                                                        id={index+"_size_id_"+sizeMapData.id}
                                                         type="text"
                                                         autocomplete="on"
-                                                        onChange={()=>{}}
+                                                        // onChange={(e)=>{ measurementChartData(index, e.target.value)}}
                                                         onKeyDown={handleEnter}
                                                       />
                                                     </td>
@@ -2143,7 +2175,7 @@ const index = () => {
                       </Row>
                     </Col>
                   </Row>
-                  </>):(<div></div>)}
+                  </>):(<div></div>)} */}
 
                 {/* Patterns,Place of Jurisdiction,Customs Declaration Document */}
 
