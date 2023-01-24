@@ -8,9 +8,8 @@ import { getLoginCompanyId, getWorkspaceId, getLoginUserId } from '../../../Cons
 import { ServerUrl } from "../../../Constant";
 import { getColorSizeQtyInquiry, decode } from "../../../helper";
 import parse from 'html-react-parser';
-import { useSearchParams, Link } from "react-router-dom";
+import { useSearchParams, } from "react-router-dom";
 import CKEditors from 'react-ckeditor-component';
-
 
 const FactoryDetailInquiry = () => {
   var getInputParams = {};
@@ -30,7 +29,9 @@ const FactoryDetailInquiry = () => {
   const [mainLableImage, setMainLable] = useState([]);
   const [washCareLableImage, setWashCareLable] = useState([]);
   const [hangtagImage, setHangtag] = useState([]);
-  const [barcodeStickersIamge, setBarcodeStickers] = useState([]);
+  const [barcodeStickersImage, setBarcodeStickers] = useState([]);
+  const [cartonImage, setCartonImage] = useState([]);
+  const [polybagImage, setPolybagImage] = useState([]);
   const [awsUrl, setAwsUrl] = useState();
   const [price, setPrice] = useState('');
   const [comments, setComments] = useState('');
@@ -53,6 +54,8 @@ const FactoryDetailInquiry = () => {
   var mainLableData = [];
   var hangtagData = [];
   var barcodeStickersData = [];
+  var cartonData = [];
+  var polybagData = [];
 
   useEffect(() => {
     axios
@@ -121,6 +124,18 @@ const FactoryDetailInquiry = () => {
             var getDetails = mapData.filepath;
             barcodeStickersData.push(getDetails);
             setBarcodeStickers(barcodeStickersData)
+            setAwsUrl(response.data.data.serverURL)
+          }
+          if (mapData.media_type == "Polybag") {
+            var getDetails = mapData.filepath;
+            polybagData.push(getDetails);
+            setPolybagImage(polybagData)
+            setAwsUrl(response.data.data.serverURL)
+          }
+          if (mapData.media_type == "Carton") {
+            var getDetails = mapData.filepath;
+            cartonData.push(getDetails);
+            setCartonImage(cartonData)
             setAwsUrl(response.data.data.serverURL)
           }
         })
@@ -490,7 +505,7 @@ const FactoryDetailInquiry = () => {
                             </tr><tr>
                               <td className="text-left">{t("barcodeStickersSample")}  </td>
                               <td className="text-left">
-                                {barcodeStickersIamge.map((obj) => (
+                                {barcodeStickersImage.map((obj) => (
                                   <a href={awsUrl + obj} target="_blank"> 
                                   < img src={awsUrl + obj} alt={t("barcodeStickersSample")} width="80px" height="80px"
                                     className="p-r-5 rounded" />
@@ -529,6 +544,16 @@ const FactoryDetailInquiry = () => {
                             </>
                             :  ""}
                             </tr><tr>
+                              <td className="text-left">{t("polySamImg")} </td>
+                              <td className="text-left">
+                                {polybagImage.map((obj) => (
+                                  <a href={awsUrl + obj} target="_blank"> 
+                                  < img src={awsUrl + obj} alt={t("polySamImg")} width="80px" height="80px"
+                                    className="p-r-5 rounded" />
+                                    </a>
+                                ))}
+                              </td>
+                            </tr><tr>
                             {factoryInquiryDetails.carton_bag_dimensions ? 
                             <>
                             <td className="text-left">{t("cartonBoxDimensions")}  </td>
@@ -563,6 +588,16 @@ const FactoryDetailInquiry = () => {
                             <td className="text-left"> {factoryInquiryDetails.carton_edge_finish} </td>
                             </>
                             :  ""}
+                            </tr><tr>
+                              <td className="text-left">{t("cartonSamImage")}  </td>
+                              <td className="text-left">
+                                {cartonImage.map((obj) => (
+                                  <a href={awsUrl + obj} target="_blank"> 
+                                  < img src={awsUrl + obj} alt={t("cartonSamImage")} width="80px" height="80px"
+                                    className="p-r-5 rounded" />
+                                    </a>
+                                ))}
+                              </td>
                             </tr><tr>
                             {factoryInquiryDetails.make_up ? 
                             <>
