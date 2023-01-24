@@ -2,7 +2,7 @@ import React, { } from 'react';
 import { Modal, ModalBody, ModalHeader, Row, Col, Form } from 'reactstrap';
 import closeIcon from "../../../assets/images/dms/icons/inquiryCloseIcon.svg";
 import { useTranslation } from "react-i18next";
-import noData from "../../../assets/images/dms/icons/noData.png";
+import noData from "../../../assets/images/dms/icons/noData.jpg";
 
 const InquirySentToModal = ({ factoryList, modalInquirySentTo, toggleInquirySentTo, setModalInquirySentTo }) => {
   const { t } = useTranslation();
@@ -51,6 +51,7 @@ const InquirySentToModal = ({ factoryList, modalInquirySentTo, toggleInquirySent
                                 <tr className="centerAlign">
                                   <td colSpan="12">
                                     <img src={noData} style={{ width: "200px" }} />
+                                    <div> {t("noDataFound")} </div> 
                                   </td>
                                 </tr>
                               </>}

@@ -2067,7 +2067,7 @@ const index = () => {
                 )}
 
                 {/* Measuement Show based on sku*/}
-                {color.length > 0 && size.length > 0 ? (
+                {/* {color.length > 0 && size.length > 0 ? (
                   <>
                   <Row  className="g-12">
                     <Col lg="12" md="12" sm="12" xs="12">
@@ -2173,7 +2173,7 @@ const index = () => {
                       </Row>
                     </Col>
                   </Row>
-                  </>):(<div></div>)}
+                  </>):(<div></div>)} */}
 
                 {/* Patterns,Place of Jurisdiction,Customs Declaration Document */}
 
