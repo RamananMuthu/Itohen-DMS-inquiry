@@ -61,7 +61,7 @@ const ViewInquiry = () => {
   }, []);
 
   const factResponse = (inquiryId) => {
-    window.location.href = "/factoryresponse?id=" + encode(inquiryId);
+    window.location.href = "/inquiry/factoryresponse?id=" + encode(inquiryId);
   };
 
   const deleteInquiry = (inquiryId) => {
