@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, ModalBody, ModalHeader, Input, Label, Row, Col, Form, FormGroup, Button } from 'reactstrap';
+import { Modal, ModalBody, ModalHeader, Input, Label, Row, Col, Form, FormGroup, } from 'reactstrap';
 import { ServerUrl } from '../../../Constant';
 import closeIcon from "../../../assets/images/dms/icons/inquiryCloseIcon.svg";
 import axios from "axios";
@@ -24,7 +24,7 @@ const ViewFactoryModal = ({ modal, toggle, inquiryId, factory, setFactory, selec
     if (factory_id.length > 0) { apiCall(factory_id); }
     else {
       Swal.fire({
-        title: "Please select atleast one factory",
+        title: t("Please select atleast one factory"),
         icon: 'warning',
         button: "OK!",
         allowOutsideClick: false

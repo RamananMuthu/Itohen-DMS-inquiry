@@ -9,19 +9,17 @@ import { Btn } from '../../../AbstractElements';
 import { Close, SaveChanges, ServerUrl } from '../../../Constant';
 import axios from "axios";
 import Swal from "sweetalert2";
-
 import { useTranslation } from "react-i18next";
 import { apidecrypt, apiencrypt } from '../../../helper';
 
 const FormAddFabricGSM = ({ modal, toggle, companyId, workspaceId, article }) => {
-
   const { t } = useTranslation();
-
   const [fabricGSM, setFabricGSM] = useState("");
+
   const onSaveHandle = () => {
     if (!fabricGSM) {
       Swal.fire({
-        title: "Fabric GSM",
+        title: t("0"),
         text: t("articleNameValidation"),
         icon: "error",
         button: t("okLabel"),
@@ -37,7 +35,7 @@ const FormAddFabricGSM = ({ modal, toggle, companyId, workspaceId, article }) =>
           response.data = apidecrypt(response.data);
           if (response.data.status_code === 200) {
             Swal.fire({
-              title: "Fabric GSM added Successfully",
+              title: t("Fabric GSM added Successfully"),
               // text: t(response.data.message),
               icon: "success",
               button: t("okLabel"),
@@ -60,7 +58,7 @@ const FormAddFabricGSM = ({ modal, toggle, companyId, workspaceId, article }) =>
           /* To show error if the Role is already present*/
           if (response.data.status_code === 401) {
             Swal.fire({
-              title: "Fabric GSM Already Exists",
+              title: t("Fabric GSM Already Exists"),
               text: t("enterDifferentName"),
               icon: "error",
               button: t("okLabel"),
