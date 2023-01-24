@@ -1078,7 +1078,7 @@ const index = () => {
               allowOutsideClick: false,
             }).then((result) => {
               if (result.isConfirmed) {
-                window.location.href = "/viewinquiry";
+                window.location.href = "/inquiry/viewinquiry";
               }
             });
           }

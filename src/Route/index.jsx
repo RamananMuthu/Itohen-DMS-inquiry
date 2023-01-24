@@ -33,7 +33,7 @@ const Routers = () => {
                                                                
                                                                         <Route exact
                                                                                 path={`${process.env.PUBLIC_URL}`}
-                                                                                element={<Navigate to={`${process.env.PUBLIC_URL}/inquiryform`} />}
+                                                                                element={<Navigate to={`${process.env.PUBLIC_URL}/inquiry/viewinquiry`} />}
                                                                         /> : ''}
                                                                 <Route path={`/*`} element={<LayoutRoutes />} />
                                                         </Route>
