@@ -44,7 +44,7 @@ const ViewFactoryModal = ({ modal, toggle, inquiryId, factory, setFactory, selec
           // setsignupdisable(true);
           Swal.fire({
             // title: "Inquiry Sent Successfully",
-            title: response.data.message,
+            title: t(response.data.message),
             icon: 'success',
             button: "OK!",
             allowOutsideClick: false
