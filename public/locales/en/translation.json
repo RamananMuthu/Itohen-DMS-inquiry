@@ -965,5 +965,6 @@
     "listFactories" : "List Factories",
     "Please select atleast one factory" : "Please select atleast one factory",
     "Fabric GSM added Successfully" : "Fabric GSM added Successfully",
-    "Fabric GSM Already Exists" : "Fabric GSM Already Exists"
+    "Fabric GSM Already Exists" : "Fabric GSM Already Exists",
+    "Inquiry sent Successfully" : "Inquiry Sent Successfully"
 }
