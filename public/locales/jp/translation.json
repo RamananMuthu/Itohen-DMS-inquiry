@@ -809,6 +809,7 @@
     "yarnCount": "Yarn Count",
     "enterYarnCount": "Please enter Yarn Count",
     "measurementSheet": "Measurement Sheet",
+    "measurementSheetLink" : "Measurement Sheet Details",
     "attachMeasurementSheet": "Please attach Measurement Sheet",
     "targetPrice": "Target Price",
     "enterTargetPrice": "Please enter Target Price",
