@@ -893,7 +893,7 @@
     "specialRequestIfAny": "Special Request -If any",
     "wrongFileFormat": "Wrong File Format",
     "validFileFormatsImages": "Valid file formats are .jpg, .jpeg, .png",
-    "ValidFileFormatsDocuments": "Valid file formats are .docx, .pdf, .xlsx",
+    "ValidFileFormatsDocuments": "Valid file formats are .pdf, .xls, .xlsx",
     "inquiryAddedSuccessfully": "Inquiry Added Successfully",
     "factoryResponse": "Factory Response",
     "Inquiry Response Added Successfully": "Inquiry Response Added Successfully",
