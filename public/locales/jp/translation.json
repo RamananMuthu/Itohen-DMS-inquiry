@@ -962,5 +962,8 @@
     "Check Atleast One Before Save": "Check Atleast One Before Save",
     "Selected Payment Terms Added Successfully": "Selected Payment Terms Added Successfully",
     "send" : "Send",
-    "listFactories" : "List Factories"
+    "listFactories" : "List Factories",
+    "Please select atleast one factory" : "Please select atleast one factory",
+    "Fabric GSM added Successfully" : "Fabric GSM added Successfully",
+    "Fabric GSM Already Exists" : "Fabric GSM Already Exists"
 }
