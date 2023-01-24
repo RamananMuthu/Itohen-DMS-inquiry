@@ -986,6 +986,18 @@ const index = () => {
 
   // };
 
+
+  // const sizeTotal = (value, index) => 
+  // {
+  //   var sum = 0;
+  //   size.map((mapData) => 
+  //   {
+  //      sum += Number( document.getElementById(index+"_size_id_"+mapData.id).value)
+  //   });
+
+  //   document.getElementById("overall_total"+index).value  =  sum ? sum : "0";
+  // };
+
   const deleteTableRows = (index)=>{
     const rows = [...measurementChart];
     rows.splice(index, 1);
@@ -1106,6 +1118,7 @@ const index = () => {
         });
     }
   };
+
 
 
   return (
@@ -2067,16 +2080,16 @@ const index = () => {
                 )}
 
                 {/* Measuement Show based on sku*/}
-                {/* {color.length > 0 && size.length > 0 ? (
+                {color.length > 0 && size.length > 0 ? (
                   <>
                   <Row  className="g-12">
                     <Col lg="12" md="12" sm="12" xs="12">
-                                        <span className="subTitleLine3 f-left">
-                                          <H6 className="ordersubhead">
-                                            {t("measurementChart")}
-                                          </H6>
-                                        </span>
-                                      </Col>
+                      <span className="subTitleLine3 f-left">
+                        <H6 className="ordersubhead">
+                          {t("measurementChart")}
+                        </H6>
+                      </span>
+                    </Col>
                   </Row>
                   <Row className="p-b-20">
                     <Col md="12" lg="12" sm="12">
@@ -2085,95 +2098,106 @@ const index = () => {
                         
                             <table className="table">
                               <thead>
-                                                  <tr>
-                                                    <th scope="col">{t("position")}</th>
-                                                    <th scope="col" colSpan="3">{t("description")}</th>
-                                                    <th scope="col">{t("tolerance")}</th>
-                                                    {size.map((option) => {
-                                                      return (
-                                                        <th scope="col">
-                                                          {" "}
-                                                          {option.name}
-                                                        </th>
-                                                      );
-                                                    })}
-                                                  <th>
-                                                    <div 
-                                                    className="btn btn-outline-success" 
-                                                    onClick={()=>addTableRows()} >+</div>
-                                                  </th>
-                                                  </tr>
-                                                </thead>
-
-                                                {measurementChart.map((measureChart, index)=>
-                                                {
-                                                const {position, 	description, tolerance} = measureChart;
-                                                return(
-                                                  <>
-                                                  <tbody id="measurementshow">
-                                                  <tr key={index}>
-                                                  <td>
-                                                    <input
-                                                        className="form-control "
-                                                        id={"position_"+index}
-                                                        type="text"
-                                                        autocomplete="on"
-                                                        // onChange={(e)=>{ measurementChartData(index, e.target.value)}}
-                                                        value={position}
-                                                        onKeyDown={handleEnter}
-                                                      />
-                                                    </td>
-                                                  <td  colSpan="3">
-                                                    <input
-                                                      className="form-control "
-                                                      id={"description_"+index}
-                                                      type="text"
-                                                      autocomplete="on"
-                                                      value={description}
-                                                      // onChange={(e)=>{ measurementChartData(index, e.target.value)}}
-                                                      onKeyDown={handleEnter}
-                                                    />
-                                                  </td>
-                                                  <td>
-                                                    <input
-                                                      className="form-control "
-                                                      id={"tolerance_"+index}
-                                                      type="text"
-                                                      autocomplete="on"
-                                                      value={tolerance}
-                                                      // onChange={(e)=>{ measurementChartData(index, e.target.value)}}
-                                                      onKeyDown={handleEnter}
-                                                    />
-                                                  </td>
-                                                  {size.map((sizeMapData) => {
-                                                  
-                                                    return (
-                                                      <td>
-                                                      <input
-                                                        className="form-control "
-                                                        id={index+"_size_id_"+sizeMapData.id}
-                                                        type="text"
-                                                        autocomplete="on"
-                                                        // onChange={(e)=>{ measurementChartData(index, e.target.value)}}
-                                                        onKeyDown={handleEnter}
-                                                      />
-                                                    </td>
-                                                    );
-                                                  })}
-                                                  <td><div className="btn btn-outline-danger" onClick={()=>(deleteTableRows(index))}>-</div></td>
-                                                </tr>
-                                              </tbody> 
-                                                  </>
-                                                  )
-                                                }
-                                                )}                                             
+                                <tr>
+                                  <th scope="col">{t("position")}</th>
+                                  <th scope="col" colSpan="3">{t("description")}</th>
+                                  <th scope="col">{t("tolerance")}</th>
+                                  {size.map((option) => {
+                                    return (
+                                      <th scope="col">
+                                        {" "}
+                                        {option.name}
+                                      </th>
+                                    );
+                                  })}
+                                  <th>
+                                  {/* <th scope="col"> Total </th> */}
+                                  
+                                    <div 
+                                    className="btn btn-outline-success" 
+                                    onClick={()=>addTableRows()}>+</div>
+                                  
+                                </th>
+                                </tr>
+                              </thead>
+                                {measurementChart.map((measureChart, index)=>
+                                {
+                                const {position, 	description, tolerance} = measureChart;
+                                return(
+                                  <>
+                                  <tbody id="measurementshow">
+                                  <tr key={index}>
+                                  <td>
+                                    <input
+                                        className="form-control "
+                                        id={"position_"+index}
+                                        type="text"
+                                        autocomplete="on"
+                                        // onChange={(e)=>{ measurementChartData(index, e.target.value)}}
+                                        value={position}
+                                        onKeyDown={handleEnter}
+                                      />
+                                    </td>
+                                  <td  colSpan="3">
+                                    <input
+                                      className="form-control "
+                                      id={"description_"+index}
+                                      type="text"
+                                      autocomplete="on"
+                                      value={description}
+                                      // onChange={(e)=>{ measurementChartData(index, e.target.value)}}
+                                      onKeyDown={handleEnter}
+                                    />
+                                  </td>
+                                  <td>
+                                    <input
+                                      className="form-control "
+                                      id={"tolerance_"+index}
+                                      type="text"
+                                      autocomplete="on"
+                                      value={tolerance}
+                                      // onChange={(e)=>{ measurementChartData(index, e.target.value)}}
+                                      onKeyDown={handleEnter}
+                                    />
+                                  </td>
+                                  {size.map((sizeMapData) => {
+                                  
+                                    return (
+                                      <td>
+                                      <input
+                                        className="form-control "
+                                        id={index+"_size_id_"+sizeMapData.id}
+                                        type="text"
+                                        autocomplete="on"
+                                        // onChange={(e)=>{ sizeTotal(e.target.value, index)}}
+                                        onKeyDown={handleEnter}
+                                      />
+                                    </td>
+                                    );
+                                  })}
+                                  {/* <td> 
+                                    <input
+                                      className="form-control "
+                                      id={"overall_total"+index}
+                                      readOnly
+                                      />
+                                  </td> */}
+                                  <td>
+                                    <div className="btn btn-outline-danger" onClick={()=>(deleteTableRows(index))}>-</div>
+                                  </td>
+                                </tr>
+                              </tbody> 
+                                  </>
+                                  )
+                                }
+                                )}                                             
                             </table>
                           
                         </div>
                       </Row>
                     </Col>
                   </Row>
-                  </>):(<div></div>)} */}
+                  </>):(<div></div>)} 
 
                 {/* Patterns,Place of Jurisdiction,Customs Declaration Document */}
 
