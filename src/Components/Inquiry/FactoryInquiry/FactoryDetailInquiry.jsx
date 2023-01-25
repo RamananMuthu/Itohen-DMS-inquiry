@@ -398,7 +398,7 @@ const FactoryDetailInquiry = () => {
                                                         Object.keys(measurementSheetList).map((key, i) => (
                                                           (i == 0) ?
                                                             Object.keys(measurementSheetList[key]).map((k, data) => (
-                                                              <th scope="col" style={{ textTransform:"uppercase"}}>{k}</th>
+                                                              <th scope="col" style={{ textTransform:"capitalize"}}>{k}</th>
                                                             )
                                                             ) : ""
                                                         ))
