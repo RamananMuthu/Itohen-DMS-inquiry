@@ -174,7 +174,7 @@ const FactoryDetailInquiry = () => {
               allowOutsideClick: false
             }).then((result) => {
               if (result.isConfirmed) {
-                window.location.href = '/factoryviewinquiry';
+                window.location.href = '/inquiry/factoryviewinquiry';
               }
             })
           }
@@ -290,13 +290,13 @@ const FactoryDetailInquiry = () => {
                             </tr><tr>
                               {factoryInquiryDetails.measurement_sheet ?
                                 <>
-                                  <td className="text-left">{t("measurementSheetLink")}  </td>
+                                  <td className="text-left">{t("measurementChart")}  </td>
                                   <td className="text-left">
                                     <Col className="table-responsive" md="12" sm="12" lg="12">
                                       <Card>
                                         <CardBody>
                                           <Form className="needs-validation" noValidate="">
-                                            <H6 className="ordersubhead">{t("measurementSheetLink")}</H6>
+                                            <H6 className="ordersubhead">{t("measurementChart")}</H6>
                                             <Row className="g-12">
                                               <div className="table-responsive">
                                                 <table className="table">
@@ -306,7 +306,7 @@ const FactoryDetailInquiry = () => {
                                                         Object.keys(measurementSheetList).map((key, i) => (
                                                           (i == 0) ?
                                                             Object.keys(measurementSheetList[key]).map((k, data) => (
-                                                              <th scope="col">{k}</th>
+                                                              <th scope="col" className="textUppercase">{k}</th>
                                                             )
                                                             ) : ""
                                                         ))
