@@ -1085,6 +1085,12 @@ td.text-left {
   .ratingModel table th, .ratingModel table td {
     padding:7px 5px;
   }
+  .activeTab:hover {
+    background-color: #4E90DE;
+  }
+  .activeTab:hover span{
+    color:#ffffff; 
+  }
 /******************************************************/
 
 

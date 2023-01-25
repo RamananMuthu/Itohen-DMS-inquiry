@@ -23,10 +23,10 @@ const FactoryResponse = () => {
     const [factoryRatingData, setFactoryRatingData] = useState([]);
     const { t } = useTranslation();
     const getInputParams = {};
-    getInputParams["inquiry_id"] = "26";
+    getInputParams["inquiry_id"] = inquiryId;
     const factoryRatingInputParams = {};
-    factoryRatingInputParams["factory_id"] = 18;
-    factoryRatingInputParams["user_id"] = 16;
+    factoryRatingInputParams["factory_id"] = factoryId;
+    factoryRatingInputParams["user_id"] = userId;
 
     const apiCallFactoryRating = (factoryId) => {
         axios

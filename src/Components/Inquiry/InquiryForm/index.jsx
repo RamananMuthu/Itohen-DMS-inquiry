@@ -1,10 +1,11 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect,useRef } from "react";
 import {
   Form,
   Label,
   Card,
   CardBody,
   Col,
+  Nav, NavItem, NavLink, TabContent, TabPane,
   Row,
   Input,
   InputGroup,
@@ -34,7 +35,7 @@ import docIcon from "../../../assets/images/dms/icons/inquiryDocIcon.svg";
 import infoIcon from "../../../assets/images/dms/icons/inquiryInfoIcon.svg";
 import deleteIcon from"../../../assets/images/dms/inquiryDelIcon.svg";
 // import deleteIcon from"../../../assets/images/dms/icons/imgUpload.svg";
-import { Breadcrumbs, H6, Btn, Image } from "../../../AbstractElements";
+import { Breadcrumbs, H6, Btn, Image, UL } from "../../../AbstractElements";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
 import { maxFileUpload, maxUploadFileSize, ServerUrl } from "../../../Constant";
@@ -45,8 +46,6 @@ import AddColorModal from "./AddColorModal";
 import AddSizeModal from "./AddSizeModal";
 import AddFabricModal from "./AddFabricModal";
 import InfoCanvas from "./InquiryInfoOffCanvas";
-import { SelectSingleImageUpload } from "../../../Constant";
-// import Font from '@ckeditor/ckeditor5-font/src/font';
 
 const index = () => {
   const workspace_id = getWorkspaceId;
@@ -73,22 +72,18 @@ const index = () => {
   const [sampleFormatImg, setSampleFormatImg] = useState("");
   const [incomeTerms, setIncomeTerms] = useState([]);
   const [incomeTerm, setIncomeTerm] = useState();
-  // const [content, setContent] = useState('content');
-  // const [orderId, setOrderId] = useState(decode(searchParams.get("id")));
   const [getColor, setGetColor] = React.useState([]);
   const [getSize, setGetSize] = React.useState([]);
   const [article, setArticle] = useState("");
-  const [fabric, setFabric] = useState("");
+  const [fabricCom, setFabricCom] = useState("");
   const [styleNo, setStyleNo] = useState("");
   const [sampleFormat, setSampleFormat] = useState("");
   const [MeasurementSheet, setMeasurementSheet] = useState("");
   const [fabricGSM, setFabricGSM] = useState("");
   const [yarnCount, setYarnCount] = useState("");
   const [targetPrice, setTargetPrice] = useState("");
-  // const [incoterms,setIncoterms] = useState('');
-  // const [paymentTerms,setPaymentTerms] =useState('');
+  const [fabricType, setFabricType] = useState("");
   const [paymentTerm, setPaymentTerm] = useState("");
-
   const [inquiryDueDate, setInquiryDueDate] = useState("");
   const [styleArtcileDesc, setStyleArticleDesc] = useState("");
   const [specialFinishes, setSpecialFinishes] = useState("");
@@ -148,19 +143,14 @@ const index = () => {
   const [currencies, setCurrencies] = useState([]);
   const [currency, setCurrency] = useState("");
   const [measurementChart, setMeasurementChart] = useState([]);
-  // const[mediaId,setMediaId] = useState('');
-  // const [infoCanvas, setInfoCanvas] = useState(false);
+  const [pillTab, setpillTab] = useState('1');
   const toggleart = () => setModalArt(!modalArt);
   const togglefabric = () => setModalfabric(!modalfabric);
   const toggleclr = () => setModalClr(!modalClr);
   const togglesize = () => setModalSize(!modalSize);
   const toggleInfoCanvas = () => setShowInfoCanvas(!showInfoCanvas);
   const [validerrors, setValiderros] = React.useState({});
-
   const { t } = useTranslation();
-  //var ImgTempID = Date.now();9\
-  // var imgUrl ="https://new-dms-dev.s3.us-west-2.amazonaws.com";
-
   var getInputParams = {};
   getInputParams["company_id"] = getLoginCompanyId;
   getInputParams["workspace_id"] = getWorkspaceId;
@@ -169,6 +159,19 @@ const index = () => {
   getInputParams["order_id"] = "1";
   getInputParams["sku"] = [{}];
   
+  const basicinfo = useRef(null);
+  const fabricinfo = useRef(null);
+  const printinfo = useRef(null);
+  const trimsinfo = useRef(null);
+  const packinginfo = useRef(null);
+  const othersinfo = useRef(null);
+
+  const scrollToSection =(elementRef)=>{
+    window.scrollTo({
+      top: elementRef.current.offsetTop,
+      behavior:'smooth'
+    })
+  }
   const checkedVal = (valueType) => {
 
     var params = {};
@@ -193,8 +196,8 @@ const index = () => {
     if (!styleNo.trim()) {
       validerrors.styleNo = t("enterStyleNumber");
     }
-    if (!fabric) {
-      validerrors.fabric = t("Please Select Fabric Type");
+    if (!fabricCom) {
+      validerrors.fabricCom = t("Please Select Fabric Composition");
     }
     if (!totalQuantity) {
       validerrors.totalQuantity = t("Please enter Total Quantity");
@@ -1017,7 +1020,8 @@ const index = () => {
       inquiryFormInputParams["article_id"] = article;
       inquiryFormInputParams["style_no"] = styleNo;
 
-      inquiryFormInputParams["fabric_type_id"] = fabric;
+      inquiryFormInputParams["fabric_type_id"] = fabricCom;
+      inquiryFormInputParams["fabric_type"]= fabricType;
       inquiryFormInputParams["fabric_GSM"] = fabricGSM;
       inquiryFormInputParams["yarn_count"] = yarnCount;
       inquiryFormInputParams["style_article_description"] = styleArtcileDesc;
@@ -1131,10 +1135,58 @@ const index = () => {
         />
       </Row>
       <Container fluid={true} className="general-widget topaln">
-        <Col md="12" sm="12" lg="12">
+        <Col >
           <Card>
             <CardBody>
+            <Row className="u-steps" style={{ cursor: 'pointer' }}>        
+              <Col  className="u-step activeTab" onClick={() => scrollToSection(basicinfo)}>               
+                <div className="u-step-desc" >
+                  <span className="u-step-title">
+                   Basic Information
+                    </span>                 
+                </div>
+              </Col>
+                 
+              <Col  className="u-step activeTab"  onClick={() => scrollToSection(fabricinfo)}>                
+                <div className="u-step-desc">
+                  <span className="u-step-title"> Fabric Information</span>                 
+                </div>
+              </Col>
+         
+              <Col className="u-step activeTab" onClick={() => scrollToSection(printinfo)}>                
+                <div className="u-step-desc"  >
+                  <span className="u-step-title">Print Information</span>
+                </div>
+              </Col>
+              
+              <Col className="u-step activeTab" onClick={() => scrollToSection(trimsinfo)}>                
+                <div className="u-step-desc"  >
+                  <span className="u-step-title">Trims Information</span>                 
+                </div>
+              </Col>
+          
+              <Col  className="u-step activeTab" onClick={() => scrollToSection(packinginfo)}>                
+                <div className="u-step-desc"  >
+                  <span className="u-step-title">Packing Information</span>                  
+                </div>
+              </Col>
+
+              <Col  className="u-step activeTab" onClick={() => scrollToSection(othersinfo)}>                
+                <div className="u-step-desc"  >
+                  <span className="u-step-title">Others</span>                  
+                </div>
+              </Col>
+            </Row>
               <Form>
+             
+                <div ref={basicinfo} className="basicinfo m-t-20">
+                <Row className="g-12">
+                  <Col lg="12" md="12" sm="12" xs="12">
+                    <span>
+                      <H6 className="ordersubhead">Basic Information</H6>
+                    </span>
+                  </Col>
+                </Row>
                 <Col lg="12">
                   <Row>
                     {/* Article Name, Style Number ,Sample Image*/}
@@ -1258,14 +1310,21 @@ const index = () => {
                     </Col>
                   </Row>
                 </Col>
-
-                {/* Fabric Type,Fabric GSM, */}
-
+                </div>
+                {/* Fabric Composition,Fabric GSM, */}
+                <div ref={fabricinfo} className="fabricinfo">
+                <Row className="g-12">
+                  <Col lg="12" md="12" sm="12" xs="12">
+                    <span>
+                      <H6 className="ordersubhead">Fabric Information</H6>
+                    </span>
+                  </Col>
+                </Row>
                 <Col lg="12">
                   <Row>
                     <Col lg="4">
                       <FormGroup>
-                        <Label>{t("fabricType")}</Label>
+                        <Label>{t("fabricComposition")}</Label>
                         <sup className="font-danger">*</sup>
                         <InputGroup>
                           <Input
@@ -1273,10 +1332,10 @@ const index = () => {
                             name="fabric"
                             type="select"
                             defaultValue=""
-                            onChange={(e) => setFabric(e.target.value)}
+                            onChange={(e) => setFabricCom(e.target.value)}
                           >
                             <option Value="" disabled>
-                              {t("selectFabricType")}
+                              {t("selectFabricComposition")}
                             </option>
                             {fabrics.map((fabric) => (
                               <option value={fabric.id}>{fabric.name}</option>
@@ -1296,9 +1355,9 @@ const index = () => {
                             {/* </span> */}
                           </InputGroupText>
                         </InputGroup>
-                        {validerrors.fabric && (
+                        {validerrors.fabricCom && (
                           <span className="error-msg">
-                            {validerrors.fabric}
+                            {validerrors.fabricCom}
                           </span>
                         )}
                         <AddFabricModal
@@ -1402,9 +1461,22 @@ const index = () => {
 
                 {/*  */}
 
-                {/* Yarn Count,Measurement Sheet,Target Price */}
+                {/* Fabric Type,Yarn Count,Target Price */}
 
                 <Row>
+                <Col lg="4">
+                    <FormGroup>
+                      <Label>{t("fabricType")}</Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Yarn Count"
+                          placeholder={t("enterFabricType")}
+                          onChange={(e) => setFabricType(e.target.value)}
+                        ></Input>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
                   <Col lg="4">
                     <FormGroup>
                       <Label>{t("yarnCount")}</Label>
@@ -1419,7 +1491,7 @@ const index = () => {
                     </FormGroup>
                   </Col>
 
-                  <Col lg="4">
+                  {/* <Col lg="4">
                     <FormGroup>
                       <Label> {t("measurementSheet")} </Label>
                       <InputGroup>
@@ -1453,7 +1525,8 @@ const index = () => {
                         </Files>
                       </InputGroup>
                     </FormGroup>
-                  </Col>
+                  </Col> */}
+
                   <Col lg="4">
                     <FormGroup>
                       <Label>{t("inquiryDueDate")}</Label>
@@ -2198,7 +2271,43 @@ const index = () => {
                     </Col>
                   </Row>
                   </>):(<div></div>)} 
-
+<Row>
+<Col lg="4">
+                    <FormGroup>
+                      <Label> {t("measurementSheet")} </Label>
+                      <InputGroup>
+                        <Input
+                          className=""
+                          name="Measurement Sheet"
+                          value={measurementSheetImg ? measurementSheetImg : ""}
+                          placeholder={t("attachMeasurementSheet")}
+                          onChange={(e) => setMeasurementSheet(e.target.value)}
+                          disabled
+                        ></Input>
+                        <Files
+                          className="files-dropzone fileContainer"
+                          // onChange={nonFilesChange}
+                          // onError={nonFilesError}
+                          accept=".docx,.doc,.xls,.xlsx,.txt,.pdf"
+                          multiple={false}
+                          canCancel={false}
+                          onChange={MeasurementImg}
+                          // onSubmit={handleSubmit}
+                          clickable
+                        >
+                          <InputGroupText className=" btn imgBackground">
+                            <img
+                              src={docIcon}
+                              width="25px"
+                              height="25px"
+                              type="file"
+                            ></img>
+                          </InputGroupText>
+                        </Files>
+                      </InputGroup>
+                    </FormGroup>
+                  </Col>
+</Row>
                 {/* Patterns,Place of Jurisdiction,Customs Declaration Document */}
 
                 <Row>
@@ -2266,9 +2375,9 @@ const index = () => {
                     </FormGroup>
                   </Col>
                 </Row>
-
+                </div>
                 {/* Print Information:Print Type,Print Price,No of Colors */}
-
+                <div ref={printinfo} className="printinfo">
                 <Row className="g-12">
                   <Col lg="12" md="12" sm="12" xs="12">
                     <span>
@@ -2391,9 +2500,9 @@ const index = () => {
                   </Col>
                   <Col lg="4"></Col>
                 </Row>
-
+</div>
                 {/* Trims Information: Main Label,Main Label Sample */}
-
+                <div ref={trimsinfo} className="printinfo">
                 <Row className="g-12">
                   <Col lg="12" md="12" sm="12" xs="12">
                     <span>
@@ -2810,9 +2919,9 @@ const index = () => {
                     </FormGroup>
                   </Col>
                 </Row>
-
+</div>
                 {/* Packing Information: Polybag Size & thickness,Polybag Material,Print details on Polybag  */}
-
+                <div ref={packinginfo} className="packinginfo">
                 <Row className="g-12">
                   <Col lg="12" md="12" sm="12" xs="12">
                     <span>
@@ -3209,9 +3318,9 @@ const index = () => {
                     </FormGroup>
                   </Col>
                 </Row>
-
+</div>
                 {/* Others: Forbidden Substances Information,Testing Requirement */}
-
+                <div ref={othersinfo} className="othersinfo">
                 <Row className="g-12">
                   <Col lg="12" md="12" sm="12" xs="12">
                     <span>
@@ -3417,7 +3526,7 @@ const index = () => {
                     </FormGroup>
                   </Col>
                 </Row>
-
+                </div>
                 <FormGroup className="f-right">
                   <Button
                     // href={`${process.env.PUBLIC_URL}/ordersku`}
@@ -3429,6 +3538,7 @@ const index = () => {
                     Save
                   </Button>
                 </FormGroup>
+              
               </Form>
             </CardBody>
           </Card>
