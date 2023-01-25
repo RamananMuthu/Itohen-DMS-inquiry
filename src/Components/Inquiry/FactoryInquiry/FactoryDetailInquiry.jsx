@@ -258,10 +258,10 @@ const FactoryDetailInquiry = () => {
                                 ))}
                               </td>
                             </tr><tr>
-                              {factoryInquiryDetails.fabric_type ?
+                              {factoryInquiryDetails.fabric_type_id ?
                                 <>
-                                  <td className="text-left">{t("fabricType")} </td>
-                                  <td className="text-left"> {factoryInquiryDetails.fabric_type} </td>
+                                  <td className="text-left">{t("fabricComposition")} </td>
+                                  <td className="text-left"> {factoryInquiryDetails.fabric_type_id} </td>
                                 </>
                                 : ""}
                             </tr><tr>
@@ -272,68 +272,17 @@ const FactoryDetailInquiry = () => {
                                 </>
                                 : ""}
                             </tr><tr>
+                              {factoryInquiryDetails.fabric_type ?
+                                <>
+                                  <td className="text-left">{t("fabricType")}</td>
+                                  <td className="text-left"> {factoryInquiryDetails.fabric_type} </td>
+                                </>
+                                : ""}
+                            </tr><tr>
                               {factoryInquiryDetails.yarn_count ?
                                 <>
                                   <td className="text-left">{t("yarnCount")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.yarn_count} </td>
-                                </>
-                                : ""}
-                            </tr><tr>
-                              {factoryInquiryDetails.measurementSheet ?
-                                <>
-                                  <td className="text-left">{t("measurementSheet")}  </td>
-                                  <td className="text-left">
-                                    <a href={awsUrl + measurementSheet} target="_blank"> {measurementSheet} </a>
-                                  </td>
-                                </>
-                                : ""}
-                            </tr><tr>
-                              {factoryInquiryDetails.measurement_sheet ?
-                                <>
-                                  <td className="text-left">{t("measurementChart")}  </td>
-                                  <td className="text-left">
-                                    <Col className="table-responsive" md="12" sm="12" lg="12">
-                                      <Card>
-                                        <CardBody>
-                                          <Form className="needs-validation" noValidate="">
-                                            <H6 className="ordersubhead">{t("measurementChart")}</H6>
-                                            <Row className="g-12">
-                                              <div className="table-responsive">
-                                                <table className="table">
-                                                  <thead>
-                                                    <tr>
-                                                      {
-                                                        Object.keys(measurementSheetList).map((key, i) => (
-                                                          (i == 0) ?
-                                                            Object.keys(measurementSheetList[key]).map((k, data) => (
-                                                              <th scope="col" style={{ textTransform:"uppercase"}}>{k}</th>
-                                                            )
-                                                            ) : ""
-                                                        ))
-                                                      }
-                                                    </tr>
-                                                  </thead>
-                                                  <tbody>
-                                                    {
-                                                      Object.keys(measurementSheetList).map((key, i) => (
-                                                        <tr>
-                                                          {
-                                                          Object.keys(measurementSheetList[key]).map((k, data) => (
-                                                            <td scope="col">{measurementSheetList[key][k]}</td>
-                                                          ))
-                                                         } 
-                                                        </tr>
-                                                      ))
-                                                    }
-                                                  </tbody>
-                                                </table>
-                                              </div>
-                                            </Row>
-                                          </Form>
-                                        </CardBody>
-                                      </Card>
-                                    </Col>
-                                  </td>
                                 </>
                                 : ""}
                             </tr><tr>
@@ -391,7 +340,7 @@ const FactoryDetailInquiry = () => {
                                   <Card>
                                     <CardBody>
                                       <Form className="needs-validation" noValidate="">
-                                        <H6 className="ordersubhead">{t("sKUDetails")}</H6>
+                                        <H6 className="ordersubhead">{t("addQuantityRatio")}</H6>
                                         <Row className="g-12">
                                           <div className="table-responsive">
                                             <table className="table">
@@ -430,6 +379,64 @@ const FactoryDetailInquiry = () => {
                                   </Card>
                                 </Col>
                               </td>
+                            </tr><tr>
+                              {factoryInquiryDetails.measurement_sheet ?
+                                <>
+                                  <td className="text-left">{t("measurementChart")}  </td>
+                                  <td className="text-left">
+                                    <Col className="table-responsive" md="12" sm="12" lg="12">
+                                      <Card>
+                                        <CardBody>
+                                          <Form className="needs-validation" noValidate="">
+                                            <H6 className="ordersubhead">{t("measurementChart")}</H6>
+                                            <Row className="g-12">
+                                              <div className="table-responsive">
+                                                <table className="table">
+                                                  <thead>
+                                                    <tr>
+                                                      {
+                                                        Object.keys(measurementSheetList).map((key, i) => (
+                                                          (i == 0) ?
+                                                            Object.keys(measurementSheetList[key]).map((k, data) => (
+                                                              <th scope="col" style={{ textTransform:"uppercase"}}>{k}</th>
+                                                            )
+                                                            ) : ""
+                                                        ))
+                                                      }
+                                                    </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                    {
+                                                      Object.keys(measurementSheetList).map((key, i) => (
+                                                        <tr>
+                                                          {
+                                                          Object.keys(measurementSheetList[key]).map((k, data) => (
+                                                            <td scope="col">{measurementSheetList[key][k]}</td>
+                                                          ))
+                                                         } 
+                                                        </tr>
+                                                      ))
+                                                    }
+                                                  </tbody>
+                                                </table>
+                                              </div>
+                                            </Row>
+                                          </Form>
+                                        </CardBody>
+                                      </Card>
+                                    </Col>
+                                  </td>
+                                </>
+                                : ""}
+                            </tr><tr>
+                              {factoryInquiryDetails.measurementSheet ?
+                                <>
+                                  <td className="text-left">{t("measurementSheet")}  </td>
+                                  <td className="text-left">
+                                    <a href={awsUrl + measurementSheet} target="_blank"> {measurementSheet} </a>
+                                  </td>
+                                </>
+                                : ""}
                             </tr><tr>
                               {factoryInquiryDetails.patterns ?
                                 <>
