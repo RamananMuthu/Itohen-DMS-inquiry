@@ -6,6 +6,7 @@ import { getLoginUserId } from '../../../Constant/LoginConstant';
 import { encode, decode, } from "../../../helper"
 import { useSearchParams, } from "react-router-dom";
 import axios from "axios";
+import parse from 'html-react-parser';
 import InquiryNoIcon from "../../../assets/images/dms/icons/inquiryNoIcon.svg";
 import { ServerUrl } from "../../../Constant";
 import FactoryResponseRatingIcon from '../../../assets/images/dms/icons/factoryResponseRatingIcon.svg';
@@ -41,8 +42,8 @@ const FactoryResponse = () => {
         axios
             .post(ServerUrl + "/inquiry-factory-response", getInputParams)
             .then((response) => {
-                // console.log("###", response.data.data);
                 setFactoryRes(response.data.data);
+                // setCommentsString(parse(response.data.data[0].comments));
             })
     }, [])
 
@@ -93,11 +94,11 @@ const FactoryResponse = () => {
                                                         <tr>
                                                             <th scope="col" className="centerAlign">{t("serialNo")}</th>
                                                             <th >{t("Factory")}</th>
-                                                            <th >{t("contactName")}</th>
-                                                            <th className="centerAlign">{t("phoneNumber")}</th>
+                                                            <th >{t("Contact Name")}</th>
+                                                            <th className="centerAlign">{t("Phone Number")}</th>
                                                             <th className="centerAlign">{t("price")}</th>
                                                             <th className="centerAlign">{t("comments")}</th>
-                                                            <th className="centerAlign">{t("rating")}</th>
+                                                            <th className="centerAlign">{t("Rating")}</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -109,7 +110,7 @@ const FactoryResponse = () => {
                                                                 <td >{factRes.contact_person}</td>
                                                                 <td className="centerAlign">{factRes.contact_number}</td>
                                                                 <td className="centerAlign">{factRes.price}</td>
-                                                                <td className="centerAlign">{factRes.comments}</td>
+                                                                <td className="centerAlign">{parse(factRes.comments)}</td>
                                                                 <td className="centerAlign">
                                                                     <img src={FactoryResponseRatingIcon}
                                                                         style={{ cursor: 'pointer' }}
@@ -123,7 +124,7 @@ const FactoryResponse = () => {
                                                             </tr>
                                                         )) :
                                                             <>
-                                                                <tr className="text-center"><td colSpan="7">{t("listFactoryResDeatils")}</td></tr>
+                                                                <tr className="text-center"><td colSpan="7">{t("List Factory Response Details")}</td></tr>
                                                             </>
                                                         }
                                                         < FactoryResponseRatingModal

@@ -497,8 +497,8 @@ const index = () => {
     var media ={};
     media["media_id"]= file.media_id;
     Swal.fire({
-      title: t("deleteThisImage"),
-      text: t("cantRevertBack"),
+      title: t("Are you Sure, You want to Delete this Image?"),
+      text: t("You can't Revert this Back"),
       icon: "warning",
       showCancelButton: true,
       button: t("okLabel"),
@@ -1324,7 +1324,7 @@ const index = () => {
                   <Row>
                     <Col lg="4">
                       <FormGroup>
-                        <Label>{t("fabricComposition")}</Label>
+                        <Label>{t("Fabric Composition")}</Label>
                         <sup className="font-danger">*</sup>
                         <InputGroup>
                           <Input
@@ -1335,7 +1335,7 @@ const index = () => {
                             onChange={(e) => setFabricCom(e.target.value)}
                           >
                             <option Value="" disabled>
-                              {t("selectFabricComposition")}
+                              {t("Select Fabric Composition")}
                             </option>
                             {fabrics.map((fabric) => (
                               <option value={fabric.id}>{fabric.name}</option>
@@ -1404,11 +1404,11 @@ const index = () => {
                                   height="100px"
                                   className="m-10"
                                 />
-                                 <div className="edit m-t-15 m-r-15">
+                                 <div className="edit m-t-30 m-r-30">
                                   <img 
                                     src={deleteIcon} 
-                                    width="50px" 
-                                    height="50px" 
+                                    width="30px" 
+                                    height="30px" 
                                     style={{ cursor: 'pointer' }} 
                                     onClick={()=>
                                       {
@@ -1420,7 +1420,7 @@ const index = () => {
                                  </div>
                               </div>
 
-                              {/* <div className="m-t-15 m-r-15">
+                              {/* <div className="m-t-30 m-r-30">
                               
                                   <img  
                                       src={deleteIcon} 
@@ -1449,7 +1449,7 @@ const index = () => {
                       height="100px"
                       className="m-10"
                     />
-                  <div className="edit m-t-15 m-r-15">
+                  <div className="edit m-t-30 m-r-30">
                     <img 
                           src={deleteIcon} 
                           width="50px" 
@@ -2159,7 +2159,7 @@ const index = () => {
                     <Col lg="12" md="12" sm="12" xs="12">
                       <span className="subTitleLine3 f-left">
                         <H6 className="ordersubhead">
-                          {t("measurementChart")}
+                          {t("Measurement Chart")}
                         </H6>
                       </span>
                     </Col>
@@ -2172,9 +2172,9 @@ const index = () => {
                             <table className="table">
                               <thead>
                                 <tr>
-                                  <th scope="col">{t("position")}</th>
-                                  <th scope="col" colSpan="3">{t("description")}</th>
-                                  <th scope="col">{t("tolerance")}</th>
+                                  <th scope="col">{t("Position")}</th>
+                                  <th scope="col" colSpan="3">{t("Description")}</th>
+                                  <th scope="col">{t("Tolerance")}</th>
                                   {size.map((option) => {
                                     return (
                                       <th scope="col">
@@ -2477,11 +2477,11 @@ const index = () => {
                                 height="100px"
                                 className="m-10"
                               />
-                              <div className="edit m-t-15 m-r-15">
+                              <div className="edit m-t-30 m-r-30">
                                   <img 
                                     src={deleteIcon} 
-                                    width="50px" 
-                                    height="50px" 
+                                    width="30px" 
+                                    height="30px" 
                                     style={{ cursor: 'pointer' }} 
                                     onClick={()=>
                                       {
@@ -2573,11 +2573,11 @@ const index = () => {
                               height="100px"
                               className="m-10"
                             />
-                            <div className="edit m-t-15 m-r-15">
+                            <div className="edit m-t-30 m-r-30">
                                   <img 
                                     src={deleteIcon} 
-                                    width="50px" 
-                                    height="50px" 
+                                    width="30px" 
+                                    height="30px" 
                                     style={{ cursor: 'pointer' }} 
                                     onClick={()=>
                                       {
@@ -2664,11 +2664,11 @@ const index = () => {
                                 height="100px"
                                 className="m-10"
                               />
-                              <div className="edit m-t-15 m-r-15">
+                              <div className="edit m-t-30 m-r-30">
                                     <img 
                                       src={deleteIcon} 
-                                      width="50px" 
-                                      height="50px" 
+                                      width="30px" 
+                                      height="30px" 
                                       style={{ cursor: 'pointer' }} 
                                       onClick={()=>
                                         {
@@ -2749,11 +2749,11 @@ const index = () => {
                                 height="100px"
                                 className="m-10"
                               />
-                            <div className="edit m-t-15 m-r-15">
+                            <div className="edit m-t-30 m-r-30">
                                   <img 
                                     src={deleteIcon} 
-                                    width="50px" 
-                                    height="50px" 
+                                    width="30px" 
+                                    height="30px" 
                                     style={{ cursor: 'pointer' }} 
                                     onClick={()=>
                                       {
@@ -2842,11 +2842,11 @@ const index = () => {
                                 height="100px"
                                 className="m-10"
                               />
-                              <div className="edit m-t-15 m-r-15">
+                              <div className="edit m-t-30 m-r-30">
                                   <img 
                                     src={deleteIcon} 
-                                    width="50px" 
-                                    height="50px" 
+                                    width="30px" 
+                                    height="30px" 
                                     style={{ cursor: 'pointer' }} 
                                     onClick={()=>
                                       {
@@ -2980,12 +2980,12 @@ const index = () => {
                 <Row>
                   <Col lg ="4">
                     <FormGroup>
-                      <Label>{t("polySamImg")}</Label>
+                      <Label>{t("Polybag Sample Image")}</Label>
                       <InputGroup>
                         <Input
                           className=""
                           name="Polybag Image"
-                          placeholder= {t("PlsPolySamImg")}
+                          placeholder= {t("Please attach Polybag Sample Image")}
                           value={
                             polybagSampleImg
                               ? polybagSampleImg
@@ -3031,11 +3031,11 @@ const index = () => {
                                 height="100px"
                                 className="m-10"
                               />
-                              <div className="edit m-t-15 m-r-15">
+                              <div className="edit m-t-30 m-r-30">
                                   <img 
                                     src={deleteIcon} 
-                                    width="50px" 
-                                    height="50px" 
+                                    width="30px" 
+                                    height="30px" 
                                     style={{ cursor: 'pointer' }} 
                                     onClick={()=>
                                       {
@@ -3133,12 +3133,12 @@ const index = () => {
                   </Col>
                   <Col lg="2">
                   <FormGroup>
-                      <Label>{t("cartonSamImage")}</Label>
+                      <Label>{t("Carton Sample Image")}</Label>
                       <InputGroup>
                         <Input
                           className=""
                           name="Carton Sample"
-                          placeholder={t("plsCartonSamImage")}
+                          placeholder={t("Please attach Carton Sample Image")}
                           value={
                             cartonSampleImg
                               ? cartonSampleImg
@@ -3186,11 +3186,11 @@ const index = () => {
                                 height="100px"
                                 className="m-10"
                               />
-                              <div className="edit m-t-15 m-r-15">
+                              <div className="edit m-t-30 m-r-30">
                                   <img 
                                     src={deleteIcon} 
-                                    width="50px" 
-                                    height="50px" 
+                                    width="30px" 
+                                    height="30px" 
                                     style={{ cursor: 'pointer' }} 
                                     onClick={()=>
                                       {

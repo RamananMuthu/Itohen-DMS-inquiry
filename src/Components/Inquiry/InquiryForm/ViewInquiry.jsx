@@ -122,7 +122,7 @@ const ViewInquiry = () => {
   return (
     <Fragment>
       <Row className="pgbgcolor">
-        <Breadcrumbs mainTitle={t("viewInquiry")} parent={t("viewInquiry")} />
+        <Breadcrumbs mainTitle={t("View Inquiry")} parent={t("View Inquiry")} />
       </Row>
       <Container fluid={true} className="general-widget topaln">
         <Row>
@@ -177,7 +177,7 @@ const ViewInquiry = () => {
                                     <img
                                       style={{ cursor: "pointer" }}
                                       className="m-r-30"
-                                      title={t("inquirySentTo")}
+                                      title={t("Inquiry Sent To")}
                                       value={inquirydtls.id}
                                       src={DocumentIcon}
                                       onClick={() => {

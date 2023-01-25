@@ -382,13 +382,13 @@ const FactoryDetailInquiry = () => {
                             </tr><tr>
                               {factoryInquiryDetails.measurement_sheet ?
                                 <>
-                                  <td className="text-left">{t("measurementChart")}  </td>
+                                  <td className="text-left">{t("Measurement Chart")}  </td>
                                   <td className="text-left">
                                     <Col className="table-responsive" md="12" sm="12" lg="12">
                                       <Card>
                                         <CardBody>
                                           <Form className="needs-validation" noValidate="">
-                                            <H6 className="ordersubhead">{t("measurementChart")}</H6>
+                                            {/* <H6 className="ordersubhead">{t("Measurement Chart")}</H6> */}
                                             <Row className="g-12">
                                               <div className="table-responsive">
                                                 <table className="table">
@@ -602,11 +602,11 @@ const FactoryDetailInquiry = () => {
                                 </>
                                 : ""}
                             </tr><tr>
-                              <td className="text-left">{t("polySamImg")} </td>
+                              <td className="text-left">{t("Polybag Sample Image")} </td>
                               <td className="text-left">
                                 {polybagImage.map((obj) => (
                                   <a href={awsUrl + obj} target="_blank">
-                                    < img src={awsUrl + obj} alt={t("polySamImg")} width="80px" height="80px"
+                                    < img src={awsUrl + obj} alt={t("Polybag Sample Image")} width="80px" height="80px"
                                       className="p-r-5 rounded" />
                                   </a>
                                 ))}
@@ -647,11 +647,11 @@ const FactoryDetailInquiry = () => {
                                 </>
                                 : ""}
                             </tr><tr>
-                              <td className="text-left">{t("cartonSamImage")}  </td>
+                              <td className="text-left">{t("Carton Sample Image")}  </td>
                               <td className="text-left">
                                 {cartonImage.map((obj) => (
                                   <a href={awsUrl + obj} target="_blank">
-                                    < img src={awsUrl + obj} alt={t("cartonSamImage")} width="80px" height="80px"
+                                    < img src={awsUrl + obj} alt={t("Carton Sample Image")} width="80px" height="80px"
                                       className="p-r-5 rounded" />
                                   </a>
                                 ))}

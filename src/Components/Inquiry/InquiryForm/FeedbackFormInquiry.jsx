@@ -35,15 +35,15 @@ const FeedbackFormInquiry = () => {
     const [btnStatus, setBtnStatus] = useState(false);
 
     const { t } = useTranslation();
-    // var getInputParams = {};
-    // getInputParams["company_id"] = getLoginCompanyId;
-    // getInputParams["workspace_id"] = getWorkspaceId;
-    // getInputParams["user_id"] = getLoginUserId;
-
     var getInputParams = {};
-    getInputParams["company_id"] = 15;
-    getInputParams["user_id"] = 16;
-    getInputParams["workspace_id"] = 19;
+    getInputParams["company_id"] = getLoginCompanyId;
+    getInputParams["workspace_id"] = getWorkspaceId;
+    getInputParams["user_id"] = getLoginUserId;
+
+    // var getInputParams = {};
+    // getInputParams["company_id"] = 15;
+    // getInputParams["user_id"] = 16;
+    // getInputParams["workspace_id"] = 19;
 
     useEffect(() => {
         setInquiryID(() => "");
