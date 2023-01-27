@@ -131,7 +131,7 @@ const Rightbar = () => {
                 // <img src={plusicon}/>  {t('addNewOrder')} 
                 //  </Link>
                 
-                    getWorkspaceType == "Buyer" ?
+                    getWorkspaceType == "Buyer" || getWorkspaceType == "PCU"  && getWorkspaceType != "Factory" ?
                     <Link to={`${process.env.PUBLIC_URL}/inquiryform`}
                     onClick={ () => { planValidation() }} className= 'btn-pill btn btn-outline-primary btn-md  btn-primary-light' >
                     <img src={plusicon}/>

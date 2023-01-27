@@ -117,8 +117,9 @@ const SidebarMenuItems = ({ setMainMenu, sidebartoogle, setNavActive }) => {
                     
                      
                      {(menuItem.title=='View Inquiry' && (menuItem.active))?<img src={Viewinquiry} />:(menuItem.title=='View Inquiry')?<img src={Viewinquiry}/>:""}
-                     {(menuItem.title=='Inquiry sList' && (menuItem.active))?<img src={InquiryList} />:(menuItem.title=='Inquiry List')?<img src={InquiryList}/>:""}
+                     {(menuItem.title=='Inquiry List' && (menuItem.active))?<img src={InquiryList} />:(menuItem.title=='Inquiry List')?<img src={InquiryList}/>:""}
                      {(menuItem.title=='Feedback Form' && (menuItem.active))?<img src={InquiryList} />:(menuItem.title=='Feedback Form')?<img src={InquiryList}/>:""}
+                     {(menuItem.title=='Inquiry Contacts' && (menuItem.active))?<img src={InquiryList} />:(menuItem.title=='Inquiry Contacts')?<img src={InquiryList}/>:""}
                     
                      
                   {/* {(menuItem.title=='Order Status' && (menuItem.active))?<img src={orderstatusIcon}/>:<img src={orderstatusIcon}/>} */}

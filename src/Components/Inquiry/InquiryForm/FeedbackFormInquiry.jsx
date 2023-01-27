@@ -44,7 +44,7 @@ const FeedbackFormInquiry = () => {
 
     useEffect(() => 
     {
-        if( getWorkspaceType == "Buyer" && getWorkspaceType != "PCU" && getWorkspaceType != "Factory"  )
+        if( getWorkspaceType == "Buyer" || getWorkspaceType == "PCU" && getWorkspaceType != "Factory"  )
         {
             setInquiryID(() => "");
             setFactory(() => "");
@@ -56,7 +56,7 @@ const FeedbackFormInquiry = () => {
                     setInquiryIds(response.data.data);
                 });
         } else {
-             window.location.href='/inquiry/factoryviewinquiry';
+             window.location.href='/factoryviewinquiry';
         }
     }, []);
 

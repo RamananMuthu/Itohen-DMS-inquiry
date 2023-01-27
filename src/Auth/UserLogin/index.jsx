@@ -10,6 +10,8 @@ import {
   Label,
   Button,
 } from "reactstrap";
+
+
 import { H4, P, H5, LI } from "../../AbstractElements";
 import { ServerUrl } from "../../Constant";
 import { i18nextLng } from "../../Constant/LoginConstant";
@@ -228,7 +230,7 @@ const UserLogin = () => {
               });
             } else {
 
-              console.log("WORKSPACE TYPE", response.data.workspaceType);
+              // console.log("WORKSPACE TYPE", response.data.workspaceType);
 
               Swal.fire({
                 title: t("otpVerified"),
@@ -299,7 +301,7 @@ const UserLogin = () => {
                       i18n.changeLanguage(i18n.language=='jp'?'jp':'en');
                     }        
                     if (parseInt(response.data.company_id)>0 ) {
-                        window.location.href = "/inquiry/factoryviewinquiry";
+                        window.location.href = "/factoryviewinquiry";
                     } else {
                       window.location.href = "/companysetting";
                     }

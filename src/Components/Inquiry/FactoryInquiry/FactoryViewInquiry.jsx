@@ -42,7 +42,7 @@ const FactoryViewInquiry = () => {
 
   const factoryDetails = (inquiryId, factoryId) => {
     <FactoryDetailInquiry inquiryId={inquiryId} factoryId={factoryId} />
-      window.location.href = '/inquiry/factorydetailinquiry?id=' + encode(inquiryId);
+    window.location.href = '/inquiry/factorydetailinquiry?id=' + encode(inquiryId);
   }
 
   return (
