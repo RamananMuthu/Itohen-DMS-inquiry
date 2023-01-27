@@ -99,9 +99,9 @@ const UserLogin = () => {
         }
     };
 
-  function hideComponent() {
-    setgetOtp(false);
-  }
+    function hideComponent() {
+      setgetOtp(false);
+    }
 
   /**************** For "GET OTP" =>  Values of 'Email' API (POST) *************************/
   const onGetOtpHandler = () => {
@@ -227,65 +227,87 @@ const UserLogin = () => {
                 }
               });
             } else {
+
+              console.log("WORKSPACE TYPE", response.data.workspaceType);
+
               Swal.fire({
                 title: t("otpVerified"),
                 icon: "success",
                 button: t("okLabel"),
-                timer: 2000,
                 confirmButtonColor: "#4E90DE",
               })
               .then((result) => {
-                //  if(result.isConfirmed){
-                  
-                document.cookie = `apiToken= ${response.data.token}`;
-                document.cookie=`companyId= ${response.data.company_id!=null?encode(response.data.company_id): null}`;
-                document.cookie=`userId= ${encode(response.data.user_id)}`;
-                document.cookie=`userName= ${encode(response.data.user_name)}`;
-                document.cookie=`language= ${encode(response.data.language)}`;
-                
-                document.cookie=`staffId= ${encode(0)}`;
-                document.cookie=`loginType= ${encode("user")}`;
-                document.cookie=`workspaceId= ${response.data.workspace_id!=""?encode(response.data.workspace_id):0}`;
-                document.cookie=`workspaceName= ${response.data.workspaceName!=""?encode(response.data.workspaceName):""}`;
-                document.cookie=`workspaceType= ${response.data.workspaceName!=""?encode(response.data.workspaceType):""}`;
+                  if(result.isConfirmed)
+                {
+                  if( response.data.workspaceType == "Buyer"){
 
-                localStorage.clear();
-                localStorage.setItem("apiToken", response.data.token);
-                localStorage.setItem("companyId", response.data.company_id!=null?encode(response.data.company_id): null);
-                localStorage.setItem("userId", encode(response.data.user_id));
-                localStorage.setItem("userName", encode(response.data.user_name));
-                localStorage.setItem("language", encode(response.data.language));
-             
-                // localStorage.setItem(
-                //   "staffId",
-                //   response.data.staff_id > 0 ? response.data.staff_id : 0
-                // );
-                localStorage.setItem("staffId",encode(0));
-                localStorage.setItem("loginType", encode("user"));
-                localStorage.setItem("workspaceId",response.data.workspace_id!=""?encode(response.data.workspace_id):0);
-                localStorage.setItem("workspaceName",response.data.workspaceName!=""?encode(response.data.workspaceName):"");
-                localStorage.setItem("workspaceType",response.data.workspaceName!=""?encode(response.data.workspaceType):"");
-                if (
-                  response.data.dateformat != "" &&
-                  response.data.dateformat != null
-                ) {
-                  localStorage.setItem("dateFormat", encode(response.data.dateformat));
-                } else {
-                  localStorage.setItem("dateFormat", "");
+                      localStorage.clear();
+                      localStorage.setItem("apiToken", response.data.token);
+                      localStorage.setItem("companyId", response.data.company_id!=null?encode(response.data.company_id): null);
+                      localStorage.setItem("userId", encode(response.data.user_id));
+                      localStorage.setItem("userName", encode(response.data.user_name));
+                      localStorage.setItem("language", encode(response.data.language));
+                      localStorage.setItem("staffId",encode(0));
+                      localStorage.setItem("loginType", encode("user"));
+                      localStorage.setItem("workspaceId",response.data.workspace_id!=""?encode(response.data.workspace_id):0);
+                      localStorage.setItem("workspaceName",response.data.workspaceName!=""?encode(response.data.workspaceName):"");
+                      localStorage.setItem("workspaceType",response.data.workspaceName!=""?encode(response.data.workspaceType):"");
+                      if (
+                        response.data.dateformat != "" &&
+                        response.data.dateformat != null
+                      ) {
+                        localStorage.setItem("dateFormat", encode(response.data.dateformat));
+                      } else {
+                        localStorage.setItem("dateFormat", "");
+                      }
+                      if (parseInt(response.data.company_id)>0) {
+                        i18n.changeLanguage(response.data.language);
+                      }else{
+                        i18n.changeLanguage(i18n.language=='jp'?'jp':'en');
+                      }        
+                      if (parseInt(response.data.company_id)>0 ) {
+                          window.location.href = "/inquiry/viewinquiry";
+                      } else {
+                        window.location.href = "/companysetting";
+                      }
+
+                  } else if( response.data.workspaceType == "Factory" )
+                  {
+                    
+                    localStorage.clear();
+                    localStorage.setItem("apiToken", response.data.token);
+                    localStorage.setItem("companyId", response.data.company_id!=null?encode(response.data.company_id): null);
+                    localStorage.setItem("userId", encode(response.data.user_id));
+                    localStorage.setItem("userName", encode(response.data.user_name));
+                    localStorage.setItem("language", encode(response.data.language));
+                    localStorage.setItem("staffId",encode(0));
+                    localStorage.setItem("loginType", encode("user"));
+                    localStorage.setItem("workspaceId",response.data.workspace_id!=""?encode(response.data.workspace_id):0);
+                    localStorage.setItem("workspaceName",response.data.workspaceName!=""?encode(response.data.workspaceName):"");
+                    localStorage.setItem("workspaceType",response.data.workspaceName!=""?encode(response.data.workspaceType):"");
+                    if (
+                      response.data.dateformat != "" &&
+                      response.data.dateformat != null
+                    ) {
+                      localStorage.setItem("dateFormat", encode(response.data.dateformat));
+                    } else {
+                      localStorage.setItem("dateFormat", "");
+                    }
+                    if (parseInt(response.data.company_id)>0) {
+                      i18n.changeLanguage(response.data.language);
+                    }else{
+                      i18n.changeLanguage(i18n.language=='jp'?'jp':'en');
+                    }        
+                    if (parseInt(response.data.company_id)>0 ) {
+                        window.location.href = "/inquiry/factoryviewinquiry";
+                    } else {
+                      window.location.href = "/companysetting";
+                    }
+                  } else {
+                    window.location.href = "/adminlogin";
+                  }
                 }
-                if (parseInt(response.data.company_id)>0) {
-                  i18n.changeLanguage(response.data.language);
-                }else{
-                  i18n.changeLanguage(i18n.language=='jp'?'jp':'en');
-                }
-                  // setTimeout(() => {
-                if (parseInt(response.data.company_id)>0 ) {
-                    window.location.href = "/inquiry/viewinquiry";
-                } else {
-                  window.location.href = "/companysetting";
-                }
-                // }, 100);
-                //  }
+
               });
             }
           } 
@@ -299,16 +321,8 @@ const UserLogin = () => {
             // });
 
             setsignupdisable(true);
-          } else if (response.data.status_code === 400) {
-            
+          } else if (response.data.status_code === 400) {          
             otpValidation(response.data.message);
-            
-            // Swal.fire({
-            //   title: t("inCorrectOtp"),
-            //   icon: "error",
-            //   button: t("okLabel"),
-            // });
-
             setsignupdisable(true);
           }
         });

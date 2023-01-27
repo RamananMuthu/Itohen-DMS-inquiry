@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import { Container, Row, Col, CardBody, Card, } from "reactstrap";
 import { Breadcrumbs } from "../../../AbstractElements";
 import Loader from "../../../Layout/Loader/index";
-import { getLoginUserId } from '../../../Constant/LoginConstant';
+import { getLoginUserId, getWorkspaceType } from '../../../Constant/LoginConstant';
 import { encode, decode, } from "../../../helper"
 import { useSearchParams, } from "react-router-dom";
 import axios from "axios";
@@ -25,11 +25,14 @@ const FactoryResponse = () => {
     const { t } = useTranslation();
     const getInputParams = {};
     getInputParams["inquiry_id"] = inquiryId;
-    const factoryRatingInputParams = {};
-    factoryRatingInputParams["factory_id"] = factoryId;
-    factoryRatingInputParams["user_id"] = userId;
+    getInputParams["factory_id"] = factoryId;
 
     const apiCallFactoryRating = (factoryId) => {
+
+        const factoryRatingInputParams = {};
+        factoryRatingInputParams["factory_id"] = factoryId;
+        factoryRatingInputParams["user_id"] = userId;
+
         axios
             .post(ServerUrl + "/get-factory-ratings", factoryRatingInputParams)
             .then((response) => {
@@ -39,12 +42,19 @@ const FactoryResponse = () => {
     }
 
     useEffect(() => {
-        axios
+
+         if( getWorkspaceType == "Factory" && getWorkspaceType != "PCU" && getWorkspaceType != "Buyer"  )
+         {
+            axios
             .post(ServerUrl + "/inquiry-factory-response", getInputParams)
             .then((response) => {
                 setFactoryRes(response.data.data);
                 // setCommentsString(parse(response.data.data[0].comments));
             })
+         } else {
+             window.location.href='/inquiry/viewinquiry';
+         }
+        
     }, [])
 
     return (
@@ -117,7 +127,7 @@ const FactoryResponse = () => {
                                                                         width="23px"
                                                                         onClick={() => {
                                                                             setFactoryId(factRes.factory_id),
-                                                                            apiCallFactoryRating(), setModalRating(!modalRating)
+                                                                            apiCallFactoryRating(factRes.factory_id), setModalRating(!modalRating)
                                                                         }}
                                                                     />
                                                                 </td>

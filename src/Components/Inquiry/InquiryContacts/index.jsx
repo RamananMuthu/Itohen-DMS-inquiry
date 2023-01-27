@@ -4,7 +4,7 @@ import {
 } from "reactstrap";
 import React, { Fragment, useState, useEffect } from "react";
 import { Breadcrumbs, H5, H6, } from "../../../AbstractElements";
-import { getLoginUserId, getLoginCompanyId, getWorkspaceId, }
+import { getLoginUserId, getLoginCompanyId, getWorkspaceId, getWorkspaceType }
   from '../../../Constant/LoginConstant';
 import { useTranslation } from 'react-i18next';
 import Swal from 'sweetalert2';
@@ -30,7 +30,9 @@ const InquiryContacts = () => {
   const [factoryDetails, setFactoryDetails] = useState([]);
 
   useEffect(() => {
-    axios
+    if( getWorkspaceType == "Factory" && getWorkspaceType != "PCU" && getWorkspaceType != "Buyer"  )
+    {
+      axios
       .post(ServerUrl + "/factory-inquiry-contact", { factory_id })
       .then((response) => {
         if (response.data.status_code === 200) {
@@ -38,6 +40,10 @@ const InquiryContacts = () => {
           setValidErrors(() => "");
         }
       })
+    } else {
+      window.location.href='/inquiry/viewinquiry';
+    }
+   
   }, [])
 
   const handleSubmitHandler = (e) => {

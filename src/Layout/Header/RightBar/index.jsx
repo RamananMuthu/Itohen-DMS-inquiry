@@ -18,7 +18,7 @@ import Swal from 'sweetalert2';
 import { Card } from 'reactstrap';
 import { LogOut } from 'react-feather';
 import { getStaff, getStaffPermission, getLoginCompanyId, 
-         getWorkspaceId, getLoginUserId, getLoginStaffId }
+         getWorkspaceId, getLoginUserId, getLoginStaffId, getWorkspaceType }
           from '../../../Constant/LoginConstant';
 import { useTranslation } from 'react-i18next';
 import { apidecrypt, apiencrypt } from '../../../helper';
@@ -130,13 +130,16 @@ const Rightbar = () => {
                 //  className="btn-pill btn btn-outline-primary btn-md" >
                 // <img src={plusicon}/>  {t('addNewOrder')} 
                 //  </Link>
-
-                <Link to={`${process.env.PUBLIC_URL}/inquiryform`}
-                onClick={ () => { planValidation() }} className= 'btn-pill btn btn-outline-primary btn-md  btn-primary-light' >
-                <img src={plusicon}/>
-                    {/* {t('addNewOrder')}  */}
-                    Create New Inquiry 
-                </Link>
+                
+                    getWorkspaceType == "Buyer" ?
+                    <Link to={`${process.env.PUBLIC_URL}/inquiryform`}
+                    onClick={ () => { planValidation() }} className= 'btn-pill btn btn-outline-primary btn-md  btn-primary-light' >
+                    <img src={plusicon}/>
+                        {/* {t('addNewOrder')}  */}
+                        Create New Inquiry 
+                    </Link>
+                    :
+                    ""
                 :
                 ""}
             </LI>

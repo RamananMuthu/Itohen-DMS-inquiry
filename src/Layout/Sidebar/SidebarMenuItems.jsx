@@ -24,6 +24,9 @@ import companyIcon from "../../assets/images/dms/icons/company_profile.svg";
 import companyIconWhite from "../../assets/images/dms/icons/company_white.svg";
 import calendarIconWhite from "../../assets/images/dms/icons/Calendar_white.svg";
 import calendarIcon from "../../assets/images/dms/icons/Calendar.svg";
+
+import Viewinquiry from "../../assets/images/dms/icons/viewinquiry.svg";
+import InquiryList from "../../assets/images/dms/icons/viewinquiry.svg";
 import { getStaff, getModules } from '../../Constant/LoginConstant';
 // import help from "../../assets/images/dms/icons/help.png";
 
@@ -112,6 +115,10 @@ const SidebarMenuItems = ({ setMainMenu, sidebartoogle, setNavActive }) => {
                      {(menuItem.title=='Company Profile' && (menuItem.active))?<img src={companyIconWhite}/>:(menuItem.title=='Company Profile')?<img src={companyIcon}/>:""}
                      {(menuItem.title=='Calendar Configuration' && (menuItem.active))?<img src={calendarIconWhite} />:(menuItem.title=='Calendar Configuration')?<img src={calendarIcon}/>:""}
                     
+                     
+                     {(menuItem.title=='Factory View Inquiry' && (menuItem.active))?<img src={Viewinquiry} />:(menuItem.title=='Factory View Inquiry')?<img src={Viewinquiry}/>:""}
+                     {(menuItem.title=='Inquiry sList' && (menuItem.active))?<img src={InquiryList} />:(menuItem.title=='Inquiry List')?<img src={InquiryList}/>:""}
+                     {(menuItem.title=='Feedback Form' && (menuItem.active))?<img src={InquiryList} />:(menuItem.title=='Feedback Form')?<img src={InquiryList}/>:""}
                     
                      
                   {/* {(menuItem.title=='Order Status' && (menuItem.active))?<img src={orderstatusIcon}/>:<img src={orderstatusIcon}/>} */}

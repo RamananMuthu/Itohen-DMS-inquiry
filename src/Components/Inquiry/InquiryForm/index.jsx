@@ -348,6 +348,8 @@ const index = () => {
   };
 
   useEffect(() => {
+    if( getWorkspaceType == "Buyer" && getWorkspaceType != "PCU" && getWorkspaceType != "Factory"  )
+    {
     axios
       .post(ServerUrl + "/get-color", apiencrypt(getInputParams))
       .then((response) => {
@@ -389,6 +391,9 @@ const index = () => {
           setShowTopBtn(false);
       }
   });
+  } else {
+    window.location.href="/inquiry/factoryviewinquiry";
+  }
   }, []);
   // const uploadImageApiCall = (imageType, file) =>{
   //   console.log("uploadImage:", imageType);

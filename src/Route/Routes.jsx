@@ -11,13 +11,28 @@ import FactoryResponse from '../Components/Inquiry/InquiryForm/FactoryResponse';
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem("apiToken");
 
 export const routes = [
-        { path: `${process.env.PUBLIC_URL}/inquiryform`, Component: <InquiryForm/>  },
-        { path: `${process.env.PUBLIC_URL}/viewinquiry`, Component: <ViewInquiry/>  },
-        { path: `${process.env.PUBLIC_URL}/factorydetailinquiry`, Component: <FactoryDetailInquiry/>  },
-        { path: `${process.env.PUBLIC_URL}/factoryviewinquiry`, Component: <FactoryViewInquiry/>  },
-        { path: `${process.env.PUBLIC_URL}/inquirycontacts`, Component: <InquiryContacts/>  },
-        { path: `${process.env.PUBLIC_URL}/feedbackform`, Component: <FeedbackForm/>},    
-        { path: `${process.env.PUBLIC_URL}/factoryresponse`, Component: <FactoryResponse/>}
+
+        /*************************************  STAGING *************************************/
+                 { path: `${process.env.PUBLIC_URL}/inquiryform`, Component: <InquiryForm/>  },
+                 { path: `${process.env.PUBLIC_URL}/viewinquiry`, Component: <ViewInquiry/>  },
+                 { path: `${process.env.PUBLIC_URL}/factorydetailinquiry`, Component: <FactoryDetailInquiry/>  },
+                 { path: `${process.env.PUBLIC_URL}/factoryviewinquiry`, Component: <FactoryViewInquiry/>  },
+                 { path: `${process.env.PUBLIC_URL}/inquirycontacts`, Component: <InquiryContacts/>  },
+                 { path: `${process.env.PUBLIC_URL}/feedbackform`, Component: <FeedbackForm/>}, 
+                 { path: `${process.env.PUBLIC_URL}/factoryresponse`, Component: <FactoryResponse/>},
+        /************************************************************************************/
+
+
+        /*************************************  LOCAL *************************************/
+                // { path: `${process.env.PUBLIC_URL}/inquiryform`, Component: <InquiryForm/>  },
+                // { path: `${process.env.PUBLIC_URL}/inquiry/viewinquiry`, Component: <ViewInquiry/>  },
+                // { path: `${process.env.PUBLIC_URL}/inquiry/factorydetailinquiry`, Component: <FactoryDetailInquiry/>  },
+                // { path: `${process.env.PUBLIC_URL}/inquiry/factoryviewinquiry`, Component: <FactoryViewInquiry/>  },
+                // { path: `${process.env.PUBLIC_URL}/inquirycontacts`, Component: <InquiryContacts/>  },
+                // { path: `${process.env.PUBLIC_URL}/feedbackform`, Component: <FeedbackForm/>}, 
+                // { path: `${process.env.PUBLIC_URL}/inquiry/factoryresponse`, Component: <FactoryResponse/>}
+        /************************************************************************************/
+
 ];
 
 

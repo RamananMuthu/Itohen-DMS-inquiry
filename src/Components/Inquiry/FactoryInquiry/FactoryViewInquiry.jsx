@@ -4,14 +4,16 @@ import { Breadcrumbs } from "../../../AbstractElements";
 import DocumentIcon from "../../../assets/images/dms/icons/inquiryDocumentIcon.svg";
 import axios from "axios";
 import { encode,  } from "../../../helper"
-import { getLoginCompanyId, getWorkspaceId, getLoginUserId } from '../../../Constant/LoginConstant';
+import { getLoginCompanyId, getWorkspaceId, getLoginUserId, getWorkspaceType } from '../../../Constant/LoginConstant';
 import { useTranslation } from 'react-i18next';
 import { ServerUrl } from "../../../Constant";
 import FactoryDetailInquiry from "./FactoryDetailInquiry";
 
 const FactoryViewInquiry = () => {
+
   const workspace_id = getWorkspaceId;
   const company_id = getLoginCompanyId;
+
   var getInputParams = {};
   getInputParams['company_id'] = getLoginCompanyId;
   getInputParams['workspace_id'] = getWorkspaceId;
@@ -22,17 +24,25 @@ const FactoryViewInquiry = () => {
   const [inquiryResponse, setInquiryResponse] = useState([]);
 
   useEffect(() => {
-    axios
+
+    if( getWorkspaceType == "Factory" && getWorkspaceType != "PCU" && getWorkspaceType != "Buyer" )
+    { 
+      axios
       .post(ServerUrl + "/factory-get-inquiry", getInputParams)
       .then((response) => {
+
         setInquiryDetails(response.data.data);
         setInquiryResponse(response.data.response);
       })
+    } else {
+      window.location.href='/inquiry/viewinquiry';
+    }
+
   }, [])
 
-  const factoryDetails = (inquiryId) => {
-    <FactoryDetailInquiry inquiryId={inquiryId} />
-    window.location.href = '/inquiry/factorydetailinquiry?id=' + encode(inquiryId);
+  const factoryDetails = (inquiryId, factoryId) => {
+    <FactoryDetailInquiry inquiryId={inquiryId} factoryId={factoryId} />
+      window.location.href = '/inquiry/factorydetailinquiry?id=' + encode(inquiryId);
   }
 
   return (
@@ -81,7 +91,7 @@ const FactoryViewInquiry = () => {
                                     className="m-r-30"
                                     src={DocumentIcon}
                                     onClick={() => {
-                                      factoryDetails(inquirydtls.id)
+                                      factoryDetails(inquirydtls.id, inquirydtls.factory_id)
                                     }}
                                   />
                                 </td>

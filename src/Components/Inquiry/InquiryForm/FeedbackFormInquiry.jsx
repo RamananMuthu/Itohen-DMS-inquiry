@@ -3,7 +3,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import { Form, Label, Card, CardBody, Col, Row, Input, FormGroup, Container } from "reactstrap";
 import axios from "axios";
 import {
-    getLoginCompanyId, getWorkspaceId, getLoginUserId
+    getLoginCompanyId, getWorkspaceId, getLoginUserId, getWorkspaceType
 } from '../../../Constant/LoginConstant';
 import Swal from "sweetalert2";
 import { Breadcrumbs, } from '../../../AbstractElements';
@@ -20,6 +20,7 @@ const FeedbackFormInquiry = () => {
     const [ratingGoodSell, setRatingGoodSell] = useState();
     const [ratingOnTimeSampleSubmit, setRatingOnTimeSampleSubmit] = useState();
     const [ratingCollabrative, setRatingCollabrative] = useState();
+
     const [inquiryIds, setInquiryIds] = useState([]);
     const [inquiryID, setInquiryID] = useState('');
     const [factory, setFactory] = useState('');
@@ -35,28 +36,28 @@ const FeedbackFormInquiry = () => {
     const [btnStatus, setBtnStatus] = useState(false);
 
     const { t } = useTranslation();
+    
     var getInputParams = {};
     getInputParams["company_id"] = getLoginCompanyId;
     getInputParams["workspace_id"] = getWorkspaceId;
     getInputParams["user_id"] = getLoginUserId;
 
-    // var getInputParams = {};
-    // getInputParams["company_id"] = 15;
-    // getInputParams["user_id"] = 16;
-    // getInputParams["workspace_id"] = 19;
-
-    useEffect(() => {
-        setInquiryID(() => "");
-        setFactory(() => "");
-        setFactoriesListData(() => "");
-
-        axios
-            .post(ServerUrl + "/get-buyer-inquiry-list", getInputParams)
-            .then((response) => {
-                // response.data = apidecrypt(response.data);
-                setInquiryIds(response.data.data);
-            });
-        // console.log("inquiryID", inquiryID, "factory", factory, "factoriesListData", factoriesListData);
+    useEffect(() => 
+    {
+        if( getWorkspaceType == "Buyer" && getWorkspaceType != "PCU" && getWorkspaceType != "Factory"  )
+        {
+            setInquiryID(() => "");
+            setFactory(() => "");
+            setFactoriesListData(() => "");
+    
+            axios.post(ServerUrl + "/get-buyer-inquiry-list", getInputParams)
+                .then((response) => {
+                    // response.data = apidecrypt(response.data);
+                    setInquiryIds(response.data.data);
+                });
+        } else {
+             window.location.href='/inquiry/factoryviewinquiry';
+        }
     }, []);
 
     const factoryCall = (id) => {
@@ -108,49 +109,74 @@ const FeedbackFormInquiry = () => {
             .post(ServerUrl + "/check-factory-feedback", feedbackFormDataInputParams)
             .then((response) => {
                 // response.data = apidecrypt(response.data);
-                if (response.data.data.length > 0) {
-                    setBtnStatus(true);
+                if( response.data.status_code == 201){
+                    if (response.data.data.length > 0) {
+                        setBtnStatus(true);
+    
+                        setRatingLowestPrice(response.data.data[0].lowest_price);
+                        setRatingCommunication(response.data.data[0].collaborative_approach);
+                        setRatingOnTimeDelivery(response.data.data[0].ontime_delivery);
+                        setRatingLessQuantityIssues(response.data.data[0].less_quality_issue);
+                        setRatingVBRelationship(response.data.data[0].vendor_buyer_relation);
+                        setRatingGoodSell(response.data.data[0].good_sell_through);
+                        setRatingOnTimeSampleSubmit(response.data.data[0].sample_submission);
+                        setRatingCollabrative(response.data.data[0].collaborative_approach);
+    
+                        setLowestPriceComment(response.data.data[0].lowest_price_comments);
+                        setEffiCommunicationComment(response.data.data[0].communication_comments);
+                        setOnTimeDeliveryComment(response.data.data[0].ontime_delivery_comments);
+                        setLessQuantityComment(response.data.data[0].less_quality_issue_comments);
+                        setVbRelationshipComment(response.data.data[0].vendor_buyer_relation_comments);
+                        setGoodSellComment(response.data.data[0].good_sell_through_comments);
+                        setOnTimeSampleSubmitComment(response.data.data[0].sample_submission_comments);
+                        setCollabrativeComment(response.data.data[0].collaborative_approach_comments);
+    
+                    } else {
+                        setBtnStatus(false);
+    
+                        setRatingLowestPrice(() => "");
+                        setRatingCommunication(() => "");
+                        setRatingOnTimeDelivery(() => "");
+                        setRatingLessQuantityIssues(() => "");
+                        setRatingVBRelationship(() => "");
+                        setRatingGoodSell(() => "");
+                        setRatingOnTimeSampleSubmit(() => "");
+                        setRatingCollabrative(() => "");
+    
+                        setLowestPriceComment(() => "");
+                        setEffiCommunicationComment(() => "");
+                        setOnTimeDeliveryComment(() => "");
+                        setFactoriesListData(() => "");
+                        setLessQuantityComment(() => "");
+                        setVbRelationshipComment(() => "");
+                        setGoodSellComment(() => "");
+                        setOnTimeSampleSubmitComment(() => "");
+                        setCollabrativeComment(() => "");
+                    }
+                } else if( response.data.status_code == 200 ){
+                        
+                        setBtnStatus(false);
+                        
+                        setRatingLowestPrice(() => "");
+                        setRatingCommunication(() => "");
+                        setRatingOnTimeDelivery(() => "");
+                        setRatingLessQuantityIssues(() => "");
+                        setRatingVBRelationship(() => "");
+                        setRatingGoodSell(() => "");
+                        setRatingOnTimeSampleSubmit(() => "");
+                        setRatingCollabrative(() => "");
+    
+                        setLowestPriceComment(() => "");
+                        setEffiCommunicationComment(() => "");
+                        setOnTimeDeliveryComment(() => "");
+                        setLessQuantityComment(() => "");
+                        setVbRelationshipComment(() => "");
+                        setGoodSellComment(() => "");
+                        setOnTimeSampleSubmitComment(() => "");
+                        setCollabrativeComment(() => "");
 
-                    setRatingLowestPrice(response.data.data[0].lowest_price);
-                    setRatingCommunication(response.data.data[0].collaborative_approach);
-                    setRatingOnTimeDelivery(response.data.data[0].ontime_delivery);
-                    setRatingLessQuantityIssues(response.data.data[0].less_quality_issue);
-                    setRatingVBRelationship(response.data.data[0].vendor_buyer_relation);
-                    setRatingGoodSell(response.data.data[0].good_sell_through);
-                    setRatingOnTimeSampleSubmit(response.data.data[0].sample_submission);
-                    setRatingCollabrative(response.data.data[0].collaborative_approach);
-
-                    setLowestPriceComment(response.data.data[0].lowest_price_comments);
-                    setEffiCommunicationComment(response.data.data[0].communication_comments);
-                    setOnTimeDeliveryComment(response.data.data[0].ontime_delivery_comments);
-                    setLessQuantityComment(response.data.data[0].less_quality_issue_comments);
-                    setVbRelationshipComment(response.data.data[0].vendor_buyer_relation_comments);
-                    setGoodSellComment(response.data.data[0].good_sell_through_comments);
-                    setOnTimeSampleSubmitComment(response.data.data[0].sample_submission_comments);
-                    setCollabrativeComment(response.data.data[0].collaborative_approach_comments);
-
-                } else {
-                    setBtnStatus(false);
-
-                    setRatingLowestPrice(() => "");
-                    setRatingCommunication(() => "");
-                    setRatingOnTimeDelivery(() => "");
-                    setRatingLessQuantityIssues(() => "");
-                    setRatingVBRelationship(() => "");
-                    setRatingGoodSell(() => "");
-                    setRatingOnTimeSampleSubmit(() => "");
-                    setRatingCollabrative(() => "");
-
-                    setLowestPriceComment(() => "");
-                    setEffiCommunicationComment(() => "");
-                    setOnTimeDeliveryComment(() => "");
-                    setFactoriesListData(() => "");
-                    setLessQuantityComment(() => "");
-                    setVbRelationshipComment(() => "");
-                    setGoodSellComment(() => "");
-                    setOnTimeSampleSubmitComment(() => "");
-                    setCollabrativeComment(() => "");
-                }
+                } 
+                 
             });
 
     }
@@ -190,26 +216,53 @@ const FeedbackFormInquiry = () => {
         feedbackInputParams["collaborative_approach"] = ratingCollabrative;
         feedbackInputParams["ollaborative_approach_comments"] = collabrativeComment;
 
-        /*--------------- API CALL [ save-factory-feedback ] --------------- */
-        axios
-            .post(ServerUrl + "/save-factory-feedback", feedbackInputParams)
-            .then((response) => {
-                if (response.data.status_code == 200) {
-                    Swal.fire({
-                        title: t("FeedBack Added Successfully"),
-                        // text: t(response.data.message),
-                        icon: "success",
-                        button: t("okLabel"),
-                        allowOutsideClick: false,
-                        timer: 2000
-                    }).then((result) => {
-                        window.location.reload();
-                        if (result.isConfirmed) {
-                            window.location.reload();
-                        }
-                    })
-                }
-            });
+        if( 
+            ratingLowestPrice == "" || 
+            lowestPriceComment == "" || 
+            ratingCommunication == "" ||
+            effiCommunicationComment == "" ||  
+            ratingOnTimeDelivery == "" || 
+            onTimeDeliveryComment == "" || 
+            ratingLessQuantityIssues == "" || 
+            lessQuantityComment == "" || 
+            ratingVBRelationship == "" || 
+            vbRelationshipComment == "" || 
+            ratingGoodSell == "" || 
+            goodSellComment == "" || 
+            ratingOnTimeSampleSubmit == "" || 
+            onTimeSampleSubmitComment == "" || 
+            ratingCollabrative == "" || 
+            collabrativeComment == "" ){
+                Swal.fire({
+                    title: " Please Complete the Feedback ",
+                    text: "Incomplete Data",
+                    icon: "warning",
+                    allowOutsideClick: false,
+                    timer: 2500
+                })
+            } else {
+                /*--------------- API CALL [ save-factory-feedback ] --------------- */
+                axios
+                .post(ServerUrl + "//save-factory-feedback", feedbackInputParams)
+                .then((response) => {
+                    if (response.data.status_code == 200) {  
+                            Swal.fire({
+                                title: t("FeedBack Added Successfully"),
+                                // text: t(response.data.message),
+                                icon: "success",
+                                button: t("okLabel"),
+                                allowOutsideClick: false,
+                                timer: 2000
+                            }).then((result) => {
+                                window.location.reload();
+                                if (result.isConfirmed) {
+                                    window.location.reload();
+                                }
+                            })
+                        
+                    }
+                });
+            }
     }
 
     return (

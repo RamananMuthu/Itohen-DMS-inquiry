@@ -9,7 +9,7 @@ import deleteIcon from "../../../assets/images/dms/icons/inquiryDeleteIcon.svg";
 import axios from "axios";
 import ViewFactoryModal from "./ViewFactoryModal";
 import { encode, apiencrypt, } from "../../../helper";
-import { getLoginCompanyId, getWorkspaceId, } from "../../../Constant/LoginConstant";
+import { getLoginCompanyId, getWorkspaceId, getWorkspaceType } from "../../../Constant/LoginConstant";
 import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
 import { ServerUrl } from "../../../Constant";
@@ -44,23 +44,27 @@ const ViewInquiry = () => {
   };
 
   useEffect(() => {
-    axios.post(ServerUrl + "/get-inquiry", getInputParams).then((response) => {
-      setInquiryDetails(response.data.data);
-      setInquiryDownloadPath(response.data.pdfpath);
-    });
-
-    axios
-      .post(
-        ServerUrl + "/get-inquiry-factory",
-        apiencrypt(dataToSendAtStarting)
-      )
-      .then((response) => {
-        // response.data = apidecrypt(response.data)
-        setFactory(response.data.data);
+     if( getWorkspaceType == "Buyer" && getWorkspaceType != "PCU" && getWorkspaceType != "Factory"  )
+     {
+      axios.post(ServerUrl + "/get-inquiry", getInputParams).then((response) => {
+        setInquiryDetails(response.data.data);
+        setInquiryDownloadPath(response.data.pdfpath);
       });
+  
+      axios.post(
+          ServerUrl + "/get-inquiry-factory",
+          apiencrypt(dataToSendAtStarting)).then((response) => {
+          // response.data = apidecrypt(response.data)
+          setFactory(response.data.data);
+        });
+     } else {
+       window.location.href='/inquiry/factoryviewinquiry';
+     }
+   
   }, []);
 
   const factResponse = (inquiryId) => {
+    // console.log("Factory response", factoryId);
     window.location.href = "/inquiry/factoryresponse?id=" + encode(inquiryId);
   };
 
