@@ -1,7 +1,8 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { Container, Row, Col, CardBody, Card } from "reactstrap";
 import { Breadcrumbs } from "../../../AbstractElements";
-import InquiryDowloadIcon from "../../../assets/images/dms/icons/inquirydownload.svg";
+//import InquiryDowloadIcon from "../../../assets/images/dms/icons/inquirydownload.svg";
+import InquiryViewIcon from "../../../assets/images/dms/inquiryViewIcon.svg";
 import addIcon from "../../../assets/images/dms/icons/addIcon.svg";
 import DocumentIcon from "../../../assets/images/dms/icons/inquiryDocumentIcon.svg";
 import shareIcon from "../../../assets/images/dms/icons/inquiryShareIcon.svg";
@@ -161,7 +162,7 @@ const ViewInquiry = () => {
                                     <a href={inquiryDownloadPath + inquirydtls.id + ".pdf"}
                                       target="_blank">
                                       <img style={{ cursor: "pointer" }} className="m-r-30"
-                                        title={t("inquiryDetailsDownload")} src={InquiryDowloadIcon}
+                                        title={t("viewInquiryDetails")} src={InquiryViewIcon}
                                       />
                                     </a>
                                     <img name="inquiryId"

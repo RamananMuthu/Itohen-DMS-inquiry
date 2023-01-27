@@ -243,7 +243,7 @@ const FeedbackFormInquiry = () => {
             } else {
                 /*--------------- API CALL [ save-factory-feedback ] --------------- */
                 axios
-                .post(ServerUrl + "//save-factory-feedback", feedbackInputParams)
+                .post(ServerUrl + "/save-factory-feedback", feedbackInputParams)
                 .then((response) => {
                     if (response.data.status_code == 200) {  
                             Swal.fire({
