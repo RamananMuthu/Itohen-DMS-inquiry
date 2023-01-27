@@ -43,7 +43,7 @@ const FactoryResponse = () => {
 
     useEffect(() => {
 
-         if( getWorkspaceType == "Factory" && getWorkspaceType != "PCU" && getWorkspaceType != "Buyer"  )
+         if( getWorkspaceType == "Buyer" && getWorkspaceType != "PCU" && getWorkspaceType != "Factory"  )
          {
             axios
             .post(ServerUrl + "/inquiry-factory-response", getInputParams)
