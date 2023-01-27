@@ -896,6 +896,7 @@
     "ValidFileFormatsDocuments": "Valid file formats are .pdf, .xls, .xlsx",
     "inquiryAddedSuccessfully": "Inquiry Added Successfully",
     "factoryResponse": "Factory Response",
+    "factoryDetails": "Factory Details",
     "Inquiry Response Added Successfully": "Inquiry Response Added Successfully",
     "pleaseEnterPrice": "Please enter price",
     "comments": "Comments",
@@ -921,7 +922,7 @@
     "inquiryNo": "Inquiry No",
     "itemsArticleName": "Items/Article Name",
     "response": "Response",
-    "factoryViewInquiry": "Factory View Inquiry",
+    "factoryViewInquiry": "View Inquiry",
     "factoryDetailInquiry": "Factory Detail Inquiry",
     "inquiryDate": "Inquiry Date",
     "enterCityName": "Please Enter the City Name",
@@ -969,5 +970,7 @@
     "Please select atleast one factory" : "Please select atleast one factory",
     "Fabric GSM added Successfully" : "Fabric GSM added Successfully",
     "Fabric GSM Already Exists" : "Fabric GSM Already Exists",
-    "Inquiry sent Successfully" : "Inquiry Sent Successfully"
+    "Inquiry sent Successfully" : "Inquiry Sent Successfully",
+    "GoBack" : "Go Back",
+    "QuoteDetails" : "Quote Details"
 }

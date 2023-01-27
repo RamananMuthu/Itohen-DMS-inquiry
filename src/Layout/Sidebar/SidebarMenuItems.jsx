@@ -116,7 +116,7 @@ const SidebarMenuItems = ({ setMainMenu, sidebartoogle, setNavActive }) => {
                      {(menuItem.title=='Calendar Configuration' && (menuItem.active))?<img src={calendarIconWhite} />:(menuItem.title=='Calendar Configuration')?<img src={calendarIcon}/>:""}
                     
                      
-                     {(menuItem.title=='Factory View Inquiry' && (menuItem.active))?<img src={Viewinquiry} />:(menuItem.title=='Factory View Inquiry')?<img src={Viewinquiry}/>:""}
+                     {(menuItem.title=='View Inquiry' && (menuItem.active))?<img src={Viewinquiry} />:(menuItem.title=='View Inquiry')?<img src={Viewinquiry}/>:""}
                      {(menuItem.title=='Inquiry sList' && (menuItem.active))?<img src={InquiryList} />:(menuItem.title=='Inquiry List')?<img src={InquiryList}/>:""}
                      {(menuItem.title=='Feedback Form' && (menuItem.active))?<img src={InquiryList} />:(menuItem.title=='Feedback Form')?<img src={InquiryList}/>:""}
                     

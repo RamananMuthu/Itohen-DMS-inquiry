@@ -1113,6 +1113,13 @@ td.text-left {
     color: #3062CA;
     border: 2px solid #3062CA;
   }
+
+  /* Factory Detail table alignment */
+  .factoryDetailsTable{
+    width: 30% !important;
+    text-align: left;
+  }
+
   @keyframes movebtn {
     0%{
       transform: translateY(0px);

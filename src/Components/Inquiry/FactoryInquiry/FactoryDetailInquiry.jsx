@@ -58,10 +58,15 @@ const FactoryDetailInquiry = () => {
   var cartonData = [];
   var polybagData = [];
 
+  const onGoBack = () => {
+    setTimeout(() => {
+      window.location.href = '/inquiry/factoryviewinquiry';
+    }, 100);
+  }
+
   useEffect(() => {
-    
-    if( getWorkspaceType == "Factory" && getWorkspaceType != "PCU" && getWorkspaceType != "Buyer"  )
-    {
+
+    if (getWorkspaceType == "Factory" && getWorkspaceType != "PCU" && getWorkspaceType != "Buyer") {
       axios
         .post(ServerUrl + "/inquiry-details", getInputParams)
         .then((response) => {
@@ -155,7 +160,7 @@ const FactoryDetailInquiry = () => {
         })
       setValiderrors(() => "");
     } else {
-      window.location.href='/inquiry/viewinquiry';
+      window.location.href = '/inquiry/viewinquiry';
     }
 
   }, [])
@@ -235,27 +240,26 @@ const FactoryDetailInquiry = () => {
                         <table className="table shadow shadow-showcase table-striped table-bordered">
                           <thead className="bg-primary">
                             <tr>
-                              <th className="centerAlign"> {t("factoryResponse")} </th>
-                              <th className="centerAlign"> {t("details")} </th>
+                              <th className="centerAlign" colSpan={2}> {t("factoryDetails")} </th>
                             </tr>
                           </thead>
                           <tbody id="htmlStringListCSS">
                             <tr>
                               {factoryInquiryDetails.article_name ?
                                 <>
-                                  <td className="text-left">{t("articleName")}  </td>
+                                  <td className="factoryDetailsTable">{t("articleName")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.article_name} </td>
                                 </>
                                 : ""}
                             </tr><tr>
                               {factoryInquiryDetails.style_no ?
                                 <>
-                                  <td className="text-left">{t("styleNo")}  </td>
+                                  <td className="factoryDetailsTable">{t("styleNo")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.style_no} </td>
                                 </>
                                 : ""}
                             </tr><tr>
-                              <td className="text-left">{t("sampleFormat")}  </td>
+                              <td className="factoryDetailsTable">{t("sampleFormat")}  </td>
                               <td className="text-left">
                                 {sampleFormatImage.map((obj) => (
                                   <a href={awsUrl + obj} target="_blank">
@@ -267,77 +271,77 @@ const FactoryDetailInquiry = () => {
                             </tr><tr>
                               {factoryInquiryDetails.fabric_type_id ?
                                 <>
-                                  <td className="text-left">{t("fabricComposition")} </td>
+                                  <td className="factoryDetailsTable">{t("Fabric Composition")} </td>
                                   <td className="text-left"> {factoryInquiryDetails.fabric_type_id} </td>
                                 </>
                                 : ""}
                             </tr><tr>
                               {factoryInquiryDetails.fabric_GSM ?
                                 <>
-                                  <td className="text-left">{t("fabricGSM")}  </td>
+                                  <td className="factoryDetailsTable">{t("fabricGSM")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.fabric_GSM} </td>
                                 </>
                                 : ""}
                             </tr><tr>
                               {factoryInquiryDetails.fabric_type ?
                                 <>
-                                  <td className="text-left">{t("fabricType")}</td>
+                                  <td className="factoryDetailsTable">{t("fabricType")}</td>
                                   <td className="text-left"> {factoryInquiryDetails.fabric_type} </td>
                                 </>
                                 : ""}
                             </tr><tr>
                               {factoryInquiryDetails.yarn_count ?
                                 <>
-                                  <td className="text-left">{t("yarnCount")}  </td>
+                                  <td className="factoryDetailsTable">{t("yarnCount")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.yarn_count} </td>
                                 </>
                                 : ""}
                             </tr><tr>
                               {factoryInquiryDetails.target_price ?
                                 <>
-                                  <td className="text-left">{t("targetPrice")}  </td>
+                                  <td className="factoryDetailsTable">{t("targetPrice")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.currency} {factoryInquiryDetails.target_price} </td>
                                 </>
                                 : ""}
                             </tr><tr>
                               {factoryInquiryDetails.incoterms ?
                                 <>
-                                  <td className="text-left">{t("incomeTerms")}  </td>
+                                  <td className="factoryDetailsTable">{t("incomeTerms")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.incoterms} </td>
                                 </>
                                 : ""}
                             </tr><tr>
                               {factoryInquiryDetails.payment_terms ?
                                 <>
-                                  <td className="text-left">{t("paymentTerms")}  </td>
+                                  <td className="factoryDetailsTable">{t("paymentTerms")}  </td>
                                   <td className="text-left"> {paymentTermsHtmlString} </td>
                                 </>
                                 : ""}
                             </tr><tr>
                               {factoryInquiryDetails.due_date && (factoryInquiryDetails.due_date != "0000-00-00") ?
                                 <>
-                                  <td className="text-left">{t("inquiryDueDate")}  </td>
+                                  <td className="factoryDetailsTable">{t("inquiryDueDate")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.due_date} </td>
                                 </>
                                 : ""}
                             </tr><tr>
                               {factoryInquiryDetails.style_article_description ?
                                 <>
-                                  <td className="text-left">{t("styleArticleDescription")}  </td>
+                                  <td className="factoryDetailsTable">{t("styleArticleDescription")}  </td>
                                   <td className="text-left"> {styleArticleDescriptionHtmlString} </td>
                                 </>
                                 : ""}
                             </tr><tr>
                               {factoryInquiryDetails.special_finish ?
                                 <>
-                                  <td className="text-left">{t("specialFinishers")}  </td>
+                                  <td className="factoryDetailsTable">{t("specialFinishers")}  </td>
                                   <td className="text-left"> {specialFinishHtmlString} </td>
                                 </>
                                 : ""}
                             </tr><tr>
                               {factoryInquiryDetails.total_qty ?
                                 <>
-                                  <td className="text-left">{t("totalQuantity")}  </td>
+                                  <td className="factoryDetailsTable">{t("totalQuantity")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.total_qty} </td>
                                 </>
                                 : ""}
@@ -389,7 +393,7 @@ const FactoryDetailInquiry = () => {
                             </tr><tr>
                               {factoryInquiryDetails.measurement_sheet ?
                                 <>
-                                  <td className="text-left">{t("Measurement Chart")}  </td>
+                                  <td className="factoryDetailsTable">{t("Measurement Chart")}  </td>
                                   <td className="text-left">
                                     <Col className="table-responsive" md="12" sm="12" lg="12">
                                       <Card>
@@ -405,7 +409,7 @@ const FactoryDetailInquiry = () => {
                                                         Object.keys(measurementSheetList).map((key, i) => (
                                                           (i == 0) ?
                                                             Object.keys(measurementSheetList[key]).map((k, data) => (
-                                                              <th scope="col" style={{ textTransform:"capitalize"}}>{k}</th>
+                                                              <th scope="col" style={{ textTransform: "capitalize" }}>{k}</th>
                                                             )
                                                             ) : ""
                                                         ))
@@ -417,10 +421,10 @@ const FactoryDetailInquiry = () => {
                                                       Object.keys(measurementSheetList).map((key, i) => (
                                                         <tr>
                                                           {
-                                                          Object.keys(measurementSheetList[key]).map((k, data) => (
-                                                            <td scope="col">{measurementSheetList[key][k]}</td>
-                                                          ))
-                                                         } 
+                                                            Object.keys(measurementSheetList[key]).map((k, data) => (
+                                                              <td scope="col">{measurementSheetList[key][k]}</td>
+                                                            ))
+                                                          }
                                                         </tr>
                                                       ))
                                                     }
@@ -438,7 +442,7 @@ const FactoryDetailInquiry = () => {
                             </tr><tr>
                               {factoryInquiryDetails.measurementSheet ?
                                 <>
-                                  <td className="text-left">{t("measurementSheet")}  </td>
+                                  <td className="factoryDetailsTable">{t("measurementSheet")}  </td>
                                   <td className="text-left">
                                     <a href={awsUrl + measurementSheet} target="_blank"> {measurementSheet} </a>
                                   </td>
@@ -447,28 +451,28 @@ const FactoryDetailInquiry = () => {
                             </tr><tr>
                               {factoryInquiryDetails.patterns ?
                                 <>
-                                  <td className="text-left">{t("patterns")}  </td>
+                                  <td className="factoryDetailsTable">{t("patterns")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.patterns} </td>
                                 </>
                                 : ""}
                             </tr><tr>
                               {factoryInquiryDetails.jurisdiction ?
                                 <>
-                                  <td className="text-left">{t("placeofJurisdiction")}  </td>
+                                  <td className="factoryDetailsTable">{t("placeofJurisdiction")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.jurisdiction} </td>
                                 </>
                                 : ""}
                             </tr><tr>
                               {factoryInquiryDetails.customs_declaraion_document ?
                                 <>
-                                  <td className="text-left">{t("customsDeclarationDocument")}  </td>
+                                  <td className="factoryDetailsTable">{t("customsDeclarationDocument")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.customs_declaraion_document} </td>
                                 </>
                                 : ""}
                             </tr><tr>
                               {factoryInquiryDetails.penality ?
                                 <>
-                                  <td className="text-left">{t("penaltyLabel")}  </td>
+                                  <td className="factoryDetailsTable">{t("penaltyLabel")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.penality} </td>
                                 </>
                                 : ""}
@@ -478,26 +482,26 @@ const FactoryDetailInquiry = () => {
                             </tr><tr>
                               {factoryInquiryDetails.print_type ?
                                 <>
-                                  <td className="text-left">{t("printType")}  </td>
+                                  <td className="factoryDetailsTable">{t("printType")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.print_type} </td>
                                 </>
                                 : ""}
                             </tr><tr>
                               {factoryInquiryDetails.print_size ?
                                 <>
-                                  <td className="text-left">{t("printSize")}  </td>
+                                  <td className="factoryDetailsTable">{t("printSize")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.print_size} </td>
                                 </>
                                 : ""}
                             </tr><tr>
                               {factoryInquiryDetails.print_no_of_colors ?
                                 <>
-                                  <td className="text-left">{t("noOfColors")}  </td>
+                                  <td className="factoryDetailsTable">{t("noOfColors")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.print_no_of_colors} </td>
                                 </>
                                 : ""}
                             </tr><tr>
-                              <td className="text-left">{t("printImage")}  </td>
+                              <td className="factoryDetailsTable">{t("printImage")}  </td>
                               <td className="text-left">
                                 {printImage.map((obj) => (
                                   <a href={awsUrl + obj} target="_blank">
@@ -507,17 +511,17 @@ const FactoryDetailInquiry = () => {
                                 ))}
                               </td>
                             </tr><tr>
-                              <td className="text-left" colSpan="2">
+                              <td className="factoryDetailsTable" colSpan="2">
                                 <H6 className="ordersubhead">{t("trimsInformation")}</H6></td>
                             </tr><tr>
                               {factoryInquiryDetails.main_lable ?
                                 <>
-                                  <td className="text-left">{t("mainLabel")}  </td>
+                                  <td className="factoryDetailsTable">{t("mainLabel")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.main_lable} </td>
                                 </>
                                 : ""}
                             </tr><tr>
-                              <td className="text-left">{t("mainLabelSample")}</td>
+                              <td className="factoryDetailsTable">{t("mainLabelSample")}</td>
                               <td className="text-left">
                                 {mainLableImage.map((obj) => (
                                   <a href={awsUrl + obj} target="_blank">
@@ -529,12 +533,12 @@ const FactoryDetailInquiry = () => {
                             </tr><tr>
                               {factoryInquiryDetails.washcare_lable ?
                                 <>
-                                  <td className="text-left">{t("washCareLabel")}  </td>
+                                  <td className="factoryDetailsTable">{t("washCareLabel")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.washcare_lable} </td>
                                 </>
                                 : ""}
                             </tr><tr>
-                              <td className="text-left">{t("washCareLabelSample")}  </td>
+                              <td className="factoryDetailsTable">{t("washCareLabelSample")}  </td>
                               <td className="text-left">
                                 {washCareLableImage.map((obj) => (
                                   <a href={awsUrl + obj} target="_blank">
@@ -546,12 +550,12 @@ const FactoryDetailInquiry = () => {
                             </tr><tr>
                               {factoryInquiryDetails.hangtag_lable ?
                                 <>
-                                  <td className="text-left">{t("hangtag")}  </td>
+                                  <td className="factoryDetailsTable">{t("hangtag")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.hangtag_lable} </td>
                                 </>
                                 : ""}
                             </tr><tr>
-                              <td className="text-left">{t("hangtagSample")}  </td>
+                              <td className="factoryDetailsTable">{t("hangtagSample")}  </td>
                               <td className="text-left">
                                 {hangtagImage.map((obj) => (
                                   <a href={awsUrl + obj} target="_blank">
@@ -563,12 +567,12 @@ const FactoryDetailInquiry = () => {
                             </tr><tr>
                               {factoryInquiryDetails.barcode_lable ?
                                 <>
-                                  <td className="text-left">{t("barcodeStickers")}  </td>
+                                  <td className="factoryDetailsTable">{t("barcodeStickers")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.barcode_lable} </td>
                                 </>
                                 : ""}
                             </tr><tr>
-                              <td className="text-left">{t("barcodeStickersSample")}  </td>
+                              <td className="factoryDetailsTable">{t("barcodeStickersSample")}  </td>
                               <td className="text-left">
                                 {barcodeStickersImage.map((obj) => (
                                   <a href={awsUrl + obj} target="_blank">
@@ -580,36 +584,36 @@ const FactoryDetailInquiry = () => {
                             </tr><tr>
                               {factoryInquiryDetails.trims_nominations ?
                                 <>
-                                  <td className="text-left">{t("trimsNotificationsSpecify")}  </td>
+                                  <td className="factoryDetailsTable">{t("trimsNotificationsSpecify")}  </td>
                                   <td className="text-left"> {trimsNotificationsHtmlString} </td>
                                 </>
                                 : ""}
                             </tr><tr>
-                              <td className="text-left" colSpan="2">
+                              <td className="factoryDetailsTable" colSpan="2">
                                 <H6 className="ordersubhead">{t("packingInformation")}</H6> </td>
                             </tr><tr>
                               {factoryInquiryDetails.poly_bag_size ?
                                 <>
-                                  <td className="text-left">{t("polybagSizeThickness")}  </td>
+                                  <td className="factoryDetailsTable">{t("polybagSizeThickness")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.poly_bag_size} </td>
                                 </>
                                 : ""}
                             </tr><tr>
                               {factoryInquiryDetails.poly_bag_material ?
                                 <>
-                                  <td className="text-left">{t("polybagMaterial")}  </td>
+                                  <td className="factoryDetailsTable">{t("polybagMaterial")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.poly_bag_material} </td>
                                 </>
                                 : ""}
                             </tr><tr>
                               {factoryInquiryDetails.poly_bag_price ?
                                 <>
-                                  <td className="text-left">{t("printDetailsPolybag")}  </td>
+                                  <td className="factoryDetailsTable">{t("printDetailsPolybag")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.poly_bag_price} </td>
                                 </>
                                 : ""}
                             </tr><tr>
-                              <td className="text-left">{t("Polybag Sample Image")} </td>
+                              <td className="factoryDetailsTable">{t("Polybag Sample Image")} </td>
                               <td className="text-left">
                                 {polybagImage.map((obj) => (
                                   <a href={awsUrl + obj} target="_blank">
@@ -621,40 +625,40 @@ const FactoryDetailInquiry = () => {
                             </tr><tr>
                               {factoryInquiryDetails.carton_bag_dimensions ?
                                 <>
-                                  <td className="text-left">{t("cartonBoxDimensions")}  </td>
+                                  <td className="factoryDetailsTable">{t("cartonBoxDimensions")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.carton_bag_dimensions} </td>
                                 </>
                                 : ""}
                             </tr><tr>
                               {factoryInquiryDetails.carton_color ?
                                 <>
-                                  <td className="text-left">{t("cartonColor")}  </td>
+                                  <td className="factoryDetailsTable">{t("cartonColor")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.carton_color} </td>
                                 </>
                                 : ""}
                             </tr><tr>
                               {factoryInquiryDetails.carton_material ?
                                 <>
-                                  <td className="text-left">{t("cartonMaterial")}  </td>
+                                  <td className="factoryDetailsTable">{t("cartonMaterial")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.carton_material} </td>
                                 </>
                                 : ""}
                             </tr><tr>
                               {factoryInquiryDetails.barcode_lable ?
                                 <>
-                                  <td className="text-left">{t("cartonEdgeFinish")}  </td>
+                                  <td className="factoryDetailsTable">{t("cartonEdgeFinish")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.barcode_lable} </td>
                                 </>
                                 : ""}
                             </tr><tr>
                               {factoryInquiryDetails.carton_edge_finish ?
                                 <>
-                                  <td className="text-left">{t("cartonMarkDetails")}  </td>
+                                  <td className="factoryDetailsTable">{t("cartonMarkDetails")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.carton_edge_finish} </td>
                                 </>
                                 : ""}
                             </tr><tr>
-                              <td className="text-left">{t("Carton Sample Image")}  </td>
+                              <td className="factoryDetailsTable">{t("Carton Sample Image")}  </td>
                               <td className="text-left">
                                 {cartonImage.map((obj) => (
                                   <a href={awsUrl + obj} target="_blank">
@@ -666,28 +670,28 @@ const FactoryDetailInquiry = () => {
                             </tr><tr>
                               {factoryInquiryDetails.make_up ?
                                 <>
-                                  <td className="text-left">{t("makeUp")}  </td>
+                                  <td className="factoryDetailsTable">{t("makeUp")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.make_up} </td>
                                 </>
                                 : ""}
                             </tr><tr>
                               {factoryInquiryDetails.films_cd ?
                                 <>
-                                  <td className="text-left">{t("filmsCD")}  </td>
+                                  <td className="factoryDetailsTable">{t("filmsCD")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.films_cd} </td>
                                 </>
                                 : ""}
                             </tr><tr>
                               {factoryInquiryDetails.picture_card ?
                                 <>
-                                  <td className="text-left">{t("pictureCard")}  </td>
+                                  <td className="factoryDetailsTable">{t("pictureCard")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.picture_card} </td>
                                 </>
                                 : ""}
                             </tr><tr>
                               {factoryInquiryDetails.inner_cardboard ?
                                 <>
-                                  <td className="text-left">{t("innerCardboard")}  </td>
+                                  <td className="factoryDetailsTable">{t("innerCardboard")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.inner_cardboard} </td>
                                 </>
                                 : ""}
@@ -695,21 +699,21 @@ const FactoryDetailInquiry = () => {
                               {factoryInquiryDetails.estimate_delivery_date &&
                                 (factoryInquiryDetails.estimate_delivery_date != "0000-00-00") ?
                                 <>
-                                  <td className="text-left">{t("estimatedDeliveryDate")}  </td>
+                                  <td className="factoryDetailsTable">{t("estimatedDeliveryDate")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.estimate_delivery_date} </td>
                                 </>
                                 : ""}
                             </tr><tr>
                               {factoryInquiryDetails.shipping_size ?
                                 <>
-                                  <td className="text-left">{t("shippingSize")}  </td>
+                                  <td className="factoryDetailsTable">{t("shippingSize")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.shipping_size} </td>
                                 </>
                                 : ""}
                             </tr><tr>
                               {factoryInquiryDetails.air_frieght ?
                                 <>
-                                  <td className="text-left">{t("airFreight")}  </td>
+                                  <td className="factoryDetailsTable">{t("airFreight")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.air_frieght} </td>
                                 </>
                                 : ""}
@@ -721,30 +725,58 @@ const FactoryDetailInquiry = () => {
                               <H6 className="ordersubhead">{t("others")}</H6> </td>
                             </>
                             :  ""} */}
-                              <td className="text-left" colSpan="3">
+                              <td className="factoryDetailsTable" colSpan="3">
                                 <H6 className="ordersubhead">{t("others")}</H6> </td>
                             </tr><tr>
                               {factoryInquiryDetails.testing_requirements ?
                                 <>
-                                  <td className="text-left">{t("testingRequirement")}  </td>
+                                  <td className="factoryDetailsTable">{t("testingRequirement")}  </td>
                                   <td className="text-left"> {testingRequirementsHtmlString} </td>
                                 </>
                                 : ""}
                             </tr><tr>
                               {factoryInquiryDetails.sample_requirements ?
                                 <>
-                                  <td className="text-left">{t("SampleRequirements")}  </td>
+                                  <td className="factoryDetailsTable">{t("SampleRequirements")}  </td>
                                   <td className="text-left"> {specialRequesHtmlString} </td>
                                 </>
                                 : ""}
                             </tr><tr>
                               {factoryInquiryDetails.special_requests ?
                                 <>
-                                  <td className="text-left">{t("specialRequestIfAny")}  </td>
+                                  <td className="factoryDetailsTable">{t("specialRequestIfAny")}  </td>
                                   <td className="text-left"> {sampleRequirementsHtmlString} </td>
                                 </>
                                 : ""}
                             </tr>
+
+                            {(inquiryResponse.price) && (inquiryResponse.comments)
+                              ?
+                              <>
+                                <tr>
+                                  <td className="text-left" colSpan="3">
+                                    <H6 className="ordersubhead">{t("QuoteDetails")}</H6> </td>
+                                </tr>
+                                <tr>
+                                  {inquiryResponse.price ?
+                                    <>
+                                      <td className="factoryDetailsTable"> {t("price")} </td>
+                                      <td className="text-left"> {currencySymbol} {price} </td>
+                                    </>
+                                    : ""}
+                                </tr>
+                                <tr>
+                                  {inquiryResponse.comments ?
+                                    <>
+                                      <td className="factoryDetailsTable">{t("comments")}  </td>
+                                      <td className="text-left"> {parse(comments)} </td>
+                                    </>
+                                    : ""}
+                                </tr>
+                              </>
+                              :
+                              ""
+                            }
 
                           </tbody>
                         </table>
@@ -754,54 +786,70 @@ const FactoryDetailInquiry = () => {
                 </Row>
 
                 <Row className="mt-5">
-                  <Form>
-                    <Col xl="4" lg="6" md="6" sm="12">
-                      <FormGroup>
-                        <Label>{t("price")}</Label> (in {currencySymbol})<sup className="font-danger">*</sup>
-                        <Input name="price" placeholder={t("pleaseEnterPrice")}
-                          // disabled={price ? true : false}
-                          maxLength="20"
-                          defaultValue={price}
-                          onChange={(e) => setPrice(e.target.value)}>
-                        </Input>
-                        {validerrors.price && (
-                          <span className="error-msg">{validerrors.price}</span>
-                        )}
-                      </FormGroup>
-                    </Col>
+                  {inquiryResponse.length >= 0 ?
+                    <Form>
+                      <Col xl="4" lg="6" md="6" sm="12">
+                        <FormGroup>
+                          <Label>{t("price")}</Label> (in {currencySymbol})<sup className="font-danger">*</sup>
+                          <Input name="price" placeholder={t("pleaseEnterPrice")}
+                            // disabled={price ? true : false}
+                            maxLength="20"
+                            defaultValue={price}
+                            onChange={(e) => setPrice(e.target.value)}>
+                          </Input>
+                          {validerrors.price && (
+                            <span className="error-msg">{validerrors.price}</span>
+                          )}
+                        </FormGroup>
+                      </Col>
 
-                    <Col xl="4" lg="6" md="6" sm="12">
-                      <FormGroup>
-                        <Label className="form-label">{t("comments")}</Label><sup className="font-danger">*</sup>
-                        <CKEditors
-                          activeclassName="p10"
-                          content={(comments).toString()}
-                          events={{ 'change': onChangeCommentsRequest }}
-                          onchange={(e) => setComments(e.target.value)}
-                          config={{
-                            toolbar: [
-                              ["Bold", "Italic", 'NumberedList', 'BulletedList', "Strike Through"],
-                              ["Cut", "Copy", "Paste", "Pasteasplaintext", "FormattingStyles", "Undo", "Redo"],
-                              ["List", "Indent", "Blocks", "Align", "Bidi", "Paragraph"],
-                              ["Find", "Selection", "Spellchecker", "Editing"]
-                            ],
-                          }
-                          }
-                        />
-                        {validerrors.comments && (
-                          <span className="error-msg">{validerrors.comments}</span>
-                        )}
-                      </FormGroup>
-                    </Col>
+                      <Col xl="4" lg="6" md="6" sm="12">
+                        <FormGroup>
+                          <Label className="form-label">{t("comments")}</Label><sup className="font-danger">*</sup>
+                          <CKEditors
+                            activeclassName="p10"
+                            content={(comments).toString()}
+                            events={{ 'change': onChangeCommentsRequest }}
+                            onchange={(e) => setComments(e.target.value)}
+                            config={{
+                              toolbar: [
+                                ["Bold", "Italic", 'NumberedList', 'BulletedList', "Strike Through"],
+                                ["Cut", "Copy", "Paste", "Pasteasplaintext", "FormattingStyles", "Undo", "Redo"],
+                                ["List", "Indent", "Blocks", "Align", "Bidi", "Paragraph"],
+                                ["Find", "Selection", "Spellchecker", "Editing"]
+                              ],
+                            }
+                            }
+                          />
+                          {validerrors.comments && (
+                            <span className="error-msg">{validerrors.comments}</span>
+                          )}
+                        </FormGroup>
+                      </Col>
 
-                    <FormGroup className="f-right">
-                      {inquiryResponse.length >= 0 ?
+                      <FormGroup className="f-right">
                         <Button
-                          className="btn btn-primary" onClick={() => { submitFactoryInquiryForm() }} >
+                          className="btn btn-primary mx-2" onClick={() => { submitFactoryInquiryForm() }} >
                           {t("sentQuote")}
-                        </Button> : ""}
-                    </FormGroup>
-                  </Form>
+                        </Button>
+
+                        <Button className="btn-sm secondaryBtn m-r-10 f-right"
+                          onClick={() => onGoBack()}>
+                          {t("GoBack")}
+                        </Button>
+                      </FormGroup>
+                    </Form>
+                    :
+                    <>
+                      <Col xl="8" lg="8" md="8" sm="12"></Col>
+                      <Col xl="4" lg="4" md="4" sm="12">
+                        <Button className="btn-sm secondaryBtn m-r-10 f-right"
+                          onClick={() => onGoBack()}>
+                          {t("GoBack")}
+                        </Button>
+                      </Col>
+                    </>
+                  }
                 </Row>
               </CardBody>
             </Card>
