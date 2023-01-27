@@ -34,6 +34,9 @@ import imgUploadGreen from "../../../assets/images/dms/icons/imgUploadGreen.svg"
 import docIcon from "../../../assets/images/dms/icons/inquiryDocIcon.svg";
 import infoIcon from "../../../assets/images/dms/icons/inquiryInfoIcon.svg";
 import deleteIcon from"../../../assets/images/dms/inquiryDelIcon.svg";
+import scrollUpIcon from"../../../assets/images/dms/inquiryScrollUpIcon.svg";
+
+
 // import deleteIcon from"../../../assets/images/dms/icons/imgUpload.svg";
 import { Breadcrumbs, H6, Btn, Image, UL } from "../../../AbstractElements";
 import { useTranslation } from "react-i18next";
@@ -144,6 +147,7 @@ const index = () => {
   const [currency, setCurrency] = useState("");
   const [measurementChart, setMeasurementChart] = useState([]);
   const [pillTab, setpillTab] = useState('1');
+  const [showTopBtn, setShowTopBtn] = useState(false);
   const toggleart = () => setModalArt(!modalArt);
   const togglefabric = () => setModalfabric(!modalfabric);
   const toggleclr = () => setModalClr(!modalClr);
@@ -166,6 +170,8 @@ const index = () => {
   const packinginfo = useRef(null);
   const othersinfo = useRef(null);
 
+
+  /****------- Tab Scroll ---------- ****/ 
   const scrollToSection =(elementRef)=>{
     window.scrollTo({
       top: elementRef.current.offsetTop,
@@ -187,7 +193,7 @@ const index = () => {
   const onFilesChange = (files) => {
     setFiles(files);
   };
-  
+  /****------- Validation ---------- ****/ 
   const validation = (data) => {
     let validerrors = {};
     if (!article) {
@@ -205,7 +211,7 @@ const index = () => {
     setValiderros(validerrors);
     return validerrors;
   };
-
+/****------- Delete Color ---------- ****/ 
   const deleteColor = (e) => {
     var getColor = e.target.id;
     Swal.fire({
@@ -227,7 +233,6 @@ const index = () => {
             return color.name !== getColor;
           })
         );
-        // console.log("final==>",showcolor,"e.target.id==>>",getColor,"===",color);
         document.getElementById("Overall_total_quantity").value = 0;
         getTotalColorWise("delete");
         getTotalSizeWise("delete");
@@ -235,7 +240,7 @@ const index = () => {
       }
     });
   };
-
+/****------- Delete Size ---------- ****/ 
   const deleteSize = (e) => {
     var getSize = e.target.id;
     Swal.fire({
@@ -265,7 +270,7 @@ const index = () => {
       }
     });
   };
-
+/****------- Add Quantity ---------- ****/ 
   const addQty = (e) => {
     var idv = e.target.id;
     var value = e.target.value;
@@ -376,6 +381,14 @@ const index = () => {
       // console.log(response.data.data);
       setCurrencies(response.data.data);
     });
+    window.addEventListener("scroll", () => {
+      // console.log("scroll",window.scrollY);
+      if (window.scrollY > 400) {
+          setShowTopBtn(true);
+      } else {
+          setShowTopBtn(false);
+      }
+  });
   }, []);
   // const uploadImageApiCall = (imageType, file) =>{
   //   console.log("uploadImage:", imageType);
@@ -436,8 +449,8 @@ const index = () => {
 
   // }
   
+  /****------- Image Upload API Call ---------- ****/ 
   const uploadImageApiCall = (imageType, file) => {
-    // console.log("uploadImage:", imageType);
     axios
       .post(
         ServerUrl + "/inquiry-file-upload",
@@ -455,7 +468,6 @@ const index = () => {
         },
       )
       .then((response) => {
-        // console.log("Status code:",response.data);
         if (response.data.status_code == 200) {
           // setSampleSheetImg('0');
           if (imageType == "SampleFormat") {
@@ -492,7 +504,7 @@ const index = () => {
     });
   };
 
-
+/****------- Delete Image  ---------- ****/ 
   const deleteImageFiles = (imageType, file) => {
     var media ={};
     media["media_id"]= file.media_id;
@@ -603,6 +615,7 @@ const index = () => {
     }
   };
 
+/****------- Text Editor OnChange ---------- ****/ 
   const onChangeArticleDescription = (e) => {
     const newContent = e.editor.getData();
     setStyleArticleDesc(newContent);
@@ -643,9 +656,9 @@ const index = () => {
     setSpecialRequest(newContent);
   };
 
+  /****------- Image Upload Validation ---------- ****/ 
   const SampleFormatImg = (files) => {
     files.map((sampleFormatImg) => {
-      // console.log(sampleFormatImg);
       if (
         sampleFormatImg.extension == "jpeg" ||
         sampleFormatImg.extension == "jpg" ||
@@ -678,8 +691,6 @@ const index = () => {
   };
 
   const MeasurementImg = (files) => {
-    // console.log(files);
-
     files.map((measureImg) => {
       if (
         measureImg.extension == "pdf" ||
@@ -693,7 +704,6 @@ const index = () => {
             text: t("uploadFileTalidationText", {
               fileSize: maxUploadFileSize / 1024,
             }),
-            // text: t("uploadFileWithinTextAlert1") + " " + (maxUploadFileSize / 1024) + " " + t("uploadFileWithinTextAlert2"),
             icon: "warning",
             button: t("okLabel"),
           });
@@ -713,7 +723,6 @@ const index = () => {
   };
 
   const PrintImage = (files) => {
-    // console.log(files);
     files.map((printImg) => {
       if (
         printImg.extension == "jpeg" ||
@@ -944,8 +953,8 @@ const index = () => {
     });
   };
 
+  /****------- Measurement Chart - Add Row ---------- ****/ 
   const addTableRows=()=>{
-    // console.log("&&7");
     setMeasurementChart([...measurementChart,measurementChart])
   };
 
@@ -3542,6 +3551,21 @@ const index = () => {
               </Form>
             </CardBody>
           </Card>
+
+          {/* Scroll To Top  */}
+          
+          <div className="top-to-btm" style={{ cursor: 'pointer' }}>
+            {" "}
+            {showTopBtn && (
+              <img  src={scrollUpIcon}  className="icon-position icon-style"
+              onClick={() => {
+                window.scrollTo({top: 0, behavior: 'smooth'});
+              }}
+            >
+            </img>
+            )}{" "}
+        </div>
+          
         </Col>
       </Container>
       <InfoCanvas
