@@ -1137,6 +1137,24 @@ td.text-left {
       transform: translateY(0px);
     }
   }
+  // .test{
+  //   overflow-y:scroll !important;
+  // }
+  .count-animated {
+    position: absolute;
+    right: -10px;
+    top: -1px;
+    width: 15px;
+    height: 12px;
+    // border-radius: 100%;
+    color: #3062CA;
+    font-size:medium;
+    // content: "";
+    //background-color: $danger-color;
+    animation: fadeIn 2s ease infinite;
+  }
+
+  
 /******************************************************/
 
 

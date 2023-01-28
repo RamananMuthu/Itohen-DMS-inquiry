@@ -22,6 +22,7 @@ import { getStaff, getStaffPermission, getLoginCompanyId,
           from '../../../Constant/LoginConstant';
 import { useTranslation } from 'react-i18next';
 import { apidecrypt, apiencrypt } from '../../../helper';
+import {  Bell } from 'react-feather';
 
 const Rightbar = () => {
     const { sidebarResponsive } = useContext(CustomizerContext);
@@ -44,6 +45,9 @@ const Rightbar = () => {
     inputParamsStaff['staff_id']=getLoginStaffId;
     inputParamsStaff['type']='Order';
 
+    const notifyParams ={};
+    notifyParams['user_id']=getLoginUserId;
+    const [notifyCount,setNotifyCount]= useState('');
     {getStaff === "Staff" ? requestData=inputParamsStaff : requestData=inputParamsUser}
 
 
@@ -72,23 +76,23 @@ const Rightbar = () => {
 
     }
 
-    // useEffect( () => {
-        // axios.post(ServerUrl+'/validate-plan', requestData)
-        // .then((response) => 
-        // {
-        //     // console.log(" Response ", t(response.data.message));
-        //     if (response.data.status_code === 401)
-        //     {
-        //         Swal.fire({
-        //           title: t(response.data.message),
-        //           icon: "success",
-        //           button: "OK!",
-        //           allowOutsideClick: false
-        //         })
-        //     }    
-        // });
+    useEffect( () => {
 
-    // },[]);
+        axios.post(ServerUrl+'/check-buyer-notification', notifyParams)
+        .then((response) => 
+        {
+            console.log(" Response ", response.data.notifications);
+            setNotifyCount(response.data.notifications);
+            // if (response.data.status_code === 401)
+            // {
+            //     Swal.fire({
+            //       title: t(response.data.message),
+            //       icon: "success",
+            //       button: "OK!",
+            //       allowOutsideClick: false
+            //     }               
+        })
+    },[]);
 
     function goFull() {
         if ((document.fullScreenElement && document.fullScreenElement !== null) ||
@@ -143,6 +147,13 @@ const Rightbar = () => {
                 :
                 ""}
             </LI>
+                   <div className="notification-box m-r-20"
+                    //style={{ backgroundColor:'yellow' }}
+                    >
+                    
+                    <Bell onClick={()=>{ window.location.href="/inquiry/viewinquiry"}} style={{ cursor: 'pointer' }}/>
+                    <span className="count-animated">{notifyCount> 0 ?notifyCount:''}</span>
+                    </div>
                   
                     {/* <Bookmarks /> */}
                     <Notifications />

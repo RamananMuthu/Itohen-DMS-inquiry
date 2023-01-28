@@ -392,7 +392,7 @@ const index = () => {
       }
   });
   } else {
-    window.location.href="/factoryviewinquiry";
+    window.location.href="/inquiry/factoryviewinquiry";
   }
   }, []);
   // const uploadImageApiCall = (imageType, file) =>{

@@ -26,6 +26,8 @@ import calendarIconWhite from "../../assets/images/dms/icons/Calendar_white.svg"
 import calendarIcon from "../../assets/images/dms/icons/Calendar.svg";
 
 import Viewinquiry from "../../assets/images/dms/icons/viewinquiry.svg";
+import InquiryContacts from "../../assets/images/dms/icons/inquiryContacts.svg";
+
 import InquiryList from "../../assets/images/dms/icons/viewinquiry.svg";
 import { getStaff, getModules } from '../../Constant/LoginConstant';
 // import help from "../../assets/images/dms/icons/help.png";
@@ -117,9 +119,9 @@ const SidebarMenuItems = ({ setMainMenu, sidebartoogle, setNavActive }) => {
                     
                      
                      {(menuItem.title=='View Inquiry' && (menuItem.active))?<img src={Viewinquiry} />:(menuItem.title=='View Inquiry')?<img src={Viewinquiry}/>:""}
-                     {(menuItem.title=='Inquiry List' && (menuItem.active))?<img src={InquiryList} />:(menuItem.title=='Inquiry List')?<img src={InquiryList}/>:""}
+                     {/* {(menuItem.title=='Inquiry List' && (menuItem.active))?<img src={InquiryList} />:(menuItem.title=='Inquiry List')?<img src={InquiryList}/>:""} */}
                      {(menuItem.title=='Feedback Form' && (menuItem.active))?<img src={InquiryList} />:(menuItem.title=='Feedback Form')?<img src={InquiryList}/>:""}
-                     {(menuItem.title=='Inquiry Contacts' && (menuItem.active))?<img src={InquiryList} />:(menuItem.title=='Inquiry Contacts')?<img src={InquiryList}/>:""}
+                     {(menuItem.title=='Inquiry Contacts' && (menuItem.active))?<img src={InquiryContacts} />:(menuItem.title=='Inquiry Contacts')?<img src={InquiryContacts}/>:""}
                     
                      
                   {/* {(menuItem.title=='Order Status' && (menuItem.active))?<img src={orderstatusIcon}/>:<img src={orderstatusIcon}/>} */}

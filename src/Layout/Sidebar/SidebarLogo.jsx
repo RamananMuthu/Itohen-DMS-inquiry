@@ -11,7 +11,7 @@ const SidebarLogo = () => {
 
       {
         getWorkspaceType == "Buyer" ? 
-        <Link to={`${process.env.PUBLIC_URL}/inquiry/viewinquiry/default`}>
+        <Link to={`${process.env.PUBLIC_URL}/viewinquiry/default`}>
           <Image
             attrImage={{ className: 'img-fluid for-dark', src: `${logo}`, alt: '' }} />
         </Link> : 
@@ -20,7 +20,7 @@ const SidebarLogo = () => {
 
       {
         getWorkspaceType == "Factory" ? 
-        <Link to={`${process.env.PUBLIC_URL}/factoryviewinquiry/default`}>
+        <Link to={`${process.env.PUBLIC_URL}/inquiry/factoryviewinquiry/default`}>
           <Image
             attrImage={{ className: 'img-fluid for-dark', src: `${logo}`, alt: '' }} />
         </Link> : 
@@ -29,7 +29,7 @@ const SidebarLogo = () => {
 
       {
         getWorkspaceType == "PCU" ? 
-        <Link to={`${process.env.PUBLIC_URL}/inquiry/viewinquiry/default`}>
+        <Link to={`${process.env.PUBLIC_URL}/viewinquiry/default`}>
           <Image
             attrImage={{ className: 'img-fluid for-dark', src: `${logo}`, alt: '' }} />
         </Link> : 

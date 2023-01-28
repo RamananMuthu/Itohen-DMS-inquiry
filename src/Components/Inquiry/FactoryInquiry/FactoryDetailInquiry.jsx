@@ -60,7 +60,7 @@ const FactoryDetailInquiry = () => {
 
   const onGoBack = () => {
     setTimeout(() => {
-      window.location.href = '/factoryviewinquiry';
+      window.location.href = '/inquiry/factoryviewinquiry';
     }, 100);
   }
 
@@ -186,7 +186,7 @@ const FactoryDetailInquiry = () => {
               allowOutsideClick: false
             }).then((result) => {
               if (result.isConfirmed) {
-                window.location.href = '/factoryviewinquiry';
+                window.location.href = '/inquiry/factoryviewinquiry';
               }
             })
           }

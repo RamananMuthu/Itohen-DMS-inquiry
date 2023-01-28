@@ -26,7 +26,7 @@ const FactoryResponse = () => {
     const getInputParams = {};
     getInputParams["inquiry_id"] = inquiryId;
     getInputParams["factory_id"] = factoryId;
-
+    getInputParams["user_id"] = getLoginUserId; 
     const apiCallFactoryRating = (factoryId) => {
 
         const factoryRatingInputParams = {};

@@ -301,7 +301,7 @@ const UserLogin = () => {
                       i18n.changeLanguage(i18n.language=='jp'?'jp':'en');
                     }        
                     if (parseInt(response.data.company_id)>0 ) {
-                        window.location.href = "/factoryviewinquiry";
+                        window.location.href = "/inquiry/factoryviewinquiry";
                     } else {
                       window.location.href = "/companysetting";
                     }

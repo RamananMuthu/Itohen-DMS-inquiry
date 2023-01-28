@@ -7,10 +7,11 @@ import addIcon from "../../../assets/images/dms/icons/addIcon.svg";
 import DocumentIcon from "../../../assets/images/dms/icons/inquiryDocumentIcon.svg";
 import shareIcon from "../../../assets/images/dms/icons/inquiryShareIcon.svg";
 import deleteIcon from "../../../assets/images/dms/icons/inquiryDeleteIcon.svg";
+import responseBlueIcon from "../../../assets/images/dms/inquiryResponseBlueIcon.svg";
 import axios from "axios";
 import ViewFactoryModal from "./ViewFactoryModal";
 import { encode, apiencrypt, } from "../../../helper";
-import { getLoginCompanyId, getWorkspaceId, getWorkspaceType } from "../../../Constant/LoginConstant";
+import { getLoginCompanyId, getWorkspaceId, getWorkspaceType, getLoginUserId } from "../../../Constant/LoginConstant";
 import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
 import { ServerUrl } from "../../../Constant";
@@ -22,6 +23,7 @@ const ViewInquiry = () => {
   var getInputParams = {};
   getInputParams["company_id"] = getLoginCompanyId;
   getInputParams["workspace_id"] = getWorkspaceId;
+  getInputParams["user_id"] = getLoginUserId;
   //const [article, setArticle] = useState('');
   const [modalart, setModalart] = useState(false);
   const [inquiryDetails, setInquiryDetails] = useState([]);
@@ -59,7 +61,7 @@ const ViewInquiry = () => {
           setFactory(response.data.data);
         });
      } else {
-       window.location.href='/factoryviewinquiry';
+       window.location.href='/inquiry/factoryviewinquiry';
      }
    
   }, []);
@@ -152,6 +154,8 @@ const ViewInquiry = () => {
                           <tbody>
                             {inquiryDetails.length > 0 ? (
                               inquiryDetails.map((inquirydtls, index) => (
+                       
+                                (inquirydtls.notification == null ? 
                                 <tr>
                                   <td scope="row" className="centerAlign"> {index + 1} </td>
                                   <td className="centerAlign"> {"IN-" + inquirydtls.id} </td>
@@ -214,7 +218,70 @@ const ViewInquiry = () => {
                                       }}
                                     />
                                   </td>
-                                </tr>
+                                </tr>:
+                                <tr >
+                                  <td scope="row" className="centerAlign"> {index + 1} </td>
+                                  <td className="centerAlign"> {"IN-" + inquirydtls.id} </td>
+                                  <td className="centerAlign"> {inquirydtls.style_no} </td>
+                                  <td className="centerAlign"> {inquirydtls.created_date} </td>
+                                  <td className="centerAlign"> {inquirydtls.name} </td>
+                                  <td className="centerAlign">
+                                    <a href={inquiryDownloadPath + inquirydtls.id + ".pdf"}
+                                      target="_blank">
+                                      <img style={{ cursor: "pointer" }} className="m-r-30"
+                                        title={t("viewInquiryDetails")} src={InquiryViewIcon}
+                                      />
+                                    </a>
+                                    <img name="inquiryId"
+                                      value={inquirydtls.id}
+                                      title={t("selectFactory")}
+                                      width="20px" className="m-r-30"
+                                      style={{ cursor: "pointer" }}
+                                      src={addIcon}
+                                      onClick={() => {
+                                        setSelectedFactoriesList(() => "");
+                                        setModalart(!modalart),
+                                          setInquiryId(inquirydtls.id),
+                                          apiCallInquirySentTo(inquirydtls.id);
+                                      }}
+                                    />
+
+                                    <img
+                                      style={{ cursor: "pointer" }}
+                                      className="m-r-30"
+                                      title={t("Inquiry Sent To")}
+                                      value={inquirydtls.id}
+                                      src={DocumentIcon}
+                                      onClick={() => {
+                                        setModalInquirySentTo(
+                                          !modalInquirySentTo
+                                        ),
+                                          setInquiryId(inquirydtls.id),
+                                          apiCallInquirySentTo(inquirydtls.id);
+                                      }}
+                                    />
+                                    <img
+                                      style={{ cursor: "pointer" }}
+                                      className="m-r-30"
+                                      title={t("factoryResponse")}
+                                      value={inquirydtls.id}
+                                      src={responseBlueIcon}
+                                      onClick={() => {
+                                        factResponse(inquirydtls.id);
+                                      }}
+                                    />
+                                    <img
+                                      style={{ cursor: "pointer" }}
+                                      className="m-r-30"
+                                      value={inquirydtls.id}
+                                      title={t("delete")}
+                                      src={deleteIcon}
+                                      onClick={() => {
+                                        deleteInquiry(inquirydtls.id);
+                                      }}
+                                    />
+                                  </td>
+                                </tr>)
                               ))
                             ) : (
                               <>
