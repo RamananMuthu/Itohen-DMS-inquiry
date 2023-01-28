@@ -240,7 +240,7 @@ const FactoryDetailInquiry = () => {
                         <table className="table shadow shadow-showcase table-striped table-bordered">
                           <thead className="bg-primary">
                             <tr>
-                              <th className="centerAlign" colSpan={2}> {t("factoryDetails")} </th>
+                              <th className="centerAlign" colSpan={2}> {t("Factory Details")} </th>
                             </tr>
                           </thead>
                           <tbody id="htmlStringListCSS">

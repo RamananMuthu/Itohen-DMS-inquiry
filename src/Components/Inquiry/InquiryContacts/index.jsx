@@ -12,10 +12,10 @@ import axios from "axios";
 import { ServerUrl } from '../../../Constant/index';
 
 const InquiryContacts = () => {
-  var getInputParams = {};
-  getInputParams['company_id'] = getLoginCompanyId;
-  getInputParams['workspace_id'] = getWorkspaceId;
-  getInputParams['factory_id'] = 5;
+  // var getInputParams = {};
+  // getInputParams['company_id'] = getLoginCompanyId;
+  // getInputParams['workspace_id'] = getWorkspaceId;
+  // getInputParams['factory_id'] = 5;
 
   const { t } = useTranslation();
   const userId = getLoginUserId;
