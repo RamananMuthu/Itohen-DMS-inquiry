@@ -19,7 +19,7 @@ import { Link } from "react-router-dom";
 
 //import dmsBg from "../../assets/images/dms/sideshow.png";
 import dmslogtag from "../../assets/images/dms/dms-log-with-tag.png";
-import dmsBg from "../../assets/images/dms/user-login-image.png";
+import dmsBg from "../../assets/images/dms/user-login-inquiry.png";
 
 import Loader from "../../Layout/Loader/index";
 import axios from "axios";
