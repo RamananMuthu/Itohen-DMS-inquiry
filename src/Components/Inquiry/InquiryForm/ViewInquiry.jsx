@@ -1,7 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { Container, Row, Col, CardBody, Card } from "reactstrap";
 import { Breadcrumbs } from "../../../AbstractElements";
-//import InquiryDowloadIcon from "../../../assets/images/dms/icons/inquirydownload.svg";
 import InquiryViewIcon from "../../../assets/images/dms/inquiryViewIcon.svg";
 import addIcon from "../../../assets/images/dms/icons/addIcon.svg";
 import DocumentIcon from "../../../assets/images/dms/icons/inquiryDocumentIcon.svg";
@@ -24,21 +23,18 @@ const ViewInquiry = () => {
   getInputParams["company_id"] = getLoginCompanyId;
   getInputParams["workspace_id"] = getWorkspaceId;
   getInputParams["user_id"] = getLoginUserId;
-  //const [article, setArticle] = useState('');
   const [modalart, setModalart] = useState(false);
   const [inquiryDetails, setInquiryDetails] = useState([]);
   const [inquiryId, setInquiryId] = useState("");
-  // const [factory,setFactory] =useState([]);
+  const [factory, setFactory] = useState([]);
+  const [inquiryDownloadPath, setInquiryDownloadPath] = useState("");
+  const [factoryList, setFactoryList] = useState([]);
+  const [selectedFactoriesList, setSelectedFactoriesList] = useState([]);
   const { t } = useTranslation();
   const toggle = () => setModal(!modal);
   const toggleart = () => setModalart(!modalart);
   const [modalInquirySentTo, setModalInquirySentTo] = useState(false);
   const toggleInquirySentTo = () => setModalInquirySentTo(!modalInquirySentTo);
-
-  const [factory, setFactory] = useState([]);
-  const [inquiryDownloadPath, setInquiryDownloadPath] = useState("");
-  const [factoryList, setFactoryList] = useState([]);
-  const [selectedFactoriesList, setSelectedFactoriesList] = useState([]);
   let selectedFactoriesArray = [];
 
   const dataToSendAtStarting = {
@@ -62,15 +58,13 @@ const ViewInquiry = () => {
         });
      } else {
        window.location.href='/inquiry/factoryviewinquiry';
-     }
-   
+     }   
   }, []);
 
   const factResponse = (inquiryId) => {
-    // console.log("Factory response", factoryId);
     window.location.href = "/inquiry/factoryresponse?id=" + encode(inquiryId);
   };
-
+      /**Delete Inquiry based on Id*********/
   const deleteInquiry = (inquiryId) => {
     var deleteParams = {};
     deleteParams["inquiry_id"] = inquiryId.toString();
@@ -83,7 +77,6 @@ const ViewInquiry = () => {
       icon: "warning",
       button: t("okLabel"),
       showCancelButton: true,
-      // confirmButtonColor: "danger",
       allowOutsideClick: false,
     }).then((result) => {
       if (result.isConfirmed) {
@@ -92,7 +85,7 @@ const ViewInquiry = () => {
           .then((response) => {
             if (response.data.status_code == 200) {
               Swal.fire({
-                title: response.data.meassage,
+                title: t(response.data.meassage),
                 icon: "success",
                 button: t("okLabel"),
                 allowOutsideClick: false,
@@ -322,3 +315,4 @@ const ViewInquiry = () => {
 };
 
 export default ViewInquiry;
+/************Code By: R. AKSHAYA MOL***************/
