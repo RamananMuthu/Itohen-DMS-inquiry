@@ -982,5 +982,6 @@
     "Fabric GSM Already Exists" : "Fabric GSM Already Exists",
     "Inquiry sent Successfully" : "Inquiry Sent Successfully",
     "GoBack" : "Go Back",
-    "QuoteDetails" : "Quote Details"
+    "QuoteDetails" : "Quote Details",
+    "createNewInquiry":"Create New Inquiry"
 }
