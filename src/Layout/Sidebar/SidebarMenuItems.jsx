@@ -26,7 +26,14 @@ import calendarIconWhite from "../../assets/images/dms/icons/Calendar_white.svg"
 import calendarIcon from "../../assets/images/dms/icons/Calendar.svg";
 
 import Viewinquiry from "../../assets/images/dms/icons/viewinquiry.svg";
+import ViewinquiryActive from "../../assets/images/dms/icons/viewInquiryActive.svg";
+
+import Feedback from "../../assets/images/dms/icons/feedback.svg";
+import FeedbackActive from "../../assets/images/dms/icons/feedbackActive.svg";
+
 import InquiryContacts from "../../assets/images/dms/icons/inquiryContacts.svg";
+import InquiryContactsActive from "../../assets/images/dms/icons/inquiryContactsActive.svg";
+
 
 import InquiryList from "../../assets/images/dms/icons/viewinquiry.svg";
 import { getStaff, getModules } from '../../Constant/LoginConstant';
@@ -117,13 +124,11 @@ const SidebarMenuItems = ({ setMainMenu, sidebartoogle, setNavActive }) => {
                      {(menuItem.title=='Company Profile' && (menuItem.active))?<img src={companyIconWhite}/>:(menuItem.title=='Company Profile')?<img src={companyIcon}/>:""}
                      {(menuItem.title=='Calendar Configuration' && (menuItem.active))?<img src={calendarIconWhite} />:(menuItem.title=='Calendar Configuration')?<img src={calendarIcon}/>:""}
                     
-                     
-                     {(menuItem.title=='View Inquiry' && (menuItem.active))?<img src={Viewinquiry} />:(menuItem.title=='View Inquiry')?<img src={Viewinquiry}/>:""}
+                     {(menuItem.title=='View Inquiry' && (menuItem.active))?<img src={ViewinquiryActive} />:(menuItem.title=='View Inquiry')?<img src={Viewinquiry}/>:""}
                      {/* {(menuItem.title=='Inquiry List' && (menuItem.active))?<img src={InquiryList} />:(menuItem.title=='Inquiry List')?<img src={InquiryList}/>:""} */}
-                     {(menuItem.title=='Feedback Form' && (menuItem.active))?<img src={InquiryList} />:(menuItem.title=='Feedback Form')?<img src={InquiryList}/>:""}
-                     {(menuItem.title=='Inquiry Contacts' && (menuItem.active))?<img src={InquiryContacts} />:(menuItem.title=='Inquiry Contacts')?<img src={InquiryContacts}/>:""}
+                     {(menuItem.title=='Feedback Form' && (menuItem.active))?<img src={FeedbackActive} />:(menuItem.title=='Feedback Form')?<img src={Feedback}/>:""}
+                     {(menuItem.title=='Inquiry Contacts' && (menuItem.active))?<img src={InquiryContactsActive} />:(menuItem.title=='Inquiry Contacts')?<img src={InquiryContacts}/>:""}
                     
-                     
                   {/* {(menuItem.title=='Order Status' && (menuItem.active))?<img src={orderstatusIcon}/>:<img src={orderstatusIcon}/>} */}
                         {/* {menuItem.icon !== undefined && <menuItem.icon />} */}
                     
