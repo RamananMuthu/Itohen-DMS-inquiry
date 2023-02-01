@@ -11,6 +11,7 @@ import parse from 'html-react-parser';
 import { useSearchParams, } from "react-router-dom";
 import CKEditors from 'react-ckeditor-component';
 
+// Showing the factory inquiry Details
 const FactoryDetailInquiry = () => {
   var getInputParams = {};
   const [searchParams, setSearchParams] = useSearchParams();
@@ -65,7 +66,6 @@ const FactoryDetailInquiry = () => {
   }
 
   useEffect(() => {
-
     if (getWorkspaceType == "Factory" && getWorkspaceType != "PCU" && getWorkspaceType != "Buyer") {
       axios
         .post(ServerUrl + "/inquiry-details", getInputParams)
@@ -100,6 +100,7 @@ const FactoryDetailInquiry = () => {
               setMeasurementSheet(measurementSheetData)
               setAwsUrl(response.data.data.serverURL)
             }
+            // Check the media type for showing the Image
             if (mapData.media_type == "SampleFormat") {
               var getDetails = mapData.filepath;
               sampleFormatData.push(getDetails);
@@ -151,6 +152,7 @@ const FactoryDetailInquiry = () => {
           })
         })
 
+  // ********** API call for SKU Quantity Ratio ************
       axios
         .post(ServerUrl + "/inquiry-sku", getInputParams)
         .then((response) => {
@@ -162,9 +164,9 @@ const FactoryDetailInquiry = () => {
     } else {
       window.location.href = '/inquiry/viewinquiry';
     }
-
   }, [])
 
+  // ********* POST API call for Submit the Quotes value **********
   const submitFactoryInquiryForm = (e) => {
     let retval = validation();
     if (Object.keys(retval).length == 0) {
@@ -216,7 +218,6 @@ const FactoryDetailInquiry = () => {
     if (!comments.trim()) {
       validerrors.comments = t("enteryourComments");
     }
-
     setValiderrors(validerrors);
     return validerrors
   }
@@ -399,7 +400,6 @@ const FactoryDetailInquiry = () => {
                                       <Card>
                                         <CardBody>
                                           <Form className="needs-validation" noValidate="">
-                                            {/* <H6 className="ordersubhead">{t("Measurement Chart")}</H6> */}
                                             <Row className="g-12">
                                               <div className="table-responsive">
                                                 <table className="table">
@@ -861,3 +861,4 @@ const FactoryDetailInquiry = () => {
 }
 
 export default FactoryDetailInquiry
+// Code by : Anitha Sathysh

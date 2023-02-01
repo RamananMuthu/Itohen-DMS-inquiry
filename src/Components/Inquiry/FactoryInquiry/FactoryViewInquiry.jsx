@@ -3,17 +3,16 @@ import { Container, Row, Col, CardBody, Card, } from "reactstrap";
 import { Breadcrumbs } from "../../../AbstractElements";
 import DocumentIcon from "../../../assets/images/dms/icons/inquiryDocumentIcon.svg";
 import axios from "axios";
-import { encode,  } from "../../../helper"
+import { encode, } from "../../../helper"
 import { getLoginCompanyId, getWorkspaceId, getLoginUserId, getWorkspaceType } from '../../../Constant/LoginConstant';
 import { useTranslation } from 'react-i18next';
 import { ServerUrl } from "../../../Constant";
 import FactoryDetailInquiry from "./FactoryDetailInquiry";
 
+// Showing the factory inquiry list
 const FactoryViewInquiry = () => {
-
   const workspace_id = getWorkspaceId;
   const company_id = getLoginCompanyId;
-
   var getInputParams = {};
   getInputParams['company_id'] = getLoginCompanyId;
   getInputParams['workspace_id'] = getWorkspaceId;
@@ -24,20 +23,16 @@ const FactoryViewInquiry = () => {
   const [inquiryResponse, setInquiryResponse] = useState([]);
 
   useEffect(() => {
-
-    if( getWorkspaceType == "Factory" && getWorkspaceType != "PCU" && getWorkspaceType != "Buyer" )
-    { 
+    if (getWorkspaceType == "Factory" && getWorkspaceType != "PCU" && getWorkspaceType != "Buyer") {
       axios
-      .post(ServerUrl + "/factory-get-inquiry", getInputParams)
-      .then((response) => {
-
-        setInquiryDetails(response.data.data);
-        setInquiryResponse(response.data.response);
-      })
+        .post(ServerUrl + "/factory-get-inquiry", getInputParams)
+        .then((response) => {
+          setInquiryDetails(response.data.data);
+          setInquiryResponse(response.data.response);
+        })
     } else {
-      window.location.href='/inquiry/viewinquiry';
+      window.location.href = '/inquiry/viewinquiry';
     }
-
   }, [])
 
   const factoryDetails = (inquiryId, factoryId) => {
@@ -116,3 +111,4 @@ const FactoryViewInquiry = () => {
 }
 
 export default FactoryViewInquiry
+// Code by : Anitha Sathysh
