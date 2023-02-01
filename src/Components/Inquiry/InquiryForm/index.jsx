@@ -5,7 +5,6 @@ import {
   Card,
   CardBody,
   Col,
-  Nav, NavItem, NavLink, TabContent, TabPane,
   Row,
   Input,
   InputGroup,
@@ -30,14 +29,10 @@ import { encode, decode, apiencrypt, apidecrypt } from "../../../helper";
 import addIcon from "../../../assets/images/dms/icons/addIcon.svg";
 import imgUpload from "../../../assets/images/dms/icons/imgUpload.svg";
 import quantity from "../../../assets/images/dms/icons/quantity.svg";
-import imgUploadGreen from "../../../assets/images/dms/icons/imgUploadGreen.svg";
 import docIcon from "../../../assets/images/dms/icons/inquiryDocIcon.svg";
 import infoIcon from "../../../assets/images/dms/icons/inquiryInfoIcon.svg";
 import deleteIcon from"../../../assets/images/dms/inquiryDelIcon.svg";
 import scrollUpIcon from"../../../assets/images/dms/inquiryScrollUpIcon.svg";
-
-
-// import deleteIcon from"../../../assets/images/dms/icons/imgUpload.svg";
 import { Breadcrumbs, H6, Btn, Image, UL } from "../../../AbstractElements";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
@@ -51,6 +46,9 @@ import AddFabricModal from "./AddFabricModal";
 import InfoCanvas from "./InquiryInfoOffCanvas";
 
 const index = () => {
+  
+  const { t } = useTranslation();
+  
   const workspace_id = getWorkspaceId;
   const company_id = getLoginCompanyId;
   const UserId = getLoginUserId;
@@ -139,14 +137,12 @@ const index = () => {
   const[cartonSampleImg, setCartonSampleImg] = React.useState("");
   const [referenceId, setReferenceId] = useState(Date.now());
   const [awsUrl, setAwsUrl] = useState();
-  const [sampleSheetImg, setSampleSheetImg] = useState("");
   const [showInfoCanvas, setShowInfoCanvas] = useState(false);
   const [infoDetails, setInfoDetails] = useState([]);
   const [masterType, setMasterType] = useState();
   const [currencies, setCurrencies] = useState([]);
   const [currency, setCurrency] = useState("");
   const [measurementChart, setMeasurementChart] = useState([]);
-  const [pillTab, setpillTab] = useState('1');
   const [showTopBtn, setShowTopBtn] = useState(false);
   const toggleart = () => setModalArt(!modalArt);
   const togglefabric = () => setModalfabric(!modalfabric);
@@ -154,7 +150,6 @@ const index = () => {
   const togglesize = () => setModalSize(!modalSize);
   const toggleInfoCanvas = () => setShowInfoCanvas(!showInfoCanvas);
   const [validerrors, setValiderros] = React.useState({});
-  const { t } = useTranslation();
   var getInputParams = {};
   getInputParams["company_id"] = getLoginCompanyId;
   getInputParams["workspace_id"] = getWorkspaceId;
@@ -170,7 +165,6 @@ const index = () => {
   const packinginfo = useRef(null);
   const othersinfo = useRef(null);
 
-
   /****------- Tab Scroll ---------- ****/ 
   const scrollToSection =(elementRef)=>{
     window.scrollTo({
@@ -178,12 +172,13 @@ const index = () => {
       behavior:'smooth'
     })
   }
+
+   /****------- Payment Terms modal - Checked Value ---------- ****/ 
   const checkedVal = (valueType) => {
 
     var params = {};
     params["type"] = valueType;
     axios.post(ServerUrl + "/get-inquiry-master", params).then((response) => {
-      // console.log("Value", response.data.data);
       setInfoDetails(response.data.data);
     });
     setMasterType(valueType);
@@ -197,16 +192,16 @@ const index = () => {
   const validation = (data) => {
     let validerrors = {};
     if (!article) {
-      validerrors.article = t("Please Select Article Name");
+      validerrors.article = t("selectArticleName");
     }
     if (!styleNo.trim()) {
       validerrors.styleNo = t("enterStyleNumber");
     }
     if (!fabricCom) {
-      validerrors.fabricCom = t("Please Select Fabric Composition");
+      validerrors.fabricCom = t("selectFabricComposition");
     }
     if (!totalQuantity) {
-      validerrors.totalQuantity = t("Please enter Total Quantity");
+      validerrors.totalQuantity = t("enterTotQty");
     }
     setValiderros(validerrors);
     return validerrors;
@@ -270,7 +265,7 @@ const index = () => {
       }
     });
   };
-/****------- Add Quantity ---------- ****/ 
+/****------- Color -Size Add Quantity ---------- ****/ 
   const addQty = (e) => {
     var idv = e.target.id;
     var value = e.target.value;
@@ -291,7 +286,7 @@ const index = () => {
     overallTotalQty(e);
     sizeTotalQty(e);
   };
-
+/****------- Color -Size Get Quantity ---------- ****/ 
   const getQtyDetails = (e) => {
     var skuDet = [];
     const breakOut = false;
@@ -309,7 +304,7 @@ const index = () => {
     });
     return skuDet;
   };
-
+/****------- Color -Size Overall Total Quantity ---------- ****/ 
   const overallTotalQty = (e) => {
     var id = e.target.id;
     var value = e.target.value;
@@ -327,7 +322,7 @@ const index = () => {
     });
     document.getElementById("Overall_total_quantity").value = sum;
   };
-
+/****------- Color -Size ,Size wise Total ---------- ****/ 
   const sizeTotalQty = (e) => {
     var id = e.target.id;
     var value = e.target.value;
@@ -380,79 +375,30 @@ const index = () => {
     });
     axios.get(ServerUrl + "/get-currencies").then((response) => {
       response.data = apidecrypt(response.data);
-      // console.log(response.data.data);
       setCurrencies(response.data.data);
     });
     window.addEventListener("scroll", () => {
-      // console.log("scroll",window.scrollY);
+      scrollSticky();
       if (window.scrollY > 400) {
           setShowTopBtn(true);
       } else {
           setShowTopBtn(false);
       }
   });
+  const scrollSticky=()=> {
+    var header = document.getElementById("myHeader");
+     var sticky = header.offsetTop;
+    if (window.pageYOffset > sticky) {
+      header.classList.add("sticky");
+    } else {
+      header.classList.remove("sticky");
+    }
+  }
+  
   } else {
     window.location.href="/inquiry/factoryviewinquiry";
   }
   }, []);
-  // const uploadImageApiCall = (imageType, file) =>{
-  //   console.log("uploadImage:", imageType);
-  //   axios.post( ServerUrl + "/inquiry-file-upload",
-  //   {
-  //    type: imageType,
-  //    referenceId: referenceId,
-  //    file: file[0],
-  //    "company_id": company_id,
-  //   "workspace_id": workspace_id
-  //   },{
-  //     headers: {
-  //       'Content-Type': 'multipart/form-data'
-  //     }
-  //   })
-  //   .then((response) => {
-  //     console.log("Status code:",response.data.status_code);
-
-  //     // console.log("UPLOAD:",response.data.files[0].filepath);
-  //     if( response.data.status_code == 200){
-  //       setSampleSheetImg('0');
-  //        if(imageType == "SampleFormat")
-  //        {
-  //         // setSampleSheetImg(response.data.files[0].filepath);
-  //         //console.log("Files Ramana Maharishi",response.data.files);
-  //         setFileSampleFormat(response.data.files.files);
-  //         setAwsUrl(response.data.files.serverURL)
-  //        }
-  //        else if(imageType == "MeasurementSheet"){
-  //       setMeasurementSheetImg(response.data.files.files);
-  //       setAwsUrl(response.data.files.serverURL)
-  //        }
-  //        else if(imageType== "PrintImage"){
-  //       // setPrintImg(response.data.files[0].filepath);
-  //       setFilePrintImage(response.data.files.files);
-  //       setAwsUrl(response.data.files.serverURL)
-  //        }
-  //        else if(imageType == "MainLable"){
-  //       setMainLableSampleImg(response.data.files.files);
-  //       setAwsUrl(response.data.files.serverURL)
-  //        }
-  //        else if(imageType== "WashCareLable"){
-  //         setWashCareLableSampleImg(response.data.files.files);
-  //         setAwsUrl(response.data.files.serverURL)
-  //         }
-  //         else if(imageType== "Hangtag"){
-  //           setHangtagSampleImg(response.data.files.files);
-  //           setAwsUrl(response.data.files.serverURL)
-  //         }
-  //         else if(imageType== "BarcodeStickers"){
-  //           setBarcodeStickersSampleImg(response.data.files.files);
-  //           setAwsUrl(response.data.files.serverURL)
-  //         }
-  //       // console.log("!!!",  response.data.files[0].filepath);
-  //       setSampleSheetImg('1');
-  //     }
-  //   })
-
-  // }
   
   /****------- Image Upload API Call ---------- ****/ 
   const uploadImageApiCall = (imageType, file) => {
@@ -474,9 +420,7 @@ const index = () => {
       )
       .then((response) => {
         if (response.data.status_code == 200) {
-          // setSampleSheetImg('0');
           if (imageType == "SampleFormat") {
-            // setSampleSheetImg(response.data.files[0].filepath);
             setFileSampleFormat(response.data.files.files);
             setAwsUrl(response.data.files.serverURL);
           } else if (imageType == "MeasurementSheet") {
@@ -521,14 +465,13 @@ const index = () => {
       button: t("okLabel"),
     }).then((result) => {
       if (result.isConfirmed) 
-      { 
-        
+      {         
         axios
         .post(ServerUrl+"/delete-inquiry-media",media)
         .then((response) => {
           if(response.data.status_code == 200){
             Swal.fire({
-              title: response.data.meassage,
+              title: t(response,data.meassage),
               icon: "success",
               showCancelButton: true,
               button: t("okLabel"),
@@ -541,14 +484,10 @@ const index = () => {
             )
           }
         })
-
-          // console.log("deleteImageFiles:",file);
       }
     });
-
-
   };
-
+/****------- Press Enter - Next Field ---------- ****/ 
   function handleEnter(event) {
     if (
       (event.keyCode === 13 || event.keyCode === 9) &&
@@ -578,7 +517,6 @@ const index = () => {
         }
       }
     }
-    // event.preventDefault();
   };
 
   function handleKeyPress(e) {
@@ -588,7 +526,7 @@ const index = () => {
       e.preventDefault();
     }
   };
-
+/****------- Color Selection  ---------- ****/ 
   const handleChangeColor = (e) => {
     var id = e.nativeEvent.target.selectedIndex;
     var idvc = e.nativeEvent.target[id].value;
@@ -603,7 +541,7 @@ const index = () => {
       setColor([...color, colorary]);
     }
   };
-
+/****------- Size Selection  ---------- ****/ 
   const handleChangeSize = (e) => {
     var id = e.nativeEvent.target.selectedIndex;
     var idvs = e.nativeEvent.target[id].value;
@@ -660,6 +598,7 @@ const index = () => {
     const newContent = e.editor.getData();
     setSpecialRequest(newContent);
   };
+  /****----------------- ****/ 
 
   /****------- Image Upload Validation ---------- ****/ 
   const SampleFormatImg = (files) => {
@@ -957,15 +896,21 @@ const index = () => {
       }
     });
   };
+/****----------------- ****/ 
 
   /****------- Measurement Chart - Add Row ---------- ****/ 
   const addTableRows=()=>{
     setMeasurementChart([...measurementChart,measurementChart])
   };
 
-
-  const measurementChartData = () => {
-  
+    /****------- Measurement Chart - Remove Row ---------- ****/ 
+  const deleteTableRows = (index)=>{
+    const rows = [...measurementChart];
+    rows.splice(index, 1);
+    setMeasurementChart(rows);
+  };
+/****------- Getting Measurement Chart Data ---------- ****/ 
+  const measurementChartData = () => {  
    var measureChart =[];
     for(let i=0;i<measurementChart.length;i++){
       var measurementChartRowData ={};
@@ -980,30 +925,6 @@ const index = () => {
     return measureChart;
   };
 
-  // const measurementChartData = () =>
-  // {
-  //     var measurementChartOverallValues = [];
- 
-  //     for( let i=0; i<measurementChart.length; i++)
-  //     {
-  //       var measurementChartRowData = {};
-  //       var sizeData = {};
-  //       measurementChartRowData["position"] = document.getElementById("position_"+i).value;
-  //       measurementChartRowData["description"]= document.getElementById("description_"+i).value;
-  //       measurementChartRowData["tolerance"] = document.getElementById("tolerance_"+i).value;
-        
-  //       size.map((mapData) => {
-  //         sizeData[mapData.name] = document.getElementById(i+"_size_id_"+mapData.id).value ? document.getElementById(i+"_size_id_"+mapData.id).value : "0";
-  //       }); 
-  //     // measurementChartRowData["size_quantity"] = sizeData;
-  //       measurementChartOverallValues.push(measurementChartRowData);
-  //       }
-  
-  //       return measurementChartOverallValues;
-
-  // };
-
-
   // const sizeTotal = (value, index) => 
   // {
   //   var sum = 0;
@@ -1015,14 +936,9 @@ const index = () => {
   //   document.getElementById("overall_total"+index).value  =  sum ? sum : "0";
   // };
 
-  const deleteTableRows = (index)=>{
-    const rows = [...measurementChart];
-    rows.splice(index, 1);
-    setMeasurementChart(rows);
-  };
 
-  const submitInquiryForm = (e) => {
-  
+  /****------- Inquiry Form Data Submission - Save ---------- ****/ 
+  const submitInquiryForm = (e) => {  
     let retval = validation();
     if (Object.keys(retval).length == 0) {
       let measure_chart_array = measurementChartData();
@@ -1033,7 +949,6 @@ const index = () => {
       inquiryFormInputParams["user_id"] = UserId;
       inquiryFormInputParams["article_id"] = article;
       inquiryFormInputParams["style_no"] = styleNo;
-
       inquiryFormInputParams["fabric_type_id"] = fabricCom;
       inquiryFormInputParams["fabric_type"]= fabricType;
       inquiryFormInputParams["fabric_GSM"] = fabricGSM;
@@ -1043,29 +958,19 @@ const index = () => {
       inquiryFormInputParams["total_qty"] = totalQuantity;
       inquiryFormInputParams["patterns"] = patterns;
       inquiryFormInputParams["jurisdiction"] = placesOfJurisdiction;
-      inquiryFormInputParams["customs_declaraion_document"] =
-        customsDeclarationDoc;
+      inquiryFormInputParams["customs_declaraion_document"] = customsDeclarationDoc;
       inquiryFormInputParams["penality"] = penalty;
       inquiryFormInputParams["print_image"] = printImage;
       inquiryFormInputParams["print_size"] = printSize;
       inquiryFormInputParams["print_type"] = printType;
       inquiryFormInputParams["print_no_of_colors"] = noOfColors;
       inquiryFormInputParams["main_lable"] = mainLabel;
-
-      //inquiryFormInputParams['main_lable_info'] = mainLabelSampleImg;
       inquiryFormInputParams["washcare_lable"] = washCareLabel;
-
-      //inquiryFormInputParams['washcare_lable_info'] = washCareLabelSampleImg
-
       inquiryFormInputParams["hangtag_lable"] = hangtag;
-      //inquiryFormInputParams['hangtag_lable_info'] = hangtagSampleImg;
-      inquiryFormInputParams["barcode_lable"] = barcodeStickers;
-
-      //inquiryFormInputParams['barcode_lable_info'] =barcodeStickersSampleImg;
+      inquiryFormInputParams["barcode_lable"] = barcodeStickers; 
       inquiryFormInputParams["trims_nominations"] = trimsNotification;
       inquiryFormInputParams["poly_bag_size"] = polybagSizeThickness;
       inquiryFormInputParams["poly_bag_material"] = polybagMaterial;
-      // inquiryFormInputParams["poly_bag_price"] = printDetailsPolybag;
       inquiryFormInputParams["carton_bag_dimensions"] = cartonBoxDimension;
       inquiryFormInputParams["carton_color"] = cartonColors;
       inquiryFormInputParams["carton_material"] = cartonMaterial;
@@ -1074,35 +979,28 @@ const index = () => {
       inquiryFormInputParams["make_up"] = makeUp;
       inquiryFormInputParams["films_cd"] = flimsCD;
       inquiryFormInputParams["picture_card"] = pictureCard;
-
       inquiryFormInputParams["inner_cardboard"] = innerCardBoard;
       inquiryFormInputParams["shipping_size"] = shippingSize;
-
       inquiryFormInputParams["air_frieght"] = airFrieght;
       inquiryFormInputParams["estimate_delivery_date"] = estimatedDeliveryDate;
       inquiryFormInputParams["due_date"] = inquiryDueDate;
       inquiryFormInputParams["incoterms"] = incomeTerm;
       inquiryFormInputParams["payment_terms"] = paymentTerm;
       inquiryFormInputParams["target_price"] = targetPrice;
-      inquiryFormInputParams["forbidden_substance_info"] =
-        forbiddenSubstancesInfo;
+      inquiryFormInputParams["forbidden_substance_info"] = forbiddenSubstancesInfo;
       inquiryFormInputParams["testing_requirements"] = testingRequirement;
       inquiryFormInputParams["sample_requirements"] = sampleRequirement;
       inquiryFormInputParams["special_requests"] = specialRequest;
       inquiryFormInputParams["currency"] = currency;
       inquiryFormInputParams["sku_details"] = sku;
-
       inquiryFormInputParams["referenceId"] = referenceId.toString();
       inquiryFormInputParams['measurement_Chart']= measure_chart_array;
       axios
         .post(ServerUrl + "/save-inquiry", inquiryFormInputParams)
         .then((response) => {
-          // console.log(response);
-          // console.log(response.data.status_code);
           if (response.data.status_code === 200) {
             Swal.fire({
-              title: t("inquiryAddedSuccessfully"),
-              // text: t(response.data.message),
+              title: t(response.data.message),
               icon: "success",
               button: t("okLabel"),
               allowOutsideClick: false,
@@ -1114,16 +1012,7 @@ const index = () => {
           }
           if (response.data.status_code === 401) {
             Swal.fire({
-              // title:
-              //     t(response.data.errors.company_id) ||
-              //     t(response.data.errors.workspace_id) ||
-              //     t(response.data.errors.article_id)||
-              //     t(response.data.errors.style_no)||
-              //     t(response.data.errors.fabric_type_id)||
-              //     t(response.data.errors.total_qty),
               title:
-                // (response.data.errors.company_id) ||
-                // (response.data.errors.workspace_id) ||
                 response.data.errors.article_id ||
                 response.data.errors.style_no ||
                 response.data.errors.fabric_type_id ||
@@ -1137,8 +1026,6 @@ const index = () => {
     }
   };
 
-
-
   return (
     <Fragment>
       <Row className="pgbgcolor">
@@ -1151,53 +1038,56 @@ const index = () => {
       <Container fluid={true} className="general-widget topaln">
         <Col >
           <Card>
-            <CardBody>
+            {/* Tab Design */}
+            <CardBody className="myHeader" id="myHeader">
             <Row className="u-steps" style={{ cursor: 'pointer' }}>        
               <Col  className="u-step activeTab" onClick={() => scrollToSection(basicinfo)}>               
                 <div className="u-step-desc" >
                   <span className="u-step-title">
-                   Basic Information
+                  {t("basicInformation")}
                     </span>                 
                 </div>
               </Col>
                  
               <Col  className="u-step activeTab"  onClick={() => scrollToSection(fabricinfo)}>                
                 <div className="u-step-desc">
-                  <span className="u-step-title"> Fabric Information</span>                 
+                  <span className="u-step-title">{t("fabricInformation")}</span>                 
                 </div>
               </Col>
          
               <Col className="u-step activeTab" onClick={() => scrollToSection(printinfo)}>                
                 <div className="u-step-desc"  >
-                  <span className="u-step-title">Print Information</span>
+                  <span className="u-step-title">{t("printInformation")}</span>
                 </div>
               </Col>
               
               <Col className="u-step activeTab" onClick={() => scrollToSection(trimsinfo)}>                
                 <div className="u-step-desc"  >
-                  <span className="u-step-title">Trims Information</span>                 
+                  <span className="u-step-title">{t("trimsInformation")}</span>                 
                 </div>
               </Col>
           
               <Col  className="u-step activeTab" onClick={() => scrollToSection(packinginfo)}>                
                 <div className="u-step-desc"  >
-                  <span className="u-step-title">Packing Information</span>                  
+                  <span className="u-step-title">{t("packingInformation")}</span>                  
                 </div>
               </Col>
 
               <Col  className="u-step activeTab" onClick={() => scrollToSection(othersinfo)}>                
                 <div className="u-step-desc"  >
-                  <span className="u-step-title">Others</span>                  
+                  <span className="u-step-title">{t("others")}</span>                  
                 </div>
               </Col>
             </Row>
-              <Form>
-             
+            </CardBody>
+
+            <CardBody className="contenthb">            
+              <Form>             
                 <div ref={basicinfo} className="basicinfo m-t-20">
                 <Row className="g-12">
                   <Col lg="12" md="12" sm="12" xs="12">
                     <span>
-                      <H6 className="ordersubhead">Basic Information</H6>
+                      <H6 className="ordersubhead">{t("basicInfo")}</H6>
                     </span>
                   </Col>
                 </Row>
@@ -1330,7 +1220,7 @@ const index = () => {
                 <Row className="g-12">
                   <Col lg="12" md="12" sm="12" xs="12">
                     <span>
-                      <H6 className="ordersubhead">Fabric Information</H6>
+                      <H6 className="ordersubhead">{t("fabricInfo")}</H6>
                     </span>
                   </Col>
                 </Row>
@@ -2514,7 +2404,7 @@ const index = () => {
                   </Col>
                   <Col lg="4"></Col>
                 </Row>
-</div>
+                </div>
                 {/* Trims Information: Main Label,Main Label Sample */}
                 <div ref={trimsinfo} className="printinfo">
                 <Row className="g-12">
@@ -2555,13 +2445,10 @@ const index = () => {
                         <InputGroupText className=" btn imgBackground">
                           <Files
                             className="files-dropzone fileContainer"
-                            // onChange={nonFilesChange}
-                            // onError={nonFilesError}
                             accept=".png,.jpg,.jpeg"
                             multiple={false}
                             canCancel={false}
                             onChange={MainLabelSample}
-                            // onSubmit={handleSubmit}
                             clickable
                           >
                             <img
@@ -2598,15 +2485,14 @@ const index = () => {
                                         deleteImageFiles("MainLabel", file)
                                       }
                                       }
-                                  />
-                                
+                                  />                                
                             </div>
                           </div>
                           </>
                         ))
                      
                     ) : (
-                      <div>{/* Varala */}</div>
+                      <div>{''}</div>
                     )}
                   </Col>
                 </Row>
@@ -3342,6 +3228,7 @@ const index = () => {
                     </span>
                   </Col>
                 </Row>
+
                 <Row>
                   <Col lg="6">
                     <FormGroup>
@@ -3354,10 +3241,6 @@ const index = () => {
                           change: onChangeForbiddenSubstancesInfo,
                         }}
                         content={forbiddenSubstancesInfo}
-                        // events={{
-                        //     'change': onChange
-                        // }}
-                        //onChange={(e) => setForbiddenSubstancesInfo<(e.target.value)}
                         config={{
                           height: 100,
                           toolbar: [
@@ -3402,9 +3285,6 @@ const index = () => {
                           change: onChangeTestingRequirement,
                         }}
                         content={testingRequirement}
-                        // events={{
-                        //     'change': onChange
-                        // }}
                         onChange={(e) => setTestingRequirement(e.target.value)}
                         config={{
                           height: 100,
@@ -3454,9 +3334,6 @@ const index = () => {
                           change: onChangeSampleRequirement,
                         }}
                         content={sampleRequirement}
-                        // events={{
-                        //     'change': onChange
-                        // }}
                         onChange={(e) => setSampleRequirement(e.target.value)}
                         config={{
                           height: 100,
@@ -3502,9 +3379,6 @@ const index = () => {
                           change: onChangeSpecialRequest,
                         }}
                         content={specialRequest}
-                        // events={{
-                        //     'change': onChange
-                        // }}
                         onChange={(e) => setSpecialRequest(e.target.value)}
                         config={{
                           height: 100,
@@ -3543,23 +3417,21 @@ const index = () => {
                 </div>
                 <FormGroup className="f-right">
                   <Button
-                    // href={`${process.env.PUBLIC_URL}/ordersku`}
                     className="btn btn-primary "
                     onClick={() => {
                       submitInquiryForm();
                     }}
                   >
-                    Save
+                   {t("save")}
                   </Button>
                 </FormGroup>
               
               </Form>
             </CardBody>
           </Card>
-
           {/* Scroll To Top  */}
           
-          <div className="top-to-btm" style={{ cursor: 'pointer' }}>
+           <div className="top-to-btm" style={{ cursor: 'pointer' }}>
             {" "}
             {showTopBtn && (
               <img  src={scrollUpIcon}  className="icon-position icon-style"
@@ -3569,8 +3441,7 @@ const index = () => {
             >
             </img>
             )}{" "}
-        </div>
-          
+        </div>         
         </Col>
       </Container>
       <InfoCanvas
@@ -3586,5 +3457,6 @@ const index = () => {
     </Fragment>
   );
 };
-
 export default index;
+
+/*************************Code By: R.AKSHAYA MOL************************/

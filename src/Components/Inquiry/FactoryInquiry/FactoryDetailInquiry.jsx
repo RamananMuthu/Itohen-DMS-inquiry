@@ -20,7 +20,7 @@ const FactoryDetailInquiry = () => {
   getInputParams['workspace_id'] = getWorkspaceId;
   getInputParams['factory_id'] = getLoginUserId;
   getInputParams['inquiry_id'] = inquiry_id;
-
+  getInputParams["user_id"] = getLoginUserId;
   const [factoryInquiryDetails, setFactoryInquiryDetails] = useState([]);
   const [getColor, setGetColor] = React.useState([]);
   const [getSize, setGetSize] = React.useState([]);
