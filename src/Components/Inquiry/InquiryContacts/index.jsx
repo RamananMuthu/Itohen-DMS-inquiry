@@ -1,11 +1,8 @@
-import {
-  Container, Row, Col, CardBody, Card, CardHeader, FormGroup,
-  Form, Label, Input, Button
-} from "reactstrap";
+import { Container, Row, Col, CardBody, Card, CardHeader, FormGroup,
+  Form, Label, Input, Button } from "reactstrap";
 import React, { Fragment, useState, useEffect } from "react";
 import { Breadcrumbs, H5, H6, } from "../../../AbstractElements";
-import { getLoginUserId, getLoginCompanyId, getWorkspaceId, getWorkspaceType }
-  from '../../../Constant/LoginConstant';
+import { getLoginUserId, getWorkspaceType } from '../../../Constant/LoginConstant';
 import { useTranslation } from 'react-i18next';
 import Swal from 'sweetalert2';
 import axios from "axios";
@@ -15,13 +12,12 @@ const InquiryContacts = () => {
   // var getInputParams = {};
   // getInputParams['company_id'] = getLoginCompanyId;
   // getInputParams['workspace_id'] = getWorkspaceId;
-  // getInputParams['factory_id'] = 5;
-
+  // getInputParams['factory_id'] = 5;  
+  // const [user_id, setUserId] = useState(userId);
   const { t } = useTranslation();
   const userId = getLoginUserId;
   const [factory, setFactoryName] = useState("");
   const [factory_id, setFactoryId] = useState(userId ? userId : "");
-  // const [user_id, setUserId] = useState(userId);
   const [contact_person, setContactPerson] = useState('');
   const [contact_number, setContactNumber] = useState('');
   const [contact_email, setContactEmail] = useState("");
@@ -30,20 +26,18 @@ const InquiryContacts = () => {
   const [factoryDetails, setFactoryDetails] = useState([]);
 
   useEffect(() => {
-    if( getWorkspaceType == "Factory" && getWorkspaceType != "PCU" && getWorkspaceType != "Buyer"  )
-    {
+    if (getWorkspaceType == "Factory" && getWorkspaceType != "PCU" && getWorkspaceType != "Buyer") {
       axios
-      .post(ServerUrl + "/factory-inquiry-contact", { factory_id })
-      .then((response) => {
-        if (response.data.status_code === 200) {
-          setFactoryDetails(response.data.data[0] ? response.data.data[0] : "");
-          setValidErrors(() => "");
-        }
-      })
+        .post(ServerUrl + "/factory-inquiry-contact", { factory_id })
+        .then((response) => {
+          if (response.data.status_code === 200) {
+            setFactoryDetails(response.data.data[0] ? response.data.data[0] : "");
+            setValidErrors(() => "");
+          }
+        })
     } else {
-      window.location.href='/inquiry/viewinquiry';
+      window.location.href = '/inquiry/viewinquiry';
     }
-   
   }, [])
 
   const handleSubmitHandler = (e) => {
@@ -57,6 +51,8 @@ const InquiryContacts = () => {
         city: document.getElementById("city").value,
         factory_id: userId ? userId : "",
       };
+
+      // ********* POST API call for Update the Contact Details **********
       axios.post(ServerUrl + "/update-inquiry-contact", updateInquirySettings)
         .then((response) => {
           if (response.data.status_code === 200) {
@@ -93,6 +89,8 @@ const InquiryContacts = () => {
           factory, contact_person, contact_number, contact_email,
           address, city, factory_id,
         };
+
+        // ********* POST API call for Save the New Contact Details **********
         axios.post(ServerUrl + "/save-inquiry-contact", inquirySettings)
           .then((response) => {
             factory, contact_person, contact_number,
@@ -140,7 +138,6 @@ const InquiryContacts = () => {
           button: t("okLabel"),
         });
       }
-
     }
   }
 
@@ -172,13 +169,11 @@ const InquiryContacts = () => {
     } else if (!(contact_email).match(/^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i)) {
       errors.contact_email = t("enterValidEmailAddress");
     }
-
     if (!city) {
       errors.city = t("The city field is required.");
     } else if (!(city).match(/^[a-zA-Z\s]+$/g)) {
       errors.city = ("allowedCharactersSpace");
     }
-
     if (!address) {
       errors.address = t("The address field is required.");
     }
@@ -355,6 +350,6 @@ const InquiryContacts = () => {
       </Container>
     </Fragment>
   );
-
 };
 export default InquiryContacts;
+// Code by : Anitha Sathysh
