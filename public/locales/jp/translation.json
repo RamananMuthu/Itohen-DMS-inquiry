@@ -913,6 +913,13 @@
     "Fabric Composition": "Fabric Composition",
     "Select Fabric Composition":"Select Fabric Composition",
     "enterFabricType": "Please enter Fabric Type",
+    "selectArticleName":"Please Select Article Name",
+    "selectFabricComposition":"Please Select Fabric Composition",
+    "enterTotQty":"Please enter Total Quantity",
+    "File Deleted Successfully":"File Deleted Successfully",
+    "Inquiry Added Successfully":"Inquiry Added Successfully",
+    "fabricInformation":"Fabric Information",
+    
     "********** Inquiry Contact Setting **********": "********** Inquiry Contact Setting **********",
     "inquiryContactSetting": "Inquiry Contact Setting",
     "inquiryContactDetails": "Inquiry Contact Details",

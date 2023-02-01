@@ -34,7 +34,6 @@ const FormAddSizeModal = ({ modal, toggle, inputParams, size }) => {
         }))
         .then((response) => {
           response.data = apidecrypt(response.data);
-          // console.log("Response ---->>>", response);
           if (response.data.status_code === 200) {
             Swal.fire({
               title: t("sizeAddedAlert"),

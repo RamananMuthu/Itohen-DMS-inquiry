@@ -29,11 +29,12 @@ const AddFactoryModal = ({ modal, toggle, setFactoryModal, companyId, workspaceI
   apiInputParams['address'] = address;
   apiInputParams['city'] = city;
 
+
   const orderValidation = (data) => {
 
     let errors = {};
     if (!factoryName) {
-      errors.factoryName = "Please enter the factory name";
+      errors.factoryName =t("enterFactoryName");
     } else if (!(factoryName).match(/^[@&0-9a-zA-Z_-\s]+$/g)) {
       errors.factoryName = t("numbersCharactersAllowed");
     } else if (!(factoryName).match(/^[a-zA-Z\s]+$/g)) {
@@ -41,7 +42,7 @@ const AddFactoryModal = ({ modal, toggle, setFactoryModal, companyId, workspaceI
     }
 
     if (!contactPerson) {
-      errors.contactPerson = "Please enter the contact person";
+      errors.contactPerson = t("enterContactPerson");
     } else if (!(contactPerson).match(/^[@&0-9a-zA-Z_-\s]+$/g)) {
       errors.contactPerson = t("numbersCharactersAllowed");
     } else if (!(contactPerson).match(/^[a-zA-Z\s]+$/g)) {
@@ -49,7 +50,7 @@ const AddFactoryModal = ({ modal, toggle, setFactoryModal, companyId, workspaceI
     }
 
     if (!contactNumber) {
-      errors.contactNumber = "Please enter the contact number";
+      errors.contactNumber = t("enterContactNumber");
     } else if (contactNumber == '') {
       errors.contactNumber = t("enterMobileNumber");
     } else if (!/^[0-9]+$/.test(contactNumber)) {
@@ -60,15 +61,15 @@ const AddFactoryModal = ({ modal, toggle, setFactoryModal, companyId, workspaceI
     }
 
     if (!email) {
-      errors.email = "Please enter the email";
+      errors.email = t("enterEmail");
     }
 
     if (!address) {
-      errors.address = "Please enter the address";
+      errors.address = t("enterAddress");
     }
 
     if (!city) {
-      errors.city = "Please enter the city";
+      errors.city = t("enterCityName");
     } else if (!(city).match(/^[@&0-9a-zA-Z_-\s]+$/g)) {
       errors.city = t("numbersCharactersAllowed");
     } else if (!(city).match(/^[a-zA-Z\s]+$/g)) {
@@ -78,14 +79,9 @@ const AddFactoryModal = ({ modal, toggle, setFactoryModal, companyId, workspaceI
     setValidErrors(errors);
     return errors;
   };
-  // const dataToSendAtStarting = {
-  //   "company_id": companyId,
-  //   "workspace_id": workspaceId
-  // };
 
   const onSaveHandle = () => {
     let backendErrors = {};
-
     let retval = orderValidation();
     if (Object.keys(retval).length == 0) {
       axios
@@ -94,7 +90,7 @@ const AddFactoryModal = ({ modal, toggle, setFactoryModal, companyId, workspaceI
 
           if (response.data.status_code == 200) {
             Swal.fire({
-              title: response.data.message,
+              title: t(response.data.message),
               icon: "success",
               button: t("okLabel"),
               confirmButtonColor: '#4E90DE',
@@ -109,7 +105,6 @@ const AddFactoryModal = ({ modal, toggle, setFactoryModal, companyId, workspaceI
                   }
                   )
                   .then((response) => {
-                    // response.data = apidecrypt(response.data)
                     factory(response.data.data);
                   });
               }
@@ -125,16 +120,6 @@ const AddFactoryModal = ({ modal, toggle, setFactoryModal, companyId, workspaceI
               confirmButtonColor: '#4E90DE',
               allowOutsideClick: false,
             })
-
-            // setBackendErrors(()=>"");
-            // if( response.data.error.contact_number[0] == "The contact number has already been taken."){
-            //   backendErrors.contactNumber =  "The contact number has already been taken."
-            //   setBackendErrors(backendErrors);
-            // }
-            // else if( response.data.error.contact_email[0] == "The contact email has already been taken." ){
-            //   backendErrors.email = "The contact email has already been taken.";
-            //   setBackendErrors(backendErrors);
-            // }
           }
         })
     }
@@ -249,10 +234,6 @@ const AddFactoryModal = ({ modal, toggle, setFactoryModal, companyId, workspaceI
           className="btn m-l-5"
           style={{ backgroundColor: '#4E90DE', color: "#FFFFFF" }}
           onClick={() => onSaveHandle()} > {t("save")} </a>
-        {/* <Button className="factSave"   onClick= {() => onSaveHandle()}> Save </Button> */}
-        {/* <Btn attrBtn={{ color: "primary btn-sm", onClick: () => onSaveHandle() }}>
-          Save
-        </Btn> */}
       </ModalFooter>
     </Modal>
   );
