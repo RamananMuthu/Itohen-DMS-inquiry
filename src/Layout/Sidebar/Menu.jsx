@@ -14,7 +14,7 @@ export const MENUITEMS = [
         Items: [
             getWorkspaceType == "Buyer" ||  getWorkspaceType == "PCU" &&  getWorkspaceType != "Factory" ? 
             { 
-                path: `${process.env.PUBLIC_URL}/viewinquiry`, type: 'link', active: false, title: 'View Inquiry'
+                path: `${process.env.PUBLIC_URL}/inquiry/viewinquiry`, type: 'link', active: false, title: 'View Inquiry'
             } 
             : {},
 
