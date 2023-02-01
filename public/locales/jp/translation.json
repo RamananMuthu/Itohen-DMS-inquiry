@@ -919,7 +919,10 @@
     "File Deleted Successfully":"File Deleted Successfully",
     "Inquiry Added Successfully":"Inquiry Added Successfully",
     "fabricInformation":"Fabric Information",
-    
+    "enterContactPerson":"Please Enter the contact person",
+    "enterContactNumber":"Please Enter the contact number",
+    "enterEmail":"Please enter the email",
+    "Factory Added Successfully":"Factory Added Successfully",   
     "********** Inquiry Contact Setting **********": "********** Inquiry Contact Setting **********",
     "inquiryContactSetting": "Inquiry Contact Setting",
     "inquiryContactDetails": "Inquiry Contact Details",
