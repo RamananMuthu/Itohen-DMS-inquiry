@@ -58,7 +58,7 @@ const FormAddFabricGSM = ({ modal, toggle, companyId, workspaceId, article }) =>
           /* To show error if the Role is already present*/
           if (response.data.status_code === 401) {
             Swal.fire({
-              title: t("Fabric GSM Already Exists"),
+              title: t("fabricGSMAlreadyExists"),
               text: t("enterDifferentName"),
               icon: "error",
               button: t("okLabel"),

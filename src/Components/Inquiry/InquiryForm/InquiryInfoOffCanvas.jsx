@@ -8,16 +8,14 @@ import Swal from "sweetalert2";
 
 const InquiryInfoOffCanvas = ({ modal, toggle, infoDetails, masterType,
   setPaymentTerm, setShowInfoCanvas, showInfoCanvas, PaymentTerm }) => {
-  const [checkedValue, setCheckedValue] = useState("");
   const { t } = useTranslation();
-
+/******************Save Cheched Factory************************/
   const saveChecked = (checkedData) => {
     var checkboxeschecked = [];
     var markedCheckbox = document.querySelectorAll('input[type="checkbox"]');
     var checkboxLength = markedCheckbox.length;
     var content = PaymentTerm + "<ul>";
     for (var i = 0; i < checkboxLength; i++) {
-      //var checkbox = markedCheckbox[i];
       if (markedCheckbox[i].checked) {
         checkboxeschecked.push(markedCheckbox[i].value);
         content = content + '<li>' + markedCheckbox[i].value + '</li>';
@@ -27,7 +25,7 @@ const InquiryInfoOffCanvas = ({ modal, toggle, infoDetails, masterType,
 
     if (checkboxeschecked.length > 0) {
       Swal.fire({
-        title: t("Selected Payment Terms Added Successfully"),
+        title: t("selectedPaymentTermsAddedSuccessfully"),
         icon: "success",
         showCancelButton: true,
         button: t("okLabel"),
@@ -40,7 +38,7 @@ const InquiryInfoOffCanvas = ({ modal, toggle, infoDetails, masterType,
       });
     } else {
       Swal.fire({
-        title: t("Check Atleast One Before Save"),
+        title: t("checkAtleastOneBeforeSave"),
         icon: "warning",
         button: t("okLabel"),
       });
@@ -104,3 +102,4 @@ const InquiryInfoOffCanvas = ({ modal, toggle, infoDetails, masterType,
 };
 
 export default InquiryInfoOffCanvas;
+/******************Code By: R.AKSHAYA MOL*******************/

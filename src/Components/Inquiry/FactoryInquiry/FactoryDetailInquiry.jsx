@@ -241,7 +241,7 @@ const FactoryDetailInquiry = () => {
                         <table className="table shadow shadow-showcase table-striped table-bordered">
                           <thead className="bg-primary">
                             <tr>
-                              <th className="centerAlign" colSpan={2}> {t("Factory Details")} </th>
+                              <th className="centerAlign" colSpan={2}> {t("factoryDetails")} </th>
                             </tr>
                           </thead>
                           <tbody id="htmlStringListCSS">
@@ -272,7 +272,7 @@ const FactoryDetailInquiry = () => {
                             </tr><tr>
                               {factoryInquiryDetails.fabric_type_id ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("Fabric Composition")} </td>
+                                  <td className="factoryDetailsTable">{t("fabricComposition")} </td>
                                   <td className="text-left"> {factoryInquiryDetails.fabric_type_id} </td>
                                 </>
                                 : ""}
@@ -394,7 +394,7 @@ const FactoryDetailInquiry = () => {
                             </tr><tr>
                               {factoryInquiryDetails.measurement_sheet ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("Measurement Chart")}  </td>
+                                  <td className="factoryDetailsTable">{t("measurementChart")}  </td>
                                   <td className="text-left">
                                     <Col className="table-responsive" md="12" sm="12" lg="12">
                                       <Card>
@@ -613,11 +613,11 @@ const FactoryDetailInquiry = () => {
                                 </>
                                 : ""}
                             </tr><tr>
-                              <td className="factoryDetailsTable">{t("Polybag Sample Image")} </td>
+                              <td className="factoryDetailsTable">{t("polybagSampleImage")} </td>
                               <td className="text-left">
                                 {polybagImage.map((obj) => (
                                   <a href={awsUrl + obj} target="_blank">
-                                    < img src={awsUrl + obj} alt={t("Polybag Sample Image")} width="80px" height="80px"
+                                    < img src={awsUrl + obj} alt={t("polybagSampleImage")} width="80px" height="80px"
                                       className="p-r-5 rounded" />
                                   </a>
                                 ))}
@@ -658,11 +658,11 @@ const FactoryDetailInquiry = () => {
                                 </>
                                 : ""}
                             </tr><tr>
-                              <td className="factoryDetailsTable">{t("Carton Sample Image")}  </td>
+                              <td className="factoryDetailsTable">{t("cartonSampleImage")}  </td>
                               <td className="text-left">
                                 {cartonImage.map((obj) => (
                                   <a href={awsUrl + obj} target="_blank">
-                                    < img src={awsUrl + obj} alt={t("Carton Sample Image")} width="80px" height="80px"
+                                    < img src={awsUrl + obj} alt={t("cartonSampleImage")} width="80px" height="80px"
                                       className="p-r-5 rounded" />
                                   </a>
                                 ))}
@@ -755,7 +755,7 @@ const FactoryDetailInquiry = () => {
                               <>
                                 <tr>
                                   <td className="text-left" colSpan="3">
-                                    <H6 className="ordersubhead">{t("QuoteDetails")}</H6> </td>
+                                    <H6 className="ordersubhead">{t("quoteDetails")}</H6> </td>
                                 </tr>
                                 <tr>
                                   {inquiryResponse.price ?
@@ -835,7 +835,7 @@ const FactoryDetailInquiry = () => {
 
                         <Button className="btn-sm secondaryBtn m-r-10 f-right"
                           onClick={() => onGoBack()}>
-                          {t("GoBack")}
+                          {t("goBack")}
                         </Button>
                       </FormGroup>
                     </Form>
@@ -845,7 +845,7 @@ const FactoryDetailInquiry = () => {
                       <Col xl="4" lg="4" md="4" sm="12">
                         <Button className="btn-sm secondaryBtn m-r-10 f-right"
                           onClick={() => onGoBack()}>
-                          {t("GoBack")}
+                          {t("goBack")}
                         </Button>
                       </Col>
                     </>

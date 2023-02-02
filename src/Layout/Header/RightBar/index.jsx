@@ -145,6 +145,7 @@ const Rightbar = () => {
                     onClick={ () => { planValidation() }} className= 'btn-pill btn btn-outline-primary btn-md  btn-primary-light' >
                     <img src={plusicon}/>
                         {t('createNewInquiry')}  
+             
                     </Link>
                     :
                     ""
@@ -160,7 +161,9 @@ const Rightbar = () => {
                   <div className="notification-box m-r-10">                   
                      <img src ={bell} onClick={()=>{ window.location.href="/inquiry/factoryviewinquiry"}} style={{ cursor: 'pointer' }}/>                   
                      <span className="count-animated"><Badges  attrBadge={{ className: 'badge-notify rounded-pill',backgroundColor:'#D4313C', pill: true }}>{notifyFactCount> 0 ? notifyFactCount:''}</Badges></span>                  
-                   </div>}
+                   </div>
+                
+                   }
                     {/* <Bookmarks /> */}
                     <Notifications />
                     <LanguageClass />
