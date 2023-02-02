@@ -279,7 +279,10 @@ const FeedbackFormInquiry = () => {
                                     <Row>
                                         <Col lg='4'>
                                             <FormGroup>
-                                                <Label style={{ color: "#5F5F5F" }}> {t("inquiryId")} </Label>
+                                                <Label style={{ color: "#5F5F5F" }}>
+                                                     {/* {t("inquiryId")}  */}
+                                                    Inquiry Id     
+                                                </Label>
                                                 <Input
                                                     className="" name="Inquiry Id" type="select" defaultValue=""
                                                     onChange={(e) => {
@@ -303,7 +306,10 @@ const FeedbackFormInquiry = () => {
                                                         feedbackFormDataApiCall(e.target.value)
                                                     }
                                                     }>
-                                                    <option value="" selected disabled > {t("selectFactory")} </option>
+                                                    <option value="" selected disabled > 
+                                                    {/* {t("selectFactory")}  */}
+                                                    Select Factory
+                                                    </option>
                                                     {factoriesListData.length > 0 ?
                                                         factoriesListData.map((factry) => (
                                                             <option value={factry.id}>{factry.factory}</option>
@@ -319,7 +325,10 @@ const FeedbackFormInquiry = () => {
                                     <Row>
                                         <Col lg='4'>
                                             <FormGroup>
-                                                <Label style={{ color: "#5F5F5F" }}> {t("lowestPrice")} </Label>
+                                                <Label style={{ color: "#5F5F5F" }}> 
+                                                {/* {t("lowestPrice")}  */}
+                                                Lowest Price
+                                                </Label>
                                                 <Row className="mb-2">
                                                     <Rating
                                                         readonly={btnStatus}
@@ -341,7 +350,10 @@ const FeedbackFormInquiry = () => {
                                         </Col>
                                         <Col lg='4'>
                                             <FormGroup>
-                                                <Label style={{ color: "#5F5F5F" }}> {t("effiCommunication")} </Label>
+                                                <Label style={{ color: "#5F5F5F" }}>
+                                                     {/* {t("effiCommunication")}  */}
+                                                     Efficient Communication
+                                                </Label>
                                                 <Row className="mb-2">
                                                     <Rating
                                                         readonly={btnStatus}
@@ -367,7 +379,10 @@ const FeedbackFormInquiry = () => {
                                     <Row>
                                         <Col lg='4'>
                                             <FormGroup>
-                                                <Label style={{ color: "#5F5F5F" }}> {t("reliableTimeDelivery")} </Label>
+                                                <Label style={{ color: "#5F5F5F" }}>
+                                                     {/* {t("reliableTimeDelivery")}  */}
+                                                     Reliable on Time Delivery in the Post
+                                                     </Label>
                                                 <Row className="mb-2">
                                                     <Rating
                                                         readonly={btnStatus}
@@ -390,7 +405,10 @@ const FeedbackFormInquiry = () => {
                                         </Col>
                                         <Col lg='4'>
                                             <FormGroup>
-                                                <Label style={{ color: "#5F5F5F" }}>{t("lessQuantityIssues")}</Label>
+                                                <Label style={{ color: "#5F5F5F" }}>
+                                                    {/* {t("lessQuantityIssues")} */}
+                                                    Less Quantity Issues
+                                                </Label>
                                                 <Row className="mb-2">
                                                     <Rating
                                                         readonly={btnStatus}
@@ -416,7 +434,10 @@ const FeedbackFormInquiry = () => {
                                     <Row>
                                         <Col lg='4'>
                                             <FormGroup>
-                                                <Label style={{ color: "#5F5F5F" }}>{t("vbRelations")}</Label>
+                                                <Label style={{ color: "#5F5F5F" }}>
+                                                    {/* {t("vbRelations")} */}
+                                                    Vendor/Buyer Relationship Longetivy
+                                                </Label>
                                                 <Row className="mb-2">
                                                     <Rating
                                                         readonly={btnStatus}
@@ -439,7 +460,10 @@ const FeedbackFormInquiry = () => {
                                         </Col>
                                         <Col lg='4'>
                                             <FormGroup>
-                                                <Label style={{ color: "#5F5F5F" }}>{t("goodSell")}</Label>
+                                                <Label style={{ color: "#5F5F5F" }}>
+                                                    {/* {t("goodSell")} */}
+                                                    Good Sell Through's
+                                                </Label>
                                                 <Row className="mb-2">
                                                     <Rating
                                                         readonly={btnStatus}
@@ -465,7 +489,10 @@ const FeedbackFormInquiry = () => {
                                     <Row>
                                         <Col lg='4'>
                                             <FormGroup>
-                                                <Label style={{ color: "#5F5F5F" }}>{t("onTimeSampleSub")}</Label>
+                                                <Label style={{ color: "#5F5F5F" }}>
+                                                    {/* {t("onTimeSampleSub")} */}
+                                                    On time Sample Submissions
+                                                </Label>
                                                 <Row className="mb-2">
                                                     <Rating
                                                         readonly={btnStatus}
@@ -488,7 +515,10 @@ const FeedbackFormInquiry = () => {
                                         </Col>
                                         <Col lg='4'>
                                             <FormGroup>
-                                                <Label style={{ color: "#5F5F5F" }}>{t("collabApproach")}</Label>
+                                                <Label style={{ color: "#5F5F5F" }}>
+                                                    {/* {t("collabApproach")} */}
+                                                    Collaborative Approach
+                                                    </Label>
                                                 <Row className="mb-2">
                                                     <Rating
                                                         readonly={btnStatus}
@@ -520,7 +550,8 @@ const FeedbackFormInquiry = () => {
                                                 style={{ backgroundColor: '#4F90DE', color: "#FFFFFF" }}
                                                 onClick={() => { onSaveHandle() }}
                                             >
-                                                {t("saveFeedback")}
+                                                {/* {t("saveFeedback")} */}
+                                                Save Feedback
                                             </button>
                                             {/* <Button className="btn"   onClick= {() => onSaveHandle()} > Save FeedBack </Button>  */}
                                         </FormGroup>

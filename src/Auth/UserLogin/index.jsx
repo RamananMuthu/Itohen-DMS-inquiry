@@ -241,7 +241,7 @@ const UserLogin = () => {
               .then((result) => {
                   if(result.isConfirmed)
                 {
-                  if( response.data.workspaceType == "Buyer"){
+                  if( response.data.workspaceType == "Buyer" || response.data.workspaceType == "PCU" ){
 
                       localStorage.clear();
                       localStorage.setItem("apiToken", response.data.token);
@@ -305,9 +305,7 @@ const UserLogin = () => {
                     } else {
                       window.location.href = "/companysetting";
                     }
-                  } else {
-                    window.location.href = "/adminlogin";
-                  }
+                  } 
                 }
 
               });
