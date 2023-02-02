@@ -1148,7 +1148,18 @@ td.text-left {
   .badge-notify{
     background-color: #D4313C !important;
   }
-
+  @media only screen and (max-width: 425px){
+    .count-animated {
+      position: relative;
+      top: -35px;
+      left: 6px;
+      font-size:medium;
+      animation: fadeIn 2s ease infinite;
+    }
+    .badge-notify{
+      background-color: #D4313C !important;
+    } 
+  }
   /* Inquiry Forn -Tab*/
 .sticky {
   position: fixed;
@@ -1162,10 +1173,19 @@ td.text-left {
 .myHeader{
   background-color: #ffffff !important;
 }
+@media only screen and (max-width: 1440px){
+  .sticky {
+    position: fixed;
+    width: 96%;
+    z-index: 9999;
+    top: calc(23% - 95px);
+  }
+  
+}
 @media only screen and (max-width: 1024px) and (min-width: 768px){
   .sticky {
     position: fixed;
-    width: 100%;
+    width: 96%;
     z-index: 9999;
     top: calc(23% - 100px);
   }

@@ -11,7 +11,6 @@ import {
   InputGroupText,
   Button,
   FormGroup,
-  Media,
   Container,
   Table,
 } from "reactstrap";
@@ -458,8 +457,8 @@ const index = () => {
     var media ={};
     media["media_id"]= file.media_id;
     Swal.fire({
-      title: t("Are you Sure, You want to Delete this Image?"),
-      text: t("You can't Revert this Back"),
+      title: t("areYouSureToDeleteThisImage"),
+      text: t("cantRevertBack"),
       icon: "warning",
       showCancelButton: true,
       button: t("okLabel"),
@@ -471,7 +470,7 @@ const index = () => {
         .then((response) => {
           if(response.data.status_code == 200){
             Swal.fire({
-              title: t(response,data.meassage),
+              title: t(response.data.meassage),
               icon: "success",
               showCancelButton: true,
               button: t("okLabel"),
@@ -1184,13 +1183,10 @@ const index = () => {
 
                           <Files
                             className="files-dropzone fileContainer"
-                            // onChange={nonFilesChange}
-                            // onError={nonFilesError}
                             accept=".png,.jpg,.jpeg"
                             multiple={false}
                             canCancel={false}
-                            onChange={SampleFormatImg}
-                            // onSubmit={handleSubmit}
+                            onChange={SampleFormatImg}                 
                             clickable
                           >
                             <InputGroupText className=" btn imgBackground">
@@ -1228,7 +1224,7 @@ const index = () => {
                   <Row>
                     <Col lg="4">
                       <FormGroup>
-                        <Label>{t("Fabric Composition")}</Label>
+                        <Label>{t("fabricComposition")}</Label>
                         <sup className="font-danger">*</sup>
                         <InputGroup>
                           <Input
@@ -1239,7 +1235,7 @@ const index = () => {
                             onChange={(e) => setFabricCom(e.target.value)}
                           >
                             <option Value="" disabled>
-                              {t("Select Fabric Composition")}
+                              {t("selectFabricComposition")}
                             </option>
                             {fabrics.map((fabric) => (
                               <option value={fabric.id}>{fabric.name}</option>
@@ -1319,51 +1315,17 @@ const index = () => {
                                         deleteImageFiles("SampleFormat", file)
                                       }
                                       }
-                                  />
-                                
+                                  />                               
                                  </div>
-                              </div>
-
-                              {/* <div className="m-t-30 m-r-30">
-                              
-                                  <img  
-                                      src={deleteIcon} 
-                                      width="50px" 
-                                      height="50px" 
-                                      style={{ cursor: 'pointer' }}>
-                                  </img>
-                               
-                              </div> */}
-                            
-                              {/* <img src={file.preview.url} width="100px" />   */}
-                           
+                              </div>                                                                                              
                             </>
                           ))
                       : (
-                        <div>{/* Varala */}</div>
+                        <div>{''}</div>
                       )}
                     </Col>
                   </Row>
                 </Col>
-                {/* <div 
-                  className="files-gallery profile-pic">
-                    <img
-                      src={testImage}
-                      width="100px"
-                      height="100px"
-                      className="m-10"
-                    />
-                  <div className="edit m-t-30 m-r-30">
-                    <img 
-                          src={deleteIcon} 
-                          width="50px" 
-                          height="50px" 
-                          style={{ cursor: 'pointer' }}>
-                    </img>
-                  </div>
-                </div> */}
-
-                {/*  */}
 
                 {/* Fabric Type,Yarn Count,Target Price */}
 
@@ -1394,42 +1356,6 @@ const index = () => {
                       </InputGroup>
                     </FormGroup>
                   </Col>
-
-                  {/* <Col lg="4">
-                    <FormGroup>
-                      <Label> {t("measurementSheet")} </Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Measurement Sheet"
-                          value={measurementSheetImg ? measurementSheetImg : ""}
-                          placeholder={t("attachMeasurementSheet")}
-                          onChange={(e) => setMeasurementSheet(e.target.value)}
-                          disabled
-                        ></Input>
-                        <Files
-                          className="files-dropzone fileContainer"
-                          // onChange={nonFilesChange}
-                          // onError={nonFilesError}
-                          accept=".docx,.doc,.xls,.xlsx,.txt,.pdf"
-                          multiple={false}
-                          canCancel={false}
-                          onChange={MeasurementImg}
-                          // onSubmit={handleSubmit}
-                          clickable
-                        >
-                          <InputGroupText className=" btn imgBackground">
-                            <img
-                              src={docIcon}
-                              width="25px"
-                              height="25px"
-                              type="file"
-                            ></img>
-                          </InputGroupText>
-                        </Files>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col> */}
 
                   <Col lg="4">
                     <FormGroup>
@@ -1483,7 +1409,6 @@ const index = () => {
                       <InputGroup>
                         <Input
                           type="select"
-                          // placeholder={t("selectStatus")}
                           className="form-control digits selectheight"
                           name="Currency"
                           defaultValue=""
@@ -1516,9 +1441,7 @@ const index = () => {
                   </Col>
                 </Row>
                 <Row>
-                  <Col lg="6" 
-                  // style={{ backgroundColor: '#abcdef', height: '150px' }}
-                  >
+                  <Col lg="6" >
                     <FormGroup>
                       <Label className="form-label">{t("paymentTerms")}</Label>
                       <span
@@ -1532,8 +1455,6 @@ const index = () => {
                         {" "}
                         <img src={infoIcon} width="25px" height="25px"></img>
                       </span>
-                      {/* {console.log("PaymentTerms",paymentTerm,masterType)} */}
-
                       <CKEditors
                         className="p10 ck"
                         id="PaymentTerms"
@@ -1542,10 +1463,7 @@ const index = () => {
                         events={{
                           change: onChangePaymentTerms
                         }}
-                        
-                        // onchange ={(e) => setStyleArticleDesc(e.target.value)}
                         config={{
-                          //plugins: [ Font],
                           height: 100,
                           toolbar: [
                             [
@@ -1578,12 +1496,6 @@ const index = () => {
                           
                         }}
                       />
-                      {/* <InputGroup>
-                      <Input className='' name="Payment Terms" 
-                     placeholder={t("enterPaymentTerms")}  onChange={(e) => setPaymentTerm(e.target.value)}>
-                      
-                      </Input>
-                      </InputGroup> */}
                     </FormGroup>
                   </Col>
                 </Row>
@@ -1637,7 +1549,6 @@ const index = () => {
                           ],
                         }}
                       />
-                      {/* <Input type="textarea" className="form-control" rows="5" placeholder="Enter About your description" /> */}
                     </FormGroup>
                   </Col>
                   <Col lg="6">
@@ -1652,10 +1563,6 @@ const index = () => {
                           change: onChangeSpecialFinshers,
                         }}
                         content={specialFinishes}
-                        // events={{
-                        //     'change': onChange
-                        // }}
-                        //onChange={(e) => setSpecialFinishes(e.target.value)}
                         config={{
                           height: 100,
                           toolbar: [
@@ -1687,13 +1594,12 @@ const index = () => {
                           ],
                         }}
                       />
-                      {/* <Input type="textarea" className="form-control" rows="5" placeholder="Enter About your description" /> */}
                     </FormGroup>
                   </Col>
                 </Row>
                 <Row>
-                  {/* Total Quantity,Color,Size */}
 
+                  {/* Total Quantity,Color,Size */}
                   <Col lg="4">
                     <FormGroup>
                       <Label> {t("totalQuantity")}</Label>
@@ -1705,15 +1611,13 @@ const index = () => {
                           placeholder={t("enterTotalQuantity")}
                           onChange={(e) => setTotalQuantity(e.target.value)}
                         ></Input>
-                        <InputGroupText>
-                          {/* <span className="btn" onClick="" > */}
+                        <InputGroupText>                         
                           <img
                             src={quantity}
                             width="15px"
                             height="15px"
                             type="file"
-                          ></img>
-                          {/* </span> */}
+                          ></img>                          
                         </InputGroupText>
                       </InputGroup>
                       {validerrors.totalQuantity && (
@@ -1748,14 +1652,12 @@ const index = () => {
                           style={{ cursor: "pointer" }}
                           onClick={toggleclr}
                         >
-                          {/* <span className="btn" onClick="" > */}
                           <img
                             src={addIcon}
                             width="15px"
                             height="15px"
                             onClick={toggleclr}
                           ></img>
-                          {/* </span> */}
                         </InputGroupText>
                         <AddColorModal
                           modal={modalClr}
@@ -1804,14 +1706,12 @@ const index = () => {
                           style={{ cursor: "pointer" }}
                           onClick={togglesize}
                         >
-                          {/* <span className="btn" onClick="" > */}
                           <img
                             src={addIcon}
                             width="15px"
                             height="15px"
                             onClick={togglesize}
                           ></img>
-                          {/* </span> */}
                         </InputGroupText>
                         <AddSizeModal
                           modal={modalSize}
@@ -1876,23 +1776,12 @@ const index = () => {
                                         <th className="middle">
                                           {optionc.name}
                                         </th>
-                                        {/* <input 
-                                       style={{ width: '90px' }}
-                                       className="form-control inpwidthsmall"
-                                       type="number"
-                                        placeholder="0"
-                                        autocomplete="off"
-                                        min="0"
-                                        onKeyDown={handleEnter}
-                                        onKeyPress={(e) => handleKeyPress(e)}
-                                      /> */}
                                         {size.map((option) => {
                                           return (
                                             <th>
                                               <Row>
                                                 <Row>
                                                   <Table className="table table-striped">
-                                                    {/* <tr><td style={{ fontWeight:'400', fontSize:'11px' }}>Qty</td><td>Final Qty</td></tr> */}
                                                     <tr>
                                                       <td>
                                                         <table>
@@ -2063,7 +1952,7 @@ const index = () => {
                     <Col lg="12" md="12" sm="12" xs="12">
                       <span className="subTitleLine3 f-left">
                         <H6 className="ordersubhead">
-                          {t("Measurement Chart")}
+                          {t("measurementChart")}
                         </H6>
                       </span>
                     </Col>
@@ -2076,9 +1965,9 @@ const index = () => {
                             <table className="table">
                               <thead>
                                 <tr>
-                                  <th scope="col">{t("Position")}</th>
-                                  <th scope="col" colSpan="3">{t("Description")}</th>
-                                  <th scope="col">{t("Tolerance")}</th>
+                                  <th scope="col">{t("position")}</th>
+                                  <th scope="col" colSpan="3">{t("description")}</th>
+                                  <th scope="col">{t("tolerance")}</th>
                                   {size.map((option) => {
                                     return (
                                       <th scope="col">
@@ -2087,9 +1976,7 @@ const index = () => {
                                       </th>
                                     );
                                   })}
-                                  <th>
-                                  {/* <th scope="col"> Total </th> */}
-                                  
+                                  <th>                       
                                     <div 
                                     className="btn btn-outline-success" 
                                     onClick={()=>addTableRows()}>+</div>
@@ -2110,7 +1997,6 @@ const index = () => {
                                         id={"position_"+index}
                                         type="text"
                                         autocomplete="on"
-                                        // onChange={(e)=>{ measurementChartData(index, e.target.value)}}
                                         value={position}
                                         onKeyDown={handleEnter}
                                       />
@@ -2122,7 +2008,6 @@ const index = () => {
                                       type="text"
                                       autocomplete="on"
                                       value={description}
-                                      // onChange={(e)=>{ measurementChartData(index, e.target.value)}}
                                       onKeyDown={handleEnter}
                                     />
                                   </td>
@@ -2133,7 +2018,6 @@ const index = () => {
                                       type="text"
                                       autocomplete="on"
                                       value={tolerance}
-                                      // onChange={(e)=>{ measurementChartData(index, e.target.value)}}
                                       onKeyDown={handleEnter}
                                     />
                                   </td>
@@ -2146,19 +2030,11 @@ const index = () => {
                                         id={index+"_size_id_"+sizeMapData.id}
                                         type="text"
                                         autocomplete="on"
-                                        // onChange={(e)=>{ sizeTotal(e.target.value, index)}}
                                         onKeyDown={handleEnter}
                                       />
                                     </td>
                                     );
                                   })}
-                                  {/* <td> 
-                                    <input
-                                      className="form-control "
-                                      id={"overall_total"+index}
-                                      readOnly
-                                      />
-                                  </td> */}
                                   <td>
                                     <div className="btn btn-outline-danger" onClick={()=>(deleteTableRows(index))}>-</div>
                                   </td>
@@ -2175,8 +2051,8 @@ const index = () => {
                     </Col>
                   </Row>
                   </>):(<div></div>)} 
-<Row>
-<Col lg="4">
+                  <Row>
+                  <Col lg="4">
                     <FormGroup>
                       <Label> {t("measurementSheet")} </Label>
                       <InputGroup>
@@ -2190,13 +2066,10 @@ const index = () => {
                         ></Input>
                         <Files
                           className="files-dropzone fileContainer"
-                          // onChange={nonFilesChange}
-                          // onError={nonFilesError}
                           accept=".docx,.doc,.xls,.xlsx,.txt,.pdf"
                           multiple={false}
                           canCancel={false}
                           onChange={MeasurementImg}
-                          // onSubmit={handleSubmit}
                           clickable
                         >
                           <InputGroupText className=" btn imgBackground">
@@ -2349,13 +2222,10 @@ const index = () => {
                         ></Input>
                         <Files
                           className="files-dropzone fileContainer"
-                          // onChange={nonFilesChange}
-                          // onError={nonFilesError}
                           accept=".png,.jpg,.jpeg"
                           multiple={false}
                           canCancel={false}
                           onChange={PrintImage}
-                          // onSubmit={handleSubmit}
                           clickable
                         >
                           <InputGroupText className=" btn imgBackground">
@@ -2399,7 +2269,7 @@ const index = () => {
                             </>
                           ))
                     ) : (
-                      <div>{/* Varala */}</div>
+                      <div>{''}</div>
                     )}
                   </Col>
                   <Col lg="4"></Col>
@@ -2531,13 +2401,10 @@ const index = () => {
                         ></Input>
                         <Files
                           className="files-dropzone fileContainer"
-                          // onChange={nonFilesChange}
-                          // onError={nonFilesError}
                           accept=".png,.jpg,.jpeg"
                           multiple={false}
                           canCancel={false}
                           onChange={WashCareLabelSample}
-                          // onSubmit={handleSubmit}
                           clickable
                         >
                           <InputGroupText className=" btn imgBackground">
@@ -2583,7 +2450,7 @@ const index = () => {
                         ))
                       
                     ) : (
-                      <div>{/* Varala */}</div>
+                      <div>{''}</div>
                     )}
                   </Col>
                 </Row>
@@ -2617,13 +2484,10 @@ const index = () => {
                         ></Input>
                         <Files
                           className="files-dropzone fileContainer"
-                          // onChange={nonFilesChange}
-                          // onError={nonFilesError}
                           accept=".png,.jpg,.jpeg"
                           multiple={false}
                           canCancel={false}
                           onChange={HangtagSample}
-                          // onSubmit={handleSubmit}
                           clickable
                         >
                           <InputGroupText className=" btn imgBackground">
@@ -2668,7 +2532,7 @@ const index = () => {
                         ))
                      
                     ) : (
-                      <div>{/* Varala */}</div>
+                      <div>{''}</div>
                     )}
                   </Col>
                 </Row>
@@ -2709,13 +2573,10 @@ const index = () => {
                         ></Input>
                         <Files
                           className="files-dropzone fileContainer"
-                          // onChange={nonFilesChange}
-                          // onError={nonFilesError}
                           accept=".png,.jpg,.jpeg"
                           multiple={false}
                           canCancel={false}
                           onChange={BarcodeStickersSample}
-                          // onSubmit={handleSubmit}
                           clickable
                         >
                           <InputGroupText className=" btn imgBackground">
@@ -2762,7 +2623,7 @@ const index = () => {
                         ))
                      
                     ) : (
-                      <div>{/* Varala */}</div>
+                      <div>{''}</div>
                     )}
                   </Col>
                 </Row>
@@ -2781,10 +2642,6 @@ const index = () => {
                           change: onChangeTrimsNotifications,
                         }}
                         content={trimsNotification}
-                        // events={{
-                        //     'change': onChange
-                        // }}
-                        //onchange={(e) => setTrimsNotification(e.target.value)}
                         config={{
                           height: 100,
                           toolbar: [
@@ -2880,12 +2737,12 @@ const index = () => {
                 <Row>
                   <Col lg ="4">
                     <FormGroup>
-                      <Label>{t("Polybag Sample Image")}</Label>
+                      <Label>{t("PpolybagSampleImage")}</Label>
                       <InputGroup>
                         <Input
                           className=""
                           name="Polybag Image"
-                          placeholder= {t("Please attach Polybag Sample Image")}
+                          placeholder= {t("attachPolybagSampleImage")}
                           value={
                             polybagSampleImg
                               ? polybagSampleImg
@@ -2898,13 +2755,10 @@ const index = () => {
                         ></Input>
                         <Files
                           className="files-dropzone fileContainer"
-                          // onChange={nonFilesChange}
-                          // onError={nonFilesError}
                           accept=".png,.jpg,.jpeg"
                           multiple={false}
                           canCancel={false}
                           onChange={PolyBagSample}
-                          // onSubmit={handleSubmit}
                           clickable
                         >
                           <InputGroupText className=" btn imgBackground">
@@ -2951,7 +2805,7 @@ const index = () => {
                         ))
                      
                     ) : (
-                      <div>{/* Varala */}</div>
+                      <div>{''}</div>
                     )}
                   </Col>
                 </Row>
@@ -3038,7 +2892,7 @@ const index = () => {
                         <Input
                           className=""
                           name="Carton Sample"
-                          placeholder={t("Please attach Carton Sample Image")}
+                          placeholder={t("attachCartonSampleImage")}
                           value={
                             cartonSampleImg
                               ? cartonSampleImg
@@ -3051,13 +2905,10 @@ const index = () => {
                         ></Input>
                         <Files
                           className="files-dropzone fileContainer"
-                          // onChange={nonFilesChange}
-                          // onError={nonFilesError}
                           accept=".png,.jpg,.jpeg"
                           multiple={false}
                           canCancel={false}
                           onChange={CartonSample}
-                          // onSubmit={handleSubmit}
                           clickable
                         >
                           <InputGroupText className=" btn imgBackground">
@@ -3106,7 +2957,7 @@ const index = () => {
                         ))
                      
                     ) : (
-                      <div>{/* Varala */}</div>
+                      <div>{''}</div>
                     )}
                   
                   </Col>

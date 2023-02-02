@@ -11,7 +11,7 @@ const InquirySentToModal = ({ factoryList, modalInquirySentTo, toggleInquirySent
     <>
       <Modal isOpen={modalInquirySentTo} backdrop="static" toggle={toggleInquirySentTo} centered className="modelWidth" >
         <ModalHeader>
-          {t("Inquiry Sent To")}
+          {t("inquirySentTo")}
           <img
             className="f-right"
             style={{ backgroundColor: '#FFF', cursor: 'pointer' }}
@@ -36,7 +36,7 @@ const InquirySentToModal = ({ factoryList, modalInquirySentTo, toggleInquirySent
                               <th className="centerAlign m-r-100"> {t("factory")} </th>
                               <th className="centerAlign m-r-100"> {t("contactPerson")} </th>
                               <th className="centerAlign m-r-100"> {t("contactNumber")} </th>
-                              <th className="centerAlign m-r-100">Contact Email</th>
+                              <th className="centerAlign m-r-100">{t("contactEmail")}</th>
                             </tr>
                           </thead>
                           <tbody>

@@ -12,6 +12,7 @@ const ViewFactoryModal = ({ modal, toggle, inquiryId, factory, setFactory, selec
   const [factorymodal, setFactoryModal] = useState(false);
   const toggleFact = () => setFactoryModal(!factorymodal);
 
+/***************Get Checked Factory**************/
   function getChecked(factoryListData,) {
     var factory_id = [];
     var checkboxes = document.querySelectorAll("input[type=checkbox]");
@@ -20,11 +21,10 @@ const ViewFactoryModal = ({ modal, toggle, inquiryId, factory, setFactory, selec
       var checkBox = checkboxes[i];
       if (checkBox.checked) { factory_id.push(checkBox.id); }
     }
-
     if (factory_id.length > 0) { apiCall(factory_id); }
     else {
       Swal.fire({
-        title: t("Please select atleast one factory"),
+        title: t("plsSelectAtleastOneFactory"),
         icon: 'warning',
         button: "OK!",
         allowOutsideClick: false
@@ -41,9 +41,7 @@ const ViewFactoryModal = ({ modal, toggle, inquiryId, factory, setFactory, selec
       .post(ServerUrl + "/send-inquiry", apiInputParams)
       .then((response) => {
         if (response.data.status_code == 200) {
-          // setsignupdisable(true);
           Swal.fire({
-            // title: "Inquiry Sent Successfully",
             title: t(response.data.message),
             icon: 'success',
             button: "OK!",
@@ -63,7 +61,6 @@ const ViewFactoryModal = ({ modal, toggle, inquiryId, factory, setFactory, selec
     <>
       <Modal isOpen={modal} backdrop="static" toggle={toggle} centered className="modelWidth" >
         <ModalHeader>
-          {/* {selectedFactoriesList(factoryList)} */}
           {t("selectFactory")} 
           <img
             className="f-right"
@@ -78,8 +75,6 @@ const ViewFactoryModal = ({ modal, toggle, inquiryId, factory, setFactory, selec
           <Form className="needs-validation" noValidate="">
             <Row>
               <Col sm="12">
-                {/* <Card> */}
-                {/* <CardBody> */}
                 <Row className="g-12 m-t-20">
                   <Col md="12" lg="12" sm="12">
                     <Row className="g-12">
@@ -172,8 +167,6 @@ const ViewFactoryModal = ({ modal, toggle, inquiryId, factory, setFactory, selec
                     </Row>
                   </Col>
                 </Row>
-                {/* </CardBody> */}
-                {/* </Card> */}
               </Col>
               <Row className="m-l-5" >
                 <Col className='m-t-20'>
@@ -187,8 +180,6 @@ const ViewFactoryModal = ({ modal, toggle, inquiryId, factory, setFactory, selec
 
                   <FormGroup className="f-right" >
                     <a
-                      // type="button"
-                      // disabled={!signupdisable}
                       className="btn m-l-5"
                       style={{ backgroundColor: '#4E90DE', color: "#FFFFFF" }}
                       onClick={(e) => {
@@ -197,25 +188,10 @@ const ViewFactoryModal = ({ modal, toggle, inquiryId, factory, setFactory, selec
                     > {t("send")}
                     </a>
                   </FormGroup>
+
                 </Col>
               </Row>
             </Row>
-            {/* <Row className="g-12">
-        <Col>
-           <FormGroup className="f-left">
-              <a className="btn btn-primary" onClick={toggleFact} >
-                      {t("addNewFactory")}
-              </a>
-            </FormGroup>
-        </Col>
-        <Col>
-         <FormGroup className="f-right"> 
-          <a className="btn btn-primary" onClick={(e) => getChecked(factory)} >
-                      Send
-          </a>
-         </FormGroup>
-        </Col>
-        </Row> */}
           </Form>
         </ModalBody>
       </Modal>
@@ -228,5 +204,5 @@ const ViewFactoryModal = ({ modal, toggle, inquiryId, factory, setFactory, selec
 
   );
 };
-
 export default ViewFactoryModal;
+/***********Code By: R. AKSHAYA MOL************/

@@ -88,13 +88,11 @@ const Rightbar = () => {
             setNotifyCount(response.data.notifications);             
         })
         :
-        ""
-        // :
-        // axios.post(ServerUrl+'/check-factory-notification', notifyParams)
-        // .then((response) => 
-        // {
-        //     setNotifyFactCount(response.data.notifications);             
-        // })
+        axios.post(ServerUrl+'/check-factory-notification', notifyParams)
+        .then((response) => 
+        {
+            setNotifyFactCount(response.data.notifications);             
+        })
     }
 
         
@@ -146,8 +144,8 @@ const Rightbar = () => {
                     <Link to={`${process.env.PUBLIC_URL}/inquiryform`}
                     onClick={ () => { planValidation() }} className= 'btn-pill btn btn-outline-primary btn-md  btn-primary-light' >
                     <img src={plusicon}/>
-                        {/* {t('createNewInquiry')}   */}
-                        Create New Inquiry
+                        {t('createNewInquiry')}  
+             
                     </Link>
                     :
                     ""
@@ -160,11 +158,11 @@ const Rightbar = () => {
                      <span className="count-animated"><Badges  attrBadge={{ className: 'badge-notify rounded-pill',backgroundColor:'#D4313C', pill: true }}>{notifyCount> 0 ? notifyCount:''}</Badges></span>                  
                    </div>
                   : 
-                //   <div className="notification-box m-r-10">                   
-                //      <img src ={bell} onClick={()=>{ window.location.href="/inquiry/factoryviewinquiry"}} style={{ cursor: 'pointer' }}/>                   
-                //      <span className="count-animated"><Badges  attrBadge={{ className: 'badge-notify rounded-pill',backgroundColor:'#D4313C', pill: true }}>{notifyFactCount> 0 ? notifyFactCount:''}</Badges></span>                  
-                //    </div>
-                   ""
+                  <div className="notification-box m-r-10">                   
+                     <img src ={bell} onClick={()=>{ window.location.href="/inquiry/factoryviewinquiry"}} style={{ cursor: 'pointer' }}/>                   
+                     <span className="count-animated"><Badges  attrBadge={{ className: 'badge-notify rounded-pill',backgroundColor:'#D4313C', pill: true }}>{notifyFactCount> 0 ? notifyFactCount:''}</Badges></span>                  
+                   </div>
+                
                    }
                     {/* <Bookmarks /> */}
                     <Notifications />

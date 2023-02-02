@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Container, Row, Col, CardBody, Card, } from "reactstrap";
+import { Container, Row, Col, CardBody, Card, Button, } from "reactstrap";
 import { Breadcrumbs } from "../../../AbstractElements";
 import Loader from "../../../Layout/Loader/index";
 import { getLoginUserId, getWorkspaceType } from '../../../Constant/LoginConstant';
@@ -26,13 +26,12 @@ const FactoryResponse = () => {
     const getInputParams = {};
     getInputParams["inquiry_id"] = inquiryId;
     getInputParams["factory_id"] = factoryId;
-    getInputParams["user_id"] = getLoginUserId; 
+    getInputParams["user_id"] = getLoginUserId;
+
     const apiCallFactoryRating = (factoryId) => {
-
-        const factoryRatingInputParams = {};
-        factoryRatingInputParams["factory_id"] = factoryId;
-        factoryRatingInputParams["user_id"] = userId;
-
+    const factoryRatingInputParams = {};
+    factoryRatingInputParams["factory_id"] = factoryId;
+    factoryRatingInputParams["user_id"] = userId;
         axios
             .post(ServerUrl + "/get-factory-ratings", factoryRatingInputParams)
             .then((response) => {
@@ -42,20 +41,21 @@ const FactoryResponse = () => {
     }
 
     useEffect(() => {
-
          if( getWorkspaceType == "Buyer" || getWorkspaceType == "PCU" && getWorkspaceType != "Factory"  )
          {
             axios
             .post(ServerUrl + "/inquiry-factory-response", getInputParams)
             .then((response) => {
                 setFactoryRes(response.data.data);
-                // setCommentsString(parse(response.data.data[0].comments));
             })
          } else {
              window.location.href='/inquiry/viewinquiry';
-         }
-        
+         }        
     }, [])
+
+    const onGoBack=() => {
+        window.location.href='/inquiry/inquiry/viewinquiry'; 
+    }
 
     return (
         <Fragment>
@@ -104,11 +104,11 @@ const FactoryResponse = () => {
                                                         <tr>
                                                             <th scope="col" className="centerAlign">{t("serialNo")}</th>
                                                             <th >{t("Factory")}</th>
-                                                            <th >{t("Contact Name")}</th>
-                                                            <th className="centerAlign">{t("Phone Number")}</th>
+                                                            <th >{t("contactName")}</th>
+                                                            <th className="centerAlign">{t("phNumber")}</th>
                                                             <th className="centerAlign">{t("price")}</th>
                                                             <th className="centerAlign">{t("comments")}</th>
-                                                            <th className="centerAlign">{t("Rating")}</th>
+                                                            <th className="centerAlign">{t("rating")}</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -134,7 +134,7 @@ const FactoryResponse = () => {
                                                             </tr>
                                                         )) :
                                                             <>
-                                                                <tr className="text-center"><td colSpan="7">{t("List Factory Response Details")}</td></tr>
+                                                                <tr className="text-center"><td colSpan="7">{t("listFactoryResponseDetails")}</td></tr>
                                                             </>
                                                         }
                                                         < FactoryResponseRatingModal
@@ -150,7 +150,15 @@ const FactoryResponse = () => {
                                         </Row>
                                     </Col>
                                 </Row>
-                            </CardBody>
+                                <Row className="m-t-20">
+                                    <Col>
+                                        <Button className="btn-sm secondaryBtn m-r-10 f-right"
+                                        onClick={() => onGoBack()}>
+                                        {t("goBack")}
+                                        </Button>
+                                    </Col>
+                               </Row>
+                            </CardBody>                           
                         </Card>
                     </Col>
                 </Row>
@@ -160,3 +168,4 @@ const FactoryResponse = () => {
 }
 
 export default FactoryResponse
+/*******************Code By: R.AKSHAYA MOL**********************/
