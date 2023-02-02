@@ -347,7 +347,7 @@ const FeedbackFormInquiry = () => {
                       <FormGroup>
                         <Label style={{ color: "#5F5F5F" }}>
                           {" "}
-                          {t("factory")}
+                          {t("Factory")}
                         </Label>
                         <Input
                           className=""

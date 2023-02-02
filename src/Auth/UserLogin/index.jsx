@@ -183,6 +183,7 @@ const UserLogin = () => {
         .then((response) => {
           response.data = apidecrypt(response.data)
           if (response.data.status_code === 200) {
+
             if (response.data.plan === "Expired") {
               Swal.fire({
                 title: t("planExpired"),
@@ -229,9 +230,6 @@ const UserLogin = () => {
                 }
               });
             } else {
-
-              // console.log("WORKSPACE TYPE", response.data.workspaceType);
-
               Swal.fire({
                 title: t("otpVerified"),
                 icon: "success",
@@ -305,9 +303,10 @@ const UserLogin = () => {
                     } else {
                       window.location.href = "/companysetting";
                     }
-                  } 
+                  } else {
+                    window.location.href='/inquiry/adminlogin';
+                  }
                 }
-
               });
             }
           } 

@@ -69,9 +69,12 @@ const ViewInquiry = () => {
     var deleteParams = {};
     deleteParams["inquiry_id"] = inquiryId.toString();
     deleteParams["company_id"] = company_id;
+
     var getInputParams = {};
     getInputParams["company_id"] = getLoginCompanyId;
     getInputParams["workspace_id"] = getWorkspaceId;
+    getInputParams["user_id"] = getLoginUserId;
+    
     Swal.fire({
       title: t("deleteConfirmation"),
       icon: "warning",
