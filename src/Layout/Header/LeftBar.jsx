@@ -88,14 +88,14 @@ const Leftbar = () => {
             <div className="main-header-left">
                 {mixLayout ?
                     <div className="logo-wrapper">
-                        <Link to={`${process.env.PUBLIC_URL}/inquiry/viewinquiry`}>
+                        <Link to={`${process.env.PUBLIC_URL}/viewinquiry`}>
                         <img src={dmslogtag} width="150"/>
                          
                         </Link>
                     </div>
                     :
                     <div className="dark-logo-wrapper">
-                        <Link to={`${process.env.PUBLIC_URL}/inquiry/viewinquiry`}>
+                        <Link to={`${process.env.PUBLIC_URL}/viewinquiry`}>
                         <img src={dmslogtag} width="80"/>
                           
                         </Link>

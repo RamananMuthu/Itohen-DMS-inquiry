@@ -54,7 +54,7 @@ const FactoryResponse = () => {
     }, [])
 
     const onGoBack=() => {
-        window.location.href='/inquiry/inquiry/viewinquiry'; 
+        window.location.href='/inquiry/viewinquiry'; 
     }
 
     return (

@@ -377,22 +377,22 @@ const index = () => {
       setCurrencies(response.data.data);
     });
     window.addEventListener("scroll", () => {
-      scrollSticky();
       if (window.scrollY > 400) {
+        // console.log("scrollSticky")
           setShowTopBtn(true);
       } else {
           setShowTopBtn(false);
       }
   });
-  const scrollSticky=()=> {
-    var header = document.getElementById("myHeader");
-     var sticky = header.offsetTop;
-    if (window.pageYOffset > sticky) {
-      header.classList.add("sticky");
-    } else {
-      header.classList.remove("sticky");
-    }
-  }
+  // const scrollSticky=()=> {
+  //   var header = document.getElementById("myHeader");
+  //    var sticky = header.offsetTop;
+  //   if (window.pageYOffset > sticky) {
+  //     header.classList.add("sticky");
+  //   } else {
+  //     header.classList.remove("sticky");
+  //   }
+  // }
   
   } else {
     window.location.href="/inquiry/factoryviewinquiry";
@@ -464,7 +464,7 @@ const index = () => {
       button: t("okLabel"),
     }).then((result) => {
       if (result.isConfirmed) 
-      {         
+      { 
         axios
         .post(ServerUrl+"/delete-inquiry-media",media)
         .then((response) => {
@@ -909,7 +909,8 @@ const index = () => {
     setMeasurementChart(rows);
   };
 /****------- Getting Measurement Chart Data ---------- ****/ 
-  const measurementChartData = () => {  
+  const measurementChartData = () => {
+  
    var measureChart =[];
     for(let i=0;i<measurementChart.length;i++){
       var measurementChartRowData ={};
@@ -937,7 +938,7 @@ const index = () => {
 
 
   /****------- Inquiry Form Data Submission - Save ---------- ****/ 
-  const submitInquiryForm = (e) => {  
+  const submitInquiryForm = (e) => {
     let retval = validation();
     if (Object.keys(retval).length == 0) {
       let measure_chart_array = measurementChartData();
@@ -966,7 +967,7 @@ const index = () => {
       inquiryFormInputParams["main_lable"] = mainLabel;
       inquiryFormInputParams["washcare_lable"] = washCareLabel;
       inquiryFormInputParams["hangtag_lable"] = hangtag;
-      inquiryFormInputParams["barcode_lable"] = barcodeStickers; 
+      inquiryFormInputParams["barcode_lable"] = barcodeStickers;
       inquiryFormInputParams["trims_nominations"] = trimsNotification;
       inquiryFormInputParams["poly_bag_size"] = polybagSizeThickness;
       inquiryFormInputParams["poly_bag_material"] = polybagMaterial;
@@ -1027,19 +1028,57 @@ const index = () => {
 
   return (
     <Fragment>
-      <Row className="pgbgcolor">
+      <Row className="pgbgcolor hdbgfixed" >
         <Breadcrumbs
           mainTitle={t("inquiry")}
           parent={t("inquiry")}
           title={t("inquiry")}
         />
+         {/* <Row className="u-steps tabcolor" style={{ cursor: 'pointer' }}>        
+              <Col  className="u-step activeTab" onClick={() => scrollToSection(basicinfo)}>               
+                <div className="u-step-desc" >
+                  <span className="u-step-title">
+                   Basic Information
+                    </span>                 
+                </div>
+              </Col>
+                 
+              <Col  className="u-step activeTab"  onClick={() => scrollToSection(fabricinfo)}>                
+                <div className="u-step-desc">
+                  <span className="u-step-title"> Fabric Information</span>                 
+                </div>
+              </Col>
+         
+              <Col className="u-step activeTab" onClick={() => scrollToSection(printinfo)}>                
+                <div className="u-step-desc"  >
+                  <span className="u-step-title">Print Information</span>
+                </div>
+              </Col>
+              
+              <Col className="u-step activeTab" onClick={() => scrollToSection(trimsinfo)}>                
+                <div className="u-step-desc"  >
+                  <span className="u-step-title">Trims Information</span>                 
+                </div>
+              </Col>
+          
+              <Col  className="u-step activeTab" onClick={() => scrollToSection(packinginfo)}>                
+                <div className="u-step-desc"  >
+                  <span className="u-step-title">Packing Information</span>                  
+                </div>
+              </Col>
+
+              <Col  className="u-step activeTab" onClick={() => scrollToSection(othersinfo)}>                
+                <div className="u-step-desc"  >
+                  <span className="u-step-title">Others</span>                  
+                </div>
+              </Col>
+            </Row> */}
       </Row>
       <Container fluid={true} className="general-widget topaln">
         <Col >
-          <Card>
-            {/* Tab Design */}
-            <CardBody className="myHeader" id="myHeader">
-            <Row className="u-steps" style={{ cursor: 'pointer' }}>        
+          <Card >
+            <CardBody  className="secbody">
+            <Row className="u-steps " style={{ cursor: 'pointer' }}>        
               <Col  className="u-step activeTab" onClick={() => scrollToSection(basicinfo)}>               
                 <div className="u-step-desc" >
                   <span className="u-step-title">
@@ -1078,15 +1117,16 @@ const index = () => {
                 </div>
               </Col>
             </Row>
-            </CardBody>
-
-            <CardBody className="contenthb">            
+            {/* </CardBody> */}
+            {/* </Card>
+            <Card > */}
+            {/* <CardBody className="margtopbody"> */}
               <Form>             
-                <div ref={basicinfo} className="basicinfo m-t-20">
-                <Row className="g-12">
+                <div ref={basicinfo} className="basicinfo">
+                <Row className="g-12 m-t-20">
                   <Col lg="12" md="12" sm="12" xs="12">
                     <span>
-                      <H6 className="ordersubhead">{t("basicInfo")}</H6>
+                      <H6 className="ordersubhead">{t("basicInformation")}</H6>
                     </span>
                   </Col>
                 </Row>
@@ -1186,7 +1226,7 @@ const index = () => {
                             accept=".png,.jpg,.jpeg"
                             multiple={false}
                             canCancel={false}
-                            onChange={SampleFormatImg}                 
+                            onChange={SampleFormatImg}
                             clickable
                           >
                             <InputGroupText className=" btn imgBackground">
@@ -1216,7 +1256,7 @@ const index = () => {
                 <Row className="g-12">
                   <Col lg="12" md="12" sm="12" xs="12">
                     <span>
-                      <H6 className="ordersubhead">{t("fabricInfo")}</H6>
+                      <H6 className="ordersubhead">{t("fabricInformation")}</H6>
                     </span>
                   </Col>
                 </Row>
@@ -1315,9 +1355,9 @@ const index = () => {
                                         deleteImageFiles("SampleFormat", file)
                                       }
                                       }
-                                  />                               
+                                  />
                                  </div>
-                              </div>                                                                                              
+                              </div>
                             </>
                           ))
                       : (
@@ -1611,13 +1651,13 @@ const index = () => {
                           placeholder={t("enterTotalQuantity")}
                           onChange={(e) => setTotalQuantity(e.target.value)}
                         ></Input>
-                        <InputGroupText>                         
+                        <InputGroupText>
                           <img
                             src={quantity}
                             width="15px"
                             height="15px"
                             type="file"
-                          ></img>                          
+                          ></img>
                         </InputGroupText>
                       </InputGroup>
                       {validerrors.totalQuantity && (
@@ -1976,7 +2016,7 @@ const index = () => {
                                       </th>
                                     );
                                   })}
-                                  <th>                       
+                                  <th>
                                     <div 
                                     className="btn btn-outline-success" 
                                     onClick={()=>addTableRows()}>+</div>
@@ -2051,8 +2091,8 @@ const index = () => {
                     </Col>
                   </Row>
                   </>):(<div></div>)} 
-                  <Row>
-                  <Col lg="4">
+<Row>
+<Col lg="4">
                     <FormGroup>
                       <Label> {t("measurementSheet")} </Label>
                       <InputGroup>
@@ -2274,7 +2314,7 @@ const index = () => {
                   </Col>
                   <Col lg="4"></Col>
                 </Row>
-                </div>
+</div>
                 {/* Trims Information: Main Label,Main Label Sample */}
                 <div ref={trimsinfo} className="printinfo">
                 <Row className="g-12">
@@ -2355,7 +2395,7 @@ const index = () => {
                                         deleteImageFiles("MainLabel", file)
                                       }
                                       }
-                                  />                                
+                                  />
                             </div>
                           </div>
                           </>
@@ -2737,7 +2777,7 @@ const index = () => {
                 <Row>
                   <Col lg ="4">
                     <FormGroup>
-                      <Label>{t("PpolybagSampleImage")}</Label>
+                      <Label>{t("polybagSampleImage")}</Label>
                       <InputGroup>
                         <Input
                           className=""

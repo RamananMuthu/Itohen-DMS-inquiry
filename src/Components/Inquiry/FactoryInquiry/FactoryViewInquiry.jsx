@@ -69,13 +69,16 @@ const FactoryViewInquiry = () => {
                           </thead>
                           <tbody>
                             {inquiryDetails.length > 0 ? inquiryDetails.map((inquirydtls, index) => (
+                           (inquirydtls.is_read==0 ? 
+                              
                               <tr>
+
                                 <td scope="row" className="centerAlign">{index + 1}</td>
                                 <td className="centerAlign">{"IN-" + inquirydtls.id}</td>
                                 <td className="centerAlign">{inquirydtls.style_no}</td>
                                 <td className="centerAlign">{inquirydtls.created_date}</td>
                                 <td className="centerAlign">{inquirydtls.name}</td>
-                                <td className="text-center">  {inquiryResponse.includes(inquirydtls.id) ? t("quoteSent") : t("Pending")} </td>
+                                <td className="text-center" style={{ color:'#3062CA' }}>  {inquiryResponse.includes(inquirydtls.id) ? t("quoteSent") : t("Pending")} </td>
                                 <td className="centerAlign">
                                   <img
                                     name="inquiryId"
@@ -90,8 +93,33 @@ const FactoryViewInquiry = () => {
                                     }}
                                   />
                                 </td>
-                              </tr>
-                            )) : <>
+                              </tr> :
+                              <tr>
+
+                              <td scope="row" className="centerAlign">{index + 1}</td>
+                              <td className="centerAlign">{"IN-" + inquirydtls.id}</td>
+                              <td className="centerAlign">{inquirydtls.style_no}</td>
+                              <td className="centerAlign">{inquirydtls.created_date}</td>
+                              <td className="centerAlign">{inquirydtls.name}</td>
+                              <td className="text-center">  {inquiryResponse.includes(inquirydtls.id) ? t("quoteSent") : t("Pending")} </td>
+                              <td className="centerAlign">
+                                <img
+                                  name="inquiryId"
+                                  value={inquirydtls.id}
+                                  title={t("factoryDetailInquiry")}
+                                  width="20px"
+                                  style={{ cursor: 'pointer' }}
+                                  className="m-r-30"
+                                  src={DocumentIcon}
+                                  onClick={() => {
+                                    factoryDetails(inquirydtls.id, inquirydtls.factory_id)
+                                  }}
+                                />
+                              </td>
+                            </tr> )
+                            )) 
+                            :
+                             <>
                               <tr className="text-center"><td colSpan="7">{t("ListInquiryDetails")}</td></tr>
                             </>
                             }

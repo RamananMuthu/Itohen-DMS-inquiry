@@ -525,7 +525,7 @@ const FactoryDetailInquiry = () => {
                               <td className="text-left">
                                 {mainLableImage.map((obj) => (
                                   <a href={awsUrl + obj} target="_blank">
-                                    < img src={awsUrl + obj} alt={t("Main Lable")} width="80px" height="80px"
+                                    < img src={awsUrl + obj} alt={t("mainLabelSample")} width="80px" height="80px"
                                       className="p-r-5 rounded" />
                                   </a>
                                 ))}
