@@ -183,6 +183,7 @@ const UserLogin = () => {
         .then((response) => {
           response.data = apidecrypt(response.data)
           if (response.data.status_code === 200) {
+
             if (response.data.plan === "Expired") {
               Swal.fire({
                 title: t("planExpired"),
@@ -229,9 +230,6 @@ const UserLogin = () => {
                 }
               });
             } else {
-
-              // console.log("WORKSPACE TYPE", response.data.workspaceType);
-
               Swal.fire({
                 title: t("otpVerified"),
                 icon: "success",
@@ -241,7 +239,7 @@ const UserLogin = () => {
               .then((result) => {
                   if(result.isConfirmed)
                 {
-                  if( response.data.workspaceType == "Buyer"){
+                  if( response.data.workspaceType == "Buyer" || response.data.workspaceType == "PCU"){
 
                       localStorage.clear();
                       localStorage.setItem("apiToken", response.data.token);
@@ -306,10 +304,9 @@ const UserLogin = () => {
                       window.location.href = "/companysetting";
                     }
                   } else {
-                    window.location.href = "/adminlogin";
+                    window.location.href = "/inquiry/adminlogin";
                   }
                 }
-
               });
             }
           } 
