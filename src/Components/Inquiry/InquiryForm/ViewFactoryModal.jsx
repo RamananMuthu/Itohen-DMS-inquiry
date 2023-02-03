@@ -6,6 +6,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import AddFactory from "./AddFactoryModal";
 import { useTranslation } from "react-i18next";
+import { getLoginCompanyId, getLoginUserId, getWorkspaceId } from '../../../Constant/LoginConstant';
 
 const ViewFactoryModal = ({ modal, toggle, inquiryId, factory, setFactory, selectedFactoriesList }) => {
   const { t } = useTranslation();
@@ -36,6 +37,9 @@ const ViewFactoryModal = ({ modal, toggle, inquiryId, factory, setFactory, selec
     var apiInputParams = {};
     apiInputParams['inquiry_id'] = inquiryId ? inquiryId : "0";
     apiInputParams['factory_id'] = data ? data : "0";
+    apiInputParams['company_id'] = getLoginCompanyId;
+    apiInputParams['workspace_id'] = getWorkspaceId;
+    apiInputParams['user_id'] = getLoginUserId;
 
     axios
       .post(ServerUrl + "/send-inquiry", apiInputParams)

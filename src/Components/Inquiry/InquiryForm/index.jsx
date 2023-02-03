@@ -201,6 +201,12 @@ const index = () => {
     }
     if (!totalQuantity) {
       validerrors.totalQuantity = t("enterTotQty");
+    } 
+    if (!currency) {
+      validerrors.currency = t("enterCurrency");
+    }
+    if (!inquiryDueDate) {
+      validerrors.inquiryDueDate = t("enterInquiryDueDate");
     }
     setValiderros(validerrors);
     return validerrors;
@@ -1399,7 +1405,7 @@ const index = () => {
 
                   <Col lg="4">
                     <FormGroup>
-                      <Label>{t("inquiryDueDate")}</Label>
+                      <Label>{t("inquiryDueDate")}</Label><sup className="font-danger">*</sup>
                       <InputGroup>
                         <Input
                           className=""
@@ -1409,6 +1415,11 @@ const index = () => {
                           onChange={(e) => setInquiryDueDate(e.target.value)}
                         ></Input>
                       </InputGroup>
+                      {validerrors.inquiryDueDate && (
+                          <span className="error-msg">
+                            {validerrors.inquiryDueDate}
+                          </span>
+                        )}
                     </FormGroup>
                   </Col>
                 </Row>
@@ -1445,7 +1456,8 @@ const index = () => {
                   </Col>                
                   <Col lg="4">
                     <FormGroup>
-                      <Label> {t("currency")} </Label>
+                      <Label>{t("currency")}</Label>
+                      <sup className="font-danger">*</sup>
                       <InputGroup>
                         <Input
                           type="select"
@@ -1464,6 +1476,11 @@ const index = () => {
                           ))}
                         </Input>
                       </InputGroup>
+                      {validerrors.currency && (
+                          <span className="error-msg">
+                            {validerrors.currency}
+                          </span>
+                        )}
                     </FormGroup>
                   </Col>
                   <Col lg="4">

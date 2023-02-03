@@ -161,14 +161,15 @@ const ViewInquiry = () => {
                                   <td className="centerAlign">
                                     <a href={inquiryDownloadPath + inquirydtls.id + ".pdf"}
                                       target="_blank">
-                                      <img style={{ cursor: "pointer" }} className="m-r-30"
+                                      <img style={{ cursor: "pointer" }} 
+                                        width="29px" className="m-r-30 p-1"
                                         title={t("viewInquiryDetails")} src={InquiryViewIcon}
                                       />
                                     </a>
                                     <img name="inquiryId"
                                       value={inquirydtls.id}
                                       title={t("selectFactory")}
-                                      width="20px" className="m-r-30"
+                                      width="30px" className="m-r-30 p-1"
                                       style={{ cursor: "pointer" }}
                                       src={addIcon}
                                       onClick={() => {
@@ -180,8 +181,9 @@ const ViewInquiry = () => {
                                     />
 
                                     <img
+                                      width="25px"
                                       style={{ cursor: "pointer" }}
-                                      className="m-r-30"
+                                      className="m-r-30 p-1"
                                       title={t("Inquiry Sent To")}
                                       value={inquirydtls.id}
                                       src={DocumentIcon}
@@ -193,9 +195,11 @@ const ViewInquiry = () => {
                                           apiCallInquirySentTo(inquirydtls.id);
                                       }}
                                     />
+
                                     <img
+                                      width="29px"
                                       style={{ cursor: "pointer" }}
-                                      className="m-r-30"
+                                      className="m-r-30 p-1"
                                       title={t("factoryResponse")}
                                       value={inquirydtls.id}
                                       src={shareIcon}
@@ -203,9 +207,11 @@ const ViewInquiry = () => {
                                         factResponse(inquirydtls.id);
                                       }}
                                     />
+                                    
                                     <img
+                                      width="28px"
                                       style={{ cursor: "pointer" }}
-                                      className="m-r-30"
+                                      className="m-r-30 p-1"
                                       value={inquirydtls.id}
                                       title={t("delete")}
                                       src={deleteIcon}
@@ -224,14 +230,15 @@ const ViewInquiry = () => {
                                   <td className="centerAlign">
                                     <a href={inquiryDownloadPath + inquirydtls.id + ".pdf"}
                                       target="_blank">
-                                      <img style={{ cursor: "pointer" }} className="m-r-30"
+                                      <img width="29px"
+                                        style={{ cursor: "pointer" }} className="m-r-30 p-1"
                                         title={t("viewInquiryDetails")} src={InquiryViewIcon}
                                       />
                                     </a>
                                     <img name="inquiryId"
                                       value={inquirydtls.id}
                                       title={t("selectFactory")}
-                                      width="20px" className="m-r-30"
+                                      width="30px"  className="m-r-30 p-1"
                                       style={{ cursor: "pointer" }}
                                       src={addIcon}
                                       onClick={() => {
@@ -243,8 +250,9 @@ const ViewInquiry = () => {
                                     />
 
                                     <img
+                                      width="25px"
                                       style={{ cursor: "pointer" }}
-                                      className="m-r-30"
+                                      className="m-r-30 p-1"
                                       title={t("inquirySentTo")}
                                       value={inquirydtls.id}
                                       src={DocumentIcon}
@@ -257,8 +265,9 @@ const ViewInquiry = () => {
                                       }}
                                     />
                                     <img
+                                      width="29px"
                                       style={{ cursor: "pointer" }}
-                                      className="m-r-30"
+                                      className="m-r-30 p-1"
                                       title={t("factoryResponse")}
                                       value={inquirydtls.id}
                                       src={responseBlueIcon}
@@ -267,8 +276,9 @@ const ViewInquiry = () => {
                                       }}
                                     />
                                     <img
+                                      width="28px"
                                       style={{ cursor: "pointer" }}
-                                      className="m-r-30"
+                                      className="m-r-30 p-1"
                                       value={inquirydtls.id}
                                       title={t("delete")}
                                       src={deleteIcon}
