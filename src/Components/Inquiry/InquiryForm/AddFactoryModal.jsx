@@ -119,6 +119,7 @@ const AddFactoryModal = ({ modal, toggle, setFactoryModal, companyId, workspaceI
               button: t("okLabel"),
               confirmButtonColor: '#4E90DE',
               allowOutsideClick: false,
+              timer: 2500,
             })
           }
         })

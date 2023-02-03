@@ -193,12 +193,12 @@ const FactoryDetailInquiry = () => {
             })
           }
           if (response.data.status_code === 401) {
-            alert("Error")
             Swal.fire({
               title: t(response.data.errors.price),
               text: t("fieldMissing"),
               icon: "Warning",
               button: t("tryAgain"),
+              timer: 2500,
             });
           }
         })

@@ -28,7 +28,8 @@ const ViewFactoryModal = ({ modal, toggle, inquiryId, factory, setFactory, selec
         title: t("plsSelectAtleastOneFactory"),
         icon: 'warning',
         button: "OK!",
-        allowOutsideClick: false
+        allowOutsideClick: false,
+        timer: 2500,
       })
     }
   }
@@ -49,7 +50,8 @@ const ViewFactoryModal = ({ modal, toggle, inquiryId, factory, setFactory, selec
             title: t(response.data.message),
             icon: 'success',
             button: "OK!",
-            allowOutsideClick: false
+            allowOutsideClick: false,
+            timer: 2500
           })
             .then((result) => {
               if (result.isConfirmed) {

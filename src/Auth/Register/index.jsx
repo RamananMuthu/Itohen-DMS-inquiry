@@ -101,7 +101,6 @@ inputParamsUser['user_type'] = selworkspace_type;
   }, [i18nextLng])
 
   const [langdropdown, setLangdropdown] = useState(false);
-  //const [selected, setSelected] = useState(i18nextLng);
 
   const [errors, setValidErrors] = useState({});
   const orderValidation = (data) => 
@@ -188,7 +187,8 @@ inputParamsUser['user_type'] = selworkspace_type;
         title: t("acceptTermsAndConditions"),
         icon: "error",
         button: t("okLabel"),
-        confirmButtonColor: '#4E90DE' ,
+        confirmButtonColor: '#4E90DE',
+        timer: 2500,
        });
     }
   }
@@ -226,7 +226,7 @@ inputParamsUser['user_type'] = selworkspace_type;
                 button: t("okLabel"),
                 confirmButtonColor: '#4E90DE',
                 allowOutsideClick: false,
-                timer: 5000,
+                timer: 2500,
               })
               .then((result) => {
                 localStorage.setItem( "Email", encode(email));

@@ -266,7 +266,7 @@ const FeedbackFormInquiry = () => {
       collabrativeComment == ""
     ) {
       Swal.fire({
-        title: " Please Complete the Feedback ",
+        title: "Please Complete the Feedback ",
         text: "Incomplete Data",
         icon: "warning",
         allowOutsideClick: false,
@@ -284,7 +284,7 @@ const FeedbackFormInquiry = () => {
               icon: "success",
               button: t("okLabel"),
               allowOutsideClick: false,
-              timer: 2000,
+              timer: 2500,
             }).then((result) => {
               window.location.reload();
               if (result.isConfirmed) {

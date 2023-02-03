@@ -21,6 +21,7 @@ const FormAddSizeModal = ({ modal, toggle, inputParams, size }) => {
         text: t("sizeValidation"),
         icon: "error",
         button: t("okLabel"),
+        timer: 2500,
       });
     } else {
       axios
@@ -65,6 +66,7 @@ const FormAddSizeModal = ({ modal, toggle, inputParams, size }) => {
               text: t("enterDifferentName"),
               icon: "warning",
               button: t("okLabel"),
+              timer: 2500,
             });
           }
           /* To show error if the color is already present*/
@@ -74,6 +76,7 @@ const FormAddSizeModal = ({ modal, toggle, inputParams, size }) => {
               text: t("enterDifferentName"),
               icon: "warning",
               button: t("okLabel"),
+              timer: 2500,
             });
           }
         });

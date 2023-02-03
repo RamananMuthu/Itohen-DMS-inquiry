@@ -18,6 +18,7 @@ const FormAddColorModal = ({ modal, toggle, inputParams, color }) => {
         text: t("colorValidation"),
         icon: "error",
         button: t("okLabel"),
+        timer: 2500,
       });
     } else {
       axios
@@ -62,6 +63,7 @@ const FormAddColorModal = ({ modal, toggle, inputParams, color }) => {
               text: t("enterDifferentName"),
               icon: "warning",
               button: t("okLabel"),
+              timer: 2500,
             });
           }
         });

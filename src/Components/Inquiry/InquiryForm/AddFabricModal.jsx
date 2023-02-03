@@ -17,6 +17,7 @@ const FormAddFabricModal = ({ modal, toggle, companyId, workspaceId, fabric }) =
         text:  t("fabricValidation"),
         icon: "error",
         button: t("okLabel"),
+        timer: 2500,
       });
     }else{
     axios
@@ -58,6 +59,7 @@ const FormAddFabricModal = ({ modal, toggle, companyId, workspaceId, fabric }) =
             text: t(response.data.error.name),
             icon: "error",
             button: t("okLabel"),
+            timer: 2500,
           });
         }
       });

@@ -41,6 +41,7 @@ const InquiryInfoOffCanvas = ({ modal, toggle, infoDetails, masterType,
         title: t("checkAtleastOneBeforeSave"),
         icon: "warning",
         button: t("okLabel"),
+        timer: 2500,
       });
     }
   };

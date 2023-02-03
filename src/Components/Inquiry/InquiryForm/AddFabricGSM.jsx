@@ -23,6 +23,7 @@ const FormAddFabricGSM = ({ modal, toggle, companyId, workspaceId, article }) =>
         text: t("articleNameValidation"),
         icon: "error",
         button: t("okLabel"),
+        timer: 2500,
       });
     } else {
       axios
@@ -62,6 +63,7 @@ const FormAddFabricGSM = ({ modal, toggle, companyId, workspaceId, article }) =>
               text: t("enterDifferentName"),
               icon: "error",
               button: t("okLabel"),
+              timer: 2500,
             });
           }
         });

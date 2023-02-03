@@ -623,6 +623,7 @@ const index = () => {
             // text: t("uploadFileWithinTextAlert1") + " " + (maxUploadFileSize / 1024) + " " + t("uploadFileWithinTextAlert2"),
             icon: "warning",
             button: t("okLabel"),
+            timer: 2500,
           });
         } else {
           let responseData = uploadImageApiCall("SampleFormat", files);
@@ -634,6 +635,7 @@ const index = () => {
           text: t("validFileFormatsImages"),
           icon: "warning",
           button: t("okLabel"),
+          timer: 2500,
         });
       }
     });
@@ -655,6 +657,7 @@ const index = () => {
             }),
             icon: "warning",
             button: t("okLabel"),
+            timer: 2500,
           });
         } else {
           let responseData = uploadImageApiCall("MeasurementSheet", files);
@@ -666,6 +669,7 @@ const index = () => {
           text: t("ValidFileFormatsDocuments"),
           icon: "warning",
           button: t("okLabel"),
+          timer: 2500,
         });
       }
     });
@@ -688,6 +692,7 @@ const index = () => {
             // text: t("uploadFileWithinTextAlert1") + " " + (maxUploadFileSize / 1024) + " " + t("uploadFileWithinTextAlert2"),
             icon: "warning",
             button: t("okLabel"),
+            timer: 2500,
           });
         } else {
           let responseData = uploadImageApiCall("PrintImage", files);
@@ -699,6 +704,7 @@ const index = () => {
           text: t("validFileFormatsImages"),
           icon: "warning",
           button: t("okLabel"),
+          timer: 2500,
         });
       }
     });
@@ -721,6 +727,7 @@ const index = () => {
             // text: t("uploadFileWithinTextAlert1") + " " + (maxUploadFileSize / 1024) + " " + t("uploadFileWithinTextAlert2"),
             icon: "warning",
             button: t("okLabel"),
+            timer: 2500,
           });
         } else {
           let responseData = uploadImageApiCall("MainLabel", files);
@@ -732,6 +739,7 @@ const index = () => {
           text: t("validFileFormatsImages"),
           icon: "warning",
           button: t("okLabel"),
+          timer: 2500,
         });
       }
     });
@@ -754,6 +762,7 @@ const index = () => {
             // text: t("uploadFileWithinTextAlert1") + " " + (maxUploadFileSize / 1024) + " " + t("uploadFileWithinTextAlert2"),
             icon: "warning",
             button: t("okLabel"),
+            timer: 2500,
           });
         } else {
           let responseData = uploadImageApiCall("WashCareLabel", files);
@@ -765,6 +774,7 @@ const index = () => {
           text: t("validFileFormatsImages"),
           icon: "warning",
           button: t("okLabel"),
+          timer: 2500,
         });
       }
     });
@@ -787,6 +797,7 @@ const index = () => {
             // text: t("uploadFileWithinTextAlert1") + " " + (maxUploadFileSize / 1024) + " " + t("uploadFileWithinTextAlert2"),
             icon: "warning",
             button: t("okLabel"),
+            timer: 2500,
           });
         } else {
           let responseData = uploadImageApiCall("Hangtag", files);
@@ -798,6 +809,7 @@ const index = () => {
           text: t("validFileFormatsImages"),
           icon: "warning",
           button: t("okLabel"),
+          timer: 2500,
         });
       }
     });
@@ -820,6 +832,7 @@ const index = () => {
             // text: t("uploadFileWithinTextAlert1") + " " + (maxUploadFileSize / 1024) + " " + t("uploadFileWithinTextAlert2"),
             icon: "warning",
             button: t("okLabel"),
+            timer: 2500,
           });
         } else {
           let responseData = uploadImageApiCall("BarcodeStickers", files);
@@ -831,6 +844,7 @@ const index = () => {
           text: t("validFileFormatsImages"),
           icon: "warning",
           button: t("okLabel"),
+          timer: 2500,
         });
       }
     });
@@ -853,6 +867,7 @@ const index = () => {
             // text: t("uploadFileWithinTextAlert1") + " " + (maxUploadFileSize / 1024) + " " + t("uploadFileWithinTextAlert2"),
             icon: "warning",
             button: t("okLabel"),
+            timer: 2500,
           });
         } else {
           let responseData = uploadImageApiCall("Polybag", files);
@@ -864,6 +879,7 @@ const index = () => {
           text: t("validFileFormatsImages"),
           icon: "warning",
           button: t("okLabel"),
+          timer: 2500,
         });
       }
     });
@@ -886,6 +902,7 @@ const index = () => {
             // text: t("uploadFileWithinTextAlert1") + " " + (maxUploadFileSize / 1024) + " " + t("uploadFileWithinTextAlert2"),
             icon: "warning",
             button: t("okLabel"),
+            timer: 2500,
           });
         } else {
           let responseData = uploadImageApiCall("Carton", files);
@@ -897,6 +914,7 @@ const index = () => {
           text: t("validFileFormatsImages"),
           icon: "warning",
           button: t("okLabel"),
+          timer: 2500,
         });
       }
     });
@@ -1026,6 +1044,7 @@ const index = () => {
               text: t("fieldMissing"),
               icon: "Warning",
               button: t("tryAgain"),
+              timer: 2500,
             });
           }
         });

@@ -77,6 +77,7 @@ const InquiryContacts = () => {
                 || response.data.error.address || response.data.error.city || response.data.error.factory),
               icon: "warning",
               button: t("okLabel"),
+              timer: 2500,
             })
           }
         }
@@ -120,6 +121,7 @@ const InquiryContacts = () => {
                 // text: t("fieldMissing"),
                 icon: "warning",
                 button: t("okLabel"),
+                timer: 2500,
               });
             }
           })
@@ -136,6 +138,7 @@ const InquiryContacts = () => {
           text: t("fillRequiredFields"),
           icon: "error",
           button: t("okLabel"),
+          timer: 2500,
         });
       }
     }
