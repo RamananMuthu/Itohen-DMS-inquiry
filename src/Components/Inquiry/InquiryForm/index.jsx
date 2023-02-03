@@ -2127,8 +2127,8 @@ const index = () => {
                     </Col>
                   </Row>
                   </>):(<div></div>)} 
-<Row>
-<Col lg="4">
+                <Row>
+                  <Col lg="4">
                     <FormGroup>
                       <Label> {t("measurementSheet")} </Label>
                       <InputGroup>
@@ -2147,7 +2147,7 @@ const index = () => {
                           canCancel={false}
                           onChange={MeasurementImg}
                           clickable
-                        >
+                        >   
                           <InputGroupText className=" btn imgBackground">
                             <img
                               src={docIcon}
@@ -2160,10 +2160,34 @@ const index = () => {
                       </InputGroup>
                     </FormGroup>
                   </Col>
-</Row>
+
+                  <Row>
+                  {fileMeasurementSheet.length > 0 ?
+                    <Row className="m-t-15 taskUpdate-table-sideHeader">
+                      <Row>
+                        {fileMeasurementSheet.map((file) => (
+                          <Col md="3" lg="3" sm="6" xs="12" className="m-5">
+                            <table className="" cellPadding="4px" width="100%">
+                              <tr>
+                                <td className="" width="5%">
+                                  <i className="fa fa-file-o f-30"></i>
+                                </td>
+                                <td className="">
+                                  <p className="f-left f-12 f-w-600">{(file.orginalfilename)}<br /></p>
+                                </td>
+                            
+                              </tr>
+                            </table>
+                          </Col>
+                        ))}
+                      </Row>
+                    </Row>
+                    : ""}
+                  </Row>
+                </Row>
                 {/* Patterns,Place of Jurisdiction,Customs Declaration Document */}
 
-                <Row>
+                <Row className="m-t-10">
                   <Col lg="4">
                     <FormGroup>
                       <Label>{t("patterns")}</Label>
