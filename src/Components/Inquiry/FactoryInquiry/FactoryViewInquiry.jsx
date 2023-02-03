@@ -81,7 +81,7 @@ const FactoryViewInquiry = () => {
         let days = Math.abs(daysCount);
         return (
           <td className="centerAlign" style={{ color: "#FE9738" }}>
-            <img className="p-0 img-30" src={yellowSmile} /> &nbsp; {days}
+            <img className="p-0 img-30" src={yellowSmile} /> &nbsp;
             {t("daysRemaining", { remainingdayscount: days })}
           </td>
         );
