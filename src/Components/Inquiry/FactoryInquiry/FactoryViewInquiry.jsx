@@ -67,30 +67,29 @@ const FactoryViewInquiry = () => {
       if (daysCount == 0) {
         return (
           <td className=" centerAlign" style={{ color: "#FE9738" }}>
-            <img className="p-0 img-30" src={lastDay} /> &nbsp; {t("lastDay")}{" "}
+            <img className="p-0 img-30" src={lastDay} /> &nbsp; {t("lastDay")}
           </td>
         );
       } else if (daysCount > 0 && daysCount == 1) {
         return (
           <td className="centerAlign" style={{ color: "#FE9738" }}>
-            <img className="p-0 img-30" src={yellowSmile} /> &nbsp;{" "}
-            {t("dayRemaining")}{" "}
+            <img className="p-0 img-30" src={yellowSmile} /> &nbsp;
+            {t("dayRemaining")}
           </td>
         );
       } else if (daysCount > 0) {
         let days = Math.abs(daysCount);
         return (
           <td className="centerAlign" style={{ color: "#FE9738" }}>
-            <img className="p-0 img-30" src={yellowSmile} /> &nbsp; {days}{" "}
-            {t("daysRemaining", { remainingdayscount: days })}{" "}
+            <img className="p-0 img-30" src={yellowSmile} /> &nbsp; {days}
+            {t("daysRemaining", { remainingdayscount: days })}
           </td>
         );
       } else if (daysCount < 0) {
         let delaydays = Math.abs(daysCount);
         return (
           <td className="centerAlign" style={{ color: "#FF3838" }}>
-            <img className="p-0 img-30" src={bomb} /> &nbsp;{delaydays}{" "}
-            {t("daysDelay")}{" "}
+            <img className="p-0 img-30" src={bomb} /> &nbsp;{delaydays} {t("daysDelay")}
           </td>
         );
       } else {
