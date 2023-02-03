@@ -117,7 +117,7 @@ const InquiryContacts = () => {
                   t(response.data.error.factory) || t(response.data.error.contact_email) ||
                   t(response.data.error.contact_person) || t(response.data.error.contact_number) ||
                   t(response.data.error.address) || t(response.data.error.city),
-                text: t("fieldMissing"),
+                // text: t("fieldMissing"),
                 icon: "warning",
                 button: t("okLabel"),
               });
