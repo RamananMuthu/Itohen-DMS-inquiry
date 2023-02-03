@@ -33,7 +33,7 @@ const FactoryResponseRatingModal = ({ modal, toggle, factoryRatingData }) => {
                 borderTopLeftRadius: '25px', borderBottomLeftRadius: '25px'
             }}>
             <OffcanvasBody>
-                <Accordion defaultActiveKey="0">
+                <Accordion defaultActiveKey="0" className="m-t-25 m-l-10">
                     {Object.entries(factoryRatingData).map((mapData, key) =>
                     (
                         <div className="default-according" id="accordion">
@@ -55,6 +55,7 @@ const FactoryResponseRatingModal = ({ modal, toggle, factoryRatingData }) => {
                                                     {mapData[0] == "ontime_delivery" ? "Ontime Delivery" : ""}
                                                     {mapData[0] == "sample_submission" ? "Sample Submission" : ""}
                                                     {mapData[0] == "vendor_buyer_relation" ? "Vendor Buyer Relation" : ""}
+                                                    {mapData[0] == "no_of_orders" ? "Number Of Orders" : ""}
                                                 </span>
                                             </Row>
 
@@ -348,6 +349,11 @@ const FactoryResponseRatingModal = ({ modal, toggle, factoryRatingData }) => {
                                 </CardHeader>
                                 <Collapse isOpen={isOpen === key}>
                                     <div className="table-responsive">
+                                    {mapData[0] == "no_of_orders" ? 
+                                        <Col className="p-2 m-l-15 f-16 m-t-5 m-b-5">
+                                            {mapData[1]}  
+                                        </Col>
+                                    :
                                         <table className="table shadow shadow-showcase table-striped table-bordered">
                                             <thead>
                                                 <tr>
@@ -481,6 +487,7 @@ const FactoryResponseRatingModal = ({ modal, toggle, factoryRatingData }) => {
                                                 }
                                             </tbody>
                                         </table>
+                                    }
                                     </div>
                                 </Collapse>
                             </Card>
