@@ -82,7 +82,7 @@ const FactoryViewInquiry = () => {
         return (
           <td className="centerAlign" style={{ color: "#FE9738" }}>
             <img className="p-0 img-30" src={yellowSmile} /> &nbsp; {days}{" "}
-            {t("moredaysRemaining", { remainingdayscount: days })}{" "}
+            {t("daysRemaining", { remainingdayscount: days })}{" "}
           </td>
         );
       } else if (daysCount < 0) {
