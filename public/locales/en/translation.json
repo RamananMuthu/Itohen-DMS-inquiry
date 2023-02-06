@@ -981,7 +981,7 @@
     "listFactoryResponseDetails": "List Factory Response Details",
     "orderId": "Order ID",
     "dueDate":"Due Date",
-    "lastDay":"Last Day",
+    "lastDay":"Due Today",
     "********** Inquiry Feed Back **********": "********** Inquiry Feed Back **********",
     "feedBack":"Feed Back",
     "inquiryId": "Inquiry ID",
