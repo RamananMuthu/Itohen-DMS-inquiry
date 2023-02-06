@@ -6,8 +6,9 @@ import lastDay from "../../../assets/images/dms/InquiryOneDayRemain.svg";
 import bomb from "../../../assets/images/dms/BombSmiley.svg";
 import smile from "../../../assets/images/dms/InquiryQuoteSent.svg";
 import yellowSmile from "../../../assets/images/dms/inquiryYellowSmile.svg";
+import graySmile from "../../../assets/images/dms/inquirygray_icon.svg";
 import axios from "axios";
-import { encode } from "../../../helper";
+import { encode,calculateDateDiffCountFromTwoDates } from "../../../helper";
 import {  getLoginCompanyId, getWorkspaceId, getLoginUserId, getWorkspaceType,
 } from "../../../Constant/LoginConstant";
 import { useTranslation } from "react-i18next";
@@ -51,9 +52,10 @@ const FactoryViewInquiry = () => {
       "/inquiry/factorydetailinquiry?id=" + encode(inquiryId);
   };
 
-  const delayStatus = (daysCount, read, id) => {
-    if (read == 1 && inquiryResponse.includes(id)) {     
-      if (daysCount < 0) {
+  const delayStatus = (daysCount, read, id,responsdate,duedate) => {
+    if (read == 1 && inquiryResponse.includes(id)) {   
+      let ctacdate = calculateDateDiffCountFromTwoDates(duedate,responsdate); 
+      if (ctacdate < 0) {
         return(
           <td style={{ color: "#FE9738" }}>
           <img className="p-0 img-30" src={yellowSmile} /> &nbsp; {t("quoteSent")}
@@ -73,22 +75,22 @@ const FactoryViewInquiry = () => {
     } else {
       if (daysCount == 0) {
         return (
-          <td className=" centerAlign" style={{ color: "#FE9738" }}>
-            <img className="p-0 img-30" src={lastDay} /> &nbsp; {t("lastDay")}
+          <td className=" centerAlign" style={{ color: "#A8A8A8" }}>
+            <img className="p-0 img-30" src={graySmile} /> &nbsp; {t("lastDay")}
           </td>
         );
       } else if (daysCount > 0 && daysCount == 1) {
         return (
-          <td className="centerAlign" style={{ color: "gray" }}>
-            <img className="p-0 img-30" src={yellowSmile} /> &nbsp;
+          <td className="centerAlign" style={{ color: "A8A8A8" }}>
+            <img className="p-0 img-30" src={graySmile} /> &nbsp;
             {t("dayRemaining")}
           </td>
         );
       } else if (daysCount > 0) {
         let days = Math.abs(daysCount);
         return (
-          <td className="centerAlign" style={{ color: "#FE9738" }}>
-            <img className="p-0 img-30" src={yellowSmile} /> &nbsp;
+          <td className="centerAlign" style={{ color: "A8A8A8" }}>
+            <img className="p-0 img-30" src={graySmile} /> &nbsp;
             {t("daysRemaining", { remainingdayscount: days })}
           </td>
         );
@@ -131,23 +133,11 @@ const FactoryViewInquiry = () => {
                         <table className="table shadow shadow-showcase  table-bordered">
                           <thead className="bg-primary">
                             <tr>
-                              <th scope="col" className="centerAlign">
-                                {" "}
-                                {t("serialNo")}{" "}
-                              </th>
-                              <th className="centerAlign">
-                                {" "}
-                                {t("inquiryNo")}{" "}
-                              </th>
+                              <th scope="col" className="centerAlign">{" "}{t("serialNo")}{" "}</th>
+                              <th className="centerAlign">{" "}{t("inquiryNo")}{" "}</th>
                               <th className="centerAlign"> {t("styleNo")} </th>
-                              <th className="centerAlign">
-                                {" "}
-                                {t("inquiryDate")}{" "}
-                              </th>
-                              <th className="centerAlign">
-                                {" "}
-                                {t("itemsArticleName")}{" "}
-                              </th>
+                              {/* <th className="centerAlign">{" "}{t("inquiryDate")}{" "}</th> */}
+                              <th className="centerAlign">{" "} {t("itemsArticleName")}{" "}</th>
                               <th className="centerAlign"> {t("dueDate")} </th>
                               <th className="centerAlign"> {t("status")} </th>
                               <th className="centerAlign"> {t("response")} </th>
@@ -165,14 +155,16 @@ const FactoryViewInquiry = () => {
                                   </td>
                                   <td className="text-left middle"> {" "}  {"IN-" + inquirydtls.id}  </td>
                                   <td className="text-left middle "> {inquirydtls.style_no} </td>
-                                  <td className="text-left middle "> {inquirydtls.created_date} </td>
+                                  {/* <td className="text-left middle "> {inquirydtls.created_date} </td> */}
                                   <td className="text-left middle ">{inquirydtls.name}</td>
                                   <td className="text-left middle ">{inquirydtls.due_date}</td>
                                   <td className="text-left middle ">
                                     {delayStatus(
                                       inquirydtls.due_days,
                                       inquirydtls.is_read,
-                                      inquirydtls.id
+                                      inquirydtls.id,
+                                      inquirydtls.response_date,
+                                      inquirydtls.due_date,
                                     )}
                                   </td>
                                   <td className="centerAlign middle ">
