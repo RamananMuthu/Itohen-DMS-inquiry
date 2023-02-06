@@ -2,23 +2,18 @@ import React, { Fragment, useState, useEffect } from "react";
 import { Container, Row, Col, CardBody, Card } from "reactstrap";
 import { Breadcrumbs } from "../../../AbstractElements";
 import DocumentIcon from "../../../assets/images/dms/icons/inquiryDocumentIcon.svg";
-// import DocumentIcon from "../../../assets/images/dms/docGreen.svg";
 import lastDay from "../../../assets/images/dms/InquiryOneDayRemain.svg";
-import oneDay from "../../../assets/images/dms/InquiryRemainingDays.svg";
 import bomb from "../../../assets/images/dms/BombSmiley.svg";
 import smile from "../../../assets/images/dms/InquiryQuoteSent.svg";
 import yellowSmile from "../../../assets/images/dms/inquiryYellowSmile.svg";
 import axios from "axios";
 import { encode } from "../../../helper";
-import {
-  getLoginCompanyId,
-  getWorkspaceId,
-  getLoginUserId,
-  getWorkspaceType,
+import {  getLoginCompanyId, getWorkspaceId, getLoginUserId, getWorkspaceType,
 } from "../../../Constant/LoginConstant";
 import { useTranslation } from "react-i18next";
 import { ServerUrl } from "../../../Constant";
 import FactoryDetailInquiry from "./FactoryDetailInquiry";
+import Documentfactory from "../../../assets/images/dms/icons/Document_Factory_icon.svg";
 
 // Showing the factory inquiry list
 const FactoryViewInquiry = () => {
@@ -57,12 +52,24 @@ const FactoryViewInquiry = () => {
   };
 
   const delayStatus = (daysCount, read, id) => {
-    if (read == 1 && inquiryResponse.includes(id)) {
-      return (
+    if (read == 1 && inquiryResponse.includes(id)) {     
+      if (daysCount < 0) {
+        return(
+          <td style={{ color: "#FE9738" }}>
+          <img className="p-0 img-30" src={yellowSmile} /> &nbsp; {t("quoteSent")}
+        </td>)
+      }
+      else {
+        return(
         <td style={{ color: "#26A69A" }}>
-          <img className="p-0 img-30" src={smile} /> &nbsp; {t("quoteSent")}{" "}
-        </td>
-      );
+          <img className="p-0 img-30" src={smile} /> &nbsp; {t("quoteSent")}
+        </td>)
+      }
+      // return (
+      //   <td style={{ color: "#26A69A" }}>
+      //     <img className="p-0 img-30" src={smile} /> &nbsp; {t("quoteSent")}
+      //   </td>
+      // );
     } else {
       if (daysCount == 0) {
         return (
@@ -72,7 +79,7 @@ const FactoryViewInquiry = () => {
         );
       } else if (daysCount > 0 && daysCount == 1) {
         return (
-          <td className="centerAlign" style={{ color: "#FE9738" }}>
+          <td className="centerAlign" style={{ color: "gray" }}>
             <img className="p-0 img-30" src={yellowSmile} /> &nbsp;
             {t("dayRemaining")}
           </td>
@@ -169,22 +176,39 @@ const FactoryViewInquiry = () => {
                                     )}
                                   </td>
                                   <td className="centerAlign middle ">
+                                  {inquirydtls.is_read == 0 ?
                                     <img
                                       name="inquiryId"
                                       value={inquirydtls.id}
                                       title={t("factoryDetailInquiry")}
                                       width="20px"
-                                      style={{ cursor: "pointer" }}
+                                      style={{ cursor: "pointer",color: "#3062CA" }}
                                       // className="m-r-30"
-                                      src={DocumentIcon}
+                                    src={Documentfactory}
+                                  
                                       onClick={() => {
                                         factoryDetails(
                                           inquirydtls.id,
                                           inquirydtls.factory_id
                                         );
                                       }}
-                                    />{" "}
-                                    <sup className="m-l-5">
+                                    />:
+                                    <img
+                                    name="inquiryId"
+                                    value={inquirydtls.id}
+                                    title={t("factoryDetailInquiry")}
+                                    width="20px"
+                                    style={{ cursor: "pointer",color: "#3062CA" }}
+                                    // className="m-r-30"
+                                    src={DocumentIcon}
+                                    onClick={() => {
+                                      factoryDetails(
+                                        inquirydtls.id,
+                                        inquirydtls.factory_id
+                                      );
+                                    }}
+                                  />}
+                                    {/* <sup className="m-l-5">
                                       {inquirydtls.is_read == 0 ? (
                                         <span
                                           style={{
@@ -204,7 +228,7 @@ const FactoryViewInquiry = () => {
                                           .
                                         </span>
                                       )}
-                                    </sup>
+                                    </sup> */}
                                     {/* <br></br> */}
                                     {/* {inquiryResponse.includes(inquirydtls.id) ? "" : t("Pending")}  */}
                                   </td>
