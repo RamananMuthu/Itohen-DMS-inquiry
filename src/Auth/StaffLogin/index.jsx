@@ -250,6 +250,7 @@ const StaffLogin = () => {
                             localStorage.setItem("workspaces", apiencrypt(JSON.stringify(response.data.workspacesList)));
                             localStorage.setItem("modules", encode(response.data.module));
                             localStorage.setItem("language", encode(response.data.language));
+
                             if (response.data.dateformat != '' && response.data.dateformat != null) {
                                 localStorage.setItem("dateFormat", encode(response.data.dateformat));
                             } else {
@@ -259,7 +260,7 @@ const StaffLogin = () => {
                             i18n.changeLanguage(response.data.language);
                             setTimeout(() => {
                                 if (response.data.company_id !== 'null') {
-                                    window.location.href = '/inquiryform';
+                                    window.location.href = '/inquiry/viewinquiry';
                                 } else {
                                     window.location.href = '/companysetting';
                                 }

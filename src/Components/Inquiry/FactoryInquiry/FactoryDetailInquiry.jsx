@@ -4,7 +4,8 @@ import { Breadcrumbs, H6 } from "../../../AbstractElements";
 import { useTranslation } from 'react-i18next';
 import axios from "axios";
 import Swal from "sweetalert2";
-import { getLoginCompanyId, getWorkspaceId, getLoginUserId, getWorkspaceType } from '../../../Constant/LoginConstant';
+import { getLoginCompanyId, getWorkspaceId, getLoginUserId, getWorkspaceType, getLoginUserType, 
+         getStaff, getStaffPermission } from '../../../Constant/LoginConstant';
 import { ServerUrl } from "../../../Constant";
 import { getColorSizeQtyInquiry, decode } from "../../../helper";
 import parse from 'html-react-parser';
@@ -65,106 +66,116 @@ const FactoryDetailInquiry = () => {
     }, 100);
   }
 
+  const apiCall = () => {
+    axios
+    .post(ServerUrl + "/inquiry-details", getInputParams)
+    .then((response) => {
+      setFactoryInquiryDetails(response.data.data[0]);
+      setSpecialFinishHtmlString(parse(response.data.data[0].special_finish));
+      setSpecialRequesHtmlString(parse(response.data.data[0].sample_requirements));
+      setHtmlString(parse(response.data.data[0].special_requests));
+      setTestingRequirementsHtmlString(parse(response.data.data[0].testing_requirements));
+      setStyleArticleDescriptionHtmlString(parse(response.data.data[0].style_article_description));
+      setTrimsNotificationsHtmlString(parse(response.data.data[0].trims_nominations));
+      setPaymentTermsHtmlString(parse(response.data.data[0].payment_terms));
+      setCurrencySymbol(response.data.data[0].currency);
+      setMeasurementSheetList(JSON.parse(response.data.data[0].measurement_sheet));
+    })
+
+  axios
+    .post(ServerUrl + "/factory-inquiry-response", getInputParams)
+    .then((response) => {
+      setInquiryResponse(response.data.data[0] ? response.data.data[0] : "");
+      setPrice(response.data.data[0].price ? (response.data.data[0].price) : "");
+      setComments(response.data.data[0].comments ? response.data.data[0].comments : "");
+    })
+
+  axios
+    .post(ServerUrl + "/inquiry-media", getInputParams)
+    .then((response) => {
+      (response.data.data.files).map((mapData) => {
+        if (mapData.media_type == "MeasurementSheet") {
+          var getMeasurementDetails = mapData.filepath;
+          measurementSheetData.push(getMeasurementDetails);
+          setMeasurementSheet(measurementSheetData)
+          setAwsUrl(response.data.data.serverURL)
+        }
+        // Check the media type for showing the Image
+        if (mapData.media_type == "SampleFormat") {
+          var getDetails = mapData.filepath;
+          sampleFormatData.push(getDetails);
+          setSampleFormat(sampleFormatData)
+          setAwsUrl(response.data.data.serverURL)
+        }
+        if (mapData.media_type == "PrintImage") {
+          var getDetails = mapData.filepath;
+          printImageData.push(getDetails);
+          setPrintImage(printImageData)
+          setAwsUrl(response.data.data.serverURL)
+        }
+        if (mapData.media_type == "MainLabel") {
+          var getDetails = mapData.filepath;
+          mainLableData.push(getDetails);
+          setMainLable(mainLableData)
+          setAwsUrl(response.data.data.serverURL)
+        }
+        if (mapData.media_type == "WashCareLabel") {
+          var getDetails = mapData.filepath;
+          washCareData.push(getDetails);
+          setWashCareLable(washCareData)
+          setAwsUrl(response.data.data.serverURL)
+        }
+        if (mapData.media_type == "Hangtag") {
+          var getDetails = mapData.filepath;
+          hangtagData.push(getDetails);
+          setHangtag(hangtagData)
+          setAwsUrl(response.data.data.serverURL)
+        }
+        if (mapData.media_type == "BarcodeStickers") {
+          var getDetails = mapData.filepath;
+          barcodeStickersData.push(getDetails);
+          setBarcodeStickers(barcodeStickersData)
+          setAwsUrl(response.data.data.serverURL)
+        }
+        if (mapData.media_type == "Polybag") {
+          var getDetails = mapData.filepath;
+          polybagData.push(getDetails);
+          setPolybagImage(polybagData)
+          setAwsUrl(response.data.data.serverURL)
+        }
+        if (mapData.media_type == "Carton") {
+          var getDetails = mapData.filepath;
+          cartonData.push(getDetails);
+          setCartonImage(cartonData)
+          setAwsUrl(response.data.data.serverURL)
+        }
+      })
+    })
+
+// ********** API call for SKU Quantity Ratio ************
+  axios
+    .post(ServerUrl + "/inquiry-sku", getInputParams)
+    .then((response) => {
+      setOrderskuDetails(response.data.data.sku);
+      setGetColor(response.data.data.colors);
+      setGetSize(response.data.data.sizes);
+    })
+  setValiderrors(() => "");
+  };
+
   useEffect(() => {
-    if (getWorkspaceType == "Factory" && getWorkspaceType != "PCU" && getWorkspaceType != "Buyer") {
-      axios
-        .post(ServerUrl + "/inquiry-details", getInputParams)
-        .then((response) => {
-          setFactoryInquiryDetails(response.data.data[0]);
-          setSpecialFinishHtmlString(parse(response.data.data[0].special_finish));
-          setSpecialRequesHtmlString(parse(response.data.data[0].sample_requirements));
-          setHtmlString(parse(response.data.data[0].special_requests));
-          setTestingRequirementsHtmlString(parse(response.data.data[0].testing_requirements));
-          setStyleArticleDescriptionHtmlString(parse(response.data.data[0].style_article_description));
-          setTrimsNotificationsHtmlString(parse(response.data.data[0].trims_nominations));
-          setPaymentTermsHtmlString(parse(response.data.data[0].payment_terms));
-          setCurrencySymbol(response.data.data[0].currency);
-          setMeasurementSheetList(JSON.parse(response.data.data[0].measurement_sheet));
-        })
-
-      axios
-        .post(ServerUrl + "/factory-inquiry-response", getInputParams)
-        .then((response) => {
-          setInquiryResponse(response.data.data[0] ? response.data.data[0] : "");
-          setPrice(response.data.data[0].price ? (response.data.data[0].price) : "");
-          setComments(response.data.data[0].comments ? response.data.data[0].comments : "");
-        })
-
-      axios
-        .post(ServerUrl + "/inquiry-media", getInputParams)
-        .then((response) => {
-          (response.data.data.files).map((mapData) => {
-            if (mapData.media_type == "MeasurementSheet") {
-              var getMeasurementDetails = mapData.filepath;
-              measurementSheetData.push(getMeasurementDetails);
-              setMeasurementSheet(measurementSheetData)
-              setAwsUrl(response.data.data.serverURL)
-            }
-            // Check the media type for showing the Image
-            if (mapData.media_type == "SampleFormat") {
-              var getDetails = mapData.filepath;
-              sampleFormatData.push(getDetails);
-              setSampleFormat(sampleFormatData)
-              setAwsUrl(response.data.data.serverURL)
-            }
-            if (mapData.media_type == "PrintImage") {
-              var getDetails = mapData.filepath;
-              printImageData.push(getDetails);
-              setPrintImage(printImageData)
-              setAwsUrl(response.data.data.serverURL)
-            }
-            if (mapData.media_type == "MainLabel") {
-              var getDetails = mapData.filepath;
-              mainLableData.push(getDetails);
-              setMainLable(mainLableData)
-              setAwsUrl(response.data.data.serverURL)
-            }
-            if (mapData.media_type == "WashCareLabel") {
-              var getDetails = mapData.filepath;
-              washCareData.push(getDetails);
-              setWashCareLable(washCareData)
-              setAwsUrl(response.data.data.serverURL)
-            }
-            if (mapData.media_type == "Hangtag") {
-              var getDetails = mapData.filepath;
-              hangtagData.push(getDetails);
-              setHangtag(hangtagData)
-              setAwsUrl(response.data.data.serverURL)
-            }
-            if (mapData.media_type == "BarcodeStickers") {
-              var getDetails = mapData.filepath;
-              barcodeStickersData.push(getDetails);
-              setBarcodeStickers(barcodeStickersData)
-              setAwsUrl(response.data.data.serverURL)
-            }
-            if (mapData.media_type == "Polybag") {
-              var getDetails = mapData.filepath;
-              polybagData.push(getDetails);
-              setPolybagImage(polybagData)
-              setAwsUrl(response.data.data.serverURL)
-            }
-            if (mapData.media_type == "Carton") {
-              var getDetails = mapData.filepath;
-              cartonData.push(getDetails);
-              setCartonImage(cartonData)
-              setAwsUrl(response.data.data.serverURL)
-            }
-          })
-        })
-
-  // ********** API call for SKU Quantity Ratio ************
-      axios
-        .post(ServerUrl + "/inquiry-sku", getInputParams)
-        .then((response) => {
-          setOrderskuDetails(response.data.data.sku);
-          setGetColor(response.data.data.colors);
-          setGetSize(response.data.data.sizes);
-        })
-      setValiderrors(() => "");
-    } else {
-      window.location.href = '/inquiry/viewinquiry';
+    {getLoginUserType == "user" ?  (getWorkspaceType == "Factory") ? 
+        apiCall()  : window.location.href='/inquiry/viewinquiry'
+      :
+      (getStaff === "Staff" && getWorkspaceType == "Factory") ?  
+        ( getStaffPermission.includes("View Factory Inquiry")) ? 
+        apiCall() :  window.location.href='/inquiry/inquirycontacts'
+      :
+        (getStaffPermission.includes("View Inquiry")) ? 
+          window.location.href='/inquiry/viewinquiry' : window.location.href='/inquiry/feedbackform' 
     }
-  }, [])
+  
+  }, []);
 
   // ********* POST API call for Submit the Quotes value **********
   const submitFactoryInquiryForm = (e) => {
@@ -785,7 +796,8 @@ const FactoryDetailInquiry = () => {
                   </Col>
                 </Row>
 
-                <Row className="mt-5">
+                {getLoginUserType == "user" ? 
+                  <Row className="mt-5">
                   {inquiryResponse.length >= 0 ?
                     <Form>
                       <Col xl="4" lg="6" md="6" sm="12">
@@ -850,7 +862,87 @@ const FactoryDetailInquiry = () => {
                       </Col>
                     </>
                   }
-                </Row>
+                  </Row>
+                  :
+                  (getStaff === "Staff" && getStaffPermission.includes("Add Response")) || getStaff == null ?
+                  <Row className="mt-5">
+                  {inquiryResponse.length >= 0 ?
+                    <Form>
+                      <Col xl="4" lg="6" md="6" sm="12">
+                        <FormGroup>
+                          <Label>{t("price")}</Label> (in {currencySymbol})<sup className="font-danger">*</sup>
+                          <Input name="price" placeholder={t("pleaseEnterPrice")}
+                            // disabled={price ? true : false}
+                            maxLength="20"
+                            defaultValue={price}
+                            onChange={(e) => setPrice(e.target.value)}>
+                          </Input>
+                          {validerrors.price && (
+                            <span className="error-msg">{validerrors.price}</span>
+                          )}
+                        </FormGroup>
+                      </Col>
+
+                      <Col xl="4" lg="6" md="6" sm="12">
+                        <FormGroup>
+                          <Label className="form-label">{t("comments")}</Label><sup className="font-danger">*</sup>
+                          <CKEditors
+                            activeclassName="p10"
+                            content={(comments).toString()}
+                            events={{ 'change': onChangeCommentsRequest }}
+                            onchange={(e) => setComments(e.target.value)}
+                            config={{
+                              toolbar: [
+                                ["Bold", "Italic", 'NumberedList', 'BulletedList', "Strike Through"],
+                                ["Cut", "Copy", "Paste", "Pasteasplaintext", "FormattingStyles", "Undo", "Redo"],
+                                ["List", "Indent", "Blocks", "Align", "Bidi", "Paragraph"],
+                                ["Find", "Selection", "Spellchecker", "Editing"]
+                              ],
+                            }
+                            }
+                          />
+                          {validerrors.comments && (
+                            <span className="error-msg">{validerrors.comments}</span>
+                          )}
+                        </FormGroup>
+                      </Col>
+
+                      <FormGroup className="f-right">
+                        <Button
+                          className="btn btn-primary mx-2" onClick={() => { submitFactoryInquiryForm() }} >
+                          {t("sentQuote")}
+                        </Button>
+
+                        <Button className="btn-sm secondaryBtn m-r-10 f-right"
+                          onClick={() => onGoBack()}>
+                          {t("goBack")}
+                        </Button>
+                      </FormGroup>
+                    </Form>
+                    :
+                    <>
+                      <Col xl="8" lg="8" md="8" sm="12"></Col>
+                      <Col xl="4" lg="4" md="4" sm="12">
+                        <Button className="btn-sm secondaryBtn m-r-10 f-right"
+                          onClick={() => onGoBack()}>
+                          {t("goBack")}
+                        </Button>
+                      </Col>
+                    </>
+                  }
+                  </Row>
+                  : 
+                  <Row className="mt-5">
+                      <Col xl="8" lg="8" md="8" sm="12"></Col>
+                      <Col xl="4" lg="4" md="4" sm="12">
+                        <Button className="btn-sm secondaryBtn m-r-10 f-right"
+                          onClick={() => onGoBack()}>
+                          {t("goBack")}
+                        </Button>
+                      </Col>
+                  </Row>
+                }
+
               </CardBody>
             </Card>
           </Col>

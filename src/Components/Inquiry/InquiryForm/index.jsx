@@ -23,6 +23,7 @@ import {
   getStaff,
   getStaffPermission,
   getLoginStaffId,
+  getLoginUserType
 } from "../../../Constant/LoginConstant";
 import { encode, decode, apiencrypt, apidecrypt } from "../../../helper";
 import addIcon from "../../../assets/images/dms/icons/addIcon.svg";
@@ -347,9 +348,8 @@ const index = () => {
     });
   };
 
-  useEffect(() => {
-    if( getWorkspaceType == "Buyer" || getWorkspaceType == "PCU" && getWorkspaceType != "Factory"  )
-    {
+
+  const apiCall = () => {
     axios
       .post(ServerUrl + "/get-color", apiencrypt(getInputParams))
       .then((response) => {
@@ -374,37 +374,41 @@ const index = () => {
         response.data = apidecrypt(response.data);
         setGetSize(response.data.data);
       });
-    axios.get(ServerUrl + "/get-income-terms").then((response) => {
+    axios
+      .get(ServerUrl + "/get-income-terms").then((response) => {
       response.data = apidecrypt(response.data);
       setIncomeTerms(response.data.data);
-    });
-    axios.get(ServerUrl + "/get-currencies").then((response) => {
+      });
+    axios
+      .get(ServerUrl + "/get-currencies").then((response) => {
       response.data = apidecrypt(response.data);
       setCurrencies(response.data.data);
-    });
+      });
     window.addEventListener("scroll", () => {
       if (window.scrollY > 400) {
-        // console.log("scrollSticky")
           setShowTopBtn(true);
       } else {
           setShowTopBtn(false);
       }
-  });
-  // const scrollSticky=()=> {
-  //   var header = document.getElementById("myHeader");
-  //    var sticky = header.offsetTop;
-  //   if (window.pageYOffset > sticky) {
-  //     header.classList.add("sticky");
-  //   } else {
-  //     header.classList.remove("sticky");
-  //   }
-  // }
+      });
+  };
+
   
-  } else {
-    window.location.href="/inquiry/factoryviewinquiry";
-  }
-  }, []);
-  
+ useEffect(() => 
+ {
+   getLoginUserType == "user" ?  getWorkspaceType != "Factory" ? apiCall()  : window.location.href='/inquiry/factoryviewinquiry'
+   :
+   getWorkspaceType != "Factory" ?  
+     (getStaff === "Staff" && getStaffPermission.includes("Add Inquiry")) || getStaff == null ? 
+     apiCall() :  
+     (getStaff === "Staff" && getStaffPermission.includes("View Inquiry")) || getStaff == null ? window.location.href='/viewinquiry' : window.location.href='/feedbackform'
+   :
+     (getStaff === "Staff" && getStaffPermission.includes("View Factory Inquiry")) || getStaff == null ? 
+     window.location.href='/inquiry/factoryviewinquiry' :  
+     window.location.href='/inquiry/inquirycontacts' 
+
+ }, []);
+
   /****------- Image Upload API Call ---------- ****/ 
   const uploadImageApiCall = (imageType, file) => {
     axios
@@ -1004,6 +1008,7 @@ if(imageType == "MeasurementSheet"){
       var inquiryFormInputParams = {};
       inquiryFormInputParams["company_id"] = getLoginCompanyId;
       inquiryFormInputParams["workspace_id"] = getWorkspaceId;
+      inquiryFormInputParams["staff_id"] = getLoginStaffId;
       inquiryFormInputParams["user_id"] = UserId;
       inquiryFormInputParams["article_id"] = article;
       inquiryFormInputParams["style_no"] = styleNo;

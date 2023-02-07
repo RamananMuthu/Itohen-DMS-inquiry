@@ -9,8 +9,8 @@ import deleteIcon from "../../../assets/images/dms/icons/inquiryDeleteIcon.svg";
 import responseBlueIcon from "../../../assets/images/dms/inquiryResponseBlueIcon.svg";
 import axios from "axios";
 import ViewFactoryModal from "./ViewFactoryModal";
-import { encode, apiencrypt, } from "../../../helper";
-import { getLoginCompanyId, getWorkspaceId, getWorkspaceType, getLoginUserId } from "../../../Constant/LoginConstant";
+import { encode, apiencrypt, decode } from "../../../helper";
+import { getLoginCompanyId, getWorkspaceId, getWorkspaceType, getLoginUserId, getStaff, getStaffPermission, getLoginUserType } from "../../../Constant/LoginConstant";
 import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
 import { ServerUrl } from "../../../Constant";
@@ -42,23 +42,45 @@ const ViewInquiry = () => {
     workspace_id: workspace_id,
   };
 
-  useEffect(() => {
-     if( getWorkspaceType == "Buyer" || getWorkspaceType == "PCU" && getWorkspaceType != "Factory"  )
-     {
-      axios.post(ServerUrl + "/get-inquiry", getInputParams).then((response) => {
-        setInquiryDetails(response.data.data);
-        setInquiryDownloadPath(response.data.pdfpath);
-      });
+  const apiCall = ( ) => {
+    axios
+    .post(ServerUrl + "/get-inquiry", getInputParams).then((response) => {
+      setInquiryDetails(response.data.data);
+      setInquiryDownloadPath(response.data.pdfpath);
+    });
+
+    axios
+    .post(ServerUrl + "/get-inquiry-factory",
+        apiencrypt(dataToSendAtStarting)).then((response) => {
+        setFactory(response.data.data);
+    });
+  };
+
+  useEffect(() => 
+  {
+
+    // getLoginUserType == "user" ?
+    // /************************ ADMIN  ************************/
+    // getWorkspaceType == "Buyer" || getWorkspaceType == "PCU" && getWorkspaceType != "Factory" ? apiCall()  : window.location.href='/inquiry/factoryviewinquiry'
+    // :
+    // /************************ STAFF  ************************/
+
+    // ////////////////////////// STAFF - BUYER Or PCU //////////////////////////
+    // getWorkspaceType == "Buyer" || getWorkspaceType == "PCU" && getWorkspaceType != "Factory" ?  
+    //   (getStaff === "Staff" && getStaffPermission.includes("View Inquiry")) || getStaff == null ? 
+    //   apiCall() :  
+    //     (getStaff === "Staff" && getStaffPermission.includes("View Factory Inquiry")) || getStaff == null ? window.location.href='/inquiry/factoryviewinquiry' :  window.location.href='/inquiry/inquirycontacts' 
+    // : ""
+
+    getLoginUserType == "user" ?  getWorkspaceType != "Factory" ? apiCall()  : window.location.href='/inquiry/factoryviewinquiry'
+    :
+    getWorkspaceType != "Factory" ?  
+      (getStaff === "Staff" && getStaffPermission.includes("View Inquiry")) || getStaff == null ? 
+      apiCall() :  window.location.href='/inquiry/feedbackform'
+    :
+      (getStaff === "Staff" && getStaffPermission.includes("View Factory Inquiry")) || getStaff == null ? 
+      window.location.href='/inquiry/factoryviewinquiry' :  window.location.href='/inquiry/inquirycontacts' 
   
-      axios.post(
-          ServerUrl + "/get-inquiry-factory",
-          apiencrypt(dataToSendAtStarting)).then((response) => {
-          // response.data = apidecrypt(response.data)
-          setFactory(response.data.data);
-        });
-     } else {
-       window.location.href='/inquiry/factoryviewinquiry';
-     }   
   }, []);
 
   const factResponse = (inquiryId) => {
@@ -166,59 +188,143 @@ const ViewInquiry = () => {
                                         title={t("viewInquiryDetails")} src={InquiryViewIcon}
                                       />
                                     </a>
-                                    <img name="inquiryId"
-                                      value={inquirydtls.id}
-                                      title={t("selectFactory")}
-                                      width="30px" className="m-r-30 p-1"
-                                      style={{ cursor: "pointer" }}
-                                      src={addIcon}
-                                      onClick={() => {
-                                        setSelectedFactoriesList(() => "");
-                                        setModalart(!modalart),
-                                          setInquiryId(inquirydtls.id),
-                                          apiCallInquirySentTo(inquirydtls.id);
-                                      }}
-                                    />
 
-                                    <img
-                                      width="25px"
-                                      style={{ cursor: "pointer" }}
-                                      className="m-r-30 p-1"
-                                      title={t("Inquiry Sent To")}
-                                      value={inquirydtls.id}
-                                      src={DocumentIcon}
-                                      onClick={() => {
-                                        setModalInquirySentTo(
-                                          !modalInquirySentTo
-                                        ),
-                                          setInquiryId(inquirydtls.id),
-                                          apiCallInquirySentTo(inquirydtls.id);
-                                      }}
-                                    />
+                                    {/**********  ADD ICON ********/ }
+                                    { getLoginUserType == "user" ? 
+                                      <>
+                                        <img name="inquiryId"
+                                          value={inquirydtls.id}
+                                          title={t("selectFactory")}
+                                          width="30px" className="m-r-30 p-1"
+                                          style={{ cursor: "pointer" }}
+                                          src={addIcon}
+                                          onClick={() => {
+                                            setSelectedFactoriesList(() => "");
+                                            setModalart(!modalart),
+                                              setInquiryId(inquirydtls.id),
+                                              apiCallInquirySentTo(inquirydtls.id);
+                                          }}
+                                        />
+                                      </>
+                                    :
+                                    (getStaff === "Staff" && getStaffPermission.includes("Sent Inquiry")) || getStaff == null ?
+                                        <img name="inquiryId"
+                                        value={inquirydtls.id}
+                                        title={t("selectFactory")}
+                                        width="30px" className="m-r-30 p-1"
+                                        style={{ cursor: "pointer" }}
+                                        src={addIcon}
+                                        onClick={() => {
+                                          setSelectedFactoriesList(() => "");
+                                          setModalart(!modalart),
+                                            setInquiryId(inquirydtls.id),
+                                            apiCallInquirySentTo(inquirydtls.id);
+                                        }}
+                                        />
+                                      :
+                                      ""}
 
+                                    {/********** DOCUMENT ICON ********/ }
+                                    {
+                                      getLoginUserType == "user" ? 
+                                      <>
+                                        <img
+                                          width="25px"
+                                          style={{ cursor: "pointer" }}
+                                          className="m-r-30 p-1"
+                                          title={t("Inquiry Sent To")}
+                                          value={inquirydtls.id}
+                                          src={DocumentIcon}
+                                          onClick={() => {
+                                            setModalInquirySentTo(
+                                              !modalInquirySentTo
+                                            ),
+                                              setInquiryId(inquirydtls.id),
+                                              apiCallInquirySentTo(inquirydtls.id);
+                                          }}
+                                        />   
+                                      </>
+                                    :
+                                    (getStaff === "Staff" && getStaffPermission.includes("Sent Inquiry")) || getStaff == null ?
+                                        <img
+                                        width="25px"
+                                        style={{ cursor: "pointer" }}
+                                        className="m-r-30 p-1"
+                                        title={t("Inquiry Sent To")}
+                                        value={inquirydtls.id}
+                                        src={DocumentIcon}
+                                        onClick={() => {
+                                          setModalInquirySentTo(
+                                            !modalInquirySentTo
+                                          ),
+                                            setInquiryId(inquirydtls.id),
+                                            apiCallInquirySentTo(inquirydtls.id);
+                                        }}
+                                      /> 
+                                      :
+                                      "" }
+
+                                     {/********** RESPONSE BLUE ICON ********/ }
+                                    {getLoginUserType == "user" ? 
+                                      <>
+                                         <img
+                                            width="29px"
+                                            style={{ cursor: "pointer" }}
+                                            className="m-r-30 p-1"
+                                            title={t("factoryResponse")}
+                                            value={inquirydtls.id}
+                                            src={responseBlueIcon}
+                                            onClick={() => {
+                                              factResponse(inquirydtls.id);
+                                            }}
+                                          />
+                                      </>
+                                    :
+                                    (getStaff === "Staff" && getStaffPermission.includes("View Response")) || getStaff == null ?
                                     <img
                                       width="29px"
                                       style={{ cursor: "pointer" }}
                                       className="m-r-30 p-1"
                                       title={t("factoryResponse")}
                                       value={inquirydtls.id}
-                                      src={shareIcon}
+                                      src={responseBlueIcon}
                                       onClick={() => {
                                         factResponse(inquirydtls.id);
                                       }}
                                     />
-                                    
-                                    <img
-                                      width="28px"
-                                      style={{ cursor: "pointer" }}
-                                      className="m-r-30 p-1"
-                                      value={inquirydtls.id}
-                                      title={t("delete")}
-                                      src={deleteIcon}
-                                      onClick={() => {
-                                        deleteInquiry(inquirydtls.id);
-                                      }}
-                                    />
+                                      :
+                                      ""}
+
+                                    {/********** DELETE ICON ********/ }
+                                    {getLoginUserType == "user" ? 
+                                        <img
+                                        width="28px"
+                                        style={{ cursor: "pointer" }}
+                                        className="m-r-30 p-1"
+                                        value={inquirydtls.id}
+                                        title={t("delete")}
+                                        src={deleteIcon}
+                                        onClick={() => {
+                                          deleteInquiry(inquirydtls.id);
+                                        }}
+                                      />
+                                    :
+                                    (getStaff === "Staff" && getStaffPermission.includes("Delete Inquiry")) || getStaff == null ?
+                                        <img
+                                        width="28px"
+                                        style={{ cursor: "pointer" }}
+                                        className="m-r-30 p-1"
+                                        value={inquirydtls.id}
+                                        title={t("delete")}
+                                        src={deleteIcon}
+                                        onClick={() => {
+                                          deleteInquiry(inquirydtls.id);
+                                        }}
+                                      />
+                                      :
+                                      ""}
+
+                                   
                                   </td>
                                 </tr>:
                                 <tr >
@@ -235,35 +341,103 @@ const ViewInquiry = () => {
                                         title={t("viewInquiryDetails")} src={InquiryViewIcon}
                                       />
                                     </a>
-                                    <img name="inquiryId"
-                                      value={inquirydtls.id}
-                                      title={t("selectFactory")}
-                                      width="30px"  className="m-r-30 p-1"
-                                      style={{ cursor: "pointer" }}
-                                      src={addIcon}
-                                      onClick={() => {
-                                        setSelectedFactoriesList(() => "");
-                                        setModalart(!modalart),
-                                          setInquiryId(inquirydtls.id),
-                                          apiCallInquirySentTo(inquirydtls.id);
-                                      }}
-                                    />
 
-                                    <img
-                                      width="25px"
-                                      style={{ cursor: "pointer" }}
-                                      className="m-r-30 p-1"
-                                      title={t("inquirySentTo")}
-                                      value={inquirydtls.id}
-                                      src={DocumentIcon}
-                                      onClick={() => {
-                                        setModalInquirySentTo(
-                                          !modalInquirySentTo
-                                        ),
-                                          setInquiryId(inquirydtls.id),
-                                          apiCallInquirySentTo(inquirydtls.id);
-                                      }}
-                                    />
+                                        {/**********  ADD ICON ********/ }
+                                    {
+                                      getLoginUserType == "user" ? 
+                                      <>
+                                        <img name="inquiryId"
+                                          value={inquirydtls.id}
+                                          title={t("selectFactory")}
+                                          width="30px"  className="m-r-30 p-1"
+                                          style={{ cursor: "pointer" }}
+                                          src={addIcon}
+                                          onClick={() => {
+                                            setSelectedFactoriesList(() => "");
+                                            setModalart(!modalart),
+                                              setInquiryId(inquirydtls.id),
+                                              apiCallInquirySentTo(inquirydtls.id);
+                                          }}
+                                        />
+                                      </>
+                                    :
+                                    (getStaff === "Staff" && getStaffPermission.includes("Sent Inquiry")) || getStaff == null ?
+                                           
+                                        <img name="inquiryId"
+                                          value={inquirydtls.id}
+                                          title={t("selectFactory")}
+                                          width="30px"  className="m-r-30 p-1"
+                                          style={{ cursor: "pointer" }}
+                                          src={addIcon}
+                                          onClick={() => {
+                                            setSelectedFactoriesList(() => "");
+                                            setModalart(!modalart),
+                                              setInquiryId(inquirydtls.id),
+                                              apiCallInquirySentTo(inquirydtls.id);
+                                          }}
+                                        />
+                                      :
+                                      ""
+                                    }
+
+                                      {/********** DOCUMENT ICON ********/ }
+                                    {
+                                      getLoginUserType == "user" ? 
+                                      <>
+                                        <img
+                                          width="25px"
+                                          style={{ cursor: "pointer" }}
+                                          className="m-r-30 p-1"
+                                          title={t("inquirySentTo")}
+                                          value={inquirydtls.id}
+                                          src={DocumentIcon}
+                                          onClick={() => {
+                                            setModalInquirySentTo(
+                                              !modalInquirySentTo
+                                            ),
+                                              setInquiryId(inquirydtls.id),
+                                              apiCallInquirySentTo(inquirydtls.id);
+                                          }}
+                                        />
+                                      </>
+                                    :
+                                    (getStaff === "Staff" && getStaffPermission.includes("Sent Inquiry")) || getStaff == null ?
+                                      <img
+                                        width="25px"
+                                        style={{ cursor: "pointer" }}
+                                        className="m-r-30 p-1"
+                                        title={t("inquirySentTo")}
+                                        value={inquirydtls.id}
+                                        src={DocumentIcon}
+                                        onClick={() => {
+                                          setModalInquirySentTo(
+                                            !modalInquirySentTo
+                                          ),
+                                            setInquiryId(inquirydtls.id),
+                                            apiCallInquirySentTo(inquirydtls.id);
+                                        }}
+                                      />
+                                      :
+                                      ""
+                                    }
+
+                                    {/********** RESPONSE BLUE ICON ********/ }
+                                    {getLoginUserType == "user" ? 
+                                      <>
+                                         <img
+                                            width="29px"
+                                            style={{ cursor: "pointer" }}
+                                            className="m-r-30 p-1"
+                                            title={t("factoryResponse")}
+                                            value={inquirydtls.id}
+                                            src={responseBlueIcon}
+                                            onClick={() => {
+                                              factResponse(inquirydtls.id);
+                                            }}
+                                          />
+                                      </>
+                                    :
+                                    (getStaff === "Staff" && getStaffPermission.includes("View Response")) || getStaff == null ?
                                     <img
                                       width="29px"
                                       style={{ cursor: "pointer" }}
@@ -275,17 +449,37 @@ const ViewInquiry = () => {
                                         factResponse(inquirydtls.id);
                                       }}
                                     />
-                                    <img
-                                      width="28px"
-                                      style={{ cursor: "pointer" }}
-                                      className="m-r-30 p-1"
-                                      value={inquirydtls.id}
-                                      title={t("delete")}
-                                      src={deleteIcon}
-                                      onClick={() => {
-                                        deleteInquiry(inquirydtls.id);
-                                      }}
-                                    />
+                                      :
+                                      ""}
+
+                                    {/********** DELETE ICON ********/ }
+                                    {getLoginUserType == "user" ? 
+                                          <img
+                                            width="28px"
+                                            style={{ cursor: "pointer" }}
+                                            className="m-r-30 p-1"
+                                            value={inquirydtls.id}
+                                            title={t("delete")}
+                                            src={deleteIcon}
+                                            onClick={() => {
+                                              deleteInquiry(inquirydtls.id);
+                                            }}
+                                          />
+                                    :
+                                    (getStaff === "Staff" && getStaffPermission.includes("Delete Inquiry")) || getStaff == null ?
+                                        <img
+                                          width="28px"
+                                          style={{ cursor: "pointer" }}
+                                          className="m-r-30 p-1"
+                                          value={inquirydtls.id}
+                                          title={t("delete")}
+                                          src={deleteIcon}
+                                          onClick={() => {
+                                            deleteInquiry(inquirydtls.id);
+                                          }}
+                                        />
+                                      :
+                                      ""}
                                   </td>
                                 </tr>)
                               ))

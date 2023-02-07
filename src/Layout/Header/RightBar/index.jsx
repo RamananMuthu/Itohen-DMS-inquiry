@@ -56,32 +56,35 @@ const Rightbar = () => {
     {getStaff === "Staff" ? requestData=inputParamsStaff : requestData=inputParamsUser}
 
 
-    const planValidation = () => {
-        axios.post(ServerUrl+'/validate-plan', apiencrypt(requestData))
-        .then((response) => 
-        {
-            response.data = apidecrypt(response.data);
-            if (response.data.status_code === 400)
-            {
-                Swal.fire({
-                  title: t(response.data.message),
-                  icon: "warning",
-                  button: "OK!",
-                  allowOutsideClick: false
-                })
-                .then( (result ) => 
-                {
-                    if( result.isConfirmed){
-                        window.location.href = '/inquiryform';
-                    }
-                })
-            }  
-        });
+    // const planValidation = () => {
+    //     axios.post(ServerUrl+'/validate-plan', apiencrypt(requestData))
+    //     .then((response) => 
+    //     {
+    //         response.data = apidecrypt(response.data);
+    //         if (response.data.status_code === 400)
+    //         {
+    //             Swal.fire({
+    //               title: t(response.data.message),
+    //               icon: "warning",
+    //               button: "OK!",
+    //               allowOutsideClick: false
+    //             })
+    //             .then( (result ) => 
+    //             {
+    //                 if( result.isConfirmed){
+    //                     window.location.href = '/inquiryform';
+    //                 }
+    //             })
+    //         }  
+    //     });
 
-    }
+    // }
 
     useEffect( () => {
-        { getWorkspaceType != "Factory" ?
+
+        console.log("PERMISSIONS", getStaffPermission)
+
+        getWorkspaceType != "Factory" ?
         axios.post(ServerUrl+'/check-buyer-notification', notifyParams)
         .then((response) => 
         {
@@ -93,9 +96,6 @@ const Rightbar = () => {
         {
             setNotifyFactCount(response.data.notifications);             
         })
-    }
-
-        
 
     },[]);
 
@@ -121,6 +121,7 @@ const Rightbar = () => {
     }
 
     return (
+      
         <Fragment>
             <div className="nav-right col pull-right right-menu p-0">
             <UL attrUL={{ className: `simple-list d-flex flex-row nav-menus ${sidebarResponsive ? 'open' : ''}` }} >
@@ -129,23 +130,14 @@ const Rightbar = () => {
                     </a></LI> */}
                     
             <LI>
-                {(getStaff === "Staff" && getStaffPermission.includes("Add Order"))
-                ||
-                getStaff == null
-                ?
-                // <Link 
-                // to={`${process.env.PUBLIC_URL}/createorder`}
-                //  onClick={ () => { planValidation() }} 
-                //  className="btn-pill btn btn-outline-primary btn-md" >
-                // <img src={plusicon}/>  {t('addNewOrder')} 
-                //  </Link>
-                
-                     getWorkspaceType != "Factory" ?
-                    <Link to={`${process.env.PUBLIC_URL}/inquiryform`}
-                    onClick={ () => { planValidation() }} className= 'btn-pill btn btn-outline-primary btn-md  btn-primary-light' >
-                    <img src={plusicon}/>
-                        {t('createNewInquiry')}  
-             
+            {(getStaff === "Staff" && getStaffPermission.includes("Add Inquiry")) || getStaff == null ?
+                    getWorkspaceType != "Factory" ?
+                    <Link 
+                        to={`${process.env.PUBLIC_URL}/inquiryform`}
+                        
+                        className= 'btn-pill btn btn-outline-primary btn-md  btn-primary-light' >
+                        <img src={plusicon}/>
+                            {t('createNewInquiry')}   
                     </Link>
                     :
                     ""

@@ -9,7 +9,14 @@ import yellowSmile from "../../../assets/images/dms/inquiryYellowSmile.svg";
 import graySmile from "../../../assets/images/dms/inquirygray_icon.svg";
 import axios from "axios";
 import { encode,calculateDateDiffCountFromTwoDates } from "../../../helper";
-import {  getLoginCompanyId, getWorkspaceId, getLoginUserId, getWorkspaceType,
+import {
+  getLoginCompanyId,
+  getWorkspaceId,
+  getLoginUserId,
+  getWorkspaceType,
+  getStaff,
+  getStaffPermission,
+  getLoginUserType
 } from "../../../Constant/LoginConstant";
 import { useTranslation } from "react-i18next";
 import { ServerUrl } from "../../../Constant";
@@ -29,22 +36,28 @@ const FactoryViewInquiry = () => {
   const { t } = useTranslation();
   const [inquiryResponse, setInquiryResponse] = useState([]);
 
-  useEffect(() => {
-    if (
-      getWorkspaceType == "Factory" &&
-      getWorkspaceType != "PCU" &&
-      getWorkspaceType != "Buyer"
-    ) {
-      axios
-        .post(ServerUrl + "/factory-get-inquiry", getInputParams)
-        .then((response) => {
-          setInquiryDetails(response.data.data);
-          setInquiryResponse(response.data.response);
-        });
-    } else {
-      window.location.href = "/inquiry/viewinquiry";
-    }
+  const apiCall = () => {
+    axios
+    .post(ServerUrl + "/factory-get-inquiry", getInputParams)
+    .then((response) => {
+      setInquiryDetails(response.data.data);
+      setInquiryResponse(response.data.response);
+    })
+  }
+
+  useEffect(() => 
+  {  
+    getLoginUserType == "user" ?  (getWorkspaceType == "Factory") ? 
+      apiCall()  : window.location.href='/inquiry/viewinquiry'
+    :
+    (getWorkspaceType == "Factory") ?  
+      (getStaff === "Staff" && getStaffPermission.includes("View Factory Inquiry")) || getStaff == null ? 
+      apiCall() :  window.location.href='/inquirycontacts'
+    :
+      (getStaff === "Staff" && getStaffPermission.includes("View Inquiry")) || getStaff == null ? 
+        window.location.href='/inquiry/viewinquiry' : window.location.href='/inquiry/feedbackform' 
   }, []);
+
 
   const factoryDetails = (inquiryId, factoryId) => {
     <FactoryDetailInquiry inquiryId={inquiryId} factoryId={factoryId} />;
@@ -140,7 +153,13 @@ const FactoryViewInquiry = () => {
                               <th className="centerAlign">{" "} {t("itemsArticleName")}{" "}</th>
                               <th className="centerAlign"> {t("dueDate")} </th>
                               <th className="centerAlign"> {t("status")} </th>
-                              <th className="centerAlign"> {t("response")} </th>
+                              {
+                                getLoginUserType == "user" ? 
+                                <th className="centerAlign"> {t("response")} </th>
+                                :
+                                (getStaff === "Staff" && getStaffPermission.includes("View Response")) || getStaff == null ?
+                                <th className="centerAlign"> {t("response")} </th> : ""
+                              }
                             </tr>
                           </thead>
                           <tbody>
@@ -167,7 +186,10 @@ const FactoryViewInquiry = () => {
                                       inquirydtls.due_date,
                                     )}
                                   </td>
-                                  <td className="centerAlign middle ">
+
+                                  {
+                                    getLoginUserType == "user" ? 
+                                    <td className="centerAlign middle ">
                                   {inquirydtls.is_read == 0 ?
                                     <img
                                       name="inquiryId"
@@ -224,6 +246,68 @@ const FactoryViewInquiry = () => {
                                     {/* <br></br> */}
                                     {/* {inquiryResponse.includes(inquirydtls.id) ? "" : t("Pending")}  */}
                                   </td>
+                                    :
+                                    (getStaff === "Staff" && getStaffPermission.includes("Add Response")) || getStaff == null ?
+
+                                    <td className="centerAlign middle ">
+                                    {inquirydtls.is_read == 0 ?
+                                      <img
+                                        name="inquiryId"
+                                        value={inquirydtls.id}
+                                        title={t("factoryDetailInquiry")}
+                                        width="20px"
+                                        style={{ cursor: "pointer",color: "#3062CA" }}
+                                        // className="m-r-30"
+                                      src={Documentfactory}
+                                    
+                                        onClick={() => {
+                                          factoryDetails(
+                                            inquirydtls.id,
+                                            inquirydtls.factory_id
+                                          );
+                                        }}
+                                      />:
+                                      <img
+                                      name="inquiryId"
+                                      value={inquirydtls.id}
+                                      title={t("factoryDetailInquiry")}
+                                      width="20px"
+                                      style={{ cursor: "pointer",color: "#3062CA" }}
+                                      // className="m-r-30"
+                                      src={DocumentIcon}
+                                      onClick={() => {
+                                        factoryDetails(
+                                          inquirydtls.id,
+                                          inquirydtls.factory_id
+                                        );
+                                      }}
+                                    />}
+                                      {/* <sup className="m-l-5">
+                                        {inquirydtls.is_read == 0 ? (
+                                          <span
+                                            style={{
+                                              color: "#3062CA",
+                                              fontSize: "60px",
+                                            }}
+                                          >
+                                            .
+                                          </span>
+                                        ) : (
+                                          <span
+                                            style={{
+                                              color: "#fff",
+                                              fontSize: "60px",
+                                            }}
+                                          >
+                                            .
+                                          </span>
+                                        )}
+                                      </sup> */}
+                                      {/* <br></br> */}
+                                      {/* {inquiryResponse.includes(inquirydtls.id) ? "" : t("Pending")}  */}
+                                    </td>
+                                    : ""
+                                  }
                                 </tr>
                               ))
                             ) : (

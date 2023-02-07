@@ -12,12 +12,12 @@ export const MENUITEMS = [
         menutitle: 'DMS',
         menucontent: 'Dashboards,Widgets',
         Items: [
-            getWorkspaceType == "Buyer" ||  getWorkspaceType == "PCU" &&  getWorkspaceType != "Factory" ? 
-            { 
-                path: `${process.env.PUBLIC_URL}/viewinquiry`, type: 'link', active: false, title: 'View Inquiry'
-            } 
-            : {},
-
+            (getStaff === "Staff"&&getModules.includes("Inquiry")&&(getStaffPermission.includes('View Inquiry')))||getStaff == null?
+                getWorkspaceType == "Buyer" ||  getWorkspaceType == "PCU" &&  getWorkspaceType != "Factory" ? 
+                {path: `${process.env.PUBLIC_URL}/viewinquiry`, type: 'link', active: false, title: 'View Inquiry'} 
+                : {}
+            :
+            {},
             
             getWorkspaceType == "Buyer" ||  getWorkspaceType == "PCU" && getWorkspaceType != "Factory"? 
             { 
@@ -25,10 +25,12 @@ export const MENUITEMS = [
             }  
             : {},
 
+            (getStaff === "Staff"&&getModules.includes("Inquiry-Factory")&&(getStaffPermission.includes('View Factory Inquiry')))||getStaff == null?
             getWorkspaceType == "Factory" &&  getWorkspaceType != "PCU" && getWorkspaceType != "Buyer" ? 
             { 
                 path: `${process.env.PUBLIC_URL}/factoryviewinquiry`, type: 'link', active: false, title: 'View Inquiry'
             }  
+            : {}
             : {},
 
             

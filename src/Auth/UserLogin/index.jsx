@@ -252,6 +252,7 @@ const UserLogin = () => {
                       localStorage.setItem("workspaceId",response.data.workspace_id!=""?encode(response.data.workspace_id):0);
                       localStorage.setItem("workspaceName",response.data.workspaceName!=""?encode(response.data.workspaceName):"");
                       localStorage.setItem("workspaceType",response.data.workspaceName!=""?encode(response.data.workspaceType):"");
+                      
                       if (
                         response.data.dateformat != "" &&
                         response.data.dateformat != null
@@ -285,6 +286,9 @@ const UserLogin = () => {
                     localStorage.setItem("workspaceId",response.data.workspace_id!=""?encode(response.data.workspace_id):0);
                     localStorage.setItem("workspaceName",response.data.workspaceName!=""?encode(response.data.workspaceName):"");
                     localStorage.setItem("workspaceType",response.data.workspaceName!=""?encode(response.data.workspaceType):"");
+
+                    /***************************************************************************************************/
+
                     if (
                       response.data.dateformat != "" &&
                       response.data.dateformat != null
