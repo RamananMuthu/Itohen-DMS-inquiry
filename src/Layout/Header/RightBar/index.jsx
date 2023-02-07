@@ -155,12 +155,12 @@ const Rightbar = () => {
                 { getWorkspaceType != "Factory" ?
                    <div className="notification-box m-r-10">                   
                      <img src ={bell} onClick={()=>{ window.location.href="/inquiry/viewinquiry"}} style={{ cursor: 'pointer' }}/>                   
-                     <span className="count-animated"><Badges  attrBadge={{ className: 'badge-notify rounded-pill',backgroundColor:'#D4313C', pill: true }}>{notifyCount> 0 ? notifyCount:''}</Badges></span>                  
+                     <span className="count-animated"><Badges  attrBadge={{ className: 'badge-notify rounded-pill', pill: true }}>{notifyCount> 0 ? notifyCount:''}</Badges></span>                  
                    </div>
                   : 
                   <div className="notification-box m-r-10">                   
                      <img src ={bell} onClick={()=>{ window.location.href="/inquiry/factoryviewinquiry"}} style={{ cursor: 'pointer' }}/>                   
-                     <span className="count-animated"><Badges  attrBadge={{ className: 'badge-notify rounded-pill',backgroundColor:'#D4313C', pill: true }}>{notifyFactCount> 0 ? notifyFactCount:''}</Badges></span>                  
+                     <span className="count-animated"><Badges  attrBadge={{ className: 'badge-notify rounded-pill',pill: true }}>{notifyFactCount> 0 ? notifyFactCount:''}</Badges></span>                  
                    </div>
                 
                    }

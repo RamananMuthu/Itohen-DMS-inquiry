@@ -462,6 +462,39 @@ const index = () => {
   const deleteImageFiles = (imageType, file) => {
     var media ={};
     media["media_id"]= file.media_id;
+if(imageType == "MeasurementSheet"){
+  Swal.fire({
+    title: t("deleteConfirmationTitleAlert"),
+    text: t("cantRevertBack"),
+    icon: "warning",
+    showCancelButton: true,
+    button: t("okLabel"),
+  }).then((result) => {
+    if (result.isConfirmed) 
+    { 
+      axios
+      .post(ServerUrl+"/delete-inquiry-media",media)
+      .then((response) => {
+        if(response.data.status_code == 200){
+          Swal.fire({
+            title: t(response.data.meassage),
+            icon: "success",
+            showCancelButton: true,
+            button: t("okLabel"),
+            
+          }).then((result) => {
+            if(result.isConfirmed){
+              uploadImageApiCall(imageType, file);
+            }
+          }
+          )
+        }
+      })
+    }
+  });
+  
+}
+   else {
     Swal.fire({
       title: t("areYouSureToDeleteThisImage"),
       text: t("cantRevertBack"),
@@ -491,6 +524,7 @@ const index = () => {
         })
       }
     });
+   } 
   };
 /****------- Press Enter - Next Field ---------- ****/ 
   function handleEnter(event) {
@@ -2174,6 +2208,19 @@ const index = () => {
                                 </td>
                                 <td className="">
                                   <p className="f-left f-12 f-w-600">{(file.orginalfilename)}<br /></p>
+                                </td> 
+                                <td className="m-l-6">
+                                <img 
+                                    src={deleteIcon} 
+                                    width="30px" 
+                                    height="30px" 
+                                    style={{ cursor: 'pointer' }} 
+                                    onClick={()=>
+                                      {
+                                        deleteImageFiles("MeasurementSheet", file)
+                                      }
+                                      }
+                                  />
                                 </td>
                             
                               </tr>

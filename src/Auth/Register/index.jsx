@@ -13,7 +13,7 @@ import {
 import { H4, P, H5, LI } from "../../AbstractElements";
 import { ServerUrl } from "../../Constant";
 
-import dmsBg from "../../assets/images/dms/sideshow.png";
+import dmsBg from "../../assets/images/dms/inquiryStaffLogin.png";
 import dmslogtag from "../../assets/images/dms/dms-log-with-tag.png";
 
 import Loader from "../../Layout/Loader/index";
