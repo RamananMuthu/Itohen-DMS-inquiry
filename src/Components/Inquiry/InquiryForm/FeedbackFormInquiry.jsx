@@ -71,7 +71,8 @@ const FeedbackFormInquiry = () => {
           setInquiryIds(response.data.data);
         });
     } else {
-      window.location.href = "/inquiry/factoryviewinquiry";
+      window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry` 
+      // window.location.href = "/inquiry/factoryviewinquiry";
     }
   }, []);
 

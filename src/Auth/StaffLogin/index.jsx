@@ -260,9 +260,11 @@ const StaffLogin = () => {
                             i18n.changeLanguage(response.data.language);
                             setTimeout(() => {
                                 if (response.data.company_id !== 'null') {
-                                    window.location.href = '/inquiry/viewinquiry';
+                                    response.data.workspaceType == "Factory" ? 
+                                        window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry` : 
+                                        window.location.href = `${process.env.PUBLIC_URL}/viewinquiry` 
                                 } else {
-                                    window.location.href = '/companysetting';
+                                    window.location.href = `${process.env.PUBLIC_URL}/companysetting` 
                                 }
                             }, 100);
                             //  }
@@ -297,7 +299,8 @@ const StaffLogin = () => {
                     });
                     setloading(true);
                     setTimeout(() => {
-                            window.location.href = '/stafflogin';
+                            window.location.href = `${process.env.PUBLIC_URL}/stafflogin` 
+                            // window.location.href = '/stafflogin';
                     }, 100);
                 }
             })

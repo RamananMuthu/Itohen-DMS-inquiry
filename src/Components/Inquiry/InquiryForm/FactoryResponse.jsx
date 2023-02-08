@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import { Container, Row, Col, CardBody, Card, Button, } from "reactstrap";
 import { Breadcrumbs } from "../../../AbstractElements";
 import Loader from "../../../Layout/Loader/index";
-import { getLoginUserId, getWorkspaceType } from '../../../Constant/LoginConstant';
+import { getLoginUserId, getWorkspaceType, getStaff, getStaffPermission, getLoginUserType } from '../../../Constant/LoginConstant';
 import { encode, decode, } from "../../../helper"
 import { useSearchParams, } from "react-router-dom";
 import axios from "axios";
@@ -40,21 +40,33 @@ const FactoryResponse = () => {
             })
     }
 
-    useEffect(() => {
-         if( getWorkspaceType == "Buyer" || getWorkspaceType == "PCU" && getWorkspaceType != "Factory"  )
-         {
-            axios
-            .post(ServerUrl + "/inquiry-factory-response", getInputParams)
-            .then((response) => {
-                setFactoryRes(response.data.data);
-            })
-         } else {
-             window.location.href='/inquiry/viewinquiry';
-         }        
+    const apiCall = () => {
+        axios
+        .post(ServerUrl + "/inquiry-factory-response", getInputParams)
+        .then((response) => {
+            setFactoryRes(response.data.data);
+        })
+    };
+
+    useEffect(() => 
+    {
+        getLoginUserType == "user" ?  getWorkspaceType != "Factory" ? apiCall()  : 
+        window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry` 
+        :
+        getWorkspaceType != "Factory" ?  
+          (getStaff === "Staff" && getStaffPermission.includes("View Response")) || getStaff == null ? 
+          apiCall() :  
+          window.location.href = `${process.env.PUBLIC_URL}/feedbackform` 
+        :
+          (getStaff === "Staff" && getStaffPermission.includes("View Factory Inquiry")) || getStaff == null ? 
+          window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry`
+          : 
+          window.location.href = `${process.env.PUBLIC_URL}/inquirycontacts`
+       
     }, [])
 
     const onGoBack=() => {
-        window.location.href='/inquiry/viewinquiry'; 
+        window.location.href = `${process.env.PUBLIC_URL}/viewinquiry` 
     }
 
     return (

@@ -62,7 +62,8 @@ const FactoryDetailInquiry = () => {
 
   const onGoBack = () => {
     setTimeout(() => {
-      window.location.href = '/inquiry/factoryviewinquiry';
+      window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry`
+      // window.location.href = '/inquiry/factoryviewinquiry';
     }, 100);
   }
 
@@ -165,14 +166,20 @@ const FactoryDetailInquiry = () => {
 
   useEffect(() => {
     {getLoginUserType == "user" ?  (getWorkspaceType == "Factory") ? 
-        apiCall()  : window.location.href='/inquiry/viewinquiry'
+        apiCall()  : window.location.href = `${process.env.PUBLIC_URL}/viewinquiry`
+        // window.location.href='/inquiry/viewinquiry'
       :
       (getStaff === "Staff" && getWorkspaceType == "Factory") ?  
         ( getStaffPermission.includes("View Factory Inquiry")) ? 
-        apiCall() :  window.location.href='/inquiry/inquirycontacts'
+        apiCall() :  window.location.href = `${process.env.PUBLIC_URL}/inquirycontacts`
+        //  window.location.href='/inquiry/inquirycontacts'
       :
         (getStaffPermission.includes("View Inquiry")) ? 
-          window.location.href='/inquiry/viewinquiry' : window.location.href='/inquiry/feedbackform' 
+        window.location.href = `${process.env.PUBLIC_URL}/viewinquiry`
+          // window.location.href='/inquiry/viewinquiry' 
+          :
+          window.location.href = `${process.env.PUBLIC_URL}/feedbackform`
+          // window.location.href='/inquiry/feedbackform' 
     }
   
   }, []);
@@ -198,8 +205,10 @@ const FactoryDetailInquiry = () => {
               button: t("okLabel"),
               allowOutsideClick: false
             }).then((result) => {
-              if (result.isConfirmed) {
-                window.location.href = '/inquiry/factoryviewinquiry';
+              if (result.isConfirmed) 
+              {
+                window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry`
+                // window.location.href = '/inquiry/factoryviewinquiry';
               }
             })
           }

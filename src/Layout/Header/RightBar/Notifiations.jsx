@@ -5,13 +5,17 @@ import { LI, P, UL } from '../../../AbstractElements';
 import factory from '../../../assets/images/dms/factory.svg'
 import pcu from '../../../assets/images/dms/PCU.svg'
 import buyer from '../../../assets/images/dms/onGoingList.svg'
-import { getWorkspaceName, getWorkspaceType, getWorkspaces, getStaff, getRoleName, getLoginUseName } from '../../../Constant/LoginConstant';
+import { getWorkspaceName, getWorkspaceType, getWorkspaces, getStaff, 
+         getRoleName, getLoginUseName, getLoginUserType, getStaffPermission } from '../../../Constant/LoginConstant';
 import { useTranslation } from 'react-i18next';
-import { encode } from '../../../helper';
+import { encode, decode } from '../../../helper';
 
 const Notifications = () => {
     const { t } = useTranslation();
     let workspaces = JSON.parse(getWorkspaces);
+
+    // console.log("+++workspaces+++", workspaces);
+    
     const handleClick = (workspaceId) => {
         for (let i = 0; i < workspaces.length; i++) {
             if (workspaces[i].workspace_id === workspaceId) {
@@ -31,7 +35,22 @@ const Notifications = () => {
                 } else {
                     localStorage.setItem("dateFormat", '');
                 }
-                window.location.href = "/inquiryform";
+
+
+                getLoginUserType == "user" ?  getWorkspaceType != "Factory" ? 
+                window.location.href = `${process.env.PUBLIC_URL}/viewinquiry`  : 
+                window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry` 
+                :
+                (getWorkspaceType != "Factory") ?  
+                    (getStaff === "Staff" && getStaffPermission.includes("View Inquiry")) || getStaff == null ? 
+                    window.location.href = `${process.env.PUBLIC_URL}/viewinquiry`
+                    : 
+                    window.location.href = `${process.env.PUBLIC_URL}/feedbackform` 
+                :
+                    (getStaff === "Staff" && getStaffPermission.includes("View Factory Inquiry")) || getStaff == null ? 
+                        window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry`
+                         : 
+                        window.location.href = `${process.env.PUBLIC_URL}/inquirycontacts`
             }
         }
     }

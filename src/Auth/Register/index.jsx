@@ -233,7 +233,7 @@ inputParamsUser['user_type'] = selworkspace_type;
                 localStorage.setItem( "UserId", encode(userId));
                 i18n.changeLanguage(response.data.language);
                // setTimeout(() => {
-                window.location.href = '/pricing';
+                window.location.href = `${process.env.PUBLIC_URL}/pricing`
              // }, 1000);    
               })
             }

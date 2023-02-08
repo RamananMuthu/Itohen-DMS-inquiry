@@ -160,7 +160,7 @@ const UserLogin = () => {
                 setTimeout(() => {
                   localStorage.setItem("Email", encode(response.data.email));
                   //localStorage.setItem( "UserId", userId );
-                  window.location.href = "/pricing";
+                  window.location.href = `${process.env.PUBLIC_URL}/pricing` 
                 }, 100);
               }
             });
@@ -221,12 +221,11 @@ const UserLogin = () => {
                   }
                     // setTimeout(() => {
                   if (parseInt(response.data.company_id)>0 ) {
-                      window.location.href = "/inquiry/viewinquiry";
+                    window.location.href = `${process.env.PUBLIC_URL}/viewinquiry` 
                   } else {
-                    window.location.href = "/companysetting";
+                    window.location.href = `${process.env.PUBLIC_URL}/companysetting` 
                   }
-                  
-                  window.location.href = "/editpricing";
+                  window.location.href = `${process.env.PUBLIC_URL}/editpricing` 
                 }
               });
             } else {
@@ -267,9 +266,9 @@ const UserLogin = () => {
                         i18n.changeLanguage(i18n.language=='jp'?'jp':'en');
                       }        
                       if (parseInt(response.data.company_id)>0 ) {
-                          window.location.href = "/inquiry/viewinquiry";
+                        window.location.href = `${process.env.PUBLIC_URL}/viewinquiry` 
                       } else {
-                        window.location.href = "/companysetting";
+                        window.location.href = `${process.env.PUBLIC_URL}/companysetting` 
                       }
 
                   } else if( response.data.workspaceType == "Factory" )
@@ -286,9 +285,7 @@ const UserLogin = () => {
                     localStorage.setItem("workspaceId",response.data.workspace_id!=""?encode(response.data.workspace_id):0);
                     localStorage.setItem("workspaceName",response.data.workspaceName!=""?encode(response.data.workspaceName):"");
                     localStorage.setItem("workspaceType",response.data.workspaceName!=""?encode(response.data.workspaceType):"");
-
                     /***************************************************************************************************/
-
                     if (
                       response.data.dateformat != "" &&
                       response.data.dateformat != null
@@ -303,12 +300,12 @@ const UserLogin = () => {
                       i18n.changeLanguage(i18n.language=='jp'?'jp':'en');
                     }        
                     if (parseInt(response.data.company_id)>0 ) {
-                        window.location.href = "/inquiry/factoryviewinquiry";
+                        window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry` 
                     } else {
-                      window.location.href = "/companysetting";
+                      window.location.href = `${process.env.PUBLIC_URL}/companysetting`
                     }
                   } else {
-                    window.location.href='/inquiry/adminlogin';
+                    window.location.href = `${process.env.PUBLIC_URL}/adminlogin` 
                   }
                 }
               });

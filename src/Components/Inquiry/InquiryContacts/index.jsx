@@ -36,7 +36,8 @@ const InquiryContacts = () => {
           }
         })
     } else {
-      window.location.href = '/inquiry/viewinquiry';
+      window.location.href = `${process.env.PUBLIC_URL}/viewinquiry` 
+      // window.location.href = '/inquiry/viewinquiry';
     }
   }, [])
 

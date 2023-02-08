@@ -72,14 +72,22 @@ const ViewInquiry = () => {
     //     (getStaff === "Staff" && getStaffPermission.includes("View Factory Inquiry")) || getStaff == null ? window.location.href='/inquiry/factoryviewinquiry' :  window.location.href='/inquiry/inquirycontacts' 
     // : ""
 
-    getLoginUserType == "user" ?  getWorkspaceType != "Factory" ? apiCall()  : window.location.href='/inquiry/factoryviewinquiry'
+    getLoginUserType == "user" ?  getWorkspaceType != "Factory" ? apiCall()  : 
+    window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry` 
+    // window.location.href='/inquiry/factoryviewinquiry'
     :
     getWorkspaceType != "Factory" ?  
       (getStaff === "Staff" && getStaffPermission.includes("View Inquiry")) || getStaff == null ? 
-      apiCall() :  window.location.href='/inquiry/feedbackform'
+      apiCall() :  
+      window.location.href = `${process.env.PUBLIC_URL}/feedbackform` 
+      // window.location.href='/inquiry/feedbackform'
     :
       (getStaff === "Staff" && getStaffPermission.includes("View Factory Inquiry")) || getStaff == null ? 
-      window.location.href='/inquiry/factoryviewinquiry' :  window.location.href='/inquiry/inquirycontacts' 
+      window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry`
+      // window.location.href='/inquiry/factoryviewinquiry' 
+      : 
+      window.location.href = `${process.env.PUBLIC_URL}/inquirycontacts`
+      // window.location.href='/inquiry/inquirycontacts' 
   
   }, []);
 
@@ -264,7 +272,7 @@ const ViewInquiry = () => {
                                       :
                                       "" }
 
-                                     {/********** RESPONSE BLUE ICON ********/ }
+                                     {/********** SHARE ICON ********/ }
                                     {getLoginUserType == "user" ? 
                                       <>
                                          <img
@@ -273,7 +281,7 @@ const ViewInquiry = () => {
                                             className="m-r-30 p-1"
                                             title={t("factoryResponse")}
                                             value={inquirydtls.id}
-                                            src={responseBlueIcon}
+                                            src={shareIcon}
                                             onClick={() => {
                                               factResponse(inquirydtls.id);
                                             }}
@@ -287,7 +295,7 @@ const ViewInquiry = () => {
                                       className="m-r-30 p-1"
                                       title={t("factoryResponse")}
                                       value={inquirydtls.id}
-                                      src={responseBlueIcon}
+                                      src={shareIcon}
                                       onClick={() => {
                                         factResponse(inquirydtls.id);
                                       }}
@@ -323,8 +331,6 @@ const ViewInquiry = () => {
                                       />
                                       :
                                       ""}
-
-                                   
                                   </td>
                                 </tr>:
                                 <tr >

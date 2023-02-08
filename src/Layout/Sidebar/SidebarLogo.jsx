@@ -20,7 +20,7 @@ const SidebarLogo = () => {
 
       {
         getWorkspaceType == "Factory" ? 
-        <Link to={`${process.env.PUBLIC_URL}/inquiry/factoryviewinquiry/default`}>
+        <Link to={`${process.env.PUBLIC_URL}/factoryviewinquiry/default`}>
           <Image
             attrImage={{ className: 'img-fluid for-dark', src: `${logo}`, alt: '' }} />
         </Link> : 

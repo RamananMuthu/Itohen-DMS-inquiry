@@ -13,8 +13,6 @@ import {
   } from "../../../Constant/LoginConstant";
 import { apiencrypt,apidecrypt } from '../../../helper';
 
-
-
 const LanguageClass = () => {
     const [langdropdown, setLangdropdown] = useState(false);
     const { t,i18n} = useTranslation();
@@ -77,22 +75,17 @@ const LanguageClass = () => {
                         </div>
                     </div>
                    
-                    <div className={`more_lang onhover-show-div ${langdropdown ? 'active' : ''}`}>
-                      
+                    <div className={`more_lang onhover-show-div ${langdropdown ? 'active' : ''}`}>         
                     {/* <div className="lang" onClick={() => changeLanguage('bd')}><i className="flag-icon flag-icon-bd"></i><span className="lang-txt">Bengali</span></div> */}
                         {/* <div className="lang" onClick={() => changeLanguage('en')}><i className="flag-icon flag-icon-us"></i><span className="lang-txt">English</span></div>
                         <div className="lang" onClick={() => changeLanguage('jp')}><i className="flag-icon flag-icon-jp"></i><span className="lang-txt">{Japan}</span></div> */}
-
-{language.map((language) =>
-                    
-                   
-                         <div className="lang" onClick={() => changeLanguage(language.lang_code,language.id)}><i className={`flag-icon flag-icon-${language.lang_code === 'en' ? 'us' : language.lang_code}`}></i><span className="lang-txt">{language.name}</span></div> 
-                    
-                    )}
-
-                        
-
-                        
+                    {language.map((language) =>              
+                        <div className="lang" 
+                            onClick={() => changeLanguage(language.lang_code,language.id)}>
+                            <i className={`flag-icon flag-icon-${language.lang_code === 'en' ? 'us' : language.lang_code}`}></i>
+                            <span className="lang-txt">{language.name}</span>
+                        </div> 
+                    )}        
                 </div>
                 </div>
             </LI>

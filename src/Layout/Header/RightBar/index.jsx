@@ -82,8 +82,6 @@ const Rightbar = () => {
 
     useEffect( () => {
 
-        console.log("PERMISSIONS", getStaffPermission)
-
         getWorkspaceType != "Factory" ?
         axios.post(ServerUrl+'/check-buyer-notification', notifyParams)
         .then((response) => 
@@ -134,7 +132,6 @@ const Rightbar = () => {
                     getWorkspaceType != "Factory" ?
                     <Link 
                         to={`${process.env.PUBLIC_URL}/inquiryform`}
-                        
                         className= 'btn-pill btn btn-outline-primary btn-md  btn-primary-light' >
                         <img src={plusicon}/>
                             {t('createNewInquiry')}   
@@ -146,12 +143,16 @@ const Rightbar = () => {
             </LI>
                 { getWorkspaceType != "Factory" ?
                    <div className="notification-box m-r-10">                   
-                     <img src ={bell} onClick={()=>{ window.location.href="/inquiry/viewinquiry"}} style={{ cursor: 'pointer' }}/>                   
+                     <img src ={bell} onClick={()=>{ 
+                        window.location.href = `${process.env.PUBLIC_URL}/viewinquiry`}} 
+                        style={{ cursor: 'pointer' }}/>                   
                      <span className="count-animated"><Badges  attrBadge={{ className: 'badge-notify rounded-pill', pill: true }}>{notifyCount> 0 ? notifyCount:''}</Badges></span>                  
                    </div>
                   : 
                   <div className="notification-box m-r-10">                   
-                     <img src ={bell} onClick={()=>{ window.location.href="/inquiry/factoryviewinquiry"}} style={{ cursor: 'pointer' }}/>                   
+                     <img src ={bell} onClick={()=>{ 
+                        window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry`}} 
+                        style={{ cursor: 'pointer' }}/>                   
                      <span className="count-animated"><Badges  attrBadge={{ className: 'badge-notify rounded-pill',pill: true }}>{notifyFactCount> 0 ? notifyFactCount:''}</Badges></span>                  
                    </div>
                 

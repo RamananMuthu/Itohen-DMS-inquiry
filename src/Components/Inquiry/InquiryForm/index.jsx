@@ -203,6 +203,10 @@ const index = () => {
     if (!totalQuantity) {
       validerrors.totalQuantity = t("enterTotQty");
     } 
+     else if (!/^[0-9]+$/.test(totalQuantity)) {
+       validerrors.totalQuantity = t("numbersOnlyAllowed");
+       }
+   
     if (!currency) {
       validerrors.currency = t("enterCurrency");
     }
@@ -396,16 +400,25 @@ const index = () => {
   
  useEffect(() => 
  {
-   getLoginUserType == "user" ?  getWorkspaceType != "Factory" ? apiCall()  : window.location.href='/inquiry/factoryviewinquiry'
+   getLoginUserType == "user" ?  getWorkspaceType != "Factory" ? apiCall()  : 
+   window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry` 
+  //  window.location.href='/inquiry/factoryviewinquiry'
    :
    getWorkspaceType != "Factory" ?  
      (getStaff === "Staff" && getStaffPermission.includes("Add Inquiry")) || getStaff == null ? 
      apiCall() :  
-     (getStaff === "Staff" && getStaffPermission.includes("View Inquiry")) || getStaff == null ? window.location.href='/viewinquiry' : window.location.href='/feedbackform'
+     (getStaff === "Staff" && getStaffPermission.includes("View Inquiry")) || getStaff == null ? 
+      window.location.href = `${process.env.PUBLIC_URL}/viewinquiry` 
+    //  window.location.href='/viewinquiry' 
+     :
+     window.location.href = `${process.env.PUBLIC_URL}/feedbackform` 
+    //  window.location.href='/feedbackform'
    :
-     (getStaff === "Staff" && getStaffPermission.includes("View Factory Inquiry")) || getStaff == null ? 
-     window.location.href='/inquiry/factoryviewinquiry' :  
-     window.location.href='/inquiry/inquirycontacts' 
+     (getStaff === "Staff" && getStaffPermission.includes("View Factory Inquiry")) || getStaff == null ?
+     window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry` :
+    //  window.location.href='/inquiry/factoryviewinquiry' :  
+    window.location.href = `${process.env.PUBLIC_URL}/inquirycontacts` 
+    //  window.location.href='/inquiry/inquirycontacts' 
 
  }, []);
 
@@ -1069,7 +1082,8 @@ if(imageType == "MeasurementSheet"){
               allowOutsideClick: false,
             }).then((result) => {
               if (result.isConfirmed) {
-                window.location.href = "/inquiry/viewinquiry";
+                window.location.href = `${process.env.PUBLIC_URL}/viewinquiry` 
+                // window.location.href = "/inquiry/viewinquiry";
               }
             });
           }
@@ -1722,6 +1736,7 @@ if(imageType == "MeasurementSheet"){
                       <InputGroup>
                         <Input
                           className=""
+                          type="number"
                           name="Total Quantity"
                           placeholder={t("enterTotalQuantity")}
                           onChange={(e) => setTotalQuantity(e.target.value)}

@@ -48,19 +48,29 @@ const FactoryViewInquiry = () => {
   useEffect(() => 
   {  
     getLoginUserType == "user" ?  (getWorkspaceType == "Factory") ? 
-      apiCall()  : window.location.href='/inquiry/viewinquiry'
+      apiCall()  : 
+      window.location.href = `${process.env.PUBLIC_URL}/viewinquiry`
+      // window.location.href='/inquiry/viewinquiry'
     :
     (getWorkspaceType == "Factory") ?  
       (getStaff === "Staff" && getStaffPermission.includes("View Factory Inquiry")) || getStaff == null ? 
-      apiCall() :  window.location.href='/inquirycontacts'
+      apiCall() : 
+      window.location.href = `${process.env.PUBLIC_URL}/inquirycontacts` 
+      // window.location.href='/inquirycontacts'
     :
       (getStaff === "Staff" && getStaffPermission.includes("View Inquiry")) || getStaff == null ? 
-        window.location.href='/inquiry/viewinquiry' : window.location.href='/inquiry/feedbackform' 
+      window.location.href = `${process.env.PUBLIC_URL}/viewinquiry` 
+        // window.location.href='/inquiry/viewinquiry' 
+        :
+      window.location.href = `${process.env.PUBLIC_URL}/feedbackform` 
+        // window.location.href='/inquiry/feedbackform' 
   }, []);
 
 
-  const factoryDetails = (inquiryId, factoryId) => {
+  const factoryDetails = (inquiryId, factoryId) => 
+  {
     <FactoryDetailInquiry inquiryId={inquiryId} factoryId={factoryId} />;
+    // window.location.href = `${process.env.PUBLIC_URL}/factorydetailinquiry?id="`+ encode(inquiryId); 
     window.location.href =
       "/inquiry/factorydetailinquiry?id=" + encode(inquiryId);
   };
@@ -94,7 +104,7 @@ const FactoryViewInquiry = () => {
         );
       } else if (daysCount > 0 && daysCount == 1) {
         return (
-          <td className="centerAlign" style={{ color: "A8A8A8" }}>
+          <td className="centerAlign" style={{ color: "#A8A8A8" }}>
             <img className="p-0 img-30" src={graySmile} /> &nbsp;
             {t("dayRemaining")}
           </td>
@@ -102,7 +112,7 @@ const FactoryViewInquiry = () => {
       } else if (daysCount > 0) {
         let days = Math.abs(daysCount);
         return (
-          <td className="centerAlign" style={{ color: "A8A8A8" }}>
+          <td className="centerAlign" style={{ color: "#A8A8A8" }}>
             <img className="p-0 img-30" src={graySmile} /> &nbsp;
             {t("daysRemaining", { remainingdayscount: days })}
           </td>
@@ -157,7 +167,7 @@ const FactoryViewInquiry = () => {
                                 getLoginUserType == "user" ? 
                                 <th className="centerAlign"> {t("response")} </th>
                                 :
-                                (getStaff === "Staff" && getStaffPermission.includes("View Response")) || getStaff == null ?
+                                (getStaff === "Staff" && getStaffPermission.includes("Add Response")) || getStaff == null ?
                                 <th className="centerAlign"> {t("response")} </th> : ""
                               }
                             </tr>
