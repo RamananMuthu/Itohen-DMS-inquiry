@@ -6,7 +6,8 @@ import lastDay from "../../../assets/images/dms/InquiryOneDayRemain.svg";
 import bomb from "../../../assets/images/dms/BombSmiley.svg";
 import smile from "../../../assets/images/dms/InquiryQuoteSent.svg";
 import yellowSmile from "../../../assets/images/dms/inquiryYellowSmile.svg";
-import graySmile from "../../../assets/images/dms/inquirygray_icon.svg";
+import graySadSmile from "../../../assets/images/dms/inquirygray_icon.svg";
+import graySmile from"../../../assets/images/dms/InquiryRemainingSmile.svg";
 import axios from "axios";
 import { encode,calculateDateDiffCountFromTwoDates } from "../../../helper";
 import {
@@ -99,7 +100,7 @@ const FactoryViewInquiry = () => {
       if (daysCount == 0) {
         return (
           <td className=" centerAlign" style={{ color: "#A8A8A8" }}>
-            <img className="p-0 img-30" src={graySmile} /> &nbsp; {t("lastDay")}
+            <img className="p-0 img-30" src={graySadSmile} /> &nbsp; {t("lastDay")}
           </td>
         );
       } else if (daysCount > 0 && daysCount == 1) {
