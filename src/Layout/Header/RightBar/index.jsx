@@ -171,13 +171,16 @@ const Rightbar = () => {
                 window.location.href = `${process.env.PUBLIC_URL}/viewinquiry`}} 
                 style={{ cursor: 'pointer' }}/>                   
                 <span className="count-animated">
-                    <Badges  attrBadge={{ className: 'badge-notify rounded-pill', pill: true }}>{notifyCount> 0 ? notifyCount:''}</Badges>
+                    <Badges attrBadge={{ className: 'badge-notify rounded-pill', pill: true }}>
+                        {notifyCount> 0 ? notifyCount:''}
+                    </Badges>
                 </span>                  
             </div> 
             :  
             ""
         :
-        (getStaff === "Staff" && getStaffPermission.includes("View Factory Inquiry")) || getStaff == null ? 
+        (getStaff === "Staff" && getStaffPermission.includes("View Factory Inquiry") && 
+                                 getStaffPermission.includes("Add Response") ) || getStaff == null ? 
             <div className="notification-box m-r-10">                   
                 <img src ={bell} onClick={()=>{ 
                 window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry`}} 
