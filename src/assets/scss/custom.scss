@@ -1036,7 +1036,20 @@ td.text-left {
  background-color: #B2D9D6;
 }
 
-#htmlStringListCSS>* {
+// #htmlStringListCSS>* {
+//   // Used for html string listing alignment issue
+//   ol {
+//     display: inline-block !important;
+//     padding-left: 20px !important;
+//   }
+
+//   ul {
+//     padding-left: 20px !important;
+//     list-style-type: circle !important;
+//   }
+// }
+
+#htmljoditListCSS>* {
   // Used for html string listing alignment issue
   ol {
     display: inline-block !important;
@@ -1045,7 +1058,7 @@ td.text-left {
 
   ul {
     padding-left: 20px !important;
-    list-style-type: circle !important;
+     list-style-type: unset;
   }
 }
 

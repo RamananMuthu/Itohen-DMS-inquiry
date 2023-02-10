@@ -264,7 +264,7 @@ const FactoryDetailInquiry = () => {
                               <th className="centerAlign" colSpan={2}> {t("factoryDetails")} </th>
                             </tr>
                           </thead>
-                          <tbody id="htmlStringListCSS">
+                          <tbody id="htmljoditListCSS">
                             <tr>
                               {factoryInquiryDetails.article_name ?
                                 <>
