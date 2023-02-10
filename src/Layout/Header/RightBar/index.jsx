@@ -19,7 +19,7 @@ import Swal from 'sweetalert2';
 import { Card } from 'reactstrap';
 import { LogOut } from 'react-feather';
 import { getStaff, getStaffPermission, getLoginCompanyId, 
-         getWorkspaceId, getLoginUserId, getLoginStaffId, getWorkspaceType }
+         getWorkspaceId, getLoginUserId, getLoginStaffId, getWorkspaceType, getLoginUserType  }
           from '../../../Constant/LoginConstant';
 import { useTranslation } from 'react-i18next';
 import { apidecrypt, apiencrypt } from '../../../helper';
@@ -123,11 +123,12 @@ const Rightbar = () => {
         <Fragment>
             <div className="nav-right col pull-right right-menu p-0">
             <UL attrUL={{ className: `simple-list d-flex flex-row nav-menus ${sidebarResponsive ? 'open' : ''}` }} >
-                    {/* <LI><a className="text-dark" href="#javascript" onClick={goFull}>
-                        <Maximize />
-                    </a></LI> */}
+                {/* <LI><a className="text-dark" href="#javascript" onClick={goFull}>
+                    <Maximize />
+                </a></LI> */}
                     
             <LI>
+
             {(getStaff === "Staff" && getStaffPermission.includes("Add Inquiry")) || getStaff == null ?
                     getWorkspaceType != "Factory" ?
                     <Link 
@@ -141,29 +142,60 @@ const Rightbar = () => {
                 :
                 ""}
             </LI>
-                { getWorkspaceType != "Factory" ?
-                   <div className="notification-box m-r-10">                   
-                     <img src ={bell} onClick={()=>{ 
-                        window.location.href = `${process.env.PUBLIC_URL}/viewinquiry`}} 
-                        style={{ cursor: 'pointer' }}/>                   
-                     <span className="count-animated"><Badges  attrBadge={{ className: 'badge-notify rounded-pill', pill: true }}>{notifyCount> 0 ? notifyCount:''}</Badges></span>                  
-                   </div>
-                  : 
-                  <div className="notification-box m-r-10">                   
-                     <img src ={bell} onClick={()=>{ 
-                        window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry`}} 
-                        style={{ cursor: 'pointer' }}/>                   
-                     <span className="count-animated"><Badges  attrBadge={{ className: 'badge-notify rounded-pill',pill: true }}>{notifyFactCount> 0 ? notifyFactCount:''}</Badges></span>                  
-                   </div>
-                
-                   }
+
+            
+    { 
+        getLoginUserType == "user" ?  getWorkspaceType != "Factory" ? 
+            <div className="notification-box m-r-10">                   
+                <img src ={bell} onClick={()=>{ 
+                window.location.href = `${process.env.PUBLIC_URL}/viewinquiry`}} 
+                style={{ cursor: 'pointer' }}/>                   
+                <span className="count-animated">
+                    <Badges  attrBadge={{ className: 'badge-notify rounded-pill', pill: true }}>{notifyCount> 0 ? notifyCount:''}</Badges>
+                </span>                  
+            </div>  
+            : 
+            <div className="notification-box m-r-10">                   
+                <img src ={bell} onClick={()=>{ 
+                window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry`}} 
+                style={{ cursor: 'pointer' }}/>                   
+                <span className="count-animated">
+                    <Badges  attrBadge={{ className: 'badge-notify rounded-pill',pill: true }}>{notifyFactCount> 0 ? notifyFactCount:''}</Badges>
+                </span>                  
+            </div>
+        :
+        getWorkspaceType != "Factory" ?  
+        (getStaff === "Staff" && getStaffPermission.includes("View Response")) || getStaff == null ? 
+            <div className="notification-box m-r-10">                   
+                <img src ={bell} onClick={()=>{ 
+                window.location.href = `${process.env.PUBLIC_URL}/viewinquiry`}} 
+                style={{ cursor: 'pointer' }}/>                   
+                <span className="count-animated">
+                    <Badges  attrBadge={{ className: 'badge-notify rounded-pill', pill: true }}>{notifyCount> 0 ? notifyCount:''}</Badges>
+                </span>                  
+            </div> 
+            :  
+            ""
+        :
+        (getStaff === "Staff" && getStaffPermission.includes("View Factory Inquiry")) || getStaff == null ? 
+            <div className="notification-box m-r-10">                   
+                <img src ={bell} onClick={()=>{ 
+                window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry`}} 
+                style={{ cursor: 'pointer' }}/>                   
+                <span className="count-animated">
+                    <Badges  attrBadge={{ className: 'badge-notify rounded-pill',pill: true }}>{notifyFactCount> 0 ? notifyFactCount:''}</Badges>
+                </span>                  
+            </div>
+        : 
+            ""
+    }
                     {/* <Bookmarks /> */}
                     <Notifications />
                     <LanguageClass />
                     {/* <MoonLight /> */}
                     <MessageDrop />
                     {/* <LogoutClass /> */}
-                </UL>
+            </UL>
             </div>
         </Fragment >
     );
