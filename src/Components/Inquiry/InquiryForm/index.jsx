@@ -218,6 +218,7 @@ const index = () => {
   };
   /****------- Validation ---------- ****/
   const validation = (data) => {
+
     let validerrors = {};
     if (!article) {
       validerrors.article = t("selectArticleName");
@@ -228,6 +229,12 @@ const index = () => {
     if (!fabricCom) {
       validerrors.fabricCom = t("selectFabricComposition");
     }
+    if (!inquiryDueDate) {
+      validerrors.inquiryDueDate = t("enterInquiryDueDate");
+    }
+    if (!currency) {
+      validerrors.currency = t("enterCurrency");
+    }
     if (!totalQuantity) {
       validerrors.totalQuantity = t("enterTotQty");
     }
@@ -235,15 +242,23 @@ const index = () => {
       validerrors.totalQuantity = t("numbersOnlyAllowed");
     }
 
-    if (!currency) {
-      validerrors.currency = t("enterCurrency");
-    }
-    if (!inquiryDueDate) {
-      validerrors.inquiryDueDate = t("enterInquiryDueDate");
-    }
+    if( validerrors.article ){
+      scrollToSection(basicInfoValidation)
+    } else if( validerrors.styleNo ){
+      scrollToSection(basicInfoValidation)
+    } else if( validerrors.fabricCom ){
+      scrollToSection(fabricinfo)
+    } else if( validerrors.inquiryDueDate ){
+      scrollToSection(inquiryDueDateValidation)
+    } else if( validerrors.currency ) {
+      scrollToSection(currencyValidation)
+    } else if( validerrors.totalQuantity ){
+      scrollToSection(totalQtyValidation)
+    } 
     setValiderros(validerrors);
     return validerrors;
   };
+
   /****------- Delete Color ---------- ****/
   const deleteColor = (e) => {
     var getColor = e.target.id;
@@ -1656,7 +1671,7 @@ const index = () => {
                       </FormGroup>
                     </Col>
                 </Row>
-                <Row>
+                
 
                    {/* Total Quantity,Color,Size */}
                   <div ref={totalQtyValidation}></div>
