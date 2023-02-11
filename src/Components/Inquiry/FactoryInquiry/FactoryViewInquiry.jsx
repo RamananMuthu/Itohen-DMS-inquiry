@@ -161,7 +161,7 @@ const FactoryViewInquiry = () => {
                               <th scope="col" className="centerAlign">{" "}{t("serialNo")}{" "}</th>
                               <th className="centerAlign">{" "}{t("inquiryNo")}{" "}</th>
                               <th className="centerAlign"> {t("styleNo")} </th>
-                              {/* <th className="centerAlign">{" "}{t("inquiryDate")}{" "}</th> */}
+                              <th className="centerAlign">{" "}{t("inquiryDate")}{" "}</th> 
                               <th className="centerAlign">{" "} {t("itemsArticleName")}{" "}</th>
                               <th className="centerAlign"> {t("dueDate")} </th>
                               <th className="centerAlign"> {t("status")} </th>
@@ -186,7 +186,7 @@ const FactoryViewInquiry = () => {
                                   </td>
                                   <td className="text-left middle"> {" "}  {"IN-" + inquirydtls.id}  </td>
                                   <td className="text-left middle "> {inquirydtls.style_no} </td>
-                                  {/* <td className="text-left middle "> {inquirydtls.created_date} </td> */}
+                                  <td className="text-left middle "> {inquirydtls.created_date} </td> 
                                   <td className="text-left middle ">{inquirydtls.name}</td>
                                   <td className="text-left middle ">{inquirydtls.due_date}</td>
                                   <td className="text-left middle ">

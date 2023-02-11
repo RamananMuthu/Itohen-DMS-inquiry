@@ -1,54 +1,36 @@
-import React, { Fragment, useState, useEffect,useRef } from "react";
+import React, { Fragment, useState, useEffect, useRef, useMemo } from "react";
 import {
-  Form,
-  Label,
-  Card,
-  CardBody,
-  Col,
-  Row,
-  Input,
-  InputGroup,
-  InputGroupText,
-  Button,
-  FormGroup,
-  Container,
-  Table,
+  Form, Label, Card, CardBody, Col, Row, Input, InputGroup,
+  InputGroupText, Button, FormGroup, Container, Table,
 } from "reactstrap";
 import axios from "axios";
 import {
-  getLoginCompanyId,
-  getWorkspaceId,
-  getLoginUserId,
-  getWorkspaceType,
-  getStaff,
-  getStaffPermission,
-  getLoginStaffId,
-  getLoginUserType
+  getLoginCompanyId, getWorkspaceId, getLoginUserId,
+  getWorkspaceType, getStaff, getStaffPermission, getLoginStaffId, getLoginUserType
 } from "../../../Constant/LoginConstant";
-import { encode, decode, apiencrypt, apidecrypt } from "../../../helper";
+import { apiencrypt, apidecrypt } from "../../../helper";
 import addIcon from "../../../assets/images/dms/icons/addIcon.svg";
 import imgUpload from "../../../assets/images/dms/icons/imgUpload.svg";
 import quantity from "../../../assets/images/dms/icons/quantity.svg";
 import docIcon from "../../../assets/images/dms/icons/inquiryDocIcon.svg";
 import infoIcon from "../../../assets/images/dms/icons/inquiryInfoIcon.svg";
-import deleteIcon from"../../../assets/images/dms/inquiryDelIcon.svg";
-import scrollUpIcon from"../../../assets/images/dms/inquiryScrollUpIcon.svg";
-import { Breadcrumbs, H6, Btn, Image, UL } from "../../../AbstractElements";
+import deleteIcon from "../../../assets/images/dms/inquiryDelIcon.svg";
+import scrollUpIcon from "../../../assets/images/dms/inquiryScrollUpIcon.svg";
+import { Breadcrumbs, H6, } from "../../../AbstractElements";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
-import { maxFileUpload, maxUploadFileSize, ServerUrl } from "../../../Constant";
-import CKEditors from "react-ckeditor-component";
+import { maxUploadFileSize, ServerUrl } from "../../../Constant";
 import Files from "react-files";
 import AddArticleModal from "./AddArticleModal";
 import AddColorModal from "./AddColorModal";
 import AddSizeModal from "./AddSizeModal";
 import AddFabricModal from "./AddFabricModal";
 import InfoCanvas from "./InquiryInfoOffCanvas";
+import JoditEditor from 'jodit-react';
 
 const index = () => {
-  
   const { t } = useTranslation();
-  
+  const editor = useRef(null); // **** Using for jodit Editor**//
   const workspace_id = getWorkspaceId;
   const company_id = getLoginCompanyId;
   const UserId = getLoginUserId;
@@ -66,8 +48,8 @@ const index = () => {
   const [fileHangtag, setFileHangtag] = useState([]);
   const [fileBarcodeStickers, setFileBarcodeStickers] = useState([]);
   const [fileMeasurementSheet, setFileMeasurementSheet] = useState([]);
-  const [filePolybagImg,setFilePolyBagImg]=useState([]);
-  const [fileCartonImg,setFileCartonImg]=useState([]);
+  const [filePolybagImg, setFilePolyBagImg] = useState([]);
+  const [fileCartonImg, setFileCartonImg] = useState([]);
   const [articles, setArticles] = useState([]);
   const [fabrics, setFabrics] = useState([]);
   const [sampleFormatImg, setSampleFormatImg] = useState("");
@@ -130,11 +112,11 @@ const index = () => {
   const [measurementSheetImg, setMeasurementSheetImg] = React.useState("");
   const [printImg, setPrintImg] = React.useState("");
   const [mainLabelSampleImg, setMainLabelSampleImg] = React.useState("");
-  const [washCareLabelSampleImg, setWashCareLabelSampleImg] =React.useState("");
+  const [washCareLabelSampleImg, setWashCareLabelSampleImg] = React.useState("");
   const [hangtagSampleImg, setHangtagSampleImg] = React.useState("");
-  const [barcodeStickersSampleImg, setBarcodeStickersSampleImg] =React.useState("");
-  const[polybagSampleImg, setPolybagSampleImg] = React.useState("");
-  const[cartonSampleImg, setCartonSampleImg] = React.useState("");
+  const [barcodeStickersSampleImg, setBarcodeStickersSampleImg] = React.useState("");
+  const [polybagSampleImg, setPolybagSampleImg] = React.useState("");
+  const [cartonSampleImg, setCartonSampleImg] = React.useState("");
   const [referenceId, setReferenceId] = useState(Date.now());
   const [awsUrl, setAwsUrl] = useState();
   const [showInfoCanvas, setShowInfoCanvas] = useState(false);
@@ -150,6 +132,7 @@ const index = () => {
   const togglesize = () => setModalSize(!modalSize);
   const toggleInfoCanvas = () => setShowInfoCanvas(!showInfoCanvas);
   const [validerrors, setValiderros] = React.useState({});
+
   var getInputParams = {};
   getInputParams["company_id"] = getLoginCompanyId;
   getInputParams["workspace_id"] = getWorkspaceId;
@@ -157,26 +140,67 @@ const index = () => {
   getInputParams["staff_id"] = getLoginStaffId;
   getInputParams["order_id"] = "1";
   getInputParams["sku"] = [{}];
-  
+
   const basicinfo = useRef(null);
   const fabricinfo = useRef(null);
   const printinfo = useRef(null);
   const trimsinfo = useRef(null);
   const packinginfo = useRef(null);
   const othersinfo = useRef(null);
+  const placeholder = null;
   const basicInfoValidation = useRef(null);
   const totalQtyValidation = useRef(null);
   const currencyValidation = useRef(null);
   const inquiryDueDateValidation = useRef(null);
-  /****------- Tab Scroll ---------- ****/ 
-  const scrollToSection =(elementRef)=>{
+  /****------- Tab Scroll ---------- ****/
+  const scrollToSection = (elementRef) => {
     window.scrollTo({
       top: elementRef.current.offsetTop,
-      behavior:'smooth'
+      behavior: 'smooth'
     })
   }
+  const config = useMemo(() => ({
+    readonly: false,
+    removeButtons: ['hr', 'image', 'table', 'copyformat', 'paragraph', 'eraser', 'link', 'fullsize',],
+    // toolbarButtonSize:"xsmall",
+    // toolbar:true,
+    showXPathInStatusbar: false,
+    showCharsCounter: false,
+    showWordsCounter: false,
+    toolbarAdaptive: true,
+    toolbarSticky: true,
+    enableDragAndDropFileToEditor: true,
+    buttonsXS: [
+      'Bold', 'Italic', 'underline', 'strikethrough', '|', 'brush', 'font', 'fontsize',
+      'align', '|', 'ul', 'ol', '|', 'cut', 'copy', 'paste', '|', 'undo', 'redo', '|', 'dots'
+    ],
+    buttonsSM: [
+      'Bold', 'Italic', 'underline', 'strikethrough', '|', 'brush', 'font', 'fontsize',
+      'align', '|', 'ul', 'ol', '|', 'cut', 'copy', 'paste', '|', 'undo', 'redo', '|', 'dots'
+    ],
+    buttonsMD: [
+      'Bold', 'Italic', 'underline', 'strikethrough', '|', 'brush', 'font', 'fontsize',
+      'align', '|', 'ul', 'ol', '|', 'cut', 'copy', 'paste', '|', 'undo', 'redo', '|', 'dots',
+    ],
+    buttonsXL: [
+      'Bold',
+      'Italic',
+      'cut',
+      'copy',
+      'paste',
+    ],
+    buttons: [
+      'Bold', 'Italic', 'cut', 'copy', 'paste', 'underline', '|', 'ul', 'ol', 'outdent', 'indent', '|',
+      'paragraph', '|', 'cut', 'copy', 'paste', '|', 'link', 'table', '|', 'undo', 'redo', '|', 'hr', 'eraser', 'fullsize',
+    ],
+    uploader: { insertImageAsBase64URI: true },
 
-   /****------- Payment Terms modal - Checked Value ---------- ****/ 
+    placeholder: placeholder || 'Start typing...',
+    hidePoweredByJodit: false,
+  }),
+    [placeholder])
+
+  /****------- Payment Terms modal - Checked Value ---------- ****/
   const checkedVal = (valueType) => {
 
     var params = {};
@@ -192,50 +216,35 @@ const index = () => {
   const onFilesChange = (files) => {
     setFiles(files);
   };
-/****------- Validation ---------- ****/
-const validation = (data) => {
+  /****------- Validation ---------- ****/
+  const validation = (data) => {
+    let validerrors = {};
+    if (!article) {
+      validerrors.article = t("selectArticleName");
+    }
+    if (!styleNo.trim()) {
+      validerrors.styleNo = t("enterStyleNumber");
+    }
+    if (!fabricCom) {
+      validerrors.fabricCom = t("selectFabricComposition");
+    }
+    if (!totalQuantity) {
+      validerrors.totalQuantity = t("enterTotQty");
+    }
+    else if (!/^[0-9]+$/.test(totalQuantity)) {
+      validerrors.totalQuantity = t("numbersOnlyAllowed");
+    }
 
-  let validerrors = {};
-  if (!article) {
-    validerrors.article = t("selectArticleName");
-  }
-  if (!styleNo.trim()) {
-    validerrors.styleNo = t("enterStyleNumber");
-  }
-  if (!fabricCom) {
-    validerrors.fabricCom = t("selectFabricComposition");
-  }
-  if (!inquiryDueDate) {
-    validerrors.inquiryDueDate = t("enterInquiryDueDate");
-  }
-  if (!currency) {
-    validerrors.currency = t("enterCurrency");
-  }
-  if (!totalQuantity) {
-    validerrors.totalQuantity = t("enterTotQty");
-  }
-  else if (!/^[0-9]+$/.test(totalQuantity)) {
-    validerrors.totalQuantity = t("numbersOnlyAllowed");
-  }
-
-  if( validerrors.article ){
-    scrollToSection(basicInfoValidation)
-  } else if( validerrors.styleNo ){
-    scrollToSection(basicInfoValidation)
-  } else if( validerrors.fabricCom ){
-    scrollToSection(fabricinfo)
-  } else if( validerrors.inquiryDueDate ){
-    scrollToSection(inquiryDueDateValidation)
-  } else if( validerrors.currency ) {
-    scrollToSection(currencyValidation)
-  } else if( validerrors.totalQuantity ){
-    scrollToSection(totalQtyValidation)
-  } 
-  setValiderros(validerrors);
-  return validerrors;
-};
-
-/****------- Delete Color ---------- ****/ 
+    if (!currency) {
+      validerrors.currency = t("enterCurrency");
+    }
+    if (!inquiryDueDate) {
+      validerrors.inquiryDueDate = t("enterInquiryDueDate");
+    }
+    setValiderros(validerrors);
+    return validerrors;
+  };
+  /****------- Delete Color ---------- ****/
   const deleteColor = (e) => {
     var getColor = e.target.id;
     Swal.fire({
@@ -264,7 +273,7 @@ const validation = (data) => {
       }
     });
   };
-/****------- Delete Size ---------- ****/ 
+  /****------- Delete Size ---------- ****/
   const deleteSize = (e) => {
     var getSize = e.target.id;
     Swal.fire({
@@ -294,7 +303,7 @@ const validation = (data) => {
       }
     });
   };
-/****------- Color -Size Add Quantity ---------- ****/ 
+  /****------- Color -Size Add Quantity ---------- ****/
   const addQty = (e) => {
     var idv = e.target.id;
     var value = e.target.value;
@@ -315,7 +324,7 @@ const validation = (data) => {
     overallTotalQty(e);
     sizeTotalQty(e);
   };
-/****------- Color -Size Get Quantity ---------- ****/ 
+  /****------- Color -Size Get Quantity ---------- ****/
   const getQtyDetails = (e) => {
     var skuDet = [];
     const breakOut = false;
@@ -333,7 +342,7 @@ const validation = (data) => {
     });
     return skuDet;
   };
-/****------- Color -Size Overall Total Quantity ---------- ****/ 
+  /****------- Color -Size Overall Total Quantity ---------- ****/
   const overallTotalQty = (e) => {
     var id = e.target.id;
     var value = e.target.value;
@@ -351,7 +360,7 @@ const validation = (data) => {
     });
     document.getElementById("Overall_total_quantity").value = sum;
   };
-/****------- Color -Size ,Size wise Total ---------- ****/ 
+  /****------- Color -Size ,Size wise Total ---------- ****/
   const sizeTotalQty = (e) => {
     var id = e.target.id;
     var value = e.target.value;
@@ -399,49 +408,48 @@ const validation = (data) => {
       });
     axios
       .get(ServerUrl + "/get-income-terms").then((response) => {
-      response.data = apidecrypt(response.data);
-      setIncomeTerms(response.data.data);
+        response.data = apidecrypt(response.data);
+        setIncomeTerms(response.data.data);
       });
     axios
       .get(ServerUrl + "/get-currencies").then((response) => {
-      response.data = apidecrypt(response.data);
-      setCurrencies(response.data.data);
+        response.data = apidecrypt(response.data);
+        setCurrencies(response.data.data);
       });
     window.addEventListener("scroll", () => {
       if (window.scrollY > 400) {
-          setShowTopBtn(true);
+        setShowTopBtn(true);
       } else {
-          setShowTopBtn(false);
+        setShowTopBtn(false);
       }
-      });
+    });
   };
 
-  
- useEffect(() => 
- {
-   getLoginUserType == "user" ?  getWorkspaceType != "Factory" ? apiCall()  : 
-   window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry` 
-  //  window.location.href='/inquiry/factoryviewinquiry'
-   :
-   getWorkspaceType != "Factory" ?  
-     (getStaff === "Staff" && getStaffPermission.includes("Add Inquiry")) || getStaff == null ? 
-     apiCall() :  
-     (getStaff === "Staff" && getStaffPermission.includes("View Inquiry")) || getStaff == null ? 
-      window.location.href = `${process.env.PUBLIC_URL}/viewinquiry` 
-    //  window.location.href='/viewinquiry' 
-     :
-     window.location.href = `${process.env.PUBLIC_URL}/feedbackform` 
-    //  window.location.href='/feedbackform'
-   :
-     (getStaff === "Staff" && getStaffPermission.includes("View Factory Inquiry")) || getStaff == null ?
-     window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry` :
-    //  window.location.href='/inquiry/factoryviewinquiry' :  
-    window.location.href = `${process.env.PUBLIC_URL}/inquirycontacts` 
+
+  useEffect(() => {
+    getLoginUserType == "user" ? getWorkspaceType != "Factory" ? apiCall() :
+      window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry`
+      //  window.location.href='/inquiry/factoryviewinquiry'
+      :
+      getWorkspaceType != "Factory" ?
+        (getStaff === "Staff" && getStaffPermission.includes("Add Inquiry")) || getStaff == null ?
+          apiCall() :
+          (getStaff === "Staff" && getStaffPermission.includes("View Inquiry")) || getStaff == null ?
+            window.location.href = `${process.env.PUBLIC_URL}/viewinquiry`
+            //  window.location.href='/viewinquiry' 
+            :
+            window.location.href = `${process.env.PUBLIC_URL}/feedbackform`
+        //  window.location.href='/feedbackform'
+        :
+        (getStaff === "Staff" && getStaffPermission.includes("View Factory Inquiry")) || getStaff == null ?
+          window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry` :
+          //  window.location.href='/inquiry/factoryviewinquiry' :  
+          window.location.href = `${process.env.PUBLIC_URL}/inquirycontacts`
     //  window.location.href='/inquiry/inquirycontacts' 
 
- }, []);
+  }, []);
 
-  /****------- Image Upload API Call ---------- ****/ 
+  /****------- Image Upload API Call ---------- ****/
   const uploadImageApiCall = (imageType, file) => {
     axios
       .post(
@@ -483,88 +491,84 @@ const validation = (data) => {
           } else if (imageType == "BarcodeStickers") {
             setFileBarcodeStickers(response.data.files.files);
             setAwsUrl(response.data.files.serverURL);
-          } else if( imageType == "Polybag"){
+          } else if (imageType == "Polybag") {
             setFilePolyBagImg(response.data.files.files);
             setAwsUrl(response.data.files.serverURL);
-          } else if( imageType == "Carton"){
+          } else if (imageType == "Carton") {
             setFileCartonImg(response.data.files.files);
             setAwsUrl(response.data.files.serverURL);
+          }
         }
-      }
-    });
+      });
   };
 
-/****------- Delete Image  ---------- ****/ 
+  /****------- Delete Image  ---------- ****/
   const deleteImageFiles = (imageType, file) => {
-    var media ={};
-    media["media_id"]= file.media_id;
-if(imageType == "MeasurementSheet"){
-  Swal.fire({
-    title: t("deleteConfirmationTitleAlert"),
-    text: t("cantRevertBack"),
-    icon: "warning",
-    showCancelButton: true,
-    button: t("okLabel"),
-  }).then((result) => {
-    if (result.isConfirmed) 
-    { 
-      axios
-      .post(ServerUrl+"/delete-inquiry-media",apiencrypt(media))
-      .then((response) => {
-        response.data = apidecrypt(response.data);
-        if(response.data.status_code == 200){
-          Swal.fire({
-            title: t(response.data.meassage),
-            icon: "success",
-            showCancelButton: true,
-            button: t("okLabel"),
-            
-          }).then((result) => {
-            if(result.isConfirmed){
-              uploadImageApiCall(imageType, file);
-            }
-          }
-          )
-        }
-      })
-    }
-  });
-  
-}
-   else {
-    Swal.fire({
-      title: t("areYouSureToDeleteThisImage"),
-      text: t("cantRevertBack"),
-      icon: "warning",
-      showCancelButton: true,
-      button: t("okLabel"),
-    }).then((result) => {
-      if (result.isConfirmed) 
-      { 
-        axios
-        .post(ServerUrl+"/delete-inquiry-media",apiencrypt(media))
-        .then((response) => {
-          response.data = apidecrypt(response.data);
-          if(response.data.status_code == 200){
-            Swal.fire({
-              title: t(response.data.meassage),
-              icon: "success",
-              showCancelButton: true,
-              button: t("okLabel"),
-              
-            }).then((result) => {
-              if(result.isConfirmed){
-                uploadImageApiCall(imageType, file);
+    var media = {};
+    media["media_id"] = file.media_id;
+    if (imageType == "MeasurementSheet") {
+      Swal.fire({
+        title: t("deleteConfirmationTitleAlert"),
+        text: t("cantRevertBack"),
+        icon: "warning",
+        showCancelButton: true,
+        button: t("okLabel"),
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .post(ServerUrl + "/delete-inquiry-media", media)
+            .then((response) => {
+              if (response.data.status_code == 200) {
+                Swal.fire({
+                  title: t(response.data.meassage),
+                  icon: "success",
+                  showCancelButton: true,
+                  button: t("okLabel"),
+
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    uploadImageApiCall(imageType, file);
+                  }
+                }
+                )
               }
-            }
-            )
-          }
-        })
-      }
-    });
-   } 
+            })
+        }
+      });
+
+    }
+    else {
+      Swal.fire({
+        title: t("areYouSureToDeleteThisImage"),
+        text: t("cantRevertBack"),
+        icon: "warning",
+        showCancelButton: true,
+        button: t("okLabel"),
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .post(ServerUrl + "/delete-inquiry-media", media)
+            .then((response) => {
+              if (response.data.status_code == 200) {
+                Swal.fire({
+                  title: t(response.data.meassage),
+                  icon: "success",
+                  showCancelButton: true,
+                  button: t("okLabel"),
+
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    uploadImageApiCall(imageType, file);
+                  }
+                }
+                )
+              }
+            })
+        }
+      });
+    }
   };
-/****------- Press Enter - Next Field ---------- ****/ 
+  /****------- Press Enter - Next Field ---------- ****/
   function handleEnter(event) {
     if (
       (event.keyCode === 13 || event.keyCode === 9) &&
@@ -603,7 +607,7 @@ if(imageType == "MeasurementSheet"){
       e.preventDefault();
     }
   };
-/****------- Color Selection  ---------- ****/ 
+  /****------- Color Selection  ---------- ****/
   const handleChangeColor = (e) => {
     var id = e.nativeEvent.target.selectedIndex;
     var idvc = e.nativeEvent.target[id].value;
@@ -618,7 +622,7 @@ if(imageType == "MeasurementSheet"){
       setColor([...color, colorary]);
     }
   };
-/****------- Size Selection  ---------- ****/ 
+  /****------- Size Selection  ---------- ****/
   const handleChangeSize = (e) => {
     var id = e.nativeEvent.target.selectedIndex;
     var idvs = e.nativeEvent.target[id].value;
@@ -635,7 +639,7 @@ if(imageType == "MeasurementSheet"){
     }
   };
 
-/****------- Text Editor OnChange ---------- ****/ 
+  /****------- Text Editor OnChange ---------- ****/ 
   const onChangeArticleDescription = (e) => {
     const newContent = e.editor.getData();
     setStyleArticleDesc(newContent);
@@ -676,8 +680,7 @@ if(imageType == "MeasurementSheet"){
     setSpecialRequest(newContent);
   };
   /****----------------- ****/ 
-
-  /****------- Image Upload Validation ---------- ****/ 
+  /****------- Image Upload Validation ---------- ****/
   const SampleFormatImg = (files) => {
     files.map((sampleFormatImg) => {
       if (
@@ -991,30 +994,30 @@ if(imageType == "MeasurementSheet"){
       }
     });
   };
-/****----------------- ****/ 
+  /****----------------- ****/
 
-  /****------- Measurement Chart - Add Row ---------- ****/ 
-  const addTableRows=()=>{
-    setMeasurementChart([...measurementChart,measurementChart])
+  /****------- Measurement Chart - Add Row ---------- ****/
+  const addTableRows = () => {
+    setMeasurementChart([...measurementChart, measurementChart])
   };
 
-    /****------- Measurement Chart - Remove Row ---------- ****/ 
-  const deleteTableRows = (index)=>{
+  /****------- Measurement Chart - Remove Row ---------- ****/
+  const deleteTableRows = (index) => {
     const rows = [...measurementChart];
     rows.splice(index, 1);
     setMeasurementChart(rows);
   };
-/****------- Getting Measurement Chart Data ---------- ****/ 
+  /****------- Getting Measurement Chart Data ---------- ****/
   const measurementChartData = () => {
-  
-   var measureChart =[];
-    for(let i=0;i<measurementChart.length;i++){
-      var measurementChartRowData ={};
-      measurementChartRowData['position'] = document.getElementById("position_"+i).value;
-      measurementChartRowData['description'] = document.getElementById("description_"+i).value;
-      measurementChartRowData['tolerance'] = document.getElementById("tolerance_"+i).value;
-      size.map((sizeMapData)=>{
-        measurementChartRowData[sizeMapData.name]=document.getElementById(i+"_size_id_"+sizeMapData.id).value;
+
+    var measureChart = [];
+    for (let i = 0; i < measurementChart.length; i++) {
+      var measurementChartRowData = {};
+      measurementChartRowData['position'] = document.getElementById("position_" + i).value;
+      measurementChartRowData['description'] = document.getElementById("description_" + i).value;
+      measurementChartRowData['tolerance'] = document.getElementById("tolerance_" + i).value;
+      size.map((sizeMapData) => {
+        measurementChartRowData[sizeMapData.name] = document.getElementById(i + "_size_id_" + sizeMapData.id).value;
       });
       measureChart.push(measurementChartRowData);
     }
@@ -1033,7 +1036,7 @@ if(imageType == "MeasurementSheet"){
   // };
 
 
-  /****------- Inquiry Form Data Submission - Save ---------- ****/ 
+  /****------- Inquiry Form Data Submission - Save ---------- ****/
   const submitInquiryForm = (e) => {
     let retval = validation();
     if (Object.keys(retval).length == 0) {
@@ -1047,7 +1050,7 @@ if(imageType == "MeasurementSheet"){
       inquiryFormInputParams["article_id"] = article;
       inquiryFormInputParams["style_no"] = styleNo;
       inquiryFormInputParams["fabric_type_id"] = fabricCom;
-      inquiryFormInputParams["fabric_type"]= fabricType;
+      inquiryFormInputParams["fabric_type"] = fabricType;
       inquiryFormInputParams["fabric_GSM"] = fabricGSM;
       inquiryFormInputParams["yarn_count"] = yarnCount;
       inquiryFormInputParams["style_article_description"] = styleArtcileDesc;
@@ -1091,7 +1094,7 @@ if(imageType == "MeasurementSheet"){
       inquiryFormInputParams["currency"] = currency;
       inquiryFormInputParams["sku_details"] = sku;
       inquiryFormInputParams["referenceId"] = referenceId.toString();
-      inquiryFormInputParams['measurement_Chart']= measure_chart_array;
+      inquiryFormInputParams['measurement_Chart'] = measure_chart_array;
       axios
         .post(ServerUrl + "/save-inquiry", apiencrypt(inquiryFormInputParams))
         .then((response) => {
@@ -1104,7 +1107,7 @@ if(imageType == "MeasurementSheet"){
               allowOutsideClick: false,
             }).then((result) => {
               if (result.isConfirmed) {
-                window.location.href = `${process.env.PUBLIC_URL}/viewinquiry` 
+                window.location.href = `${process.env.PUBLIC_URL}/viewinquiry`
                 // window.location.href = "/inquiry/viewinquiry";
               }
             });
@@ -1128,13 +1131,13 @@ if(imageType == "MeasurementSheet"){
 
   return (
     <Fragment>
-      <Row className="pgbgcolor hdbgfixed" >
+      <Row className="pgbgcolor hdbgfixed " >
         <Breadcrumbs
           mainTitle={t("inquiry")}
           parent={t("inquiry")}
           title={t("inquiry")}
         />
-         {/* <Row className="u-steps tabcolor" style={{ cursor: 'pointer' }}>        
+        {/* <Row className="u-steps tabcolor" style={{ cursor: 'pointer' }}>        
               <Col  className="u-step activeTab" onClick={() => scrollToSection(basicinfo)}>               
                 <div className="u-step-desc" >
                   <span className="u-step-title">
@@ -1177,251 +1180,251 @@ if(imageType == "MeasurementSheet"){
       <Container fluid={true} className="general-widget topaln">
         <Col >
           <Card >
-            <CardBody  className="secbody">
-            <Row className="u-steps " style={{ cursor: 'pointer' }}>        
-              <Col  className="u-step activeTab" onClick={() => scrollToSection(basicinfo)}>               
-                <div className="u-step-desc" >
-                  <span className="u-step-title">
-                  {t("basicInformation")}
-                    </span>                 
-                </div>
-              </Col>
-                 
-              <Col  className="u-step activeTab"  onClick={() => scrollToSection(fabricinfo)}>                
-                <div className="u-step-desc">
-                  <span className="u-step-title">{t("fabricInformation")}</span>                 
-                </div>
-              </Col>
-         
-              <Col className="u-step activeTab" onClick={() => scrollToSection(printinfo)}>                
-                <div className="u-step-desc"  >
-                  <span className="u-step-title">{t("printInformation")}</span>
-                </div>
-              </Col>
-              
-              <Col className="u-step activeTab" onClick={() => scrollToSection(trimsinfo)}>                
-                <div className="u-step-desc"  >
-                  <span className="u-step-title">{t("trimsInformation")}</span>                 
-                </div>
-              </Col>
-          
-              <Col  className="u-step activeTab" onClick={() => scrollToSection(packinginfo)}>                
-                <div className="u-step-desc"  >
-                  <span className="u-step-title">{t("packingInformation")}</span>                  
-                </div>
-              </Col>
-
-              <Col  className="u-step activeTab" onClick={() => scrollToSection(othersinfo)}>                
-                <div className="u-step-desc"  >
-                  <span className="u-step-title">{t("others")}</span>                  
-                </div>
-              </Col>
-            </Row>
-            {/* </CardBody> */}
-            {/* </Card>
-            <Card > */}
-            {/* <CardBody className="margtopbody"> */}
-            <div ref={basicInfoValidation}></div>
-              <Form>             
-                <div ref={basicinfo} className="basicinfo">
-                <Row className="g-12 m-t-20">
-                  <Col lg="12" md="12" sm="12" xs="12">
-                    <span>
-                      <H6 className="ordersubhead">{t("basicInformation")}</H6>
+            <CardBody className="secbody" id="htmljoditListCSS">
+              <Row className="u-steps " style={{ cursor: 'pointer' }}>
+                <Col className="u-step activeTab" onClick={() => scrollToSection(basicinfo)}>
+                  <div className="u-step-desc" >
+                    <span className="u-step-title">
+                      {t("basicInformation")}
                     </span>
-                  </Col>
-                </Row>
-                <Col lg="12">
-                  <Row>
-                    {/* Article Name, Style Number ,Sample Image*/}
+                  </div>
+                </Col>
 
-                    <Col lg="4">
-                      <FormGroup>
-                        <Label style={{ color: "#5F5F5F" }}>
-                          {t("articleName")}
-                        </Label>
-                        <sup className="font-danger">*</sup>
-                        <InputGroup>
-                          <Input
-                            className=""
-                            name="article"
-                            type="select"
-                            defaultValue=""
-                            onChange={(e) => setArticle(e.target.value)}
-                          >
-                            <option Value="" disabled>
-                              {t("selectArticle")}
-                            </option>
+                <Col className="u-step activeTab" onClick={() => scrollToSection(fabricinfo)}>
+                  <div className="u-step-desc">
+                    <span className="u-step-title">{t("fabricInformation")}</span>
+                  </div>
+                </Col>
 
-                            {articles.map((article) => (
-                              <option value={article.id}>{article.name}</option>
-                            ))}
-                          </Input>
-                          <InputGroupText
-                            style={{ cursor: "pointer" }}
-                            onClick={toggleart}
-                          >
-                            {/* <span className="btn" onClick="" > */}
-                            <img
-                              src={addIcon}
-                              width="15px"
-                              height="15px"
+                <Col className="u-step activeTab" onClick={() => scrollToSection(printinfo)}>
+                  <div className="u-step-desc"  >
+                    <span className="u-step-title">{t("printInformation")}</span>
+                  </div>
+                </Col>
+
+                <Col className="u-step activeTab" onClick={() => scrollToSection(trimsinfo)}>
+                  <div className="u-step-desc"  >
+                    <span className="u-step-title">{t("trimsInformation")}</span>
+                  </div>
+                </Col>
+
+                <Col className="u-step activeTab" onClick={() => scrollToSection(packinginfo)}>
+                  <div className="u-step-desc"  >
+                    <span className="u-step-title">{t("packingInformation")}</span>
+                  </div>
+                </Col>
+
+                <Col className="u-step activeTab" onClick={() => scrollToSection(othersinfo)}>
+                  <div className="u-step-desc"  >
+                    <span className="u-step-title">{t("others")}</span>
+                  </div>
+                </Col>
+              </Row>
+              {/* </CardBody> */}
+              {/* </Card>
+            <Card > */}
+              {/* <CardBody className="margtopbody"> */}
+            <div ref={basicInfoValidation}></div>
+              <Form>
+                <div ref={basicinfo} className="basicinfo">
+                  <Row className="g-12 m-t-20">
+                    <Col lg="12" md="12" sm="12" xs="12">
+                      <span>
+                        <H6 className="ordersubhead">{t("basicInformation")}</H6>
+                      </span>
+                    </Col>
+                  </Row>
+                  <Col lg="12">
+                    <Row>
+                      {/* Article Name, Style Number ,Sample Image*/}
+
+                      <Col lg="4">
+                        <FormGroup>
+                          <Label style={{ color: "#5F5F5F" }}>
+                            {t("articleName")}
+                          </Label>
+                          <sup className="font-danger">*</sup>
+                          <InputGroup>
+                            <Input
+                              className=""
+                              name="article"
+                              type="select"
+                              defaultValue=""
+                              onChange={(e) => setArticle(e.target.value)}
+                            >
+                              <option Value="" disabled>
+                                {t("selectArticle")}
+                              </option>
+
+                              {articles.map((article) => (
+                                <option value={article.id}>{article.name}</option>
+                              ))}
+                            </Input>
+                            <InputGroupText
+                              style={{ cursor: "pointer" }}
                               onClick={toggleart}
-                            ></img>
-                            {/* </span> */}
-                          </InputGroupText>
-
-                          <AddArticleModal
-                            modal={modalArt}
-                            toggle={toggleart}
-                            companyId={company_id}
-                            workspaceId={workspace_id}
-                            article={setArticles}
-                          />
-                        </InputGroup>
-                        {validerrors.article && (
-                          <span className="error-msg">
-                            {validerrors.article}
-                          </span>
-                        )}
-                      </FormGroup>
-                    </Col>
-
-                    <Col lg="4">
-                      <FormGroup>
-                        <Label>{t("styleNo")}</Label>
-                        <sup className="font-danger">*</sup>
-                        <InputGroup>
-                          <Input
-                            className=""
-                            name="style Number"
-                            placeholder={t("enterStyleNumber")}
-                            onChange={(e) => setStyleNo(e.target.value)}
-                          ></Input>
-                        </InputGroup>
-                        {validerrors.styleNo && (
-                          <span className="error-msg">
-                            {validerrors.styleNo}
-                          </span>
-                        )}
-                      </FormGroup>
-                    </Col>
-
-                    <Col lg="4">
-                      <FormGroup>
-                        <Label style={{ color: "#5F5F5F" }}>
-                          {t("sampleFormat")}
-                        </Label>
-                        <InputGroup>
-                          <Input
-                            className=""
-                            name="Sample Image"
-                            value={sampleFormatImg ? sampleFormatImg : ""}
-                            placeholder={t("attachSampleFormat")}
-                            onchange={(e) => setSampleFormat(e.target.value)}
-                            disabled
-                          ></Input>
-
-                          <Files
-                            className="files-dropzone fileContainer"
-                            accept=".png,.jpg,.jpeg"
-                            multiple={false}
-                            canCancel={false}
-                            onChange={SampleFormatImg}
-                            clickable
-                          >
-                            <InputGroupText className=" btn imgBackground">
+                            >
+                              {/* <span className="btn" onClick="" > */}
                               <img
-                                src={imgUpload}
-                                width="25px"
-                                height="25px"
-                                type="file"
+                                src={addIcon}
+                                width="15px"
+                                height="15px"
+                                onClick={toggleart}
                               ></img>
-                              
+                              {/* </span> */}
                             </InputGroupText>
-                          </Files>
-                          {/* {files.length > 0 ?
+
+                            <AddArticleModal
+                              modal={modalArt}
+                              toggle={toggleart}
+                              companyId={company_id}
+                              workspaceId={workspace_id}
+                              article={setArticles}
+                            />
+                          </InputGroup>
+                          {validerrors.article && (
+                            <span className="error-msg">
+                              {validerrors.article}
+                            </span>
+                          )}
+                        </FormGroup>
+                      </Col>
+
+                      <Col lg="4">
+                        <FormGroup>
+                          <Label>{t("styleNo")}</Label>
+                          <sup className="font-danger">*</sup>
+                          <InputGroup>
+                            <Input
+                              className=""
+                              name="style Number"
+                              placeholder={t("enterStyleNumber")}
+                              onChange={(e) => setStyleNo(e.target.value)}
+                            ></Input>
+                          </InputGroup>
+                          {validerrors.styleNo && (
+                            <span className="error-msg">
+                              {validerrors.styleNo}
+                            </span>
+                          )}
+                        </FormGroup>
+                      </Col>
+
+                      <Col lg="4">
+                        <FormGroup>
+                          <Label style={{ color: "#5F5F5F" }}>
+                            {t("sampleFormat")}
+                          </Label>
+                          <InputGroup>
+                            <Input
+                              className=""
+                              name="Sample Image"
+                              value={sampleFormatImg ? sampleFormatImg : ""}
+                              placeholder={t("attachSampleFormat")}
+                              onchange={(e) => setSampleFormat(e.target.value)}
+                              disabled
+                            ></Input>
+
+                            <Files
+                              className="files-dropzone fileContainer"
+                              accept=".png,.jpg,.jpeg"
+                              multiple={false}
+                              canCancel={false}
+                              onChange={SampleFormatImg}
+                              clickable
+                            >
+                              <InputGroupText className=" btn imgBackground">
+                                <img
+                                  src={imgUpload}
+                                  width="25px"
+                                  height="25px"
+                                  type="file"
+                                ></img>
+
+                              </InputGroupText>
+                            </Files>
+                            {/* {files.length > 0 ?
                                                             <span className="ritemargine" style={{ float: "Center" }} >
 
                                                                 <Btn attrBtn={{ className: "mt-2", color: 'primary', type: "button", onClick: () => deleteFile(files) }} >
                                                                     {t("delete")}
                                                                 </Btn></span> : " "}  */}
-                        </InputGroup>
-                      </FormGroup>
-                    </Col>
-                  </Row>
-                </Col>
+                          </InputGroup>
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                  </Col>
                 </div>
                 {/* Fabric Composition,Fabric GSM, */}
                 <div ref={fabricinfo} className="fabricinfo">
-                <Row className="g-12">
-                  <Col lg="12" md="12" sm="12" xs="12">
-                    <span>
-                      <H6 className="ordersubhead">{t("fabricInformation")}</H6>
-                    </span>
-                  </Col>
-                </Row>
-                <Col lg="12">
-                  <Row>
-                    <Col lg="4">
-                      <FormGroup>
-                        <Label>{t("fabricComposition")}</Label>
-                        <sup className="font-danger">*</sup>
-                        <InputGroup>
-                          <Input
-                            className=""
-                            name="fabric"
-                            type="select"
-                            defaultValue=""
-                            onChange={(e) => setFabricCom(e.target.value)}
-                          >
-                            <option Value="" disabled>
-                              {t("selectFabricComposition")}
-                            </option>
-                            {fabrics.map((fabric) => (
-                              <option value={fabric.id}>{fabric.name}</option>
-                            ))}
-                          </Input>
-                          <InputGroupText
-                            style={{ cursor: "pointer" }}
-                            onClick={togglefabric}
-                          >
-                            {/* <span className="btn" onClick="" > */}
-                            <img
-                              src={addIcon}
-                              width="15px"
-                              height="15px"
-                              onClick={togglefabric}
-                            ></img>
-                            {/* </span> */}
-                          </InputGroupText>
-                        </InputGroup>
-                        {validerrors.fabricCom && (
-                          <span className="error-msg">
-                            {validerrors.fabricCom}
-                          </span>
-                        )}
-                        <AddFabricModal
-                          modal={modalfabric}
-                          toggle={togglefabric}
-                          companyId={company_id}
-                          workspaceId={workspace_id}
-                          fabric={setFabrics}
-                        />
-                      </FormGroup>
+                  <Row className="g-12">
+                    <Col lg="12" md="12" sm="12" xs="12">
+                      <span>
+                        <H6 className="ordersubhead">{t("fabricInformation")}</H6>
+                      </span>
                     </Col>
+                  </Row>
+                  <Col lg="12">
+                    <Row>
+                      <Col lg="4">
+                        <FormGroup>
+                          <Label>{t("fabricComposition")}</Label>
+                          <sup className="font-danger">*</sup>
+                          <InputGroup>
+                            <Input
+                              className=""
+                              name="fabric"
+                              type="select"
+                              defaultValue=""
+                              onChange={(e) => setFabricCom(e.target.value)}
+                            >
+                              <option Value="" disabled>
+                                {t("selectFabricComposition")}
+                              </option>
+                              {fabrics.map((fabric) => (
+                                <option value={fabric.id}>{fabric.name}</option>
+                              ))}
+                            </Input>
+                            <InputGroupText
+                              style={{ cursor: "pointer" }}
+                              onClick={togglefabric}
+                            >
+                              {/* <span className="btn" onClick="" > */}
+                              <img
+                                src={addIcon}
+                                width="15px"
+                                height="15px"
+                                onClick={togglefabric}
+                              ></img>
+                              {/* </span> */}
+                            </InputGroupText>
+                          </InputGroup>
+                          {validerrors.fabricCom && (
+                            <span className="error-msg">
+                              {validerrors.fabricCom}
+                            </span>
+                          )}
+                          <AddFabricModal
+                            modal={modalfabric}
+                            toggle={togglefabric}
+                            companyId={company_id}
+                            workspaceId={workspace_id}
+                            fabric={setFabrics}
+                          />
+                        </FormGroup>
+                      </Col>
 
-                    <Col lg="4">
-                      <FormGroup>
-                        <Label>{t("fabricGSM")}</Label>
-                        <InputGroup>
-                          <Input
-                            className=""
-                            name="Fabric GSM"
-                            placeholder={t("enterFabricGSM")}
-                            onChange={(e) => setFabricGSM(e.target.value)}
-                          ></Input>
-                          {/* <option Value="">Select Fabric GSM</option>
+                      <Col lg="4">
+                        <FormGroup>
+                          <Label>{t("fabricGSM")}</Label>
+                          <InputGroup>
+                            <Input
+                              className=""
+                              name="Fabric GSM"
+                              placeholder={t("enterFabricGSM")}
+                              onChange={(e) => setFabricGSM(e.target.value)}
+                            ></Input>
+                            {/* <option Value="">Select Fabric GSM</option>
                     <option Value="">Mon</option> 
                     <option value=""> Tues</option>
                     </Input>
@@ -1430,12 +1433,12 @@ if(imageType == "MeasurementSheet"){
                       <img src={addIcon} width="15px" height="15px"></img>
                     
                     </InputGroupText> */}
-                        </InputGroup>
-                      </FormGroup>
-                    </Col>
-                    {/* Sample Format Image Preview */}
-                    <Col lg="4">
-                      {fileSampleFormat.length > 0 ? 
+                          </InputGroup>
+                        </FormGroup>
+                      </Col>
+                      {/* Sample Format Image Preview */}
+                      <Col lg="4">
+                        {fileSampleFormat.length > 0 ?
                           fileSampleFormat.map((file) => (
                             <>
                               <div className="profile-pic">
@@ -1445,1178 +1448,900 @@ if(imageType == "MeasurementSheet"){
                                   height="100px"
                                   className="m-10"
                                 />
-                                 <div className="edit m-t-30 m-r-30">
-                                  <img 
-                                    src={deleteIcon} 
-                                    width="30px" 
-                                    height="30px" 
-                                    style={{ cursor: 'pointer' }} 
-                                    onClick={()=>
-                                      {
-                                        deleteImageFiles("SampleFormat", file)
-                                      }
-                                      }
+                                <div className="edit m-t-30 m-r-30">
+                                  <img
+                                    src={deleteIcon}
+                                    width="30px"
+                                    height="30px"
+                                    style={{ cursor: 'pointer' }}
+                                    onClick={() => {
+                                      deleteImageFiles("SampleFormat", file)
+                                    }
+                                    }
                                   />
-                                 </div>
+                                </div>
                               </div>
                             </>
                           ))
-                      : (
-                        <div>{''}</div>
-                      )}
-                    </Col>
-                  </Row>
-                </Col>
+                          : (
+                            <div>{''}</div>
+                          )}
+                      </Col>
+                    </Row>
+                  </Col>
 
-                {/* Fabric Type,Yarn Count,Target Price */}
+                  {/* Fabric Type,Yarn Count,Target Price */}
                 <div ref={inquiryDueDateValidation}></div>
-                <Row>
-                <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("fabricType")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Yarn Count"
-                          placeholder={t("enterFabricType")}
-                          onChange={(e) => setFabricType(e.target.value)}
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("yarnCount")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Yarn Count"
-                          placeholder={t("enterYarnCount")}
-                          onChange={(e) => setYarnCount(e.target.value)}
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
+                  <Row>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("fabricType")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Yarn Count"
+                            placeholder={t("enterFabricType")}
+                            onChange={(e) => setFabricType(e.target.value)}
+                          ></Input>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("yarnCount")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Yarn Count"
+                            placeholder={t("enterYarnCount")}
+                            onChange={(e) => setYarnCount(e.target.value)}
+                          ></Input>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
 
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("inquiryDueDate")}</Label><sup className="font-danger">*</sup>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Inquiry Due Date"
-                          type="date"
-                          min={new Date().toISOString().split('T')[0]}
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("inquiryDueDate")}</Label><sup className="font-danger">*</sup>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Inquiry Due Date"
+                            type="date"
+                            min={new Date().toISOString().split('T')[0]}
                           placeholder={t("selectInquiryDueDate")}
-                          onChange={(e) => setInquiryDueDate(e.target.value)}
-                        ></Input>
-                      </InputGroup>
-                      {validerrors.inquiryDueDate && (
+                            onChange={(e) => setInquiryDueDate(e.target.value)}
+                          ></Input>
+                        </InputGroup>
+                        {validerrors.inquiryDueDate && (
                           <span className="error-msg">
                             {validerrors.inquiryDueDate}
                           </span>
                         )}
-                    </FormGroup>
-                  </Col>
-                </Row>
+                      </FormGroup>
+                    </Col>
+                  </Row>
 
-                {/* Incoterms,Payment Terms,Inquiry Due Date */}
+                  {/* Incoterms,Payment Terms,Inquiry Due Date */}
                 <div ref={currencyValidation}></div>
-                <Row>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("incomeTerms")}</Label>
-                      <InputGroup>
-                        <Input
-                          type="select"
-                          // placeholder={t("selectStatus")}
-                          className="form-control digits selectheight"
-                          name="Income Terms"
-                          defaultValue=""
-                          onChange={(e) => setIncomeTerm(e.target.value)}
-                        >
-                          <option Value="" disabled>
-                            {t("selectIncomeTerms")}
-                          </option>
-                          {incomeTerms.map((incomeTerm) => (
-                            <option
-                              value={incomeTerm.id}
-                              title={incomeTerm.description}
-                            >
-                              {incomeTerm.name}
+                  <Row>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("incomeTerms")}</Label>
+                        <InputGroup>
+                          <Input
+                            type="select"
+                            // placeholder={t("selectStatus")}
+                            className="form-control digits selectheight"
+                            name="Income Terms"
+                            defaultValue=""
+                            onChange={(e) => setIncomeTerm(e.target.value)}
+                          >
+                            <option Value="" disabled>
+                              {t("selectIncomeTerms")}
                             </option>
-                          ))}
-                        </Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>                
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("currency")}</Label>
-                      <sup className="font-danger">*</sup>
-                      <InputGroup>
-                        <Input
-                          type="select"
-                          className="form-control digits selectheight"
-                          name="Currency"
-                          defaultValue=""
-                          onChange={(e) => setCurrency(e.target.value)}
-                        >
-                          <option value="" disabled>
-                            {t("selectCurrency")}
-                          </option>
-                          {currencies.map((currency) => (
-                            <option value={currency.symbol}>
-                              {currency.symbol + " " + currency.name}
+                            {incomeTerms.map((incomeTerm) => (
+                              <option
+                                value={incomeTerm.id}
+                                title={incomeTerm.description}
+                              >
+                                {incomeTerm.name}
+                              </option>
+                            ))}
+                          </Input>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("currency")}</Label>
+                        <sup className="font-danger">*</sup>
+                        <InputGroup>
+                          <Input
+                            type="select"
+                            className="form-control digits selectheight"
+                            name="Currency"
+                            defaultValue=""
+                            onChange={(e) => setCurrency(e.target.value)}
+                          >
+                            <option value="" disabled>
+                              {t("selectCurrency")}
                             </option>
-                          ))}
-                        </Input>
-                      </InputGroup>
-                      {validerrors.currency && (
+                            {currencies.map((currency) => (
+                              <option value={currency.symbol}>
+                                {currency.symbol + " " + currency.name}
+                              </option>
+                            ))}
+                          </Input>
+                        </InputGroup>
+                        {validerrors.currency && (
                           <span className="error-msg">
                             {validerrors.currency}
                           </span>
                         )}
-                    </FormGroup>
-                  </Col>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("targetPrice")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Target Price"
-                          placeholder={t("enterTargetPrice")}
-                          onChange={(e) => setTargetPrice(e.target.value)}
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col lg="6" >
-                    <FormGroup>
-                      <Label className="form-label">{t("paymentTerms")}</Label>
-                      <span
-                        className="m-l-20"
-                        style={{ cursor: "pointer" }}
-                        value
-                        onClick={() => {
-                          checkedVal("PaymentTerms");
-                        }}
-                      >
-                        {" "}
-                        <img src={infoIcon} width="25px" height="25px"></img>
-                      </span>
-                      <CKEditors
-                        className="p10 ck"
-                        id="PaymentTerms"
-                        name="PaymentTerms"
-                        content={paymentTerm}
-                        events={{
-                          change: onChangePaymentTerms
-                        }}
-                        config={{
-                          height: 100,
-                          toolbar: [
-                            [
-                              "Bold",
-                              "Italic",
-                              "NumberedList",
-                              "BulletedList",
-                              "Strike"
-                            ],
-                            [
-                              "Cut",
-                              "Copy",
-                              "Paste",
-                              "Pasteasplaintext",
-                              "FormattingStyles",
-                              "Undo",
-                              "Redo",
-                            ],
-                            [
-                              "List",
-                              "Indent",
-                              "Blocks",
-                              "Align",
-                              "Bidi",
-                              "Paragraph",
-                            ],
-                            [ 'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'],
-                            ["Find", "Selection", "Spellchecker", "Editing"],
-                          ],
-                          
-                        }}
-                      />
-                    </FormGroup>
-                  </Col>
-                </Row>
+                      </FormGroup>
+                    </Col>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("targetPrice")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Target Price"
+                            placeholder={t("enterTargetPrice")}
+                            onChange={(e) => setTargetPrice(e.target.value)}
+                          ></Input>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col lg="6" >
+                      <FormGroup>
+                        <Label className="form-label">{t("paymentTerms")}</Label>
+                        <span
+                          className="m-l-20"
+                          style={{ cursor: "pointer" }}
+                          value
+                          onClick={() => {
+                            checkedVal("PaymentTerms");
+                          }}
+                        >
+                          {" "}
+                          <img src={infoIcon} width="25px" height="25px"></img>
+                        </span>
+                        <JoditEditor
+                          ref={editor}
+                          value={paymentTerm}
+                          config={config}
+                          tabIndex={1}
+                          // tabIndex of textarea
+                          //  onBlur={(newContent) => setSampleRequirement(newContent)}
+                         // preferred to use only this option to update the content for performance reasons
+                          onChange={(newContent) => setPaymentTerm(newContent)}
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
 
                 {/* Style/Article Description,Special Finishers -if any */}
 
                 <Row>
-                  <Col lg="6">
-                    <FormGroup>
-                      <Label className="form-label">
-                        {t("styleArticleDescription")}
-                      </Label>
-
-                      <CKEditors
-                        FontColor
-                        activeclassName="p10"
-                        content={styleArtcileDesc}
-                        events={{
-                          change: onChangeArticleDescription,
-                        }}
-                        rows="5"
-                        // onchange ={(e) => setStyleArticleDesc(e.target.value)}
-                        config={{
-                          height: 100,
-                          toolbar: [
-                            [
-                              "Bold",
-                              "Italic",
-                              "NumberedList",
-                              "BulletedList",
-                              "Strike",
-                            ],
-                            [
-                              "Cut",
-                              "Copy",
-                              "Paste",
-                              "Pasteasplaintext",
-                              "FormattingStyles",
-                              "Undo",
-                              "Redo",
-                            ],
-                            [
-                              "List",
-                              "Indent",
-                              "Blocks",
-                              "Align",
-                              "Bidi",
-                              "Paragraph",
-                            ],
-                            ["Find", "Selection", "Spellchecker", "Editing"],
-                          ],
-                        }}
-                      />
-                    </FormGroup>
-                  </Col>
-                  <Col lg="6">
-                    <FormGroup>
-                      <Label className="form-label">
-                        {t("specialFinishers")}
-                      </Label>
-
-                      <CKEditors
-                        activeclassName="p10"
-                        events={{
-                          change: onChangeSpecialFinshers,
-                        }}
-                        content={specialFinishes}
-                        config={{
-                          height: 100,
-                          toolbar: [
-                            [
-                              "Bold",
-                              "Italic",
-                              "NumberedList",
-                              "BulletedList",
-                              "Strike",
-                            ],
-                            [
-                              "Cut",
-                              "Copy",
-                              "Paste",
-                              "Pasteasplaintext",
-                              "FormattingStyles",
-                              "Undo",
-                              "Redo",
-                            ],
-                            [
-                              "List",
-                              "Indent",
-                              "Blocks",
-                              "Align",
-                              "Bidi",
-                              "Paragraph",
-                            ],
-                            ["Find", "Selection", "Spellchecker", "Editing"],
-                          ],
-                        }}
-                      />
-                    </FormGroup>
-                  </Col>
+                <Col lg="6">
+                      <FormGroup>
+                        <Label className="form-label">
+                          {t("styleArticleDescription")}
+                        </Label>
+                        <JoditEditor
+                          ref={editor}
+                          value={styleArtcileDesc}
+                          config={config}
+                          tabIndex={1}
+                          onChange={(newContent) => setStyleArticleDesc(newContent)}
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col lg="6">
+                      <FormGroup>
+                        <Label className="form-label">
+                          {t("specialFinishers")}
+                        </Label>
+                         <JoditEditor
+                          ref={editor}
+                          value={specialFinishes}
+                          config={config}
+                          tabIndex={1}
+                          onChange={(newContent) => setSpecialFinishes(newContent)}
+                        />
+                      </FormGroup>
+                    </Col>
                 </Row>
+                <Row>
 
-                 {/* Total Quantity,Color,Size */}
-                <div ref={totalQtyValidation}></div>
+                   {/* Total Quantity,Color,Size */}
+                  <div ref={totalQtyValidation}></div>
                 <Row>
                   <Col lg="4">
-                    <FormGroup>
-                      <Label> {t("totalQuantity")}</Label>
-                      <sup className="font-danger">*</sup>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          type="number"
-                          name="Total Quantity"
-                          placeholder={t("enterTotalQuantity")}
-                          onChange={(e) => setTotalQuantity(e.target.value)}
-                        ></Input>
-                        <InputGroupText>
-                          <img
-                            src={quantity}
-                            width="15px"
-                            height="15px"
-                            type="file"
-                          ></img>
-                        </InputGroupText>
-                      </InputGroup>
-                      {validerrors.totalQuantity && (
-                        <span className="error-msg">
-                          {validerrors.totalQuantity}
-                        </span>
-                      )}
-                    </FormGroup>
-                  </Col>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("color")}</Label>
-                      <InputGroup>
-                        <Input
-                          type="select"
-                          className="js-example-basic-single form-control"
-                          isMulti
-                          onChange={(e) => {
-                            handleChangeColor(e);
-                          }}
-                        >
-                          <option selected disabled>
-                            {t("selectColor")}
-                          </option>
-                          {getColor.map((colorList) => (
-                            <option key={colorList.id} value={colorList.id}>
-                              {colorList.name}
+                      <FormGroup>
+                        <Label> {t("totalQuantity")}</Label>
+                        <sup className="font-danger">*</sup>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            type="number"
+                            name="Total Quantity"
+                            placeholder={t("enterTotalQuantity")}
+                            onChange={(e) => setTotalQuantity(e.target.value)}
+                          ></Input>
+                          <InputGroupText>
+                            <img
+                              src={quantity}
+                              width="15px"
+                              height="15px"
+                              type="file"
+                            ></img>
+                          </InputGroupText>
+                        </InputGroup>
+                        {validerrors.totalQuantity && (
+                          <span className="error-msg">
+                            {validerrors.totalQuantity}
+                          </span>
+                        )}
+                      </FormGroup>
+                    </Col>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("color")}</Label>
+                        <InputGroup>
+                          <Input
+                            type="select"
+                            className="js-example-basic-single form-control"
+                            isMulti
+                            onChange={(e) => {
+                              handleChangeColor(e);
+                            }}
+                          >
+                            <option selected disabled>
+                              {t("selectColor")}
                             </option>
-                          ))}
-                        </Input>
-                        <InputGroupText
-                          style={{ cursor: "pointer" }}
-                          onClick={toggleclr}
-                        >
-                          <img
-                            src={addIcon}
-                            width="15px"
-                            height="15px"
+                            {getColor.map((colorList) => (
+                              <option key={colorList.id} value={colorList.id}>
+                                {colorList.name}
+                              </option>
+                            ))}
+                          </Input>
+                          <InputGroupText
+                            style={{ cursor: "pointer" }}
                             onClick={toggleclr}
-                          ></img>
-                        </InputGroupText>
-                        <AddColorModal
-                          modal={modalClr}
-                          toggle={toggleclr}
-                          inputParams={getInputParams}
-                          color={setGetColor}
-                        />
-                      </InputGroup>
-                    </FormGroup>
-                    {showColor.map((colour, i) => (
-                      <span
-                        className="btn btn-primary m-r-5 m-t-5 p-b-10"
-                        id={colour}
-                        name={colour}
-                        onClick={(e) => deleteColor(e)}
-                      >
-                        {colour}
-                      </span>
-                    ))}
-                  </Col>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("size")}</Label>
-                      <InputGroup>
-                        <Input
-                          type="select"
-                          className="js-example-basic-single form-control"
-                          onChange={(e) => {
-                            handleChangeSize(e);
-                          }}
+                          >
+                            <img
+                              src={addIcon}
+                              width="15px"
+                              height="15px"
+                              onClick={toggleclr}
+                            ></img>
+                          </InputGroupText>
+                          <AddColorModal
+                            modal={modalClr}
+                            toggle={toggleclr}
+                            inputParams={getInputParams}
+                            color={setGetColor}
+                          />
+                        </InputGroup>
+                      </FormGroup>
+                      {showColor.map((colour, i) => (
+                        <span
+                          className="btn btn-primary m-r-5 m-t-5 p-b-10"
+                          id={colour}
+                          name={colour}
+                          onClick={(e) => deleteColor(e)}
                         >
-                          <option selected disabled>
-                            {t("selectSize")}
-                          </option>
-                          {getSize.map((sizeList) => (
-                            <option
-                              key={sizeList.id}
-                              value={sizeList.id}
-                              attr-name={sizeList.name}
-                            >
-                              {sizeList.name}
-                            </option>
-                          ))}
-                        </Input>
-                        <InputGroupText
-                          style={{ cursor: "pointer" }}
-                          onClick={togglesize}
-                        >
-                          <img
-                            src={addIcon}
-                            width="15px"
-                            height="15px"
-                            onClick={togglesize}
-                          ></img>
-                        </InputGroupText>
-                        <AddSizeModal
-                          modal={modalSize}
-                          toggle={togglesize}
-                          inputParams={getInputParams}
-                          size={setGetSize}
-                        />
-                      </InputGroup>
-                    </FormGroup>
-                    {showSize.map((sizes) => (
-                      <span
-                        className="btn btn-primary m-r-5 m-t-5 p-b-20"
-                        id={sizes}
-                        onClick={(e) => deleteSize(e)}
-                      >
-                        {sizes}
-                      </span>
-                    ))}
-                  </Col>
-                </Row>
-
-                {/* Color,Size table View */}
-
-                {color.length > 0 && size.length > 0 ? (
-                  <>
-                    <Row className="g-12">
-                      <Col lg="12" md="12" sm="12" xs="12">
-                        <span className="subTitleLine3 f-left">
-                          <H6 className="ordersubhead">
-                            {t("addQuantityRatio")}
-                          </H6>
+                          {colour}
                         </span>
-                      </Col>
-                    </Row>
-                    <Row className="p-b-20">
-                      <Col md="12" lg="12" sm="12">
-                        <Row className="g-12">
-                          <div className="table-responsive">
-                            <form id="countQty">
+                      ))}
+                    </Col>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("size")}</Label>
+                        <InputGroup>
+                          <Input
+                            type="select"
+                            className="js-example-basic-single form-control"
+                            onChange={(e) => {
+                              handleChangeSize(e);
+                            }}
+                          >
+                            <option selected disabled>
+                              {t("selectSize")}
+                            </option>
+                            {getSize.map((sizeList) => (
+                              <option
+                                key={sizeList.id}
+                                value={sizeList.id}
+                                attr-name={sizeList.name}
+                              >
+                                {sizeList.name}
+                              </option>
+                            ))}
+                          </Input>
+                          <InputGroupText
+                            style={{ cursor: "pointer" }}
+                            onClick={togglesize}
+                          >
+                            <img
+                              src={addIcon}
+                              width="15px"
+                              height="15px"
+                              onClick={togglesize}
+                            ></img>
+                          </InputGroupText>
+                          <AddSizeModal
+                            modal={modalSize}
+                            toggle={togglesize}
+                            inputParams={getInputParams}
+                            size={setGetSize}
+                          />
+                        </InputGroup>
+                      </FormGroup>
+                      {showSize.map((sizes) => (
+                        <span
+                          className="btn btn-primary m-r-5 m-t-5 p-b-20"
+                          id={sizes}
+                          onClick={(e) => deleteSize(e)}
+                        >
+                          {sizes}
+                        </span>
+                      ))}
+                    </Col>
+                  </Row>
+
+                  {/* Color,Size table View */}
+
+                  {color.length > 0 && size.length > 0 ? (
+                    <>
+                      <Row className="g-12">
+                        <Col lg="12" md="12" sm="12" xs="12">
+                          <span className="subTitleLine3 f-left">
+                            <H6 className="ordersubhead">
+                              {t("addQuantityRatio")}
+                            </H6>
+                          </span>
+                        </Col>
+                      </Row>
+                      <Row className="p-b-20">
+                        <Col md="12" lg="12" sm="12">
+                          <Row className="g-12">
+                            <div className="table-responsive">
+                              <form id="countQty">
+                                <table className="table">
+                                  <thead>
+                                    <tr>
+                                      <th scope="col">
+                                        {" "}
+                                        {t("color/sizeLabel")}{" "}
+                                      </th>
+                                      {size.map((option) => {
+                                        return (
+                                          <th className="middle">
+                                            {" "}
+                                            {option.name}
+                                          </th>
+                                        );
+                                      })}
+                                      <th scope="col">{t("totalLabel")}</th>{" "}
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {color.map((optionc) => {
+                                      return (
+                                        <tr>
+                                          <th className="middle">
+                                            {optionc.name}
+                                          </th>
+                                          {size.map((option) => {
+                                            return (
+                                              <th>
+                                                <Row>
+                                                  <Row>
+                                                    <Table className="table table-striped">
+                                                      <tr>
+                                                        <td>
+                                                          <table>
+                                                            <tbody className="f-w-600 text-center">
+                                                              <tr>
+                                                                <td
+                                                                  style={{
+                                                                    padding:
+                                                                      "0.1em",
+                                                                  }}
+                                                                >
+                                                                  <input
+                                                                    style={{
+                                                                      width:
+                                                                        "90px",
+                                                                    }}
+                                                                    className=" form-control inpwidthsmall middle"
+                                                                    name="userName"
+                                                                    id={
+                                                                      optionc.id +
+                                                                      "#" +
+                                                                      option.id
+                                                                    }
+                                                                    type="number"
+                                                                    placeholder="0"
+                                                                    autocomplete="off"
+                                                                    min="0"
+                                                                    onChange={(
+                                                                      e
+                                                                    ) => {
+                                                                      addQty(e);
+                                                                    }}
+                                                                    onKeyDown={
+                                                                      handleEnter
+                                                                    }
+                                                                    onKeyPress={(
+                                                                      e
+                                                                    ) =>
+                                                                      handleKeyPress(
+                                                                        e
+                                                                      )
+                                                                    }
+                                                                  />
+
+                                                                  <input
+                                                                    type="hidden"
+                                                                    style={{
+                                                                      width:
+                                                                        "90px",
+                                                                    }}
+                                                                    id={
+                                                                      optionc.id +
+                                                                      "+" +
+                                                                      option.id
+                                                                    }
+                                                                    className=" form-control inpwidthsmall"
+                                                                    readOnly
+                                                                  />
+                                                                </td>
+                                                              </tr>
+                                                              <tr>
+                                                                <td
+                                                                  style={{
+                                                                    padding:
+                                                                      "0.1em",
+                                                                  }}
+                                                                  className="showperqty"
+                                                                >
+                                                                  <span
+                                                                    id={
+                                                                      optionc.id +
+                                                                      "v" +
+                                                                      option.id
+                                                                    }
+                                                                    className="showperqty"
+                                                                  ></span>
+                                                                </td>
+                                                              </tr>
+                                                            </tbody>
+                                                          </table>
+                                                        </td>
+                                                        <td>
+                                                          <input
+                                                            type="hidden"
+                                                            style={{
+                                                              width: "90px",
+                                                              marginLeft: "10px",
+                                                            }}
+                                                            id={
+                                                              optionc.id +
+                                                              "@" +
+                                                              option.id
+                                                            }
+                                                            className=" form-control inpwidthsmall"
+                                                            readOnly
+                                                          />
+                                                        </td>
+                                                      </tr>
+                                                    </Table>
+                                                  </Row>
+                                                </Row>
+                                              </th>
+                                            );
+                                          })}
+                                          <th>
+                                            <input
+                                              className="form-control inpwidthsmall mt-3"
+                                              name="totalQuantity"
+                                              type="number"
+                                              readOnly
+                                              placeholder={t("totalQty")}
+                                              id={"totqty_" + optionc.id}
+                                            />
+                                          </th>
+                                        </tr>
+                                      );
+                                    })}
+
+                                    <tr>
+                                      <th></th>
+                                      {size.map((data) => {
+                                        return (
+                                          <>
+                                            <th>
+                                              <input
+                                                className="form-control inpwidthsmall"
+                                                id={
+                                                  "SizeId_total_quantity" +
+                                                  data.id
+                                                }
+                                                type="number"
+                                                placeholder="0"
+                                                autocomplete="on"
+                                                readOnly
+                                                onKeyDown={handleEnter}
+                                              />
+                                            </th>
+                                          </>
+                                        );
+                                      })}
+                                      <th>
+                                        <input
+                                          className="form-control inpwidthsmall"
+                                          id="Overall_total_quantity"
+                                          type="number"
+                                          placeholder="0"
+                                          autocomplete="off"
+                                          readOnly
+                                        />
+                                      </th>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </form>
+                            </div>
+                          </Row>
+                        </Col>
+                      </Row>
+                    </>
+                  ) : (
+                    <div></div>
+                  )}
+
+                  {/* Measuement Show based on sku*/}
+                  {color.length > 0 && size.length > 0 ? (
+                    <>
+                      <Row className="g-12">
+                        <Col lg="12" md="12" sm="12" xs="12">
+                          <span className="subTitleLine3 f-left">
+                            <H6 className="ordersubhead">
+                              {t("measurementChart")}
+                            </H6>
+                          </span>
+                        </Col>
+                      </Row>
+                      <Row className="p-b-20">
+                        <Col md="12" lg="12" sm="12">
+                          <Row className="g-12">
+                            <div className="table-responsive">
+
                               <table className="table">
                                 <thead>
                                   <tr>
-                                    <th scope="col">
-                                      {" "}
-                                      {t("color/sizeLabel")}{" "}
-                                    </th>
+                                    <th scope="col">{t("position")}</th>
+                                    <th scope="col" colSpan="3">{t("description")}</th>
+                                    <th scope="col">{t("tolerance")}</th>
                                     {size.map((option) => {
                                       return (
-                                        <th className="middle">
+                                        <th scope="col">
                                           {" "}
                                           {option.name}
                                         </th>
                                       );
                                     })}
-                                    <th scope="col">{t("totalLabel")}</th>{" "}
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {color.map((optionc) => {
-                                    return (
-                                      <tr>
-                                        <th className="middle">
-                                          {optionc.name}
-                                        </th>
-                                        {size.map((option) => {
-                                          return (
-                                            <th>
-                                              <Row>
-                                                <Row>
-                                                  <Table className="table table-striped">
-                                                    <tr>
-                                                      <td>
-                                                        <table>
-                                                          <tbody className="f-w-600 text-center">
-                                                            <tr>
-                                                              <td
-                                                                style={{
-                                                                  padding:
-                                                                    "0.1em",
-                                                                }}
-                                                              >
-                                                                <input
-                                                                  style={{
-                                                                    width:
-                                                                      "90px",
-                                                                  }}
-                                                                  className=" form-control inpwidthsmall middle"
-                                                                  name="userName"
-                                                                  id={
-                                                                    optionc.id +
-                                                                    "#" +
-                                                                    option.id
-                                                                  }
-                                                                  type="number"
-                                                                  placeholder="0"
-                                                                  autocomplete="off"
-                                                                  min="0"
-                                                                  onChange={(
-                                                                    e
-                                                                  ) => {
-                                                                    addQty(e);
-                                                                  }}
-                                                                  onKeyDown={
-                                                                    handleEnter
-                                                                  }
-                                                                  onKeyPress={(
-                                                                    e
-                                                                  ) =>
-                                                                    handleKeyPress(
-                                                                      e
-                                                                    )
-                                                                  }
-                                                                />
-
-                                                                <input
-                                                                  type="hidden"
-                                                                  style={{
-                                                                    width:
-                                                                      "90px",
-                                                                  }}
-                                                                  id={
-                                                                    optionc.id +
-                                                                    "+" +
-                                                                    option.id
-                                                                  }
-                                                                  className=" form-control inpwidthsmall"
-                                                                  readOnly
-                                                                />
-                                                              </td>
-                                                            </tr>
-                                                            <tr>
-                                                              <td
-                                                                style={{
-                                                                  padding:
-                                                                    "0.1em",
-                                                                }}
-                                                                className="showperqty"
-                                                              >
-                                                                <span
-                                                                  id={
-                                                                    optionc.id +
-                                                                    "v" +
-                                                                    option.id
-                                                                  }
-                                                                  className="showperqty"
-                                                                ></span>
-                                                              </td>
-                                                            </tr>
-                                                          </tbody>
-                                                        </table>
-                                                      </td>
-                                                      <td>
-                                                        <input
-                                                          type="hidden"
-                                                          style={{
-                                                            width: "90px",
-                                                            marginLeft: "10px",
-                                                          }}
-                                                          id={
-                                                            optionc.id +
-                                                            "@" +
-                                                            option.id
-                                                          }
-                                                          className=" form-control inpwidthsmall"
-                                                          readOnly
-                                                        />
-                                                      </td>
-                                                    </tr>
-                                                  </Table>
-                                                </Row>
-                                              </Row>
-                                            </th>
-                                          );
-                                        })}
-                                        <th>
-                                          <input
-                                            className="form-control inpwidthsmall mt-3"
-                                            name="totalQuantity"
-                                            type="number"
-                                            readOnly
-                                            placeholder={t("totalQty")}
-                                            id={"totqty_" + optionc.id}
-                                          />
-                                        </th>
-                                      </tr>
-                                    );
-                                  })}
-
-                                  <tr>
-                                    <th></th>
-                                    {size.map((data) => {
-                                      return (
-                                        <>
-                                          <th>
-                                            <input
-                                              className="form-control inpwidthsmall"
-                                              id={
-                                                "SizeId_total_quantity" +
-                                                data.id
-                                              }
-                                              type="number"
-                                              placeholder="0"
-                                              autocomplete="on"
-                                              readOnly
-                                              onKeyDown={handleEnter}
-                                            />
-                                          </th>
-                                        </>
-                                      );
-                                    })}
                                     <th>
-                                      <input
-                                        className="form-control inpwidthsmall"
-                                        id="Overall_total_quantity"
-                                        type="number"
-                                        placeholder="0"
-                                        autocomplete="off"
-                                        readOnly
-                                      />
+                                      <div
+                                        className="btn btn-outline-success"
+                                        onClick={() => addTableRows()}>+</div>
+
                                     </th>
                                   </tr>
-                                </tbody>
-                              </table>
-                            </form>
-                          </div>
-                        </Row>
-                      </Col>
-                    </Row>
-                  </>
-                ) : (
-                  <div></div>
-                )}
+                                </thead>
+                                {measurementChart.map((measureChart, index) => {
+                                  const { position, description, tolerance } = measureChart;
+                                  return (
+                                    <>
+                                      <tbody id="measurementshow">
+                                        <tr key={index}>
+                                          <td>
+                                            <input
+                                              className="form-control "
+                                              id={"position_" + index}
+                                              type="text"
+                                              autocomplete="on"
+                                              value={position}
+                                              onKeyDown={handleEnter}
+                                            />
+                                          </td>
+                                          <td colSpan="3">
+                                            <input
+                                              className="form-control "
+                                              id={"description_" + index}
+                                              type="text"
+                                              autocomplete="on"
+                                              value={description}
+                                              onKeyDown={handleEnter}
+                                            />
+                                          </td>
+                                          <td>
+                                            <input
+                                              className="form-control "
+                                              id={"tolerance_" + index}
+                                              type="text"
+                                              autocomplete="on"
+                                              value={tolerance}
+                                              onKeyDown={handleEnter}
+                                            />
+                                          </td>
+                                          {size.map((sizeMapData) => {
 
-                {/* Measuement Show based on sku*/}
-                {color.length > 0 && size.length > 0 ? (
-                  <>
-                  <Row  className="g-12">
-                    <Col lg="12" md="12" sm="12" xs="12">
-                      <span className="subTitleLine3 f-left">
-                        <H6 className="ordersubhead">
-                          {t("measurementChart")}
-                        </H6>
-                      </span>
-                    </Col>
-                  </Row>
-                  <Row className="p-b-20">
-                    <Col md="12" lg="12" sm="12">
-                      <Row className="g-12">
-                        <div className="table-responsive">
-                        
-                            <table className="table">
-                              <thead>
-                                <tr>
-                                  <th scope="col">{t("position")}</th>
-                                  <th scope="col" colSpan="3">{t("description")}</th>
-                                  <th scope="col">{t("tolerance")}</th>
-                                  {size.map((option) => {
-                                    return (
-                                      <th scope="col">
-                                        {" "}
-                                        {option.name}
-                                      </th>
-                                    );
-                                  })}
-                                  <th>
-                                    <div 
-                                    className="btn btn-outline-success" 
-                                    onClick={()=>addTableRows()}>+</div>
-                                  
-                                </th>
-                                </tr>
-                              </thead>
-                                {measurementChart.map((measureChart, index)=>
-                                {
-                                const {position, 	description, tolerance} = measureChart;
-                                return(
-                                  <>
-                                  <tbody id="measurementshow">
-                                  <tr key={index}>
-                                  <td>
-                                    <input
-                                        className="form-control "
-                                        id={"position_"+index}
-                                        type="text"
-                                        autocomplete="on"
-                                        value={position}
-                                        onKeyDown={handleEnter}
-                                      />
-                                    </td>
-                                  <td  colSpan="3">
-                                    <input
-                                      className="form-control "
-                                      id={"description_"+index}
-                                      type="text"
-                                      autocomplete="on"
-                                      value={description}
-                                      onKeyDown={handleEnter}
-                                    />
-                                  </td>
-                                  <td>
-                                    <input
-                                      className="form-control "
-                                      id={"tolerance_"+index}
-                                      type="text"
-                                      autocomplete="on"
-                                      value={tolerance}
-                                      onKeyDown={handleEnter}
-                                    />
-                                  </td>
-                                  {size.map((sizeMapData) => {
-                                  
-                                    return (
-                                      <td>
-                                      <input
-                                        className="form-control "
-                                        id={index+"_size_id_"+sizeMapData.id}
-                                        type="text"
-                                        autocomplete="on"
-                                        onKeyDown={handleEnter}
-                                      />
-                                    </td>
-                                    );
-                                  })}
-                                  <td>
-                                    <div className="btn btn-outline-danger" onClick={()=>(deleteTableRows(index))}>-</div>
-                                  </td>
-                                </tr>
-                              </tbody> 
-                                  </>
+                                            return (
+                                              <td>
+                                                <input
+                                                  className="form-control "
+                                                  id={index + "_size_id_" + sizeMapData.id}
+                                                  type="text"
+                                                  autocomplete="on"
+                                                  onKeyDown={handleEnter}
+                                                />
+                                              </td>
+                                            );
+                                          })}
+                                          <td>
+                                            <div className="btn btn-outline-danger" onClick={() => (deleteTableRows(index))}>-</div>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </>
                                   )
                                 }
-                                )}                                             
-                            </table>
-                          
-                        </div>
+                                )}
+                              </table>
+
+                            </div>
+                          </Row>
+                        </Col>
                       </Row>
+                    </>) : (<div></div>)}
+                  <Row>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label> {t("measurementSheet")} </Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Measurement Sheet"
+                            value={measurementSheetImg ? measurementSheetImg : ""}
+                            placeholder={t("attachMeasurementSheet")}
+                            onChange={(e) => setMeasurementSheet(e.target.value)}
+                            disabled
+                          ></Input>
+                          <Files
+                            className="files-dropzone fileContainer"
+                            accept=".docx,.doc,.xls,.xlsx,.txt,.pdf"
+                            multiple={false}
+                            canCancel={false}
+                            onChange={MeasurementImg}
+                            clickable
+                          >
+                            <InputGroupText className=" btn imgBackground">
+                              <img
+                                src={docIcon}
+                                width="25px"
+                                height="25px"
+                                type="file"
+                              ></img>
+                            </InputGroupText>
+                          </Files>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+
+                    <Row>
+                      {fileMeasurementSheet.length > 0 ?
+                        <Row className="m-t-15 taskUpdate-table-sideHeader">
+                          <Row>
+                            {fileMeasurementSheet.map((file) => (
+                              <Col md="3" lg="3" sm="6" xs="12" className="m-5">
+                                <table className="" cellPadding="4px" width="100%">
+                                  <tr>
+                                    <td className="" width="5%">
+                                      <i className="fa fa-file-o f-30"></i>
+                                    </td>
+                                    <td className="">
+                                      <p className="f-left f-12 f-w-600">{(file.orginalfilename)}<br /></p>
+                                    </td>
+                                    <td className="m-l-6">
+                                      <img
+                                        src={deleteIcon}
+                                        width="30px"
+                                        height="30px"
+                                        style={{ cursor: 'pointer' }}
+                                        onClick={() => {
+                                          deleteImageFiles("MeasurementSheet", file)
+                                        }
+                                        }
+                                      />
+                                    </td>
+
+                                  </tr>
+                                </table>
+                              </Col>
+                            ))}
+                          </Row>
+                        </Row>
+                        : ""}
+                    </Row>
+                  </Row>
+                  {/* Patterns,Place of Jurisdiction,Customs Declaration Document */}
+
+                  <Row className="m-t-10">
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("patterns")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Patterns"
+                            placeholder={t("enterPatterns")}
+                            onChange={(e) => setPatterns(e.target.value)}
+                          ></Input>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("placeofJurisdiction")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Place of Jurisdiction"
+                            placeholder={t("enterPlaceofJurisdiction")}
+                            onChange={(e) =>
+                              setPlaceOfJurisdiction(e.target.value)
+                            }
+                          ></Input>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("customsDeclarationDocument")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Customs Declaration Document"
+                            placeholder={t("enterCustomsDeclarationDocument")}
+                            onChange={(e) =>
+                              setCustomsDeclarationDoc(e.target.value)
+                            }
+                          ></Input>
+                        </InputGroup>
+                      </FormGroup>
                     </Col>
                   </Row>
-                  </>):(<div></div>)} 
-                <Row>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label> {t("measurementSheet")} </Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Measurement Sheet"
-                          value={measurementSheetImg ? measurementSheetImg : ""}
-                          placeholder={t("attachMeasurementSheet")}
-                          onChange={(e) => setMeasurementSheet(e.target.value)}
-                          disabled
-                        ></Input>
-                        <Files
-                          className="files-dropzone fileContainer"
-                          accept=".docx,.doc,.xls,.xlsx,.txt,.pdf"
-                          multiple={false}
-                          canCancel={false}
-                          onChange={MeasurementImg}
-                          clickable
-                        >   
-                          <InputGroupText className=" btn imgBackground">
-                            <img
-                              src={docIcon}
-                              width="25px"
-                              height="25px"
-                              type="file"
-                            ></img>
-                          </InputGroupText>
-                        </Files>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
+
+                  {/* Penalty */}
 
                   <Row>
-                  {fileMeasurementSheet.length > 0 ?
-                    <Row className="m-t-15 taskUpdate-table-sideHeader">
-                      <Row>
-                        {fileMeasurementSheet.map((file) => (
-                          <Col md="3" lg="3" sm="6" xs="12" className="m-5">
-                            <table className="" cellPadding="4px" width="100%">
-                              <tr>
-                                <td className="" width="5%">
-                                  <i className="fa fa-file-o f-30"></i>
-                                </td>
-                                <td className="">
-                                  <p className="f-left f-12 f-w-600">{(file.orginalfilename)}<br /></p>
-                                </td> 
-                                <td className="m-l-6">
-                                <img 
-                                    src={deleteIcon} 
-                                    width="30px" 
-                                    height="30px" 
-                                    style={{ cursor: 'pointer' }} 
-                                    onClick={()=>
-                                      {
-                                        deleteImageFiles("MeasurementSheet", file)
-                                      }
-                                      }
-                                  />
-                                </td>
-                            
-                              </tr>
-                            </table>
-                          </Col>
-                        ))}
-                      </Row>
-                    </Row>
-                    : ""}
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("penaltyLabel")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Penalty"
+                            placeholder={t("enterPenalty")}
+                            onChange={(e) => setPenalty(e.target.value)}
+                          ></Input>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
                   </Row>
-                </Row>
-                {/* Patterns,Place of Jurisdiction,Customs Declaration Document */}
-
-                <Row className="m-t-10">
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("patterns")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Patterns"
-                          placeholder={t("enterPatterns")}
-                          onChange={(e) => setPatterns(e.target.value)}
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("placeofJurisdiction")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Place of Jurisdiction"
-                          placeholder={t("enterPlaceofJurisdiction")}
-                          onChange={(e) =>
-                            setPlaceOfJurisdiction(e.target.value)
-                          }
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("customsDeclarationDocument")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Customs Declaration Document"
-                          placeholder={t("enterCustomsDeclarationDocument")}
-                          onChange={(e) =>
-                            setCustomsDeclarationDoc(e.target.value)
-                          }
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                </Row>
-
-                {/* Penalty */}
-
-                <Row>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("penaltyLabel")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Penalty"
-                          placeholder={t("enterPenalty")}
-                          onChange={(e) => setPenalty(e.target.value)}
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                </Row>
                 </div>
                 {/* Print Information:Print Type,Print Price,No of Colors */}
                 <div ref={printinfo} className="printinfo">
-                <Row className="g-12">
-                  <Col lg="12" md="12" sm="12" xs="12">
-                    <span>
-                      <H6 className="ordersubhead">{t("printInformation")}</H6>
-                    </span>
-                  </Col>
-                </Row>
+                  <Row className="g-12">
+                    <Col lg="12" md="12" sm="12" xs="12">
+                      <span>
+                        <H6 className="ordersubhead">{t("printInformation")}</H6>
+                      </span>
+                    </Col>
+                  </Row>
 
-                <Row>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("printType")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Print Type"
-                          placeholder={t("enterPrintType")}
-                          onChange={(e) => setPrintType(e.target.value)}
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("printSize")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Print Size"
-                          placeholder={t("enterPrintSize")}
-                          onChange={(e) => setPrintSize(e.target.value)}
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("noOfColors")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="No of Colors"
-                          placeholder={t("enterNumberofcolors")}
-                          onChange={(e) => setNoOfColors(e.target.value)}
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                </Row>
+                  <Row>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("printType")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Print Type"
+                            placeholder={t("enterPrintType")}
+                            onChange={(e) => setPrintType(e.target.value)}
+                          ></Input>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("printSize")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Print Size"
+                            placeholder={t("enterPrintSize")}
+                            onChange={(e) => setPrintSize(e.target.value)}
+                          ></Input>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("noOfColors")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="No of Colors"
+                            placeholder={t("enterNumberofcolors")}
+                            onChange={(e) => setNoOfColors(e.target.value)}
+                          ></Input>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                  </Row>
 
-                {/* Print Information: Print Image */}
+                  {/* Print Information: Print Image */}
 
-                <Row>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("printImage")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Print Image"
-                          placeholder={t("attachPrintImage")}
-                          value={printImg ? printImg : ""}
-                          onChange={(e) => setPrintImage(e.target.value)}
-                          disabled
-                        ></Input>
-                        <Files
-                          className="files-dropzone fileContainer"
-                          accept=".png,.jpg,.jpeg"
-                          multiple={false}
-                          canCancel={false}
-                          onChange={PrintImage}
-                          clickable
-                        >
-                          <InputGroupText className=" btn imgBackground">
-                            <img
-                              src={imgUpload}
-                              width="25px"
-                              height="25px"
-                              type="file"
-                            ></img>
-                          </InputGroupText>
-                        </Files>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                  <Col lg="4">
-                    {filePrintImage.length > 0 ? (
-                          filePrintImage.map((file) => (
-                            <>
-                             <div className="profile-pic">
-                              <img
-                                src={awsUrl + file.filepath}
-                                width="100px"
-                                height="100px"
-                                className="m-10"
-                              />
-                              <div className="edit m-t-30 m-r-30">
-                                  <img 
-                                    src={deleteIcon} 
-                                    width="30px" 
-                                    height="30px" 
-                                    style={{ cursor: 'pointer' }} 
-                                    onClick={()=>
-                                      {
-                                        deleteImageFiles("PrintImage", file)
-                                      }
-                                      }
-                                  />
-                                
-                                 </div>
-                              </div>
-                            </>
-                          ))
-                    ) : (
-                      <div>{''}</div>
-                    )}
-                  </Col>
-                  <Col lg="4"></Col>
-                </Row>
-</div>
-                {/* Trims Information: Main Label,Main Label Sample */}
-                <div ref={trimsinfo} className="printinfo">
-                <Row className="g-12">
-                  <Col lg="12" md="12" sm="12" xs="12">
-                    <span>
-                      <H6 className="ordersubhead">{t("trimsInformation")}</H6>
-                    </span>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("mainLabel")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Main Label"
-                          placeholder={t("enterMainLabel")}
-                          onChange={(e) => setMainLabel(e.target.value)}
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("mainLabelSample")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Main Label Sample"
-                          placeholder={t("attachMainLabelSample")}
-                          value={mainLabelSampleImg ? mainLabelSampleImg : ""}
-                          onChange={(e) => {
-                            setMainLabelSampleImg(e.target.value);
-                          }}
-                          disabled
-                        ></Input>
-                        <InputGroupText className=" btn imgBackground">
+                  <Row>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("printImage")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Print Image"
+                            placeholder={t("attachPrintImage")}
+                            value={printImg ? printImg : ""}
+                            onChange={(e) => setPrintImage(e.target.value)}
+                            disabled
+                          ></Input>
                           <Files
                             className="files-dropzone fileContainer"
                             accept=".png,.jpg,.jpeg"
                             multiple={false}
                             canCancel={false}
-                            onChange={MainLabelSample}
+                            onChange={PrintImage}
                             clickable
                           >
-                            <img
-                              src={imgUpload}
-                              width="25px"
-                              height="25px"
-                              type="file"
-                            ></img>
+                            <InputGroupText className=" btn imgBackground">
+                              <img
+                                src={imgUpload}
+                                width="25px"
+                                height="25px"
+                                type="file"
+                              ></img>
+                            </InputGroupText>
                           </Files>
-                        </InputGroupText>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                  <Col lg="4">
-                    {fileMainLabel.length > 0 ? (
-                     
-                        fileMainLabel.map((file) => (
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col lg="4">
+                      {filePrintImage.length > 0 ? (
+                        filePrintImage.map((file) => (
                           <>
-                          <div className="profile-pic">
-                            <img
-                              src={awsUrl + file.filepath}
-                              width="100px"
-                              height="100px"
-                              className="m-10"
-                            />
-                            <div className="edit m-t-30 m-r-30">
-                                  <img 
-                                    src={deleteIcon} 
-                                    width="30px" 
-                                    height="30px" 
-                                    style={{ cursor: 'pointer' }} 
-                                    onClick={()=>
-                                      {
-                                        deleteImageFiles("MainLabel", file)
-                                      }
-                                      }
-                                  />
-                            </div>
-                          </div>
-                          </>
-                        ))
-                     
-                    ) : (
-                      <div>{''}</div>
-                    )}
-                  </Col>
-                </Row>
-
-                {/* Trims Information : Wash Care Label,Wash Care Label Sample */}
-
-                <Row>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("washCareLabel")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Wash Care Label"
-                          placeholder={t("enterWashCareLabel")}
-                          onChange={(e) => setWashCareLabel(e.target.value)}
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("washCareLabelSample")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Wash Care Label Sample"
-                          placeholder={t("attachWashCareLabelSample")}
-                          value={
-                            washCareLabelSampleImg ? washCareLabelSampleImg : ""
-                          }
-                          onChange={(e) =>
-                            setWashCareLabelSampleImg(e.target.value)
-                          }
-                          disabled
-                        ></Input>
-                        <Files
-                          className="files-dropzone fileContainer"
-                          accept=".png,.jpg,.jpeg"
-                          multiple={false}
-                          canCancel={false}
-                          onChange={WashCareLabelSample}
-                          clickable
-                        >
-                          <InputGroupText className=" btn imgBackground">
-                            <img
-                              src={imgUpload}
-                              width="25px"
-                              height="25px"
-                              type="file"
-                            ></img>
-                          </InputGroupText>
-                        </Files>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                  <Col lg="4">
-                    {fileWashCareLabel.length > 0 ? (
-                      
-                        fileWashCareLabel.map((file) => (
-                          <>
-                          <div className="profile-pic">
+                            <div className="profile-pic">
                               <img
                                 src={awsUrl + file.filepath}
                                 width="100px"
@@ -2624,78 +2349,255 @@ if(imageType == "MeasurementSheet"){
                                 className="m-10"
                               />
                               <div className="edit m-t-30 m-r-30">
-                                    <img 
-                                      src={deleteIcon} 
-                                      width="30px" 
-                                      height="30px" 
-                                      style={{ cursor: 'pointer' }} 
-                                      onClick={()=>
-                                        {
-                                          deleteImageFiles("WashCareLabel", file)
-                                        }
-                                        }
-                                    />
-                                  
+                                <img
+                                  src={deleteIcon}
+                                  width="30px"
+                                  height="30px"
+                                  style={{ cursor: 'pointer' }}
+                                  onClick={() => {
+                                    deleteImageFiles("PrintImage", file)
+                                  }
+                                  }
+                                />
+
                               </div>
-                          </div>
+                            </div>
                           </>
                         ))
-                      
-                    ) : (
-                      <div>{''}</div>
-                    )}
-                  </Col>
-                </Row>
-
-                {/* Trims Information : Hangtag,Hangtag Sample */}
-                <Row>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("hangtag")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Hangtag"
-                          placeholder={t("enterHangtag")}
-                          onChange={(e) => setHangtag(e.target.value)}
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("hangtagSample")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Hangtag Sample"
-                          placeholder={t("attachHangtagSample")}
-                          value={hangtagSampleImg ? hangtagSampleImg : ""}
-                          onChange={(e) => setHangtagSampleImg(e.target.value)}
-                          disabled
-                        ></Input>
-                        <Files
-                          className="files-dropzone fileContainer"
-                          accept=".png,.jpg,.jpeg"
-                          multiple={false}
-                          canCancel={false}
-                          onChange={HangtagSample}
-                          clickable
-                        >
+                      ) : (
+                        <div>{''}</div>
+                      )}
+                    </Col>
+                    <Col lg="4"></Col>
+                  </Row>
+                </div>
+                {/* Trims Information: Main Label,Main Label Sample */}
+                <div ref={trimsinfo} className="printinfo">
+                  <Row className="g-12">
+                    <Col lg="12" md="12" sm="12" xs="12">
+                      <span>
+                        <H6 className="ordersubhead">{t("trimsInformation")}</H6>
+                      </span>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("mainLabel")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Main Label"
+                            placeholder={t("enterMainLabel")}
+                            onChange={(e) => setMainLabel(e.target.value)}
+                          ></Input>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("mainLabelSample")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Main Label Sample"
+                            placeholder={t("attachMainLabelSample")}
+                            value={mainLabelSampleImg ? mainLabelSampleImg : ""}
+                            onChange={(e) => {
+                              setMainLabelSampleImg(e.target.value);
+                            }}
+                            disabled
+                          ></Input>
                           <InputGroupText className=" btn imgBackground">
-                            <img
-                              src={imgUpload}
-                              width="25px"
-                              height="25px"
-                              type="file"
-                            ></img>
+                            <Files
+                              className="files-dropzone fileContainer"
+                              accept=".png,.jpg,.jpeg"
+                              multiple={false}
+                              canCancel={false}
+                              onChange={MainLabelSample}
+                              clickable
+                            >
+                              <img
+                                src={imgUpload}
+                                width="25px"
+                                height="25px"
+                                type="file"
+                              ></img>
+                            </Files>
                           </InputGroupText>
-                        </Files>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                  <Col lg="4">
-                    {fileHangtag.length > 0 ? ( 
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col lg="4">
+                      {fileMainLabel.length > 0 ? (
+
+                        fileMainLabel.map((file) => (
+                          <>
+                            <div className="profile-pic">
+                              <img
+                                src={awsUrl + file.filepath}
+                                width="100px"
+                                height="100px"
+                                className="m-10"
+                              />
+                              <div className="edit m-t-30 m-r-30">
+                                <img
+                                  src={deleteIcon}
+                                  width="30px"
+                                  height="30px"
+                                  style={{ cursor: 'pointer' }}
+                                  onClick={() => {
+                                    deleteImageFiles("MainLabel", file)
+                                  }
+                                  }
+                                />
+                              </div>
+                            </div>
+                          </>
+                        ))
+
+                      ) : (
+                        <div>{''}</div>
+                      )}
+                    </Col>
+                  </Row>
+
+                  {/* Trims Information : Wash Care Label,Wash Care Label Sample */}
+
+                  <Row>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("washCareLabel")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Wash Care Label"
+                            placeholder={t("enterWashCareLabel")}
+                            onChange={(e) => setWashCareLabel(e.target.value)}
+                          ></Input>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("washCareLabelSample")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Wash Care Label Sample"
+                            placeholder={t("attachWashCareLabelSample")}
+                            value={
+                              washCareLabelSampleImg ? washCareLabelSampleImg : ""
+                            }
+                            onChange={(e) =>
+                              setWashCareLabelSampleImg(e.target.value)
+                            }
+                            disabled
+                          ></Input>
+                          <Files
+                            className="files-dropzone fileContainer"
+                            accept=".png,.jpg,.jpeg"
+                            multiple={false}
+                            canCancel={false}
+                            onChange={WashCareLabelSample}
+                            clickable
+                          >
+                            <InputGroupText className=" btn imgBackground">
+                              <img
+                                src={imgUpload}
+                                width="25px"
+                                height="25px"
+                                type="file"
+                              ></img>
+                            </InputGroupText>
+                          </Files>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col lg="4">
+                      {fileWashCareLabel.length > 0 ? (
+
+                        fileWashCareLabel.map((file) => (
+                          <>
+                            <div className="profile-pic">
+                              <img
+                                src={awsUrl + file.filepath}
+                                width="100px"
+                                height="100px"
+                                className="m-10"
+                              />
+                              <div className="edit m-t-30 m-r-30">
+                                <img
+                                  src={deleteIcon}
+                                  width="30px"
+                                  height="30px"
+                                  style={{ cursor: 'pointer' }}
+                                  onClick={() => {
+                                    deleteImageFiles("WashCareLabel", file)
+                                  }
+                                  }
+                                />
+
+                              </div>
+                            </div>
+                          </>
+                        ))
+
+                      ) : (
+                        <div>{''}</div>
+                      )}
+                    </Col>
+                  </Row>
+
+                  {/* Trims Information : Hangtag,Hangtag Sample */}
+                  <Row>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("hangtag")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Hangtag"
+                            placeholder={t("enterHangtag")}
+                            onChange={(e) => setHangtag(e.target.value)}
+                          ></Input>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("hangtagSample")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Hangtag Sample"
+                            placeholder={t("attachHangtagSample")}
+                            value={hangtagSampleImg ? hangtagSampleImg : ""}
+                            onChange={(e) => setHangtagSampleImg(e.target.value)}
+                            disabled
+                          ></Input>
+                          <Files
+                            className="files-dropzone fileContainer"
+                            accept=".png,.jpg,.jpeg"
+                            multiple={false}
+                            canCancel={false}
+                            onChange={HangtagSample}
+                            clickable
+                          >
+                            <InputGroupText className=" btn imgBackground">
+                              <img
+                                src={imgUpload}
+                                width="25px"
+                                height="25px"
+                                type="file"
+                              ></img>
+                            </InputGroupText>
+                          </Files>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col lg="4">
+                      {fileHangtag.length > 0 ? (
                         fileHangtag.map((file) => (
                           <>
                             <div className="profile-pic">
@@ -2705,87 +2607,86 @@ if(imageType == "MeasurementSheet"){
                                 height="100px"
                                 className="m-10"
                               />
-                            <div className="edit m-t-30 m-r-30">
-                                  <img 
-                                    src={deleteIcon} 
-                                    width="30px" 
-                                    height="30px" 
-                                    style={{ cursor: 'pointer' }} 
-                                    onClick={()=>
-                                      {
-                                        deleteImageFiles("Hangtag", file)
-                                      }
-                                      }
-                                  />
-                                
-                                 </div>
+                              <div className="edit m-t-30 m-r-30">
+                                <img
+                                  src={deleteIcon}
+                                  width="30px"
+                                  height="30px"
+                                  style={{ cursor: 'pointer' }}
+                                  onClick={() => {
+                                    deleteImageFiles("Hangtag", file)
+                                  }
+                                  }
+                                />
+
+                              </div>
                             </div>
                           </>
                         ))
-                     
-                    ) : (
-                      <div>{''}</div>
-                    )}
-                  </Col>
-                </Row>
 
-                {/* Trims Information : Barcode Stickers,Barcode Stickers Sample */}
+                      ) : (
+                        <div>{''}</div>
+                      )}
+                    </Col>
+                  </Row>
 
-                <Row>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("barcodeStickers")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Barcode Stickers"
-                          placeholder={t("enterBarcodestickers")}
-                          onChange={(e) => setBarcodeStickers(e.target.value)}
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("barcodeStickersSample")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Barcode Stickers Sample"
-                          placeholder={t("attachBarcodeStickersSample")}
-                          value={
-                            barcodeStickersSampleImg
-                              ? barcodeStickersSampleImg
-                              : ""
-                          }
-                          onChange={(e) =>
-                            setBarcodeStickersSampleImg(e.target.value)
-                          }
-                          disabled
-                        ></Input>
-                        <Files
-                          className="files-dropzone fileContainer"
-                          accept=".png,.jpg,.jpeg"
-                          multiple={false}
-                          canCancel={false}
-                          onChange={BarcodeStickersSample}
-                          clickable
-                        >
-                          <InputGroupText className=" btn imgBackground">
-                            <img
-                              src={imgUpload}
-                              width="25px"
-                              height="25px"
-                              type="file"
-                            ></img>
-                          </InputGroupText>
-                        </Files>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                  <Col lg="4">
-                    {fileBarcodeStickers.length > 0 ? (
-                    
+                  {/* Trims Information : Barcode Stickers,Barcode Stickers Sample */}
+
+                  <Row>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("barcodeStickers")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Barcode Stickers"
+                            placeholder={t("enterBarcodestickers")}
+                            onChange={(e) => setBarcodeStickers(e.target.value)}
+                          ></Input>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("barcodeStickersSample")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Barcode Stickers Sample"
+                            placeholder={t("attachBarcodeStickersSample")}
+                            value={
+                              barcodeStickersSampleImg
+                                ? barcodeStickersSampleImg
+                                : ""
+                            }
+                            onChange={(e) =>
+                              setBarcodeStickersSampleImg(e.target.value)
+                            }
+                            disabled
+                          ></Input>
+                          <Files
+                            className="files-dropzone fileContainer"
+                            accept=".png,.jpg,.jpeg"
+                            multiple={false}
+                            canCancel={false}
+                            onChange={BarcodeStickersSample}
+                            clickable
+                          >
+                            <InputGroupText className=" btn imgBackground">
+                              <img
+                                src={imgUpload}
+                                width="25px"
+                                height="25px"
+                                type="file"
+                              ></img>
+                            </InputGroupText>
+                          </Files>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col lg="4">
+                      {fileBarcodeStickers.length > 0 ? (
+
                         fileBarcodeStickers.map((file) => (
                           <>
                             <div className="profile-pic">
@@ -2796,179 +2697,148 @@ if(imageType == "MeasurementSheet"){
                                 className="m-10"
                               />
                               <div className="edit m-t-30 m-r-30">
-                                  <img 
-                                    src={deleteIcon} 
-                                    width="30px" 
-                                    height="30px" 
-                                    style={{ cursor: 'pointer' }} 
-                                    onClick={()=>
-                                      {
-                                        deleteImageFiles("BarcodeStickers", file)
-                                      }
-                                      }
-                                  />
-                                
-                                 </div>
+                                <img
+                                  src={deleteIcon}
+                                  width="30px"
+                                  height="30px"
+                                  style={{ cursor: 'pointer' }}
+                                  onClick={() => {
+                                    deleteImageFiles("BarcodeStickers", file)
+                                  }
+                                  }
+                                />
+
                               </div>
-                           
+                            </div>
+
                           </>
                         ))
-                     
-                    ) : (
-                      <div>{''}</div>
-                    )}
-                  </Col>
-                </Row>
 
-                {/* Trims Notifications- Specify If any */}
+                      ) : (
+                        <div>{''}</div>
+                      )}
+                    </Col>
+                  </Row>
 
-                <Row>
-                  <Col lg="8">
-                    <FormGroup>
-                      <Label className="form-label">
-                        {t("trimsNotificationsSpecify")}
-                      </Label>
-                      <CKEditors
-                        activeclassName="p10"
-                        events={{
-                          change: onChangeTrimsNotifications,
-                        }}
-                        content={trimsNotification}
-                        config={{
-                          height: 100,
-                          toolbar: [
-                            [
-                              "Bold",
-                              "Italic",
-                              "NumberedList",
-                              "BulletedList",
-                              "Strike",
-                            ],
-                            [
-                              "Cut",
-                              "Copy",
-                              "Paste",
-                              "Pasteasplaintext",
-                              "FormattingStyles",
-                              "Undo",
-                              "Redo",
-                            ],
-                            [
-                              "List",
-                              "Indent",
-                              "Blocks",
-                              "Align",
-                              "Bidi",
-                              "Paragraph",
-                            ],
-                            ["Find", "Selection", "Spellchecker", "Editing"],
-                          ],
-                        }}
-                      />
-                    </FormGroup>
-                  </Col>
-                </Row>
-</div>
+                  {/* Trims Notifications- Specify If any */}
+
+                  <Row>
+                    <Col lg="8">
+                      <FormGroup>
+                        <Label className="form-label">
+                          {t("trimsNotificationsSpecify")}
+                        </Label>
+                       <JoditEditor
+                          ref={editor}
+                          value={trimsNotification}
+                          config={config}
+                          tabIndex={1}
+                          onChange={(newContent) => setTrimsNotification(newContent)}
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                </div>
                 {/* Packing Information: Polybag Size & thickness,Polybag Material,Print details on Polybag  */}
                 <div ref={packinginfo} className="packinginfo">
-                <Row className="g-12">
-                  <Col lg="12" md="12" sm="12" xs="12">
-                    <span>
-                      <H6 className="ordersubhead">
-                        {t("packingInformation")}
-                      </H6>
-                    </span>
-                  </Col>
-                </Row>
+                  <Row className="g-12">
+                    <Col lg="12" md="12" sm="12" xs="12">
+                      <span>
+                        <H6 className="ordersubhead">
+                          {t("packingInformation")}
+                        </H6>
+                      </span>
+                    </Col>
+                  </Row>
 
-                <Row>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("polybagSizeThickness")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Polybag Size & thickness"
-                          placeholder={t("enterPolybagSizeThickness")}
-                          onChange={(e) =>
-                            setPolybagSizeThickness(e.target.value)
-                          }
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("polybagMaterial")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Polybag Material"
-                          placeholder={t("enterPolybagMaterial")}
-                          onChange={(e) => setPolybagMaterial(e.target.value)}
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("printDetailsPolybag")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Print Details on Polybag"
-                          placeholder={t("enterPrintDetailsPolybag")}
-                          onChange={(e) =>
-                            setPrintDetailsPolybag(e.target.value)
-                          }
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col lg ="4">
-                    <FormGroup>
-                      <Label>{t("polybagSampleImage")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Polybag Image"
-                          placeholder= {t("attachPolybagSampleImage")}
-                          value={
-                            polybagSampleImg
-                              ? polybagSampleImg
-                              : ""
-                          }
-                          onChange={(e) =>
-                            setPolybagSampleImg(e.target.value)
-                          }
-                          disabled
-                        ></Input>
-                        <Files
-                          className="files-dropzone fileContainer"
-                          accept=".png,.jpg,.jpeg"
-                          multiple={false}
-                          canCancel={false}
-                          onChange={PolyBagSample}
-                          clickable
-                        >
-                          <InputGroupText className=" btn imgBackground">
-                            <img
-                              src={imgUpload}
-                              width="25px"
-                              height="25px"
-                              type="file"
-                            ></img>
-                          </InputGroupText>
-                        </Files>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                  <Col lg="4">
-                    {filePolybagImg.length > 0 ? (
-                    
-                    filePolybagImg.map((file) => (
+                  <Row>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("polybagSizeThickness")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Polybag Size & thickness"
+                            placeholder={t("enterPolybagSizeThickness")}
+                            onChange={(e) =>
+                              setPolybagSizeThickness(e.target.value)
+                            }
+                          ></Input>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("polybagMaterial")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Polybag Material"
+                            placeholder={t("enterPolybagMaterial")}
+                            onChange={(e) => setPolybagMaterial(e.target.value)}
+                          ></Input>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("printDetailsPolybag")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Print Details on Polybag"
+                            placeholder={t("enterPrintDetailsPolybag")}
+                            onChange={(e) =>
+                              setPrintDetailsPolybag(e.target.value)
+                            }
+                          ></Input>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("polybagSampleImage")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Polybag Image"
+                            placeholder={t("attachPolybagSampleImage")}
+                            value={
+                              polybagSampleImg
+                                ? polybagSampleImg
+                                : ""
+                            }
+                            onChange={(e) =>
+                              setPolybagSampleImg(e.target.value)
+                            }
+                            disabled
+                          ></Input>
+                          <Files
+                            className="files-dropzone fileContainer"
+                            accept=".png,.jpg,.jpeg"
+                            multiple={false}
+                            canCancel={false}
+                            onChange={PolyBagSample}
+                            clickable
+                          >
+                            <InputGroupText className=" btn imgBackground">
+                              <img
+                                src={imgUpload}
+                                width="25px"
+                                height="25px"
+                                type="file"
+                              ></img>
+                            </InputGroupText>
+                          </Files>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col lg="4">
+                      {filePolybagImg.length > 0 ? (
+
+                        filePolybagImg.map((file) => (
                           <>
                             <div className="profile-pic">
                               <img
@@ -2978,486 +2848,361 @@ if(imageType == "MeasurementSheet"){
                                 className="m-10"
                               />
                               <div className="edit m-t-30 m-r-30">
-                                  <img 
-                                    src={deleteIcon} 
-                                    width="30px" 
-                                    height="30px" 
-                                    style={{ cursor: 'pointer' }} 
-                                    onClick={()=>
-                                      {
-                                        deleteImageFiles("Polybag", file)
-                                      }
-                                      }
-                                  />
-                                
-                                 </div>
+                                <img
+                                  src={deleteIcon}
+                                  width="30px"
+                                  height="30px"
+                                  style={{ cursor: 'pointer' }}
+                                  onClick={() => {
+                                    deleteImageFiles("Polybag", file)
+                                  }
+                                  }
+                                />
+
                               </div>
-                           
+                            </div>
+
                           </>
                         ))
-                     
-                    ) : (
-                      <div>{''}</div>
-                    )}
-                  </Col>
-                </Row>
 
-                {/* Packing Information: Carton Box Dimensions,Carton Color,Carton Material */}
+                      ) : (
+                        <div>{''}</div>
+                      )}
+                    </Col>
+                  </Row>
 
-                <Row>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("cartonBoxDimensions")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Carton Box Dimensions"
-                          placeholder={t("enterCartonBoxDimensions")}
-                          onChange={(e) =>
-                            setCartonBoxDimension(e.target.value)
-                          }
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("cartonColor")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Carton Color"
-                          placeholder={t("enterCartonColor")}
-                          onChange={(e) => setCartonColors(e.target.value)}
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("cartonMaterial")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Carton Material"
-                          placeholder={t("enterCartonMaterial")}
-                          onChange={(e) => setCartonMaterial(e.target.value)}
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                </Row>
+                  {/* Packing Information: Carton Box Dimensions,Carton Color,Carton Material */}
 
-                {/* Packing Information: Carton Edge Finish,Carton Mark Details,Make-Up */}
+                  <Row>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("cartonBoxDimensions")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Carton Box Dimensions"
+                            placeholder={t("enterCartonBoxDimensions")}
+                            onChange={(e) =>
+                              setCartonBoxDimension(e.target.value)
+                            }
+                          ></Input>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("cartonColor")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Carton Color"
+                            placeholder={t("enterCartonColor")}
+                            onChange={(e) => setCartonColors(e.target.value)}
+                          ></Input>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("cartonMaterial")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Carton Material"
+                            placeholder={t("enterCartonMaterial")}
+                            onChange={(e) => setCartonMaterial(e.target.value)}
+                          ></Input>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                  </Row>
 
-                <Row>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("cartonEdgeFinish")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Carton Edge Finish"
-                          placeholder={t("enterCartonEdgeFinish")}
-                          onChange={(e) => setCartonEdgeFinish(e.target.value)}
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("cartonMarkDetails")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Carton Mark Details"
-                          placeholder={t("enterCartonMarkDetails")}
-                          onChange={(e) => setCartonMarkDetails(e.target.value)}
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                  <Col lg="2">
-                  <FormGroup>
-                      <Label>{t("Carton Sample Image")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Carton Sample"
-                          placeholder={t("attachCartonSampleImage")}
-                          value={
-                            cartonSampleImg
-                              ? cartonSampleImg
-                              : ""
-                          }
-                          onChange={(e) =>
-                            setCartonSampleImg(e.target.value)
-                          }
-                          disabled
-                        ></Input>
-                        <Files
-                          className="files-dropzone fileContainer"
-                          accept=".png,.jpg,.jpeg"
-                          multiple={false}
-                          canCancel={false}
-                          onChange={CartonSample}
-                          clickable
-                        >
-                          <InputGroupText className=" btn imgBackground">
-                            <img
-                              src={imgUpload}
-                              width="25px"
-                              height="25px"
-                              type="file"
-                            ></img>
-                          </InputGroupText>
-                        </Files>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                  <Col lg="2">
-              
-                    {fileCartonImg.length > 0 ? (
-                    
-                    fileCartonImg
-                    .map((file) => (
-                          <>
-                            <div className="profile-pic">
+                  {/* Packing Information: Carton Edge Finish,Carton Mark Details,Make-Up */}
+
+                  <Row>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("cartonEdgeFinish")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Carton Edge Finish"
+                            placeholder={t("enterCartonEdgeFinish")}
+                            onChange={(e) => setCartonEdgeFinish(e.target.value)}
+                          ></Input>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("cartonMarkDetails")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Carton Mark Details"
+                            placeholder={t("enterCartonMarkDetails")}
+                            onChange={(e) => setCartonMarkDetails(e.target.value)}
+                          ></Input>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col lg="2">
+                      <FormGroup>
+                        <Label>{t("Carton Sample Image")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Carton Sample"
+                            placeholder={t("attachCartonSampleImage")}
+                            value={
+                              cartonSampleImg
+                                ? cartonSampleImg
+                                : ""
+                            }
+                            onChange={(e) =>
+                              setCartonSampleImg(e.target.value)
+                            }
+                            disabled
+                          ></Input>
+                          <Files
+                            className="files-dropzone fileContainer"
+                            accept=".png,.jpg,.jpeg"
+                            multiple={false}
+                            canCancel={false}
+                            onChange={CartonSample}
+                            clickable
+                          >
+                            <InputGroupText className=" btn imgBackground">
                               <img
-                                src={awsUrl + file.filepath}
-                                width="100px"
-                                height="100px"
-                                className="m-10"
-                              />
-                              <div className="edit m-t-30 m-r-30">
-                                  <img 
-                                    src={deleteIcon} 
-                                    width="30px" 
-                                    height="30px" 
-                                    style={{ cursor: 'pointer' }} 
-                                    onClick={()=>
-                                      {
-                                        deleteImageFiles("Carton", file)
-                                      }
-                                      }
+                                src={imgUpload}
+                                width="25px"
+                                height="25px"
+                                type="file"
+                              ></img>
+                            </InputGroupText>
+                          </Files>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col lg="2">
+
+                      {fileCartonImg.length > 0 ? (
+
+                        fileCartonImg
+                          .map((file) => (
+                            <>
+                              <div className="profile-pic">
+                                <img
+                                  src={awsUrl + file.filepath}
+                                  width="100px"
+                                  height="100px"
+                                  className="m-10"
+                                />
+                                <div className="edit m-t-30 m-r-30">
+                                  <img
+                                    src={deleteIcon}
+                                    width="30px"
+                                    height="30px"
+                                    style={{ cursor: 'pointer' }}
+                                    onClick={() => {
+                                      deleteImageFiles("Carton", file)
+                                    }
+                                    }
                                   />
-                                
-                                 </div>
+
+                                </div>
                               </div>
-                           
-                          </>
-                        ))
-                     
-                    ) : (
-                      <div>{''}</div>
-                    )}
-                  
-                  </Col>
-                </Row>
 
-                {/* Packing Information: Films/CD,Picture-Card,Inner Cardboard */}
+                            </>
+                          ))
 
-                <Row>
-                <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("makeUp")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Make-Up"
-                          placeholder={t("enterMakeUp")}
-                          onChange={(e) => setMakeUp(e.target.value)}
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("filmsCD")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Films/CD"
-                          placeholder={t("enterFilmsCD")}
-                          onChange={(e) => setFlimsCD(e.target.value)}
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("pictureCard")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Picture-Card"
-                          placeholder={t("enterPictureCard")}
-                          onChange={(e) => setPictureCard(e.target.value)}
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                 
-                </Row>
+                      ) : (
+                        <div>{''}</div>
+                      )}
 
-                {/* Packing Information: Estimated Delivery Date,Shipping Size,Air Freight */}
-                <Row>
-                <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("innerCardboard")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Inner Cardboard"
-                          placeholder={t("enterInnerCardboard")}
-                          onChange={(e) => setInnerCardBoard(e.target.value)}
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("estimatedDeliveryDate")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Estimated Delivery Date"
-                          placeholder={t("estimatedDeliveryDateETAETD")}
-                          type="date"
-                          min={new Date().toISOString().split('T')[0]}
+                    </Col>
+                  </Row>
+
+                  {/* Packing Information: Films/CD,Picture-Card,Inner Cardboard */}
+
+                  <Row>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("makeUp")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Make-Up"
+                            placeholder={t("enterMakeUp")}
+                            onChange={(e) => setMakeUp(e.target.value)}
+                          ></Input>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("filmsCD")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Films/CD"
+                            placeholder={t("enterFilmsCD")}
+                            onChange={(e) => setFlimsCD(e.target.value)}
+                          ></Input>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("pictureCard")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Picture-Card"
+                            placeholder={t("enterPictureCard")}
+                            onChange={(e) => setPictureCard(e.target.value)}
+                          ></Input>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+
+                  </Row>
+
+                  {/* Packing Information: Estimated Delivery Date,Shipping Size,Air Freight */}
+                  <Row>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("innerCardboard")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Inner Cardboard"
+                            placeholder={t("enterInnerCardboard")}
+                            onChange={(e) => setInnerCardBoard(e.target.value)}
+                          ></Input>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("estimatedDeliveryDate")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Estimated Delivery Date"
+                            placeholder={t("estimatedDeliveryDateETAETD")}
+                            type="date"
+                            min={new Date().toISOString().split('T')[0]}
                           onChange={(e) =>
-                            setEstimatedDeliveryDate(e.target.value)
-                          }
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                  <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("shippingSize")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Shipping Size"
-                          placeholder={t("enterShippingSize")}
-                          onChange={(e) => setShippingSize(e.target.value)}
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                 
-                </Row>
-                <Row>
-                <Col lg="4">
-                    <FormGroup>
-                      <Label>{t("airFreight")}</Label>
-                      <InputGroup>
-                        <Input
-                          className=""
-                          name="Air Freight"
-                          placeholder={t("enterAirFreight")}
-                          onChange={(e) => setAirFrieght(e.target.value)}
-                        ></Input>
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                </Row>
-</div>
+                              setEstimatedDeliveryDate(e.target.value)
+                            }
+                          ></Input>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("shippingSize")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Shipping Size"
+                            placeholder={t("enterShippingSize")}
+                            onChange={(e) => setShippingSize(e.target.value)}
+                          ></Input>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+
+                  </Row>
+                  <Row>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("airFreight")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Air Freight"
+                            placeholder={t("enterAirFreight")}
+                            onChange={(e) => setAirFrieght(e.target.value)}
+                          ></Input>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                </div>
                 {/* Others: Forbidden Substances Information,Testing Requirement */}
                 <div ref={othersinfo} className="othersinfo">
-                <Row className="g-12">
-                  <Col lg="12" md="12" sm="12" xs="12">
-                    <span>
-                      <H6 className="ordersubhead">{t("others")}</H6>
-                    </span>
-                  </Col>
-                </Row>
+                  <Row className="g-12">
+                    <Col lg="12" md="12" sm="12" xs="12">
+                      <span>
+                        <H6 className="ordersubhead">{t("others")}</H6>
+                      </span>
+                    </Col>
+                  </Row>
 
-                <Row>
-                  <Col lg="6">
-                    <FormGroup>
-                      <Label className="form-label">
-                        {t("forbiddenSubstancesInformation")}
-                      </Label>
-                      <CKEditors
-                        activeclassName="p10"
-                        events={{
-                          change: onChangeForbiddenSubstancesInfo,
-                        }}
-                        content={forbiddenSubstancesInfo}
-                        config={{
-                          height: 100,
-                          toolbar: [
-                            [
-                              "Bold",
-                              "Italic",
-                              "NumberedList",
-                              "BulletedList",
-                              "Strike",
-                            ],
-                            [
-                              "Cut",
-                              "Copy",
-                              "Paste",
-                              "Pasteasplaintext",
-                              "FormattingStyles",
-                              "Undo",
-                              "Redo",
-                            ],
-                            [
-                              "List",
-                              "Indent",
-                              "Blocks",
-                              "Align",
-                              "Bidi",
-                              "Paragraph",
-                            ],
-                            ["Find", "Selection", "Spellchecker", "Editing"],
-                          ],
-                        }}
-                      />
-                    </FormGroup>
-                  </Col>
-                  <Col lg="6">
-                    <FormGroup>
-                      <Label className="form-label">
-                        {t("testingRequirement")}
-                      </Label>
-                      <CKEditors
-                        activeclassName="p10"
-                        events={{
-                          change: onChangeTestingRequirement,
-                        }}
-                        content={testingRequirement}
-                        onChange={(e) => setTestingRequirement(e.target.value)}
-                        config={{
-                          height: 100,
-                          toolbar: [
-                            [
-                              "Bold",
-                              "Italic",
-                              "NumberedList",
-                              "BulletedList",
-                              "Strike",
-                            ],
-                            [
-                              "Cut",
-                              "Copy",
-                              "Paste",
-                              "Pasteasplaintext",
-                              "FormattingStyles",
-                              "Undo",
-                              "Redo",
-                            ],
-                            [
-                              "List",
-                              "Indent",
-                              "Blocks",
-                              "Align",
-                              "Bidi",
-                              "Paragraph",
-                            ],
-                            ["Find", "Selection", "Spellchecker", "Editing"],
-                          ],
-                        }}
-                      />
-                    </FormGroup>
-                  </Col>
+                  <Row>
+                    <Col lg="6">
+                      <FormGroup>
+                        <Label className="form-label">
+                          {t("forbiddenSubstancesInformation")}
+                        </Label>
+                      <JoditEditor
+                          ref={editor}
+                          value={forbiddenSubstancesInfo}
+                          config={config}
+                          tabIndex={1}
+                          onChange={(newContent) => setForbiddenSubstancesInfo(newContent)}
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col lg="6">
+                      <FormGroup>
+                        <Label className="form-label">
+                          {t("testingRequirement")}
+                        </Label>
+                       <JoditEditor
+                          ref={editor}
+                          value={testingRequirement}
+                          config={config}
+                          tabIndex={1}
+                          onChange={(newContent) => setTestingRequirement(newContent)}
+                        />
+                      </FormGroup>
+                    </Col>
 
-                  {/* Others: Sample Requirements,Special Request -If any */}
-                </Row>
-                <Row>
-                  <Col lg="6">
-                    <FormGroup>
-                      <Label className="form-label">
-                        {t("SampleRequirements")}
-                      </Label>
-                      <CKEditors
-                        activeclassName="p10"
-                        events={{
-                          change: onChangeSampleRequirement,
-                        }}
-                        content={sampleRequirement}
-                        onChange={(e) => setSampleRequirement(e.target.value)}
-                        config={{
-                          height: 100,
-                          toolbar: [
-                            [
-                              "Bold",
-                              "Italic",
-                              "NumberedList",
-                              "BulletedList",
-                              "Strike",
-                            ],
-                            [
-                              "Cut",
-                              "Copy",
-                              "Paste",
-                              "Pasteasplaintext",
-                              "FormattingStyles",
-                              "Undo",
-                              "Redo",
-                            ],
-                            [
-                              "List",
-                              "Indent",
-                              "Blocks",
-                              "Align",
-                              "Bidi",
-                              "Paragraph",
-                            ],
-                            ["Find", "Selection", "Spellchecker", "Editing"],
-                          ],
-                        }}
-                      />
-                    </FormGroup>
-                  </Col>
-                  <Col lg="6">
-                    <FormGroup>
-                      <Label className="form-label">
-                        {t("specialRequestIfAny")}
-                      </Label>
-                      <CKEditors
-                        activeclassName="p10"
-                        events={{
-                          change: onChangeSpecialRequest,
-                        }}
-                        content={specialRequest}
-                        onChange={(e) => setSpecialRequest(e.target.value)}
-                        config={{
-                          height: 100,
-                          toolbar: [
-                            [
-                              "Bold",
-                              "Italic",
-                              "NumberedList",
-                              "BulletedList",
-                              "Strike",
-                            ],
-                            [
-                              "Cut",
-                              "Copy",
-                              "Paste",
-                              "Pasteasplaintext",
-                              "FormattingStyles",
-                              "Undo",
-                              "Redo",
-                            ],
-                            [
-                              "List",
-                              "Indent",
-                              "Blocks",
-                              "Align",
-                              "Bidi",
-                              "Paragraph",
-                            ],
-                            ["Find", "Selection", "Spellchecker", "Editing"],
-                          ],
-                        }}
-                      />
-                    </FormGroup>
-                  </Col>
-                </Row>
+                    {/* Others: Sample Requirements,Special Request -If any */}
+                  </Row>
+                  <Row>
+                    <Col lg="6">
+                      <FormGroup>
+                        <Label className="form-label">
+                          {t("SampleRequirements")}
+                        </Label>
+                       <JoditEditor
+                          ref={editor}
+                          value={sampleRequirement}
+                          config={config}
+                          tabIndex={1}
+                          onChange={(newContent) => setSampleRequirement(newContent)}
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col lg="6">
+                      <FormGroup>
+                        <Label className="form-label">
+                          {t("specialRequestIfAny")}
+                        </Label>
+                       <JoditEditor
+                          ref={editor}
+                          value={specialRequest}
+                          config={config}
+                          tabIndex={1}
+                          onChange={(newContent) => setSpecialRequest(newContent)}
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
                 </div>
                 <FormGroup className="f-right">
                   <Button
@@ -3466,26 +3211,26 @@ if(imageType == "MeasurementSheet"){
                       submitInquiryForm();
                     }}
                   >
-                   {t("save")}
+                    {t("save")}
                   </Button>
                 </FormGroup>
-              
+
               </Form>
             </CardBody>
           </Card>
           {/* Scroll To Top  */}
-          
-           <div className="top-to-btm" style={{ cursor: 'pointer' }}>
+
+          <div className="top-to-btm" style={{ cursor: 'pointer' }}>
             {" "}
             {showTopBtn && (
-              <img  src={scrollUpIcon}  className="icon-position icon-style"
-              onClick={() => {
-                window.scrollTo({top: 0, behavior: 'smooth'});
-              }}
-            >
-            </img>
+              <img src={scrollUpIcon} className="icon-position icon-style"
+                onClick={() => {
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+              >
+              </img>
             )}{" "}
-        </div>         
+          </div>
         </Col>
       </Container>
       <InfoCanvas
