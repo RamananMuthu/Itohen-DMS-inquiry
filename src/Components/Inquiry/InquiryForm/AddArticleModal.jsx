@@ -5,7 +5,7 @@ import { ServerUrl } from '../../../Constant';
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
-import { apidecrypt, apiencrypt } from '../../../helper';
+import { encode, decode, apiencrypt, apidecrypt } from "../../../helper";
 
 const FormAddArticalModal = ({ modal, toggle, companyId, workspaceId, article }) => {
   const { t } = useTranslation();

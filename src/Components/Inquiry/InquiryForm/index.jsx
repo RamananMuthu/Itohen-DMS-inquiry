@@ -164,7 +164,10 @@ const index = () => {
   const trimsinfo = useRef(null);
   const packinginfo = useRef(null);
   const othersinfo = useRef(null);
-
+  const basicInfoValidation = useRef(null);
+  const totalQtyValidation = useRef(null);
+  const currencyValidation = useRef(null);
+  const inquiryDueDateValidation = useRef(null);
   /****------- Tab Scroll ---------- ****/ 
   const scrollToSection =(elementRef)=>{
     window.scrollTo({
@@ -178,7 +181,8 @@ const index = () => {
 
     var params = {};
     params["type"] = valueType;
-    axios.post(ServerUrl + "/get-inquiry-master", params).then((response) => {
+    axios.post(ServerUrl + "/get-inquiry-master", apiencrypt(params)).then((response) => {
+      response.data = apidecrypt(response.data);
       setInfoDetails(response.data.data);
     });
     setMasterType(valueType);
@@ -188,34 +192,49 @@ const index = () => {
   const onFilesChange = (files) => {
     setFiles(files);
   };
-  /****------- Validation ---------- ****/ 
-  const validation = (data) => {
-    let validerrors = {};
-    if (!article) {
-      validerrors.article = t("selectArticleName");
-    }
-    if (!styleNo.trim()) {
-      validerrors.styleNo = t("enterStyleNumber");
-    }
-    if (!fabricCom) {
-      validerrors.fabricCom = t("selectFabricComposition");
-    }
-    if (!totalQuantity) {
-      validerrors.totalQuantity = t("enterTotQty");
-    } 
-     else if (!/^[0-9]+$/.test(totalQuantity)) {
-       validerrors.totalQuantity = t("numbersOnlyAllowed");
-       }
-   
-    if (!currency) {
-      validerrors.currency = t("enterCurrency");
-    }
-    if (!inquiryDueDate) {
-      validerrors.inquiryDueDate = t("enterInquiryDueDate");
-    }
-    setValiderros(validerrors);
-    return validerrors;
-  };
+/****------- Validation ---------- ****/
+const validation = (data) => {
+
+  let validerrors = {};
+  if (!article) {
+    validerrors.article = t("selectArticleName");
+  }
+  if (!styleNo.trim()) {
+    validerrors.styleNo = t("enterStyleNumber");
+  }
+  if (!fabricCom) {
+    validerrors.fabricCom = t("selectFabricComposition");
+  }
+  if (!inquiryDueDate) {
+    validerrors.inquiryDueDate = t("enterInquiryDueDate");
+  }
+  if (!currency) {
+    validerrors.currency = t("enterCurrency");
+  }
+  if (!totalQuantity) {
+    validerrors.totalQuantity = t("enterTotQty");
+  }
+  else if (!/^[0-9]+$/.test(totalQuantity)) {
+    validerrors.totalQuantity = t("numbersOnlyAllowed");
+  }
+
+  if( validerrors.article ){
+    scrollToSection(basicInfoValidation)
+  } else if( validerrors.styleNo ){
+    scrollToSection(basicInfoValidation)
+  } else if( validerrors.fabricCom ){
+    scrollToSection(fabricinfo)
+  } else if( validerrors.inquiryDueDate ){
+    scrollToSection(inquiryDueDateValidation)
+  } else if( validerrors.currency ) {
+    scrollToSection(currencyValidation)
+  } else if( validerrors.totalQuantity ){
+    scrollToSection(totalQtyValidation)
+  } 
+  setValiderros(validerrors);
+  return validerrors;
+};
+
 /****------- Delete Color ---------- ****/ 
   const deleteColor = (e) => {
     var getColor = e.target.id;
@@ -490,8 +509,9 @@ if(imageType == "MeasurementSheet"){
     if (result.isConfirmed) 
     { 
       axios
-      .post(ServerUrl+"/delete-inquiry-media",media)
+      .post(ServerUrl+"/delete-inquiry-media",apiencrypt(media))
       .then((response) => {
+        response.data = apidecrypt(response.data);
         if(response.data.status_code == 200){
           Swal.fire({
             title: t(response.data.meassage),
@@ -522,8 +542,9 @@ if(imageType == "MeasurementSheet"){
       if (result.isConfirmed) 
       { 
         axios
-        .post(ServerUrl+"/delete-inquiry-media",media)
+        .post(ServerUrl+"/delete-inquiry-media",apiencrypt(media))
         .then((response) => {
+          response.data = apidecrypt(response.data);
           if(response.data.status_code == 200){
             Swal.fire({
               title: t(response.data.meassage),
@@ -1072,8 +1093,9 @@ if(imageType == "MeasurementSheet"){
       inquiryFormInputParams["referenceId"] = referenceId.toString();
       inquiryFormInputParams['measurement_Chart']= measure_chart_array;
       axios
-        .post(ServerUrl + "/save-inquiry", inquiryFormInputParams)
+        .post(ServerUrl + "/save-inquiry", apiencrypt(inquiryFormInputParams))
         .then((response) => {
+          response.data = apidecrypt(response.data);
           if (response.data.status_code === 200) {
             Swal.fire({
               title: t(response.data.message),
@@ -1199,6 +1221,7 @@ if(imageType == "MeasurementSheet"){
             {/* </Card>
             <Card > */}
             {/* <CardBody className="margtopbody"> */}
+            <div ref={basicInfoValidation}></div>
               <Form>             
                 <div ref={basicinfo} className="basicinfo">
                 <Row className="g-12 m-t-20">
@@ -1446,7 +1469,7 @@ if(imageType == "MeasurementSheet"){
                 </Col>
 
                 {/* Fabric Type,Yarn Count,Target Price */}
-
+                <div ref={inquiryDueDateValidation}></div>
                 <Row>
                 <Col lg="4">
                     <FormGroup>
@@ -1483,6 +1506,7 @@ if(imageType == "MeasurementSheet"){
                           className=""
                           name="Inquiry Due Date"
                           type="date"
+                          min={new Date().toISOString().split('T')[0]}
                           placeholder={t("selectInquiryDueDate")}
                           onChange={(e) => setInquiryDueDate(e.target.value)}
                         ></Input>
@@ -1497,7 +1521,7 @@ if(imageType == "MeasurementSheet"){
                 </Row>
 
                 {/* Incoterms,Payment Terms,Inquiry Due Date */}
-
+                <div ref={currencyValidation}></div>
                 <Row>
                   <Col lg="4">
                     <FormGroup>
@@ -1726,9 +1750,10 @@ if(imageType == "MeasurementSheet"){
                     </FormGroup>
                   </Col>
                 </Row>
-                <Row>
 
-                  {/* Total Quantity,Color,Size */}
+                 {/* Total Quantity,Color,Size */}
+                <div ref={totalQtyValidation}></div>
+                <Row>
                   <Col lg="4">
                     <FormGroup>
                       <Label> {t("totalQuantity")}</Label>
@@ -3199,6 +3224,7 @@ if(imageType == "MeasurementSheet"){
                           name="Estimated Delivery Date"
                           placeholder={t("estimatedDeliveryDateETAETD")}
                           type="date"
+                          min={new Date().toISOString().split('T')[0]}
                           onChange={(e) =>
                             setEstimatedDeliveryDate(e.target.value)
                           }

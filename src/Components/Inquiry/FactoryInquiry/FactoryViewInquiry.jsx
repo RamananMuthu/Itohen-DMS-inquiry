@@ -9,7 +9,7 @@ import yellowSmile from "../../../assets/images/dms/inquiryYellowSmile.svg";
 import graySadSmile from "../../../assets/images/dms/inquirygray_icon.svg";
 import graySmile from"../../../assets/images/dms/InquiryRemainingSmile.svg";
 import axios from "axios";
-import { encode,calculateDateDiffCountFromTwoDates } from "../../../helper";
+import { encode, apiencrypt, apidecrypt,calculateDateDiffCountFromTwoDates } from "../../../helper";
 import {
   getLoginCompanyId,
   getWorkspaceId,
@@ -39,8 +39,9 @@ const FactoryViewInquiry = () => {
 
   const apiCall = () => {
     axios
-    .post(ServerUrl + "/factory-get-inquiry", getInputParams)
+    .post(ServerUrl + "/factory-get-inquiry", apiencrypt(getInputParams))
     .then((response) => {
+      response.data = apidecrypt(response.data);
       setInquiryDetails(response.data.data);
       setInquiryResponse(response.data.response);
     })

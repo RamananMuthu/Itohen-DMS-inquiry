@@ -83,15 +83,17 @@ const Rightbar = () => {
     useEffect( () => {
 
         getWorkspaceType != "Factory" ?
-        axios.post(ServerUrl+'/check-buyer-notification', notifyParams)
+        axios.post(ServerUrl+'/check-buyer-notification', apiencrypt(notifyParams))
         .then((response) => 
         {
+            response.data = apidecrypt(response.data);
             setNotifyCount(response.data.notifications);             
         })
         :
-        axios.post(ServerUrl+'/check-factory-notification', notifyParams)
+        axios.post(ServerUrl+'/check-factory-notification', apiencrypt(notifyParams))
         .then((response) => 
         {
+            response.data = apidecrypt(response.data);
             setNotifyFactCount(response.data.notifications);             
         })
 
@@ -164,6 +166,7 @@ const Rightbar = () => {
                 </span>                  
             </div>
         :
+        
         getWorkspaceType != "Factory" ?  
         (getStaff === "Staff" && getStaffPermission.includes("View Response")) || getStaff == null ? 
             <div className="notification-box m-r-10">                   

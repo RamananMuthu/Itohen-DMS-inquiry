@@ -22,7 +22,7 @@ import { Breadcrumbs } from "../../../AbstractElements";
 import { useTranslation } from "react-i18next";
 import { ServerUrl } from "../../../Constant";
 import Rating from "react-rating";
-
+import {apiencrypt, apidecrypt } from "../../../helper";
 const FeedbackFormInquiry = () => {
   const [ratingLowestPrice, setRatingLowestPrice] = useState();
   const [ratingCommunication, setRatingCommunication] = useState();
@@ -65,9 +65,9 @@ const FeedbackFormInquiry = () => {
       setFactoriesListData(() => "");
 
       axios
-        .post(ServerUrl + "/get-buyer-inquiry-list", getInputParams)
+        .post(ServerUrl + "/get-buyer-inquiry-list", apiencrypt(getInputParams))
         .then((response) => {
-          // response.data = apidecrypt(response.data);
+          response.data = apidecrypt(response.data);
           setInquiryIds(response.data.data);
         });
     } else {
@@ -81,9 +81,9 @@ const FeedbackFormInquiry = () => {
     getInquiryId["inquiry_id"] = id;
 
     axios
-      .post(ServerUrl + "/get-inquiry-factory-list", getInquiryId)
+      .post(ServerUrl + "/get-inquiry-factory-list", apiencrypt(getInquiryId))
       .then((response) => {
-        // response.data = apidecrypt(response.data);
+        response.data = apidecrypt(response.data);
         if (response.data.data.length == 0) {
           setBtnStatus(true);
 
@@ -120,9 +120,9 @@ const FeedbackFormInquiry = () => {
     feedbackFormDataInputParams["factory_id"] = factoryId;
 
     axios
-      .post(ServerUrl + "/check-factory-feedback", feedbackFormDataInputParams)
+      .post(ServerUrl + "/check-factory-feedback", apiencrypt(feedbackFormDataInputParams))
       .then((response) => {
-        // response.data = apidecrypt(response.data);
+        response.data = apidecrypt(response.data);
         if (response.data.status_code == 201) {
           if (response.data.data.length > 0) {
             setBtnStatus(true);
@@ -276,8 +276,9 @@ const FeedbackFormInquiry = () => {
     } else {
       /*--------------- API CALL [ save-factory-feedback ] --------------- */
       axios
-        .post(ServerUrl + "/save-factory-feedback", feedbackInputParams)
+        .post(ServerUrl + "/save-factory-feedback", apiencrypt(feedbackInputParams))
         .then((response) => {
+          response.data = apidecrypt(response.data);
           if (response.data.status_code == 200) {
             Swal.fire({
               title: t(response.data.message),

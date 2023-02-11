@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import { getLoginCompanyId, getWorkspaceId, getLoginUserId, getWorkspaceType, getLoginUserType, 
          getStaff, getStaffPermission } from '../../../Constant/LoginConstant';
 import { ServerUrl } from "../../../Constant";
-import { getColorSizeQtyInquiry, decode } from "../../../helper";
+import { getColorSizeQtyInquiry, decode, apiencrypt, apidecrypt } from "../../../helper";
 import parse from 'html-react-parser';
 import { useSearchParams, } from "react-router-dom";
 import CKEditors from 'react-ckeditor-component';
@@ -69,8 +69,9 @@ const FactoryDetailInquiry = () => {
 
   const apiCall = () => {
     axios
-    .post(ServerUrl + "/inquiry-details", getInputParams)
+    .post(ServerUrl + "/inquiry-details", apiencrypt(getInputParams))
     .then((response) => {
+      response.data = apidecrypt(response.data);
       setFactoryInquiryDetails(response.data.data[0]);
       setSpecialFinishHtmlString(parse(response.data.data[0].special_finish));
       setSpecialRequesHtmlString(parse(response.data.data[0].sample_requirements));
@@ -84,16 +85,18 @@ const FactoryDetailInquiry = () => {
     })
 
   axios
-    .post(ServerUrl + "/factory-inquiry-response", getInputParams)
+    .post(ServerUrl + "/factory-inquiry-response", apiencrypt(getInputParams))
     .then((response) => {
+      response.data = apidecrypt(response.data);
       setInquiryResponse(response.data.data[0] ? response.data.data[0] : "");
       setPrice(response.data.data[0].price ? (response.data.data[0].price) : "");
       setComments(response.data.data[0].comments ? response.data.data[0].comments : "");
     })
 
   axios
-    .post(ServerUrl + "/inquiry-media", getInputParams)
+    .post(ServerUrl + "/inquiry-media", apiencrypt(getInputParams))
     .then((response) => {
+      response.data = apidecrypt(response.data);
       (response.data.data.files).map((mapData) => {
         if (mapData.media_type == "MeasurementSheet") {
           var getMeasurementDetails = mapData.filepath;
@@ -155,8 +158,9 @@ const FactoryDetailInquiry = () => {
 
 // ********** API call for SKU Quantity Ratio ************
   axios
-    .post(ServerUrl + "/inquiry-sku", getInputParams)
+    .post(ServerUrl + "/inquiry-sku", apiencrypt(getInputParams))
     .then((response) => {
+      response.data = apidecrypt(response.data);
       setOrderskuDetails(response.data.data.sku);
       setGetColor(response.data.data.colors);
       setGetSize(response.data.data.sizes);
@@ -196,8 +200,9 @@ const FactoryDetailInquiry = () => {
       inquiryFormInputParams['price'] = price;
       inquiryFormInputParams['comments'] = comments;
 
-      axios.post(ServerUrl + "/save-inquiry-factory-response", inquiryFormInputParams)
+      axios.post(ServerUrl + "/save-inquiry-factory-response", apiencrypt(inquiryFormInputParams))
         .then((response) => {
+          response.data = apidecrypt(response.data);
           if (response.data.status_code === 200) {
             Swal.fire({
               title: t("Inquiry Response Added Successfully"),

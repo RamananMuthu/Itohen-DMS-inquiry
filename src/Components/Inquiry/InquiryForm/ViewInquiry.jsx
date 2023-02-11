@@ -9,7 +9,7 @@ import deleteIcon from "../../../assets/images/dms/icons/inquiryDeleteIcon.svg";
 import responseBlueIcon from "../../../assets/images/dms/inquiryResponseBlueIcon.svg";
 import axios from "axios";
 import ViewFactoryModal from "./ViewFactoryModal";
-import { encode, apiencrypt, decode } from "../../../helper";
+import { encode,apiencrypt, apidecrypt } from "../../../helper";
 import { getLoginCompanyId, getWorkspaceId, getWorkspaceType, getLoginUserId, getStaff, getStaffPermission, getLoginUserType } from "../../../Constant/LoginConstant";
 import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
@@ -42,16 +42,19 @@ const ViewInquiry = () => {
     workspace_id: workspace_id,
   };
 
-  const apiCall = ( ) => {
+  const apiCall = () => {
     axios
-    .post(ServerUrl + "/get-inquiry", getInputParams).then((response) => {
+    .post(ServerUrl + "/get-inquiry", apiencrypt(getInputParams))
+    .then((response) => {
+      response.data = apidecrypt(response.data);
       setInquiryDetails(response.data.data);
       setInquiryDownloadPath(response.data.pdfpath);
     });
 
     axios
-    .post(ServerUrl + "/get-inquiry-factory",
-        apiencrypt(dataToSendAtStarting)).then((response) => {
+    .post(ServerUrl + "/get-inquiry-factory", apiencrypt(dataToSendAtStarting))
+    .then((response) => {
+        response.data = apidecrypt(response.data);
         setFactory(response.data.data);
     });
   };
@@ -114,8 +117,9 @@ const ViewInquiry = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .post(ServerUrl + "/delete-inquiry", deleteParams)
+          .post(ServerUrl + "/delete-inquiry", apiencrypt(deleteParams))
           .then((response) => {
+            response.data = apidecrypt(response.data);
             if (response.data.status_code == 200) {
               Swal.fire({
                 title: t(response.data.meassage),
@@ -125,8 +129,9 @@ const ViewInquiry = () => {
               }).then((result) => {
                 if (result.isConfirmed) {
                   axios
-                    .post(ServerUrl + "/get-inquiry", getInputParams)
+                    .post(ServerUrl + "/get-inquiry", apiencrypt(getInputParams))
                     .then((response) => {
+                      response.data = apidecrypt(response.data);
                       setInquiryDetails(response.data.data);
                     });
                 }
@@ -142,8 +147,9 @@ const ViewInquiry = () => {
     dataToSendAtStarting["inquiry_id"] = inquiryId;
 
     axios
-      .post(ServerUrl + "/inquiry-factory-list", dataToSendAtStarting)
+      .post(ServerUrl + "/inquiry-factory-list", apiencrypt(dataToSendAtStarting))
       .then((response) => {
+        response.data = apidecrypt(response.data);
         setFactoryList(response.data.data);
         response.data.data.map((factoriesListData) => {
           selectedFactoriesArray.push(factoriesListData.id);

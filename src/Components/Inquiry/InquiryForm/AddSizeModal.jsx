@@ -8,7 +8,7 @@ import { ServerUrl } from '../../../Constant';
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useTranslation } from 'react-i18next';
-import { apidecrypt, apiencrypt } from '../../../helper';
+import { apiencrypt, apidecrypt } from "../../../helper";
 
 const FormAddSizeModal = ({ modal, toggle, inputParams, size }) => {
   const { t } = useTranslation();

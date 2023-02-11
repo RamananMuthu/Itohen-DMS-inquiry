@@ -3,7 +3,7 @@ import { Container, Row, Col, CardBody, Card, Button, } from "reactstrap";
 import { Breadcrumbs } from "../../../AbstractElements";
 import Loader from "../../../Layout/Loader/index";
 import { getLoginUserId, getWorkspaceType, getStaff, getStaffPermission, getLoginUserType } from '../../../Constant/LoginConstant';
-import { encode, decode, } from "../../../helper"
+import { encode, decode, apiencrypt, apidecrypt } from "../../../helper";
 import { useSearchParams, } from "react-router-dom";
 import axios from "axios";
 import parse from 'html-react-parser';
@@ -33,17 +33,18 @@ const FactoryResponse = () => {
     factoryRatingInputParams["factory_id"] = factoryId;
     factoryRatingInputParams["user_id"] = userId;
         axios
-            .post(ServerUrl + "/get-factory-ratings", factoryRatingInputParams)
+            .post(ServerUrl + "/get-factory-ratings", apiencrypt(factoryRatingInputParams))
             .then((response) => {
-                // response.data = apidecrypt(response);
+                response.data = apidecrypt(response.data);
                 setFactoryRatingData(response.data.data);
             })
     }
 
     const apiCall = () => {
         axios
-        .post(ServerUrl + "/inquiry-factory-response", getInputParams)
+        .post(ServerUrl + "/inquiry-factory-response", apiencrypt(getInputParams))
         .then((response) => {
+            response.data = apidecrypt(response.data);
             setFactoryRes(response.data.data);
         })
     };

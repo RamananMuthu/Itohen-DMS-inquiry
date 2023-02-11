@@ -6,6 +6,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import AddFactory from "./AddFactoryModal";
 import { useTranslation } from "react-i18next";
+import { apiencrypt, apidecrypt } from "../../../helper";
 import { getLoginCompanyId, getLoginUserId, getWorkspaceId } from '../../../Constant/LoginConstant';
 
 const ViewFactoryModal = ({ modal, toggle, inquiryId, factory, setFactory, selectedFactoriesList }) => {
@@ -43,8 +44,9 @@ const ViewFactoryModal = ({ modal, toggle, inquiryId, factory, setFactory, selec
     apiInputParams['user_id'] = getLoginUserId;
 
     axios
-      .post(ServerUrl + "/send-inquiry", apiInputParams)
+      .post(ServerUrl + "/send-inquiry", apiencrypt(apiInputParams))
       .then((response) => {
+        response.data = apidecrypt(response.data);
         if (response.data.status_code == 200) {
           Swal.fire({
             title: t(response.data.message),

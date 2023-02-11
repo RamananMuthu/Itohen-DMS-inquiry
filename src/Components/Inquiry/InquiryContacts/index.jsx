@@ -4,6 +4,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import { Breadcrumbs, H5, H6, } from "../../../AbstractElements";
 import { getLoginUserId, getWorkspaceType } from '../../../Constant/LoginConstant';
 import { useTranslation } from 'react-i18next';
+import { encode, decode, apiencrypt, apidecrypt } from "../../../helper";
 import Swal from 'sweetalert2';
 import axios from "axios";
 import { ServerUrl } from '../../../Constant/index';
@@ -28,8 +29,9 @@ const InquiryContacts = () => {
   useEffect(() => {
     if (getWorkspaceType == "Factory" && getWorkspaceType != "PCU" && getWorkspaceType != "Buyer") {
       axios
-        .post(ServerUrl + "/factory-inquiry-contact", { factory_id })
+        .post(ServerUrl + "/factory-inquiry-contact", apiencrypt({ factory_id }))
         .then((response) => {
+          response.data = apidecrypt(response.data);
           if (response.data.status_code === 200) {
             setFactoryDetails(response.data.data[0] ? response.data.data[0] : "");
             setValidErrors(() => "");
@@ -54,8 +56,9 @@ const InquiryContacts = () => {
       };
 
       // ********* POST API call for Update the Contact Details **********
-      axios.post(ServerUrl + "/update-inquiry-contact", updateInquirySettings)
+      axios.post(ServerUrl + "/update-inquiry-contact", apiencrypt(updateInquirySettings))
         .then((response) => {
+          response.data = apidecrypt(response.data);
           if (response.data.status_code === 200) {
             // localStorage.setItem("factoryId", encode(response.data.factory));
             Swal.fire({
@@ -93,8 +96,9 @@ const InquiryContacts = () => {
         };
 
         // ********* POST API call for Save the New Contact Details **********
-        axios.post(ServerUrl + "/save-inquiry-contact", inquirySettings)
+        axios.post(ServerUrl + "/save-inquiry-contact", apiencrypt(inquirySettings))
           .then((response) => {
+            response.data = apidecrypt(response.data);
             factory, contact_person, contact_number,
               contact_email, address, city, factory_id
             if (response.data.status_code === 200) {

@@ -8,7 +8,7 @@ import closeIcon from "../../../assets/images/dms/icons/inquiryCloseIcon.svg";
 import { useTranslation } from 'react-i18next';
 import axios from "axios";
 import Swal from "sweetalert2";
-
+import { apiencrypt, apidecrypt } from "../../../helper";
 const AddFactoryModal = ({ modal, toggle, setFactoryModal, companyId, workspaceId, factory }) => {
   const { t } = useTranslation();
   const [factoryName, setFactoryName] = useState('');
@@ -85,9 +85,9 @@ const AddFactoryModal = ({ modal, toggle, setFactoryModal, companyId, workspaceI
     let retval = orderValidation();
     if (Object.keys(retval).length == 0) {
       axios
-        .post(ServerUrl + "/save-inquiry-contact", apiInputParams)
+        .post(ServerUrl + "/save-inquiry-contact", apiencrypt(apiInputParams))
         .then((response) => {
-
+          response.data = apidecrypt(response.data);
           if (response.data.status_code == 200) {
             Swal.fire({
               title: t(response.data.message),
@@ -99,12 +99,13 @@ const AddFactoryModal = ({ modal, toggle, setFactoryModal, companyId, workspaceI
               if (result.isConfirmed) {
                 toggle(false);
                 axios
-                  .post(ServerUrl + "/get-inquiry-factory", {
+                  .post(ServerUrl + "/get-inquiry-factory", apiencrypt({
                     company_id: companyId,
                     workspace_id: workspaceId
-                  }
+                  })
                   )
                   .then((response) => {
+                    response.data = apidecrypt(response.data);
                     factory(response.data.data);
                   });
               }
