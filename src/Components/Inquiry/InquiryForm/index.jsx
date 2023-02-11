@@ -531,8 +531,9 @@ const index = () => {
       }).then((result) => {
         if (result.isConfirmed) {
           axios
-            .post(ServerUrl + "/delete-inquiry-media", media)
+            .post(ServerUrl + "/delete-inquiry-media", apiencrypt(media))
             .then((response) => {
+              response.data = apidecrypt(response.data);
               if (response.data.status_code == 200) {
                 Swal.fire({
                   title: t(response.data.meassage),
@@ -562,8 +563,9 @@ const index = () => {
       }).then((result) => {
         if (result.isConfirmed) {
           axios
-            .post(ServerUrl + "/delete-inquiry-media", media)
+            .post(ServerUrl + "/delete-inquiry-media", apiencrypt(media))
             .then((response) => {
+              response.data = apidecrypt(response.data);
               if (response.data.status_code == 200) {
                 Swal.fire({
                   title: t(response.data.meassage),

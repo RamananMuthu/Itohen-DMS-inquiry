@@ -73,8 +73,7 @@ const FactoryViewInquiry = () => {
   {
     <FactoryDetailInquiry inquiryId={inquiryId} factoryId={factoryId} />;
     // window.location.href = `${process.env.PUBLIC_URL}/factorydetailinquiry?id="`+ encode(inquiryId); 
-    window.location.href =
-      "/inquiry/factorydetailinquiry?id=" + encode(inquiryId);
+    window.location.href = `${process.env.PUBLIC_URL}/factorydetailinquiry?id=`+ encode(inquiryId);
   };
 
   const delayStatus = (daysCount, read, id,responsdate,duedate) => {
