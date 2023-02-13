@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect,useMemo,useRef } from "react";
 import { Container, Row, Col, CardBody, Card, Form, FormGroup, Label, Input, Button } from "reactstrap";
 import { Breadcrumbs, H6 } from "../../../AbstractElements";
 import { useTranslation } from 'react-i18next';
@@ -10,11 +10,12 @@ import { ServerUrl } from "../../../Constant";
 import { getColorSizeQtyInquiry, decode, apiencrypt, apidecrypt } from "../../../helper";
 import parse from 'html-react-parser';
 import { useSearchParams, } from "react-router-dom";
-import CKEditors from 'react-ckeditor-component';
+import JoditEditor from 'jodit-react';
 
 // Showing the factory inquiry Details
 const FactoryDetailInquiry = () => {
   var getInputParams = {};
+  const editor = useRef(null); // **** Using for jodit Editor**//
   const [searchParams, setSearchParams] = useSearchParams();
   const [inquiry_id, setOrderId] = useState(decode(searchParams.get("id")));
   getInputParams['company_id'] = getLoginCompanyId;
@@ -59,7 +60,7 @@ const FactoryDetailInquiry = () => {
   var barcodeStickersData = [];
   var cartonData = [];
   var polybagData = [];
-
+  const placeholder = null;
   const onGoBack = () => {
     setTimeout(() => {
       window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry`
@@ -188,6 +189,46 @@ const FactoryDetailInquiry = () => {
   
   }, []);
 
+  const config = useMemo(() => ({
+    readonly: false,
+    removeButtons: ['hr', 'image', 'table', 'copyformat', 'paragraph', 'eraser', 'link', 'fullsize',],
+    // toolbarButtonSize:"xsmall",
+    // toolbar:true,
+    showXPathInStatusbar: false,
+    showCharsCounter: false,
+    showWordsCounter: false,
+    toolbarAdaptive: true,
+    toolbarSticky: true,
+    enableDragAndDropFileToEditor: true,
+    buttonsXS: [
+      'Bold', 'Italic', 'underline', 'strikethrough', '|', 'brush', 'font', 'fontsize',
+      'align', '|', 'ul', 'ol', '|', 'cut', 'copy', 'paste', '|', 'undo', 'redo', '|', 'dots'
+    ],
+    buttonsSM: [
+      'Bold', 'Italic', 'underline', 'strikethrough', '|', 'brush', 'font', 'fontsize',
+      'align', '|', 'ul', 'ol', '|', 'cut', 'copy', 'paste', '|', 'undo', 'redo', '|', 'dots'
+    ],
+    buttonsMD: [
+      'Bold', 'Italic', 'underline', 'strikethrough', '|', 'brush', 'font', 'fontsize',
+      'align', '|', 'ul', 'ol', '|', 'cut', 'copy', 'paste', '|', 'undo', 'redo', '|', 'dots',
+    ],
+    buttonsXL: [
+      'Bold',
+      'Italic',
+      'cut',
+      'copy',
+      'paste',
+    ],
+    buttons: [
+      'Bold', 'Italic', 'cut', 'copy', 'paste', 'underline', '|', 'ul', 'ol', 'outdent', 'indent', '|',
+      'paragraph', '|', 'cut', 'copy', 'paste', '|', 'link', 'table', '|', 'undo', 'redo', '|', 'hr', 'eraser', 'fullsize',
+    ],
+    uploader: { insertImageAsBase64URI: true },
+
+    placeholder: placeholder || 'Start typing...',
+    hidePoweredByJodit: false,
+  }),
+    [placeholder])
   // ********* POST API call for Submit the Quotes value **********
   const submitFactoryInquiryForm = (e) => {
     let retval = validation();
@@ -834,21 +875,13 @@ const FactoryDetailInquiry = () => {
                       <Col xl="4" lg="6" md="6" sm="12">
                         <FormGroup>
                           <Label className="form-label">{t("comments")}</Label><sup className="font-danger">*</sup>
-                          <CKEditors
-                            activeclassName="p10"
-                            content={(comments).toString()}
-                            events={{ 'change': onChangeCommentsRequest }}
-                            onchange={(e) => setComments(e.target.value)}
-                            config={{
-                              toolbar: [
-                                ["Bold", "Italic", 'NumberedList', 'BulletedList', "Strike Through"],
-                                ["Cut", "Copy", "Paste", "Pasteasplaintext", "FormattingStyles", "Undo", "Redo"],
-                                ["List", "Indent", "Blocks", "Align", "Bidi", "Paragraph"],
-                                ["Find", "Selection", "Spellchecker", "Editing"]
-                              ],
-                            }
-                            }
-                          />
+                          <JoditEditor
+                          ref={editor}
+                          value={comments}
+                          config={config}
+                          tabIndex={1}
+                          onChange={(newContent) => setComments(newContent)}
+                        />
                           {validerrors.comments && (
                             <span className="error-msg">{validerrors.comments}</span>
                           )}
@@ -902,21 +935,13 @@ const FactoryDetailInquiry = () => {
                       <Col xl="4" lg="6" md="6" sm="12">
                         <FormGroup>
                           <Label className="form-label">{t("comments")}</Label><sup className="font-danger">*</sup>
-                          <CKEditors
-                            activeclassName="p10"
-                            content={(comments).toString()}
-                            events={{ 'change': onChangeCommentsRequest }}
-                            onchange={(e) => setComments(e.target.value)}
-                            config={{
-                              toolbar: [
-                                ["Bold", "Italic", 'NumberedList', 'BulletedList', "Strike Through"],
-                                ["Cut", "Copy", "Paste", "Pasteasplaintext", "FormattingStyles", "Undo", "Redo"],
-                                ["List", "Indent", "Blocks", "Align", "Bidi", "Paragraph"],
-                                ["Find", "Selection", "Spellchecker", "Editing"]
-                              ],
-                            }
-                            }
-                          />
+                          <JoditEditor
+                          ref={editor}
+                          value={comments}
+                          config={config}
+                          tabIndex={1}
+                          onChange={(newContent) => setComments(newContent)}
+                        />
                           {validerrors.comments && (
                             <span className="error-msg">{validerrors.comments}</span>
                           )}
