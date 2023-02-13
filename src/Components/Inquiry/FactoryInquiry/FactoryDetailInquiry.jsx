@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import axios from "axios";
 import Swal from "sweetalert2";
 import { getLoginCompanyId, getWorkspaceId, getLoginUserId, getWorkspaceType, getLoginUserType, 
-         getStaff, getStaffPermission } from '../../../Constant/LoginConstant';
+         getStaff,getLoginStaffId ,getStaffPermission } from '../../../Constant/LoginConstant';
 import { ServerUrl } from "../../../Constant";
 import { getColorSizeQtyInquiry, decode, apiencrypt, apidecrypt } from "../../../helper";
 import parse from 'html-react-parser';
@@ -199,6 +199,8 @@ const FactoryDetailInquiry = () => {
       inquiryFormInputParams['factory_id'] = getLoginUserId;
       inquiryFormInputParams['price'] = price;
       inquiryFormInputParams['comments'] = comments;
+      inquiryFormInputParams['user_id']= getLoginUserType == "user"? getLoginUserId : getLoginStaffId;
+      inquiryFormInputParams['user_type']= getLoginUserType;
 
       axios.post(ServerUrl + "/save-inquiry-factory-response", apiencrypt(inquiryFormInputParams))
         .then((response) => {
