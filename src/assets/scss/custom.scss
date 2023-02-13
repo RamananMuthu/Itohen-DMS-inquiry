@@ -1182,25 +1182,28 @@ td.text-left {
 }
 .sticky + .contenthb {
   padding-top: 150px !important;
+
 }
 .myHeader{
   background-color: #ffffff !important;
+
 }
 @media only screen and (max-width: 1440px){
   .sticky {
     position: fixed;
     width: 96%;
     z-index: 9999;
-    top: calc(23% - 95px);
+    top: calc(23% - 115px);
   }
   
 }
+
 @media only screen and (max-width: 1024px) and (min-width: 768px){
   .sticky {
     position: fixed;
     width: 96%;
     z-index: 9999;
-    top: calc(23% - 100px);
+    top: calc(23% - 120px);
   }
   
 }
@@ -1209,8 +1212,12 @@ td.text-left {
     position: fixed;
     width: 97%;
     z-index: 9999;
-    top: calc(23% - 140px);
+    top: calc(23% - 150px);
   }
   
 }
+.inquiry_create{
+  z-index: 99;
+}
+
 /******************************************************/

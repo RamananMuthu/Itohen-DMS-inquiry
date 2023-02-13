@@ -395,6 +395,15 @@ const index = () => {
     });
   };
 
+  const scrollSticky=()=> {
+    var header = document.getElementById("myHeader");
+     var sticky = header.offsetTop;
+    if (window.pageYOffset > sticky) {
+      header.classList.add("sticky");
+    } else {
+      header.classList.remove("sticky");
+    }
+  }
 
   const apiCall = () => {
     axios
@@ -462,6 +471,17 @@ const index = () => {
           window.location.href = `${process.env.PUBLIC_URL}/inquirycontacts`
     //  window.location.href='/inquiry/inquirycontacts' 
 
+        
+    window.addEventListener("scroll", () => {
+      scrollSticky();
+      if (window.scrollY > 400) {
+          setShowTopBtn(true);
+      } else {
+          setShowTopBtn(false);
+      }
+  });
+
+  
   }, []);
 
   /****------- Image Upload API Call ---------- ****/
@@ -1154,50 +1174,11 @@ const index = () => {
           parent={t("inquiry")}
           title={t("inquiry")}
         />
-        {/* <Row className="u-steps tabcolor" style={{ cursor: 'pointer' }}>        
-              <Col  className="u-step activeTab" onClick={() => scrollToSection(basicinfo)}>               
-                <div className="u-step-desc" >
-                  <span className="u-step-title">
-                   Basic Information
-                    </span>                 
-                </div>
-              </Col>
-                 
-              <Col  className="u-step activeTab"  onClick={() => scrollToSection(fabricinfo)}>                
-                <div className="u-step-desc">
-                  <span className="u-step-title"> Fabric Information</span>                 
-                </div>
-              </Col>
-         
-              <Col className="u-step activeTab" onClick={() => scrollToSection(printinfo)}>                
-                <div className="u-step-desc"  >
-                  <span className="u-step-title">Print Information</span>
-                </div>
-              </Col>
-              
-              <Col className="u-step activeTab" onClick={() => scrollToSection(trimsinfo)}>                
-                <div className="u-step-desc"  >
-                  <span className="u-step-title">Trims Information</span>                 
-                </div>
-              </Col>
-          
-              <Col  className="u-step activeTab" onClick={() => scrollToSection(packinginfo)}>                
-                <div className="u-step-desc"  >
-                  <span className="u-step-title">Packing Information</span>                  
-                </div>
-              </Col>
-
-              <Col  className="u-step activeTab" onClick={() => scrollToSection(othersinfo)}>                
-                <div className="u-step-desc"  >
-                  <span className="u-step-title">Others</span>                  
-                </div>
-              </Col>
-            </Row> */}
       </Row>
       <Container fluid={true} className="general-widget topaln">
         <Col >
-          <Card >
-            <CardBody className="secbody" id="htmljoditListCSS">
+          <Card id="htmljoditListCSS">
+            <div className="myHeader inquiry_create" id="myHeader">
               <Row className="u-steps " style={{ cursor: 'pointer' }}>
                 <Col className="u-step activeTab" onClick={() => scrollToSection(basicinfo)}>
                   <div className="u-step-desc" >
@@ -1231,29 +1212,28 @@ const index = () => {
                   </div>
                 </Col>
 
-                <Col className="u-step activeTab" onClick={() => scrollToSection(othersinfo)}>
-                  <div className="u-step-desc"  >
-                    <span className="u-step-title">{t("others")}</span>
-                  </div>
-                </Col>
-              </Row>
-              {/* </CardBody> */}
-              {/* </Card>
-            <Card > */}
-              {/* <CardBody className="margtopbody"> */}
+              <Col className="u-step activeTab" onClick={() => scrollToSection(othersinfo)}>
+                <div className="u-step-desc"  >
+                  <span className="u-step-title">{t("others")}</span>
+                </div>
+              </Col>
+            </Row>
+            </div>
+
+            <CardBody className="contenthb"> 
             <div ref={basicInfoValidation}></div>
               <Form>
-                <div ref={basicinfo} className="basicinfo">
-                  <Row className="g-12 m-t-20">
-                    <Col lg="12" md="12" sm="12" xs="12">
-                      <span>
-                        <H6 className="ordersubhead">{t("basicInformation")}</H6>
-                      </span>
-                    </Col>
-                  </Row>
-                  <Col lg="12">
-                    <Row>
-                      {/* Article Name, Style Number ,Sample Image*/}
+                <div ref={basicinfo} className="basicinfo m-t-20">
+                <Row className="g-12">
+                  <Col lg="12" md="12" sm="12" xs="12">
+                    <span>
+                      <H6 className="ordersubhead">{t("basicInformation")}</H6>
+                    </span>
+                  </Col>
+                </Row>
+                <Col lg="12">
+                  <Row>
+                    {/* Article Name, Style Number ,Sample Image*/}
 
                       <Col lg="4">
                         <FormGroup>
