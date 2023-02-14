@@ -299,7 +299,7 @@ const FactoryDetailInquiry = () => {
 
       <Container fluid={true} className="general-widget topaln">
         <Row>
-          <Col sm="12">
+          <Col id="htmljoditListCSS" sm="12">
             <Card>
               <CardBody>
                 <Row className="g-12 m-t-20">
