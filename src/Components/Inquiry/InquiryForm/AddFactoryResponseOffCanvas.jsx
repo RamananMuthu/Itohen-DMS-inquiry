@@ -183,8 +183,8 @@ const AddFactoryResponseOffCanvas = ({ modal, toggle, factoriesList,currency }) 
                 <Label className="form-label">{t("comments")}</Label><sup className="font-danger">*</sup>
                 <JoditEditor
                   ref={editor}
-                  // value={paymentTerm}
-                  // config={config}
+                  value={comments}
+                  config={config}
                   tabIndex={1}
                   onChange={(newContent) => setComments(newContent)}
                 />
