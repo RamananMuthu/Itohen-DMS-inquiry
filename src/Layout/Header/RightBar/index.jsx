@@ -16,14 +16,13 @@ import { Link } from 'react-router-dom';
 import plusicon from '../../../assets/images/dms/icons/plus.svg'
 import bell from '../../../assets/images/dms/inquiryBellIcon.svg'
 import Swal from 'sweetalert2';
-import { Card } from 'reactstrap';
+import { Card, Row, Col } from 'reactstrap';
 import { LogOut } from 'react-feather';
 import { getStaff, getStaffPermission, getLoginCompanyId, 
          getWorkspaceId, getLoginUserId, getLoginStaffId, getWorkspaceType, getLoginUserType  }
           from '../../../Constant/LoginConstant';
 import { useTranslation } from 'react-i18next';
 import { apidecrypt, apiencrypt } from '../../../helper';
-
 
 const Rightbar = () => {
     const { sidebarResponsive } = useContext(CustomizerContext);
@@ -123,8 +122,8 @@ const Rightbar = () => {
     return (
       
         <Fragment>
-            <div className="nav-right col pull-right right-menu p-0">
-            <UL attrUL={{ className: `simple-list d-flex flex-row nav-menus ${sidebarResponsive ? 'open' : ''}` }} >
+            <Row className="nav-right col pull-right right-menu p-0">
+            <UL attrUL={{ className: `simple-list d-flex flex-row nav-menus ${sidebarResponsive ? 'open' : ''}` }}>
                 {/* <LI><a className="text-dark" href="#javascript" onClick={goFull}>
                     <Maximize />
                 </a></LI> */}
@@ -136,8 +135,10 @@ const Rightbar = () => {
                     <Link 
                         to={`${process.env.PUBLIC_URL}/inquiryform`}
                         className= 'btn-pill btn btn-outline-primary btn-md  btn-primary-light' >
-                        <img src={plusicon}/>
-                            {t('createNewInquiry')}   
+                        <img src={plusicon} className="rightBarAddImg"/>
+                            <span className="rightBarText" style={{ fontSize: '12px' }}>
+                                {t('createNewInquiry')}
+                            </span>   
                     </Link>
                     :
                     ""
@@ -146,12 +147,14 @@ const Rightbar = () => {
             </LI>
 
             
-    { 
-        getLoginUserType == "user" ?  getWorkspaceType != "Factory" ? 
+    { getLoginUserType == "user" ?  
+        getWorkspaceType != "Factory" ? 
             <div className="notification-box m-r-10">                   
-                <img src ={bell} onClick={()=>{ 
-                window.location.href = `${process.env.PUBLIC_URL}/viewinquiry`}} 
-                style={{ cursor: 'pointer' }}/>                   
+                <img
+                    src ={bell} 
+                    onClick={()=>{ 
+                    window.location.href = `${process.env.PUBLIC_URL}/viewinquiry`}} 
+                    style={{ cursor: 'pointer' }}/>                   
                 <span className="count-animated">
                     <Badges  attrBadge={{ className: 'badge-notify rounded-pill', pill: true }}>{notifyCount> 0 ? notifyCount:''}</Badges>
                 </span>                  
@@ -159,10 +162,10 @@ const Rightbar = () => {
             : 
             <div className="notification-box m-r-10">                   
                 <img src ={bell} onClick={()=>{ 
-                window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry`}} 
+                                window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry`}} 
                 style={{ cursor: 'pointer' }}/>                   
                 <span className="count-animated">
-                    <Badges  attrBadge={{ className: 'badge-notify rounded-pill',pill: true }}>{notifyFactCount> 0 ? notifyFactCount:''}</Badges>
+                    <Badges  attrBadge={{ className: 'badge-notify rounded-pill',pill: true }}>1</Badges>
                 </span>                  
             </div>
         :
@@ -193,8 +196,7 @@ const Rightbar = () => {
                 </span>                  
             </div>
         : 
-            ""
-    }
+            ""}
                     {/* <Bookmarks /> */}
                     <Notifications />
                     <LanguageClass />
@@ -202,7 +204,7 @@ const Rightbar = () => {
                     <MessageDrop />
                     {/* <LogoutClass /> */}
             </UL>
-            </div>
+            </Row>
         </Fragment >
     );
 };

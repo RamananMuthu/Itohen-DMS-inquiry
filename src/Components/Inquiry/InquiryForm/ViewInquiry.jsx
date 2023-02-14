@@ -95,7 +95,8 @@ const ViewInquiry = () => {
   }, []);
 
   const factResponse = (inquiryId) => {
-    window.location.href = "/inquiry/factoryresponse?id=" + encode(inquiryId);
+    window.location.href = `${process.env.PUBLIC_URL}/factoryresponse?id=` + encode(inquiryId);
+    // window.location.href = "/inquiry/factoryresponse?id=" + encode(inquiryId);
   };
       /**Delete Inquiry based on Id*********/
   const deleteInquiry = (inquiryId) => {

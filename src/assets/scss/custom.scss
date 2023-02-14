@@ -1161,18 +1161,18 @@ td.text-left {
   .badge-notify{
     background-color: #4F90DE !important;
   }
-  @media only screen and (max-width: 425px){
-    .count-animated {
-      position: relative;
-      top: -35px;
-      left: 6px;
-      font-size:medium;
-      animation: fadeIn 2s ease infinite;
-    }
-    .badge-notify{
-      background-color: #4F90DE !important;
-    } 
-  }
+  // @media only screen and (max-width: 425px){
+  //   .count-animated {
+  //     position: relative;
+  //     top: -35px;
+  //     left: 6px;
+  //     font-size:medium;
+  //     animation: fadeIn 2s ease infinite;
+  //   }
+  //   .badge-notify{
+  //     background-color: #4F90DE !important;
+  //   } 
+  // }
   /* Inquiry Forn -Tab*/
 .sticky {
   position: fixed;
@@ -1220,4 +1220,73 @@ td.text-left {
   z-index: 99;
 }
 
+@media only screen and (max-width: 804px) {
+  .rightBarAddImg{
+    width: 15px !important;
+    margin-left: 15px !important;
+  }
+
+  .rightBarWorkspaceImg{
+    margin-top: '30px';
+    width: 40px !important;
+    margin-left: 15px !important;
+  }
+
+  .rightBarText{
+    margin-top: '10px';
+    width: 20px !important;
+    display: none !important;
+  }
+
+  .count-animated{
+    position: relative;
+    margin-top: 15px !important;
+    top: -9px;
+    left: -24px;
+    font-size:medium;
+    animation: fadeIn 2s ease infinite;
+  }
+}
+
+@media only screen and (max-width: 1042px) and (min-width: 988px)
+{
+  .rightBarText{
+    margin-top: '10px';
+    width: 20px !important;
+    display: none !important;
+  }
+}
+
+@media only screen and (max-width: 504px) and (min-width: 482px)
+{
+  .test{
+    margin-top: '18px' !important;
+  }
+
+  .count-animated{
+    position: relative;
+    margin-top: 15px !important;
+    top: -33px;
+    left: 8px;
+    font-size:medium;
+    animation: fadeIn 2s ease infinite;
+  }
+}
+
+
+@media only screen and (max-width: 464px) 
+{
+  .test{
+    margin-top: '18px' !important;
+  }
+
+  .count-animated{
+    position: relative;
+    margin-top: 15px !important;
+    top: -33px;
+    left: 8px;
+    font-size:medium;
+    animation: fadeIn 2s ease infinite;
+  }
+}
 /******************************************************/

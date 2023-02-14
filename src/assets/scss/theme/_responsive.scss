@@ -2600,7 +2600,7 @@
             top: 10px;
           }
           > ul {
-            top: 58px;
+            top: 94px;
             position: fixed;
             z-index: -1;
             background-color: $white;
@@ -4568,7 +4568,7 @@
         }
         .nav-right {
           > ul {
-            top: 55px;
+            top: 89px;
             .search-form {
               i {
                 display: none;
@@ -4578,6 +4578,7 @@
           &.right-menu {
             ul {
               justify-content: flex-end;
+              
               li {
                 &.px-0 {
                   padding: 6px !important;
@@ -6664,6 +6665,13 @@
     }
   }
 }
+
+@media screen and (max-width: 482px){
+.page-wrapper .page-main-header .main-header-right .nav-right > ul {
+    top: 62px;
+}
+}
+
 /**=====================
   62. Responsive CSS Ends
 ==========================**/

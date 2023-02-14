@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { encode, decode } from '../../../helper';
 
 const Notifications = () => {
+
     const { t } = useTranslation();
     let workspaces = JSON.parse(getWorkspaces);
     const handleClick = (workspaceId) => {
@@ -55,6 +56,7 @@ const Notifications = () => {
             }
         }
     }
+
     return (
         <Fragment>
             <LI attrLI={{ className: 'onhover-dropdown' }} >
@@ -62,22 +64,30 @@ const Notifications = () => {
                 </div>
                 <LI>
                     <div className="media">
-                        {getWorkspaceType === "Factory" ? <img src={factory} className="img-50" />
+                        {
+                        getWorkspaceType === "Factory" ? <img src={factory} className="img-50 rightBarWorkspaceImg" />
                             :
-                            getWorkspaceType === "Buyer" ? <img src={buyer} className="img-50" />
+                            getWorkspaceType === "Buyer" ? <img src={buyer} className="img-50 rightBarWorkspaceImg" />
                                 :
-                                getWorkspaceType === "PCU" ? <img src={pcu} className="img-50" />
+                                getWorkspaceType === "PCU" ? <img src={pcu} className="img-50 rightBarWorkspaceImg" />
                                     : ""
                         }
 
                         <div className="media-body">
-                            <span attrPara={{ className: 'f-12 light-font' }} > {getStaff != null ? <>
-                                <P> {getWorkspaceName}</P><span><b>{getLoginUseName}</b></span>
-                                <span><i className="icofont icofont-caret-down"></i></span>
-                            </> : <>
-                                <P> {getWorkspaceName}</P><span><b>{getLoginUseName}</b></span>
-                                <span><i className="icofont icofont-caret-down"></i></span>
-                            </>}</span>
+                            <span attrPara={{ className: 'f-12 light-font' }}> 
+                                {getStaff != null ? 
+                                <>
+                                    <P> {getWorkspaceName}</P><span><b>{getLoginUseName}</b></span> 
+                                    <span><i className="icofont icofont-caret-down"></i></span>
+                                </> 
+                                : 
+                                <>
+                                    <div className="rightBarText">
+                                    <P>{getWorkspaceName}</P><span><b>{getLoginUseName}</b></span> 
+                                    <span><i className="icofont icofont-caret-down"></i></span>
+                                    </div>
+                                </>}
+                            </span>
                         </div>
                     </div>
                 </LI>

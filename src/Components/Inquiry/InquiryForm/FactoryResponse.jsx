@@ -1,8 +1,9 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Container, Row, Col, CardBody, Card, Button, } from "reactstrap";
+import { Container, Row, Col, CardBody, Card, Button } from "reactstrap";
 import { Breadcrumbs } from "../../../AbstractElements";
 import Loader from "../../../Layout/Loader/index";
-import { getLoginUserId, getWorkspaceType, getStaff, getStaffPermission, getLoginUserType } from '../../../Constant/LoginConstant';
+import { getLoginUserId, getWorkspaceType, getStaff, getStaffPermission, 
+         getLoginUserType, getWorkspaceId, getLoginCompanyId } from '../../../Constant/LoginConstant';
 import { encode, decode, apiencrypt, apidecrypt } from "../../../helper";
 import { useSearchParams, } from "react-router-dom";
 import axios from "axios";
@@ -12,6 +13,7 @@ import { ServerUrl } from "../../../Constant";
 import FactoryResponseRatingIcon from '../../../assets/images/dms/icons/factoryResponseRatingIcon.svg';
 import FactoryResponseRatingModal from "./FactoryResponseRatingModal";
 import { useTranslation } from "react-i18next";
+import AddFactoryResponseOffCanvas from '../InquiryForm/AddFactoryResponseOffCanvas';
 
 const FactoryResponse = () => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -22,11 +24,17 @@ const FactoryResponse = () => {
     const [modalRating, setModalRating] = useState(false);
     const togglRating = () => setModalRating(!modalRating);
     const [factoryRatingData, setFactoryRatingData] = useState([]);
+    const [factoriesList, setFactoriesList] = useState([]);
+    
+
     const { t } = useTranslation();
     const getInputParams = {};
     getInputParams["inquiry_id"] = inquiryId;
     getInputParams["factory_id"] = factoryId;
     getInputParams["user_id"] = getLoginUserId;
+
+    const [modalAddFactoryResponse, setModalAddFactoryResponse] = useState(false);
+    const toggleAddFactoryResponse = () => setModalAddFactoryResponse(!modalAddFactoryResponse);
 
     const apiCallFactoryRating = (factoryId) => {
     const factoryRatingInputParams = {};
@@ -40,6 +48,11 @@ const FactoryResponse = () => {
             })
     }
 
+    const dataToSendAtStarting = {
+        company_id: getLoginCompanyId,
+        workspace_id: getWorkspaceId,
+    };
+
     const apiCall = () => {
         axios
         .post(ServerUrl + "/inquiry-factory-response", apiencrypt(getInputParams))
@@ -47,6 +60,14 @@ const FactoryResponse = () => {
             response.data = apidecrypt(response.data);
             setFactoryRes(response.data.data);
         })
+
+        axios
+        .post(ServerUrl + "/get-user-article", apiencrypt(dataToSendAtStarting))
+        .then((response) => {
+          response.data = apidecrypt(response.data);
+          setFactoriesList(response.data.data);
+        });
+
     };
 
     useEffect(() => 
@@ -106,8 +127,20 @@ const FactoryResponse = () => {
                                                 </span>
                                             </div>
                                         </Col>
+                                        <Col>
+                                            <Button className="btn-sm primaryBtn m-r-10 f-right"
+                                                onClick={() => setModalAddFactoryResponse(!modalAddFactoryResponse)}>
+                                                    + Add Factory Response
+                                            </Button>
+                                            <AddFactoryResponseOffCanvas 
+                                              modal={modalAddFactoryResponse}
+                                              toggle={toggleAddFactoryResponse}
+                                              factoriesList={factoriesList}
+                                            />
+                                        </Col>
                                     </Row>
                                 </Col>
+
                                 <Row className="g-12 m-t-20">
                                     <Col md="12" lg="12" sm="12">
                                         <Row className="g-12">
