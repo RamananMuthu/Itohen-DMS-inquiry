@@ -25,6 +25,7 @@ const FactoryResponse = () => {
     const togglRating = () => setModalRating(!modalRating);
     const [factoryRatingData, setFactoryRatingData] = useState([]);
     const [factoriesList, setFactoriesList] = useState([]);
+    const[currency,setCurrency] = useState();
     
 
     const { t } = useTranslation();
@@ -48,10 +49,8 @@ const FactoryResponse = () => {
             })
     }
 
-    const dataToSendAtStarting = {
-        company_id: getLoginCompanyId,
-        workspace_id: getWorkspaceId,
-    };
+    const getFactoryListResInputParams = {};
+    getFactoryListResInputParams['inquiry_id'] =inquiryId;
 
     const apiCall = () => {
         axios
@@ -62,10 +61,11 @@ const FactoryResponse = () => {
         })
 
         axios
-        .post(ServerUrl + "/get-user-article", apiencrypt(dataToSendAtStarting))
+        .post(ServerUrl + "/get-factory-list-response", apiencrypt(getFactoryListResInputParams))
         .then((response) => {
           response.data = apidecrypt(response.data);
-          setFactoriesList(response.data.data);
+          setFactoriesList(response.data.notifications);
+          setCurrency(response.data.currency);
         });
 
     };
@@ -136,6 +136,7 @@ const FactoryResponse = () => {
                                               modal={modalAddFactoryResponse}
                                               toggle={toggleAddFactoryResponse}
                                               factoriesList={factoriesList}
+                                              currency={currency}
                                             />
                                         </Col>
                                     </Row>

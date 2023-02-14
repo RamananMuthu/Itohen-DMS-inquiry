@@ -3,14 +3,19 @@ import {
   Form, Label, Col, Row, Input, Button, FormGroup,
   Offcanvas, OffcanvasBody, OffcanvasHeader, InputGroup, 
 } from "reactstrap";
+import { getLoginUserId, getWorkspaceType, getStaff, getStaffPermission, 
+  getLoginUserType, getWorkspaceId, getLoginCompanyId } from '../../../Constant/LoginConstant';
 import { useTranslation } from "react-i18next";
+import axios from "axios";
 import Swal from "sweetalert2";
+import { ServerUrl } from "../../../Constant";
 import CKEditors from 'react-ckeditor-component';
 import JoditEditor from 'jodit-react';
+import { getColorSizeQtyInquiry, decode, apiencrypt, apidecrypt } from "../../../helper";
 import { useSearchParams, } from "react-router-dom";
 import parse from 'html-react-parser';
 
-const AddFactoryResponseOffCanvas = ({ modal, toggle, factoriesList }) => 
+const AddFactoryResponseOffCanvas = ({ modal, toggle, factoriesList,currency }) => 
 {
   const { t } = useTranslation();
   const editor = useRef(null); // **** Using for jodit Editor**//
@@ -19,10 +24,10 @@ const AddFactoryResponseOffCanvas = ({ modal, toggle, factoriesList }) =>
   const [price, setPrice] = useState('');
   const [comments, setComments] = useState('');
   const [validerrors, setValiderrors] = React.useState({});
-  const [currencySymbol, setCurrencySymbol] = useState('$');
+  //const [currencySymbol, setCurrencySymbol] = useState('$');
   const [searchParams, setSearchParams] = useSearchParams();
   const [inquiryId,setInquiryId]= useState((searchParams.get("id")));
-
+  const [inquiry_Id,setInquiry_Id]=useState(decode(searchParams.get("id")))
 
 /****************** Validation *************************/
     const validation = (data) => {
@@ -91,13 +96,37 @@ const AddFactoryResponseOffCanvas = ({ modal, toggle, factoriesList }) =>
   }
 /****************** Submit Data ************************/
   const submitData = () => {
-
     let retval = validation();
     if (Object.keys(retval).length == 0) 
     {
-
+      var responseFactInputParams = {};
+      responseFactInputParams['inquiry_id'] = inquiry_Id;
+      responseFactInputParams['user_id']= getLoginUserType == "user"? getLoginUserId : getLoginStaffId;
+      responseFactInputParams['user_type']= getLoginUserType;
+      responseFactInputParams['factory_id'] = factory;
+      responseFactInputParams['price']=price;
+      responseFactInputParams['comments']=comments;
+      axios.post(ServerUrl + "/save-buyer-inquiry-factory-response", apiencrypt(responseFactInputParams))
+      .then((response) => {
+        response.data = apidecrypt(response.data);
+        if (response.data.status_code === 200) {
+          Swal.fire({
+            title: t("Inquiry Response Added Successfully"),
+            icon: "success",
+            button: t("okLabel"),
+            allowOutsideClick: false
+          }).then((result) => {
+            if (result.isConfirmed) 
+            {
+               window.location.href = `${process.env.PUBLIC_URL}/factoryresponse?id=`+ inquiryId;
+              // window.location.href = '/inquiry/factoryviewinquiry';
+            }
+          })
+        }
+      })
     }
   };
+
 
   return (
     <Offcanvas className="offcanvas-width" isOpen={modal} toggle={toggle} direction={"end"} >
@@ -115,7 +144,7 @@ const AddFactoryResponseOffCanvas = ({ modal, toggle, factoriesList }) =>
               <InputGroup>
                 <Input
                   className=""
-                  name="article"
+                  name="factory list"
                   type="select"
                   defaultValue=""
                   onChange={(e) => {setFactory(e.target.value)}}
@@ -123,8 +152,8 @@ const AddFactoryResponseOffCanvas = ({ modal, toggle, factoriesList }) =>
                   <option Value="" disabled>
                     Select Factory
                   </option>
-                  {factoriesList.map((article) => (
-                    <option value={factoriesList.id}>{factoriesList.name}</option>
+                  {factoriesList.map((resfactlist) => (
+                    <option value={resfactlist.id}>{resfactlist.factory}</option>
                   ))}
                 </Input>
               </InputGroup>
@@ -136,7 +165,7 @@ const AddFactoryResponseOffCanvas = ({ modal, toggle, factoriesList }) =>
 
             <Col>
               <FormGroup>
-                <Label>{t("price")}</Label> (in {currencySymbol})<sup className="font-danger">*</sup>
+                <Label>{t("price")}</Label> (in {currency})<sup className="font-danger">*</sup>
                 <Input name="price" placeholder={t("pleaseEnterPrice")}
                   // disabled={price ? true : false}
                   maxLength="20"
