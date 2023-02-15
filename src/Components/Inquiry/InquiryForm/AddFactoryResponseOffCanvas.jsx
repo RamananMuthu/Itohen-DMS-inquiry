@@ -39,11 +39,11 @@ const AddFactoryResponseOffCanvas = ({ modal, toggle, factoriesList,currency }) 
         validerrors.price = t("pleaseEnterPrice");
         // validerrors.price = "Please Enter Price";
       }
-      if (parse(comments).length == 0) 
-      {
-        validerrors.comments = t("enteryourComments");
-        // validerrors.comments = "Please Enter Comments";
-      }
+      // if (parse(comments).length == 0) 
+      // {
+      //   validerrors.comments = t("enteryourComments");
+      //   // validerrors.comments = "Please Enter Comments";
+      // }
       setValiderrors(validerrors);
       return validerrors;
     };
@@ -188,9 +188,9 @@ const AddFactoryResponseOffCanvas = ({ modal, toggle, factoriesList,currency }) 
                   tabIndex={1}
                   onChange={(newContent) => setComments(newContent)}
                 />
-                {validerrors.comments && (
+                {/* {validerrors.comments && (
                   <span className="error-msg">{validerrors.comments}</span>
-                )}
+                )} */}
               </FormGroup>
             </Col>
         </Form>
