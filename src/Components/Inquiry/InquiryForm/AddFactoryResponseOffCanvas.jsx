@@ -3,7 +3,7 @@ import {
   Form, Label, Col, Row, Input, Button, FormGroup,
   Offcanvas, OffcanvasBody, OffcanvasHeader, InputGroup, 
 } from "reactstrap";
-import { getLoginUserId, getLoginUserType} from '../../../Constant/LoginConstant';
+import { getLoginUserId, getLoginUserType, getLoginStaffId} from '../../../Constant/LoginConstant';
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import Swal from "sweetalert2";

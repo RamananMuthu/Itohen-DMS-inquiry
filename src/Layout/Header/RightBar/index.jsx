@@ -165,7 +165,7 @@ const Rightbar = () => {
                                 window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry`}} 
                 style={{ cursor: 'pointer' }}/>                   
                 <span className="count-animated">
-                    <Badges  attrBadge={{ className: 'badge-notify rounded-pill',pill: true }}>{notifyCount> 0 ? notifyCount:''}</Badges>
+                    <Badges  attrBadge={{ className: 'badge-notify rounded-pill',pill: true }}>{notifyFactCount> 0 ? notifyFactCount:''}</Badges>
                 </span>                  
             </div>
         :
