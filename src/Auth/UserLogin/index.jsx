@@ -30,7 +30,6 @@ import { useTranslation } from 'react-i18next';
 import { object } from "prop-types";
 import { apiencrypt, apidecrypt, encode } from "../../helper";
 
-
 const UserLogin = () => {
   const [assignotp, setassignotp] = useState();
   const [email, setemail] = useState();
@@ -81,17 +80,40 @@ const UserLogin = () => {
       setloading(true);
       return otpError;
     };
-
+    
     const changeLanguage = lng => {
         if( lng === 'EN'){
           i18n.changeLanguage('en');
-          setSelected('EN');
+          setSelected('en');
         }
-        else{
+        if( lng === 'JP'){
           i18n.changeLanguage('jp');
-          setSelected('JP');
+          setSelected('jp');
+        }
+        if( lng === 'BD'){
+          i18n.changeLanguage('bd');
+          setSelected('bd');
+        }
+       if( lng === 'IN'){
+          i18n.changeLanguage('in');
+          setSelected('in');
         }
     };
+
+    const flagSelect = (lng) =>{
+      if( lng === 'en'){
+        return 'us'
+      }
+      if( lng === 'jp'){
+        return 'jp'
+      }
+      if( lng === 'bd'){
+        return 'bd'
+      }
+     if( lng === 'in'){
+        return 'in'
+      }
+    }
 
     const LanguageSelection = (language) => {
         if (language) {
@@ -414,7 +436,7 @@ const UserLogin = () => {
                     <p>&nbsp;</p> */}
                     <div>
                       <Row>
-                      <Col xs="8" sm="8" md="8" lg="8"> <img src={dmslogtag} width="150" className="align-left"/>    <p>&nbsp;</p></Col>
+                      <Col xs="8" sm="8" md="8" lg="8"> <img src={dmslogtag} width="150" className="align-left"/><p>&nbsp;</p></Col>
                         <Col xs="8" sm="8" md="8" lg="8">
                     
                           <H4>{t("adminLogin")}</H4>
@@ -425,7 +447,7 @@ const UserLogin = () => {
                               <div className={`translate_wrapper ${langdropdown ? 'active' : ''}`}>
                                   <div className="current_lang">
                                       <div className="lang d-flex" onClick={() => LanguageSelection(langdropdown)}>
-                                          <i className={`flag-icon flag-icon-${(i18n.language.toLowerCase()) === 'en' ? 'us' : (selected.toLowerCase()) === 'jp' ? 'jp' : 'us'}`}></i> 
+                                          <i className={`flag-icon flag-icon-${flagSelect((i18n.language.toLowerCase()))}`}></i> 
                                           <span className="lang-txt m-l-10">{selected.toUpperCase()}</span>
                                           <i style={{ marginTop: '3px'}} className="fa fa-chevron-down m-l-10"></i>
                                       </div>
@@ -438,6 +460,14 @@ const UserLogin = () => {
                                       <div className="lang" onClick={() => {changeLanguage('JP'), setEmailValidError( () => "" ), setOtpValidError( () => "")}}>
                                         <i className="flag-icon flag-icon-jp"></i>
                                         <span className="lang-txt m-l-10">Japanese</span>
+                                      </div>
+                                      <div className="lang" onClick={() => {changeLanguage('BD'), setEmailValidError( () => "" ), setOtpValidError( () => "")}}>
+                                        <i className="flag-icon flag-icon-bd"></i>
+                                        <span className="lang-txt m-l-10">Bengali</span>
+                                      </div>
+                                      <div className="lang" onClick={() => {changeLanguage('IN'), setEmailValidError( () => "" ), setOtpValidError( () => "")}}>
+                                        <i className="flag-icon flag-icon-in"></i>
+                                        <span className="lang-txt m-l-10">Hindi</span>
                                       </div>
                                   </div>
                               </div>

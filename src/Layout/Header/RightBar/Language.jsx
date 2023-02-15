@@ -18,15 +18,35 @@ const LanguageClass = () => {
     const { t,i18n} = useTranslation();
     const [selected, setSelected] = useState(i18n.language=='jp'?'jp':'en');
     const [language, setlanguage] = useState([]);
-//console.log("loadLanguages",i18n.language);
 
-      const changeLanguage = (lng,id) => {
-        i18n.changeLanguage(lng);
-        setSelected(lng);
-        if(getWorkspaceId>0){
-        onSubmitHandler(lng,id);
+    const changeLanguage = (lng,id) => {
+        if( lng == 'en'){
+            i18n.changeLanguage(lng);
+            setSelected('en');
+            if(getWorkspaceId>0){
+                onSubmitHandler(lng,id);
+            }
+
+        } else if( lng == 'jp' ){
+            i18n.changeLanguage(lng);
+            setSelected('jp');
+            if(getWorkspaceId>0){
+                onSubmitHandler(lng,id);
+            }
+        } else if( lng == 'bd' ) {
+            i18n.changeLanguage(lng);
+            setSelected('bd');
+            if(getWorkspaceId>0){
+                onSubmitHandler(lng,id);
+            }
+        } else {
+            i18n.changeLanguage(lng);
+            setSelected('in');
+            if(getWorkspaceId>0){
+                onSubmitHandler(lng,id);
+            }
         }
-      };
+    };
 
     const LanguageSelection = (language) => {
         if (language) {
@@ -36,12 +56,9 @@ const LanguageClass = () => {
         }
     };
 
-
-
-
     const onSubmitHandler = (lng,id) => {
        
-        let getNofiySetting = {};
+    let getNofiySetting = {};
     getNofiySetting["companyId"] = getLoginCompanyId;
     getNofiySetting["userId"] = getLoginUserId;
     getNofiySetting["staffId"] = getLoginStaffId;
@@ -54,7 +71,6 @@ const LanguageClass = () => {
           });
         } else {
           axios.post(ServerUrl + "/staff-preference", apiencrypt(getNofiySetting)).then((response) => {
-     
           });
         }
       };
@@ -92,5 +108,4 @@ const LanguageClass = () => {
         </Fragment>
     );
 };
-
 export default LanguageClass;

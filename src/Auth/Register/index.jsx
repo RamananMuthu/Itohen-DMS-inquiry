@@ -154,10 +154,15 @@ inputParamsUser['user_type'] = selworkspace_type;
       if( lng === 'EN'){
         i18n.changeLanguage('en');
         setSelected('EN');
-      }
-      else{
+      }  else if(lng === 'JP'){
         i18n.changeLanguage('jp');
         setSelected('JP');
+      }  else if(lng === 'BD'){
+        i18n.changeLanguage('bd');
+        setSelected('BD');
+      } else {
+        i18n.changeLanguage('in');
+        setSelected('IN');
       }
   };
 
@@ -306,7 +311,10 @@ inputParamsUser['user_type'] = selworkspace_type;
                                 <div className={`translate_wrapper ${langdropdown ? 'active' : ''}`}>
                                     <div className="current_lang">
                                         <div className="lang d-flex" onClick={() => LanguageSelection(langdropdown)}>
-                                            <i className={`flag-icon flag-icon-${(i18n.language.toLowerCase()) === 'en' ? 'us' : (selected.toLowerCase()) === 'jp' ? 'jp' : 'us'}`}></i> 
+                                            <i className={`flag-icon flag-icon-${(i18n.language.toLowerCase()) === 'en' ? 'us' : ''}`}></i> 
+                                            <i className={`flag-icon flag-icon-${(i18n.language.toLowerCase()) === 'jp' ? 'jp' : ''}`}></i> 
+                                            <i className={`flag-icon flag-icon-${(i18n.language.toLowerCase()) === 'in' ? 'in' : ''}`}></i> 
+                                            <i className={`flag-icon flag-icon-${(i18n.language.toLowerCase()) === 'bd' ? 'bd' : ''}`}></i> 
                                             <span className="lang-txt m-l-10">{selected.toUpperCase()}</span>
                                             <i style={{ marginTop: '3px'}} className="fa fa-chevron-down m-l-10"></i>
                                         </div>
@@ -319,6 +327,14 @@ inputParamsUser['user_type'] = selworkspace_type;
                                         <div className="lang" id="jp" onClick={() => {changeLanguage('JP'), setValidErrors( () => "" )}}>
                                           <i className="flag-icon flag-icon-jp"></i>
                                           <span className="lang-txt m-l-10">Japanese</span>
+                                        </div>
+                                        <div className="lang" id="jp" onClick={() => {changeLanguage('BD'), setValidErrors( () => "" )}}>
+                                          <i className="flag-icon flag-icon-bd"></i>
+                                          <span className="lang-txt m-l-10">Bengali</span>
+                                        </div>
+                                        <div className="lang" id="jp" onClick={() => {changeLanguage('IN'), setValidErrors( () => "" )}}>
+                                          <i className="flag-icon flag-icon-in"></i>
+                                          <span className="lang-txt m-l-10">Hindi</span>
                                         </div>
                                     </div>
                                 </div>

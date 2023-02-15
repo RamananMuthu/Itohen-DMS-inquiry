@@ -17,7 +17,7 @@ const Routers = () => {
                                                         {authValidate !== null ?
                                                                 <Route exact
                                                                         path={`${process.env.PUBLIC_URL}`}
-                                                                        element={<Navigate to={`${process.env.PUBLIC_URL}/inquiry/viewinquiry`} />}
+                                                                        element={<Navigate to={`${process.env.PUBLIC_URL}/viewinquiry`} />}
                                                                 /> : ''}
                                                         <Route path={`/*`} element={<LayoutRoutes />} />
                                                 </Route>

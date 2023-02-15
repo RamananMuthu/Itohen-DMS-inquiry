@@ -70,13 +70,36 @@ const StaffLogin = () => {
     const changeLanguage = lng => {
         if( lng === 'EN'){
           i18n.changeLanguage('en');
-          setSelected('EN');
+          setSelected('en');
         }
-        else{
+        if( lng === 'JP'){
           i18n.changeLanguage('jp');
-          setSelected('JP');
+          setSelected('jp');
+        }
+        if( lng === 'BD'){
+          i18n.changeLanguage('bd');
+          setSelected('bd');
+        }
+       if( lng === 'IN'){
+          i18n.changeLanguage('in');
+          setSelected('in');
         }
     };
+
+    const flagSelect = (lng) =>{
+        if( lng === 'en'){
+          return 'us'
+        }
+        if( lng === 'jp'){
+          return 'jp'
+        }
+        if( lng === 'bd'){
+          return 'bd'
+        }
+       if( lng === 'in'){
+          return 'in'
+        }
+    }
 
     const LanguageSelection = (language) => {
         if (language) {
@@ -358,20 +381,28 @@ const StaffLogin = () => {
                                                     <div className={`translate_wrapper ${langdropdown ? 'active' : ''}`}>
                                                         <div className="current_lang">
                                                             <div className="lang d-flex" onClick={() => LanguageSelection(langdropdown)}>
-                                                                <i className={`flag-icon flag-icon-${i18n.language.toLowerCase() === 'en' ? 'us' : selected.toLowerCase() === 'jp' ? 'jp' : 'us'}`}></i> 
-                                                                <span className="lang-txt m-l-10">{selected.toUpperCase()}</span>
+                                                            <i className={`flag-icon flag-icon-${flagSelect((i18n.language.toLowerCase()))}`}></i> 
+                                                            <span className="lang-txt m-l-10">{selected.toUpperCase()}</span>
                                                                 <i style={{ marginTop: '3px'}} className="fa fa-chevron-down m-l-10"></i>
                                                             </div>
                                                         </div>
                                                         <div className={`more_lang onhover-show-div ${langdropdown ? 'active' : ''}`}>
-                                                            <div className="lang" onClick={() => {changeLanguage('EN'), setEmailValidError( () => "" ), setOtpValidError( () => "")}}>
-                                                                <i className="flag-icon flag-icon-us"></i>
-                                                                <span className="lang-txt m-l-10">English</span>
-                                                            </div>
-                                                            <div className="lang" onClick={() => {changeLanguage('JP'), setEmailValidError( () => "" ), setOtpValidError( () => "")}}>
-                                                                <i className="flag-icon flag-icon-jp"></i>
-                                                                <span className="lang-txt m-l-10">Japanese</span>
-                                                            </div>
+                                                        <div className="lang" onClick={() => {changeLanguage('EN'), setEmailValidError( () => "" ), setOtpValidError( () => "")}}>
+                                                            <i className="flag-icon flag-icon-us"></i>
+                                                            <span className="lang-txt m-l-10">English</span>
+                                                        </div>
+                                                        <div className="lang" onClick={() => {changeLanguage('JP'), setEmailValidError( () => "" ), setOtpValidError( () => "")}}>
+                                                            <i className="flag-icon flag-icon-jp"></i>
+                                                            <span className="lang-txt m-l-10">Japanese</span>
+                                                        </div>
+                                                        <div className="lang" onClick={() => {changeLanguage('BD'), setEmailValidError( () => "" ), setOtpValidError( () => "")}}>
+                                                            <i className="flag-icon flag-icon-bd"></i>
+                                                            <span className="lang-txt m-l-10">Bengali</span>
+                                                        </div>
+                                                        <div className="lang" onClick={() => {changeLanguage('IN'), setEmailValidError( () => "" ), setOtpValidError( () => "")}}>
+                                                            <i className="flag-icon flag-icon-in"></i>
+                                                            <span className="lang-txt m-l-10">Hindi</span>
+                                                        </div>
                                                         </div>
                                                     </div>
                                                 </LI>
