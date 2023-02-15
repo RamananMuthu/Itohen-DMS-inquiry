@@ -130,7 +130,7 @@ const FactoryResponse = () => {
                                         <Col>
                                             <Button className="btn-sm primaryBtn m-r-10 f-right"
                                                 onClick={() => setModalAddFactoryResponse(!modalAddFactoryResponse)}>
-                                                    + Add Factory Response
+                                                    +  {t("addFactoryResponse")}
                                             </Button>
                                             <AddFactoryResponseOffCanvas 
                                               modal={modalAddFactoryResponse}

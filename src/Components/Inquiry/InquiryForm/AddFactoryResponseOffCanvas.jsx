@@ -3,15 +3,13 @@ import {
   Form, Label, Col, Row, Input, Button, FormGroup,
   Offcanvas, OffcanvasBody, OffcanvasHeader, InputGroup, 
 } from "reactstrap";
-import { getLoginUserId, getWorkspaceType, getStaff, getStaffPermission, 
-  getLoginUserType, getWorkspaceId, getLoginCompanyId } from '../../../Constant/LoginConstant';
+import { getLoginUserId, getLoginUserType} from '../../../Constant/LoginConstant';
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { ServerUrl } from "../../../Constant";
-import CKEditors from 'react-ckeditor-component';
 import JoditEditor from 'jodit-react';
-import { getColorSizeQtyInquiry, decode, apiencrypt, apidecrypt } from "../../../helper";
+import {  decode, apiencrypt, apidecrypt } from "../../../helper";
 import { useSearchParams, } from "react-router-dom";
 import parse from 'html-react-parser';
 
@@ -39,10 +37,10 @@ const AddFactoryResponseOffCanvas = ({ modal, toggle, factoriesList,currency }) 
       if (!price) {
         validerrors.price = "Please Enter Price";
       }
-      // if (parse(comments).key == null) 
-      // {
-      //   validerrors.comments = "Please Enter Comments";
-      // }
+      if (parse(comments).key == null) 
+      {
+        validerrors.comments = "Please Enter Comments";
+      }
       setValiderrors(validerrors);
       return validerrors;
     };
@@ -129,16 +127,16 @@ const AddFactoryResponseOffCanvas = ({ modal, toggle, factoriesList,currency }) 
 
 
   return (
-    <Offcanvas className="offcanvas-width" isOpen={modal} toggle={toggle} direction={"end"} >
+    <Offcanvas className="offcanvas-width" isOpen={modal} toggle={toggle} direction={"end"}  backdrop="static">
       <OffcanvasHeader className="bg-primary offcanvas-header text-center">
-          Add Factory Response
+      {t("addFactoryResponse")}
       </OffcanvasHeader>
       <OffcanvasBody>
         <Form>
           <Row>
             <FormGroup>
               <Label style={{ color: "#5F5F5F" }}>
-                Factory
+                {t("factory")}
               </Label>
               <sup className="font-danger">*</sup>
               <InputGroup>
@@ -150,7 +148,7 @@ const AddFactoryResponseOffCanvas = ({ modal, toggle, factoriesList,currency }) 
                   onChange={(e) => {setFactory(e.target.value)}}
                 >
                   <option Value="" disabled>
-                    Select Factory
+                  {t("selectFactory")}
                   </option>
                   {factoriesList.map((resfactlist) => (
                     <option value={resfactlist.id}>{resfactlist.factory}</option>
@@ -193,14 +191,13 @@ const AddFactoryResponseOffCanvas = ({ modal, toggle, factoriesList,currency }) 
                 )}
               </FormGroup>
             </Col>
-
         </Form>
       </OffcanvasBody>
       <OffcanvasHeader style={{ backgroundColor: '#ECF4FC' }}>
       <FormGroup className="f-right">
               <Button
                 className="btn btn-primary mx-2" onClick={() => { submitData() }} >
-                {t("sentQuote")}
+                {t("save")}
               </Button>
 
               <Button className="btn-sm secondaryBtn m-r-10 f-right"

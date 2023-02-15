@@ -1011,5 +1011,6 @@
     "Inquiry sent Successfully" : "Inquiry Sent Successfully",
     "goBack" : "Back",
     "quoteDetails" : "Quote Details",
-    "createNewInquiry":"Create New Inquiry"
+    "createNewInquiry":"Create New Inquiry",
+    "addFactoryResponse": "Add Factory Response"
 }
