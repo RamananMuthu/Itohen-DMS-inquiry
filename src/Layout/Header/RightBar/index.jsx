@@ -178,7 +178,7 @@ const Rightbar = () => {
                 style={{ cursor: 'pointer' }}/>                   
                 <span className="count-animated">
                     <Badges attrBadge={{ className: 'badge-notify rounded-pill', pill: true }}>
-                    {notifyFactCount> 0 ? notifyFactCount:''}
+                    {notifyCount> 0 ? notifyCount:''}
                     </Badges>
                 </span>                  
             </div> 
