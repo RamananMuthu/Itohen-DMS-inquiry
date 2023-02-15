@@ -32,15 +32,20 @@ const AddFactoryResponseOffCanvas = ({ modal, toggle, factoriesList,currency }) 
 
       let validerrors = {};
       if (!factory) {
-        validerrors.factory = "Select Factory";
+        validerrors.factory = t("selectFactory");
+        // validerrors.factory = "Select Factory";
       }
       if (!price) {
-        validerrors.price = "Please Enter Price";
+        validerrors.price = t("pleaseEnterPrice");
+        // validerrors.price = "Please Enter Price";
       }
-      if (parse(comments).key == null) 
-      {
-        validerrors.comments = "Please Enter Comments";
-      }
+      // console.log("comments", parse(comments).props.children);
+      // console.log("comments", parse(comments).length == 0 );
+      // if ((parse(comments).props.children == null) || parse(comments).length == 0) 
+      // {
+      //   validerrors.comments = t("enteryourComments");
+      //   // validerrors.comments = "Please Enter Comments";
+      // }
       setValiderrors(validerrors);
       return validerrors;
     };
@@ -124,7 +129,6 @@ const AddFactoryResponseOffCanvas = ({ modal, toggle, factoriesList,currency }) 
       })
     }
   };
-
 
   return (
     <Offcanvas className="offcanvas-width" isOpen={modal} toggle={toggle} direction={"end"}  backdrop="static">
