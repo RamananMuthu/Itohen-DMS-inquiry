@@ -39,13 +39,11 @@ const AddFactoryResponseOffCanvas = ({ modal, toggle, factoriesList,currency }) 
         validerrors.price = t("pleaseEnterPrice");
         // validerrors.price = "Please Enter Price";
       }
-      // console.log("comments", parse(comments).props.children);
-      // console.log("comments", parse(comments).length == 0 );
-      // if ((parse(comments).props.children == null) || parse(comments).length == 0) 
-      // {
-      //   validerrors.comments = t("enteryourComments");
-      //   // validerrors.comments = "Please Enter Comments";
-      // }
+      if (parse(comments).length == 0) 
+      {
+        validerrors.comments = t("enteryourComments");
+        // validerrors.comments = "Please Enter Comments";
+      }
       setValiderrors(validerrors);
       return validerrors;
     };
