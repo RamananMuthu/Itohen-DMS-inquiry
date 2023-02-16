@@ -649,6 +649,8 @@
     "repliedTo": "উত্তরে",
     "replyTo": "প্রতিউত্তর",
     "DeleteRepliesConversationandContinue": "অনুগ্রহ করে এই কথোপকথনের জন্য উত্তরগুলি মুছুন এবং চালিয়ে যান।",
+    "subtaskCommunication":"সাব টাস্ক কমিউনিকেশন",
+    "taskCommunication":"টাস্ক কমিউনিকেশন",
     "********** BackEnd Messages **********": "*********** User Login **********",
     "The email field is required.": "ইমেল ক্ষেত্র আবশ্যক",
     "The email must be a valid email address.": "ইমেল একটি বৈধ ইমেল ঠিকানা হতে হবে",
@@ -1009,5 +1011,11 @@
     "Inquiry sent Successfully": "তদন্ত সফলভাবে পাঠানো হয়েছে",
     "goBack": "ফিরে যাও",
     "quoteDetails": "উদ্ধৃতি বিবরণ",
-    "createNewInquiry": "নতুন অনুসন্ধান তৈরি করুন"
+    "createNewInquiry": "নতুন অনুসন্ধান তৈরি করুন",   
+    "addFactoryResponse": "কারখানার প্রতিক্রিয়া যোগ করুন",   
+    "startTyping":"টাইপিং শুরু করুন......",
+    "********** Inquiry side menu **********": "********** Inquiry side menu **********",
+    "View Inquiry":"তদন্ত দেখুন",
+    "Feedback Form":"ফিডব্যাক ফর্ম",
+    "Inquiry Contacts":"তদন্ত পরিচিতি"
     }

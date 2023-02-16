@@ -945,9 +945,9 @@
     "File Deleted Successfully":"File Deleted Successfully",
     "Inquiry Added Successfully":"Inquiry Added Successfully",
     "fabricInformation":"Fabric Information",
-    "enterContactPerson":"Please Enter the contact person",
-    "enterContactNumber":"Please Enter the contact number",
-    "enterEmail":"Please enter the email",
+    "enterContactPerson":"Please Enter the Contact Person",
+    "enterContactNumber":"Please Enter the Contact Number",
+    "enterEmail":"Please Enter the Email",
     "Factory Added Successfully":"Factory Added Successfully",
     "Inquiry Deleted Successfully":"Inquiry Deleted Successfully",
     "********** Inquiry Contact Setting **********": "********** Inquiry Contact Setting **********",
@@ -1012,5 +1012,10 @@
     "goBack" : "Back",
     "quoteDetails" : "Quote Details",
     "createNewInquiry":"Create New Inquiry",
-    "addFactoryResponse": "ADD FACTORY RESPONSE"
+    "addFactoryResponse": "ADD FACTORY RESPONSE",
+    "startTyping":"Start typing......",
+    "********** Inquiry side menu **********": "********** Inquiry side menu **********",
+    "View Inquiry":"View Inquiry",
+    "Feedback Form":"Feedback Form",
+    "Inquiry Contacts":"Inquiry Contacts"
 }

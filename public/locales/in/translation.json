@@ -1,4 +1,4 @@
-{
+{   
     "Dashboard": "डैशबोर्ड",
     "Order Status": "आदेश की स्थिति",
     "Task Update": "कार्य अद्यतन",
@@ -649,6 +649,8 @@
     "repliedTo": "को उत्तर दिया",
     "replyTo": "को उत्तर",
     "DeleteRepliesConversationandContinue": "कृपया इस वार्तालाप के लिए उत्तर हटाएं और जारी रखें।",
+    "subtaskCommunication":"उप कार्य संचार",
+    "taskCommunication":"कार्य संचार",
     "********** BackEnd Messages **********": "*********** User Login **********",
     "The email field is required.": "ईमेल फ़ील्ड आवश्यक है",
     "The email must be a valid email address.": "ईमेल एक मान्य ईमेल पता होना चाहिए",
@@ -1009,5 +1011,11 @@
     "Inquiry sent Successfully": "जांच सफलतापूर्वक भेजी गई",
     "goBack": "वापस जाओ",
     "quoteDetails": "उद्धरण विवरण",
-    "createNewInquiry": "नई पूछताछ बनाएँ"
+    "createNewInquiry": "नई पूछताछ बनाएँ",
+    "addFactoryResponse": "फ़ैक्टरी प्रतिक्रिया जोड़ें",
+    "startTyping":"टाइप करना शुरू करें......",
+    "********** Inquiry side menu **********": "********** Inquiry side menu **********",
+    "View Inquiry":"पूछताछ देखें",
+    "Feedback Form":"प्रतिपुष्टी फ़ार्म",
+    "Inquiry Contacts":"पूछताछ संपर्क"
     }

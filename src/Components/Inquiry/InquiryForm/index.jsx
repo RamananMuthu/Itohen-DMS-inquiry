@@ -195,7 +195,7 @@ const index = () => {
     ],
     uploader: { insertImageAsBase64URI: true },
 
-    placeholder: placeholder || 'Start typing...',
+    placeholder: placeholder || t("startTyping"),
     hidePoweredByJodit: false,
   }),
     [placeholder])
