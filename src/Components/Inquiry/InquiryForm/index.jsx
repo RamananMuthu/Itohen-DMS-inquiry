@@ -484,58 +484,119 @@ const index = () => {
   
   }, []);
 
-  /****------- Image Upload API Call ---------- ****/
-  const uploadImageApiCall = (imageType, file) => {
-    axios
-      .post(
-        ServerUrl + "/inquiry-file-upload",
-        {
-          type: imageType,
-          referenceId: referenceId,
-          file: file[0],
-          company_id: company_id,
-          workspace_id: workspace_id,
+ /****------- Image Upload API Call ---------- ****/
+ const uploadImageApiCall = (imageType, file) => {
+  axios
+    .post(
+      ServerUrl + "/inquiry-file-upload",
+      {
+        type: imageType,
+        referenceId: referenceId,
+        file: file[0],
+        company_id: company_id,
+        workspace_id: workspace_id,
+      },
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
         },
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        },
-      )
-      .then((response) => {
-        if (response.data.status_code == 200) {
-          if (imageType == "SampleFormat") {
-            setFileSampleFormat(response.data.files.files);
-            setAwsUrl(response.data.files.serverURL);
-          } else if (imageType == "MeasurementSheet") {
-            setFileMeasurementSheet(response.data.files.files);
-            setAwsUrl(response.data.files.serverURL);
-          } else if (imageType == "PrintImage") {
-            // setPrintImg(response.data.files[0].filepath);
-            setFilePrintImage(response.data.files.files);
-            setAwsUrl(response.data.files.serverURL);
-          } else if (imageType == "MainLabel") {
-            setFileMainLabel(response.data.files.files);
-            setAwsUrl(response.data.files.serverURL);
-          } else if (imageType == "WashCareLabel") {
-            setFileWashCareLabel(response.data.files.files);
-            setAwsUrl(response.data.files.serverURL);
-          } else if (imageType == "Hangtag") {
-            setFileHangtag(response.data.files.files);
-            setAwsUrl(response.data.files.serverURL);
-          } else if (imageType == "BarcodeStickers") {
-            setFileBarcodeStickers(response.data.files.files);
-            setAwsUrl(response.data.files.serverURL);
-          } else if (imageType == "Polybag") {
-            setFilePolyBagImg(response.data.files.files);
-            setAwsUrl(response.data.files.serverURL);
-          } else if (imageType == "Carton") {
-            setFileCartonImg(response.data.files.files);
-            setAwsUrl(response.data.files.serverURL);
+      },
+    )
+    .then((response) => {
+      if (response.data.status_code == 200) {
+        if (imageType == "SampleFormat") {
+          let sampleFormatFileData = response.data.files;
+          setFileSampleFormat(sampleFormatFileData.files);
+          setAwsUrl(sampleFormatFileData.serverURL);
+            { sampleFormatFileData.files.length > 0 ?
+              (sampleFormatFileData.files).map((mapData) => {setSampleFormatImg(mapData.orginalfilename);}) 
+              : 
+              setSampleFormatImg(() => "");
+            }
+        } else if (imageType == "MeasurementSheet") {
+          let measurementSheetData = response.data.files;
+          setFileMeasurementSheet(measurementSheetData.files);
+          setAwsUrl(measurementSheetData.serverURL);
+          {
+            measurementSheetData.files.length >0 ?
+            (measurementSheetData.files).map((mapData)=>{setMeasurementSheetImg(mapData.orginalfilename);})
+            :
+            setMeasurementSheetImg(()=>"");
+          }
+        } else if (imageType == "PrintImage") {
+          let printImageData = response.data.files;
+          setFilePrintImage(printImageData.files);          
+          setAwsUrl(printImageData.serverURL);
+          {
+            printImageData.files.length >0 ?
+            (printImageData.files).map((mapData)=>{setPrintImg(mapData.orginalfilename);})
+            :
+            setPrintImg(()=>"");
+          }
+        } else if (imageType == "MainLabel") {
+          let mainLabelData = response.data.files;
+          setFileMainLabel(mainLabelData.files);
+          setAwsUrl(mainLabelData.serverURL);
+          {
+            mainLabelData.files.length >0 ?
+            (mainLabelData.files).map((mapData)=>{setMainLabelSampleImg(mapData.orginalfilename);})
+            :
+            setMainLabelSampleImg(()=>"");
+          }
+        } else if (imageType == "WashCareLabel") {
+          let washCareData = response.data.files;
+          setFileWashCareLabel(washCareData.files);
+          setAwsUrl(washCareData.serverURL);
+          {
+            washCareData.files.length >0 ?
+            (washCareData.files).map((mapData)=>{setWashCareLabelSampleImg(mapData.orginalfilename);})
+            :
+            setWashCareLabelSampleImg(()=>"");
+          }
+        } else if (imageType == "Hangtag") {
+          let hangtagData = response.data.files;
+          setFileHangtag(hangtagData.files);
+          setAwsUrl(hangtagData.serverURL);
+          {
+            hangtagData.files.length >0 ?
+            (hangtagData.files).map((mapData)=>{setHangtagSampleImg(mapData.orginalfilename);})
+            :
+            setHangtagSampleImg(()=>"");
+          }
+        } else if (imageType == "BarcodeStickers") {
+          let barcodeStickersData = response.data.files;
+          setFileBarcodeStickers(barcodeStickersData.files);
+          setAwsUrl(barcodeStickersData.serverURL);
+          {
+            barcodeStickersData.files.length >0 ?
+            (barcodeStickersData.files).map((mapData)=>{setBarcodeStickersSampleImg(mapData.orginalfilename);})
+            :
+            setBarcodeStickersSampleImg(()=>"");
+          }
+        } else if (imageType == "Polybag") {
+          let polybagData = response.data.files;
+          setFilePolyBagImg(polybagData.files);
+          setAwsUrl(polybagData.serverURL);
+          {
+            polybagData.files.length >0 ?
+            (polybagData.files).map((mapData)=>{setPolybagSampleImg(mapData.orginalfilename);})
+            :
+            setPolybagSampleImg(()=>"");
+          }
+        } else if (imageType == "Carton") {
+          let cartonData = response.data.files;
+          setFileCartonImg(cartonData.files);
+          setAwsUrl(cartonData.serverURL);
+          {
+            cartonData.files.length >0 ?
+            (cartonData.files).map((mapData)=>{setCartonSampleImg(mapData.orginalfilename);})
+            :
+            setCartonSampleImg(()=>"");
           }
         }
-      });
-  };
+      }
+    });
+};
 
   /****------- Delete Image  ---------- ****/
   const deleteImageFiles = (imageType, file) => {
