@@ -396,7 +396,7 @@ const FeedbackFormInquiry = () => {
                         <Input
                           disabled={btnStatus}
                           className=""
-                          placeholder="Comments"
+                          placeholder={t("comments")}
                           defaultValue={lowestPriceComment}
                           onChange={(e) =>
                             setLowestPriceComment(e.target.value)
@@ -422,7 +422,7 @@ const FeedbackFormInquiry = () => {
                         <Input
                           disabled={btnStatus}
                           className=""
-                          placeholder="Comments"
+                          placeholder={t("comments")}
                           defaultValue={effiCommunicationComment}
                           onChange={(e) =>
                             setEffiCommunicationComment(e.target.value)
@@ -453,7 +453,7 @@ const FeedbackFormInquiry = () => {
                           disabled={btnStatus}
                           className=""
                           name="on Time"
-                          placeholder="Comments"
+                          placeholder={t("comments")}
                           defaultValue={onTimeDeliveryComment}
                           onChange={(e) =>
                             setOnTimeDeliveryComment(e.target.value)
@@ -481,7 +481,7 @@ const FeedbackFormInquiry = () => {
                         <Input
                           disabled={btnStatus}
                           className=""
-                          placeholder="Comments"
+                          placeholder={t("comments")}
                           defaultValue={lessQuantityComment}
                           onChange={(e) =>
                             setLessQuantityComment(e.target.value)
@@ -512,7 +512,7 @@ const FeedbackFormInquiry = () => {
                           disabled={btnStatus}
                           className=""
                           name="on Time"
-                          placeholder="Comments"
+                          placeholder={t("comments")}
                           defaultValue={vbRelationshipComment}
                           onChange={(e) =>
                             setVbRelationshipComment(e.target.value)
@@ -538,7 +538,7 @@ const FeedbackFormInquiry = () => {
                         <Input
                           disabled={btnStatus}
                           className=""
-                          placeholder="Comments"
+                          placeholder={t("comments")}
                           defaultValue={goodSellComment}
                           onChange={(e) => setGoodSellComment(e.target.value)}
                         ></Input>
@@ -569,7 +569,7 @@ const FeedbackFormInquiry = () => {
                           disabled={btnStatus}
                           className=""
                           name="on Time"
-                          placeholder="Comments"
+                          placeholder={t("comments")}
                           defaultValue={onTimeSampleSubmitComment}
                           onChange={(e) =>
                             setOnTimeSampleSubmitComment(e.target.value)
@@ -595,7 +595,7 @@ const FeedbackFormInquiry = () => {
                         <Input
                           disabled={btnStatus}
                           className=""
-                          placeholder="Comments"
+                          placeholder={t("comments")}
                           defaultValue={collabrativeComment}
                           onChange={(e) =>
                             setCollabrativeComment(e.target.value)
