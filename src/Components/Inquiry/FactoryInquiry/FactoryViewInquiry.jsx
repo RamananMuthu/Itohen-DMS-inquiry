@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Container, Row, Col, CardBody, Card } from "reactstrap";
+import { Container, Row, Col, CardBody, Card,Pagination, PaginationItem, PaginationLink } from "reactstrap";
 import { Breadcrumbs } from "../../../AbstractElements";
 import DocumentIcon from "../../../assets/images/dms/icons/inquiryDocumentIcon.svg";
 import lastDay from "../../../assets/images/dms/InquiryOneDayRemain.svg";
@@ -36,14 +36,25 @@ const FactoryViewInquiry = () => {
   const [inquiryDetails, setInquiryDetails] = useState([]);
   const { t } = useTranslation();
   const [inquiryResponse, setInquiryResponse] = useState([]);
+  const [totalFactList, setTotalFactList] = useState();
+  const [links, setlinks] = useState([]);
+  const [pageNumber, setPageNumber] = useState(1);
 
-  const apiCall = () => {
+  const apiCall = (pageNumber) => {
+    var getInputParams = {};
+    getInputParams["company_id"] = getLoginCompanyId;
+    getInputParams["workspace_id"] = getWorkspaceId;
+    getInputParams["factory_id"] = getLoginUserId;
+    getInputParams["page"] =     pageNumber;
     axios
     .post(ServerUrl + "/factory-get-inquiry", apiencrypt(getInputParams))
     .then((response) => {
       response.data = apidecrypt(response.data);
-      setInquiryDetails(response.data.data);
+      setTotalFactList(response.data.data.last_page);
+      setlinks(response.data.data.links);
+      setInquiryDetails(response.data.data.data);
       setInquiryResponse(response.data.response);
+      setPageNumber(pageNumber);
     })
   }
 
@@ -339,6 +350,30 @@ const FactoryViewInquiry = () => {
           </Col>
         </Row>
       </Container>
+    {/* **********************Pagination***************************** */}
+      {totalFactList > 1 ? 
+      <>
+        <Pagination  aria-label="Page navigation example" className="pagination-primary f-right" >
+          {
+            links.map((link)=>(
+              (link.label >0 || link.label=='...')?
+              link.active ?
+              <PaginationItem active>
+                <PaginationLink style ={{ cursor: "inherit" }}>{link.label}</PaginationLink>
+              </PaginationItem>
+              :
+              <PaginationItem>
+                  <PaginationLink onClick={() => apiCall(link.label)}>{link.label}
+                  </PaginationLink>
+            </PaginationItem>
+            :""
+            ))
+          }
+        </Pagination>
+      </> 
+      : 
+      <>
+      </>}
     </Fragment>
   );
 };

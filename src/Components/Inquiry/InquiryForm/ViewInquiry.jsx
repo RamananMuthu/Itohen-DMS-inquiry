@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Container, Row, Col, CardBody, Card } from "reactstrap";
+import { Container, Row, Col, CardBody, Card,Pagination, PaginationItem, PaginationLink } from "reactstrap";
 import { Breadcrumbs } from "../../../AbstractElements";
 import InquiryViewIcon from "../../../assets/images/dms/inquiryViewIcon.svg";
 import addIcon from "../../../assets/images/dms/icons/addIcon.svg";
@@ -28,27 +28,37 @@ const ViewInquiry = () => {
   const [inquiryId, setInquiryId] = useState("");
   const [factory, setFactory] = useState([]);
   const [inquiryDownloadPath, setInquiryDownloadPath] = useState("");
+  const [pageNumber, setPageNumber] = useState(1);
   const [factoryList, setFactoryList] = useState([]);
   const [selectedFactoriesList, setSelectedFactoriesList] = useState([]);
+  const [totalInquiryListSet, setTotalInquiryListSet] = useState();
+  const [links, setlinks] = useState([]);
   const { t } = useTranslation();
   const toggle = () => setModal(!modal);
   const toggleart = () => setModalart(!modalart);
   const [modalInquirySentTo, setModalInquirySentTo] = useState(false);
   const toggleInquirySentTo = () => setModalInquirySentTo(!modalInquirySentTo);
   let selectedFactoriesArray = [];
-
   const dataToSendAtStarting = {
     company_id: company_id,
     workspace_id: workspace_id,
   };
 
-  const apiCall = () => {
+  const apiCall = (pageNumber) => {
+    var getInputParams = {};
+    getInputParams["company_id"] = getLoginCompanyId;
+    getInputParams["workspace_id"] = getWorkspaceId;
+    getInputParams["user_id"] = getLoginUserId;
+    getInputParams["page"] =     pageNumber;
     axios
     .post(ServerUrl + "/get-inquiry", apiencrypt(getInputParams))
     .then((response) => {
       response.data = apidecrypt(response.data);
-      setInquiryDetails(response.data.data);
+      setInquiryDetails(response.data.data.data);
       setInquiryDownloadPath(response.data.pdfpath);
+      setTotalInquiryListSet(response.data.data.last_page);
+      setlinks(response.data.data.links);
+      setPageNumber(pageNumber);
     });
 
     axios
@@ -56,41 +66,24 @@ const ViewInquiry = () => {
     .then((response) => {
         response.data = apidecrypt(response.data);
         setFactory(response.data.data);
+        
     });
   };
 
   useEffect(() => 
   {
-
-    // getLoginUserType == "user" ?
-    // /************************ ADMIN  ************************/
-    // getWorkspaceType == "Buyer" || getWorkspaceType == "PCU" && getWorkspaceType != "Factory" ? apiCall()  : window.location.href='/inquiry/factoryviewinquiry'
-    // :
-    // /************************ STAFF  ************************/
-
-    // ////////////////////////// STAFF - BUYER Or PCU //////////////////////////
-    // getWorkspaceType == "Buyer" || getWorkspaceType == "PCU" && getWorkspaceType != "Factory" ?  
-    //   (getStaff === "Staff" && getStaffPermission.includes("View Inquiry")) || getStaff == null ? 
-    //   apiCall() :  
-    //     (getStaff === "Staff" && getStaffPermission.includes("View Factory Inquiry")) || getStaff == null ? window.location.href='/inquiry/factoryviewinquiry' :  window.location.href='/inquiry/inquirycontacts' 
-    // : ""
-
-    getLoginUserType == "user" ?  getWorkspaceType != "Factory" ? apiCall()  : 
+       getLoginUserType == "user" ?  getWorkspaceType != "Factory" ? apiCall()  : 
     window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry` 
-    // window.location.href='/inquiry/factoryviewinquiry'
     :
     getWorkspaceType != "Factory" ?  
       (getStaff === "Staff" && getStaffPermission.includes("View Inquiry")) || getStaff == null ? 
       apiCall() :  
       window.location.href = `${process.env.PUBLIC_URL}/feedbackform` 
-      // window.location.href='/inquiry/feedbackform'
     :
       (getStaff === "Staff" && getStaffPermission.includes("View Factory Inquiry")) || getStaff == null ? 
       window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry`
-      // window.location.href='/inquiry/factoryviewinquiry' 
       : 
       window.location.href = `${process.env.PUBLIC_URL}/inquirycontacts`
-      // window.location.href='/inquiry/inquirycontacts' 
   
   }, []);
 
@@ -98,7 +91,8 @@ const ViewInquiry = () => {
     window.location.href = `${process.env.PUBLIC_URL}/factoryresponse?id=` + encode(inquiryId);
     // window.location.href = "/inquiry/factoryresponse?id=" + encode(inquiryId);
   };
-      /**Delete Inquiry based on Id*********/
+  
+  /**Delete Inquiry based on Id*********/
   const deleteInquiry = (inquiryId) => {
     var deleteParams = {};
     deleteParams["inquiry_id"] = inquiryId.toString();
@@ -187,10 +181,9 @@ const ViewInquiry = () => {
                           <tbody>
                             {inquiryDetails.length > 0 ? (
                               inquiryDetails.map((inquirydtls, index) => (
-                       
                                 (inquirydtls.notification == null ? 
                                 <tr>
-                                  <td scope="row" className="centerAlign"> {index + 1} </td>
+                                  <td scope="row" className="centerAlign"> {(index) + 1} </td>
                                   <td className="centerAlign"> {"IN-" + inquirydtls.id} </td>
                                   <td className="centerAlign"> {inquirydtls.style_no} </td>
                                   <td className="centerAlign"> {inquirydtls.created_date} </td>
@@ -519,6 +512,7 @@ const ViewInquiry = () => {
                               toggleInquirySentTo={toggleInquirySentTo}
                               setModalInquirySentTo={setModalInquirySentTo}
                             />
+                            
                           </tbody>
                         </table>
                       </div>
@@ -530,6 +524,30 @@ const ViewInquiry = () => {
           </Col>
         </Row>
       </Container>
+    {/* **********************Pagination***************************** */}
+      {totalInquiryListSet>1 ? 
+      <>
+        <Pagination  aria-label="Page navigation example" className="pagination-primary f-right" >
+          {
+            links.map((link)=>(
+              (link.label >0 || link.label=='...')?
+              link.active ?
+              <PaginationItem active>
+                <PaginationLink style ={{ cursor: "inherit" }}>{link.label}</PaginationLink>
+              </PaginationItem>
+              :
+              <PaginationItem>
+                  <PaginationLink onClick={() => apiCall(link.label)}>{link.label}
+                  </PaginationLink>
+            </PaginationItem>
+            :""
+            ))
+          }
+        </Pagination>
+      </> 
+      : 
+      <>
+      </>}
     </Fragment>
   );
 };
