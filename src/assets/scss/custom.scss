@@ -1178,7 +1178,7 @@ td.text-left {
   position: fixed;
   width: 97%;
   z-index: 9999;
-  top: calc(23% - 130px);
+  top: calc(23% - 113px);
 }
 .sticky + .contenthb {
   padding-top: 150px !important;
@@ -1193,17 +1193,26 @@ td.text-left {
     position: fixed;
     width: 96%;
     z-index: 9999;
-    top: calc(23% - 115px);
+    top: calc(23% - 147px);
   }
   
 }
 
-@media only screen and (max-width: 1024px) and (min-width: 768px){
+@media only screen and (max-width: 1024px) {
   .sticky {
     position: fixed;
     width: 96%;
     z-index: 9999;
-    top: calc(23% - 120px);
+    top: calc(23% - 96px);
+  }
+  
+}
+@media only screen and (max-width: 768px) {
+  .sticky {
+    position: fixed;
+    width: 96%;
+    z-index: 9999;
+    top: calc(23% - 109px);
   }
   
 }
