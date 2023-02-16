@@ -2365,12 +2365,12 @@ const index = () => {
                   <Row>
                     <Col lg="4">
                       <FormGroup>
-                        <Label>{t("printImage")}</Label>
+                        <Label>{t("printArtwork")}</Label>
                         <InputGroup>
                           <Input
                             className=""
                             name="Print Image"
-                            placeholder={t("attachPrintImage")}
+                            placeholder={t("attachPrintArtwork")}
                             value={printImg ? printImg : ""}
                             onChange={(e) => setPrintImage(e.target.value)}
                             disabled
@@ -2857,12 +2857,12 @@ const index = () => {
                   <Row>
                     <Col lg="4">
                       <FormGroup>
-                        <Label>{t("polybagSampleImage")}</Label>
+                        <Label>{t("polybagPrintArtwork")}</Label>
                         <InputGroup>
                           <Input
                             className=""
                             name="Polybag Image"
-                            placeholder={t("attachPolybagSampleImage")}
+                            placeholder={t("attachPolybagPrintArtwork")}
                             value={
                               polybagSampleImg
                                 ? polybagSampleImg
