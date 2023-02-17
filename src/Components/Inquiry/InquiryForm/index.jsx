@@ -28,6 +28,15 @@ import AddFabricModal from "./AddFabricModal";
 import InfoCanvas from "./InquiryInfoOffCanvas";
 import JoditEditor from 'jodit-react';
 
+import StyleArticleDescription from "./StyleArticleDescription";
+import SpecialFinishers from "./SpecialFinishers";
+import TrimsNotificationsSpecify from "./TrimsNotificationsSpecify";
+import ForbiddenSubstancesInformation from "./ForbiddenSubstancesInformation";
+import TestingRequirement from "./TestingRequirement";
+import SampleRequirements from "./SampleRequirements";
+import SpecialRequest from "./SpecialRequest";
+import parse from 'html-react-parser';
+
 const index = () => {
   const { t } = useTranslation();
   const editor = useRef(null); // **** Using for jodit Editor**//
@@ -126,12 +135,35 @@ const index = () => {
   const [currency, setCurrency] = useState("");
   const [measurementChart, setMeasurementChart] = useState([]);
   const [showTopBtn, setShowTopBtn] = useState(false);
+  const [paymentTermList,setPaymentTermList]= useState([]);
   const toggleart = () => setModalArt(!modalArt);
   const togglefabric = () => setModalfabric(!modalfabric);
   const toggleclr = () => setModalClr(!modalClr);
   const togglesize = () => setModalSize(!modalSize);
   const toggleInfoCanvas = () => setShowInfoCanvas(!showInfoCanvas);
   const [validerrors, setValiderros] = React.useState({});
+
+
+  const [showArticleModal, setShowArticleModal] = useState(false);
+  const togglearticle = () => setShowArticleModal(!showArticleModal);
+
+  const [specialFinishersModal, setSpecialFinishersModal] = useState(false);
+  const toggleFinishersModal = () => setSpecialFinishersModal(!specialFinishersModal);
+
+  const [trimsNotificationsModal, setTrimsNotificationsModal] = useState(false);
+  const toggleTrimsNotifications = () => setTrimsNotificationsModal(!trimsNotificationsModal);
+
+  const [substancesInformationModal, setSubstancesInformationModal] = useState(false);
+  const toggleSubstances = () => setSubstancesInformationModal(!substancesInformationModal);
+
+  const [testingRequirementModal, setTestingRequirementModal] = useState(false);
+  const toggletesting = () => setTestingRequirementModal(!testingRequirementModal);
+
+  const [sampleRequirementsModal, setSampleRequirementsModal] = useState(false);
+  const toggleRequirement = () => setSampleRequirementsModal(!sampleRequirementsModal);
+
+  const [specialRequestsModal, setSpecialRequestModal] = useState(false);
+  const togglespecialRequest= () => setSpecialRequestModal(!specialRequestsModal);
 
   var getInputParams = {};
   getInputParams["company_id"] = getLoginCompanyId;
@@ -439,6 +471,12 @@ const index = () => {
       .get(ServerUrl + "/get-currencies").then((response) => {
         response.data = apidecrypt(response.data);
         setCurrencies(response.data.data);
+      });
+      axios
+      .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "PaymentTerms"}))
+      .then((response) => {
+        response.data = apidecrypt(response.data);
+        setPaymentTermList(response.data.data);
       });
     window.addEventListener("scroll", () => {
       if (window.scrollY > 400) {
@@ -1654,7 +1692,7 @@ const index = () => {
                     </Col>
                   </Row>
                   <Row>
-                    <Col lg="6" >
+                    {/* <Col lg="6" >
                       <FormGroup>
                         <Label className="form-label">{t("paymentTerms")}</Label>
                         <span
@@ -1679,6 +1717,36 @@ const index = () => {
                           onChange={(newContent) => setPaymentTerm(newContent)}
                         />
                       </FormGroup>
+
+
+                    </Col> */}
+
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label>{t("paymentTerms")}</Label>
+                        <InputGroup>
+                          <Input
+                            type="select"
+                            // placeholder={t("selectStatus")}
+                            className="form-control digits selectheight"
+                            name="Income Terms"
+                            defaultValue=""
+                            onChange={(e) => setPaymentTerm(e.target.value)}
+                          >
+                            <option Value="" disabled>
+                              {t("selectPaymentTerms")}
+                            </option>
+                            {paymentTermList.map((payTerm) => (
+                              <option
+                                value={payTerm.id}
+                                title={payTerm.content}
+                              >
+                                {payTerm.content}
+                              </option>
+                            ))}
+                          </Input>
+                        </InputGroup>
+                      </FormGroup>
                     </Col>
                   </Row>
 
@@ -1690,13 +1758,41 @@ const index = () => {
                         <Label className="form-label">
                           {t("styleArticleDescription")}
                         </Label>
-                        <JoditEditor
+                        <span
+                          className="m-l-20"
+                          style={{ cursor: "pointer" }}
+                          value
+                          onClick={() => {
+                            togglearticle ();
+                          }}
+                          >
+                          {styleArtcileDesc=="" ?   <img 
+                                src={addIcon}
+                                width="25px"
+                                height="25px"
+                                
+                              ></img>:<i className="icofont icofont-ui-edit"></i>}    
+                        
+                          {/* <img src={infoIcon} width="25px" height="25px"></img> */}
+                        </span>
+                        <StyleArticleDescription
+                              modal={showArticleModal}
+                              toggle={togglearticle}
+                              styleArtcileDesc={styleArtcileDesc}
+                              setStyleArticleDesc={setStyleArticleDesc}
+                              setShowArticleModal={setShowArticleModal}
+                              showArticleModal={showArticleModal}
+                            />
+                           <div> {parse(styleArtcileDesc)}</div>
+                           
+                       
+                        {/* <JoditEditor
                           ref={editor}
                           value={styleArtcileDesc}
                           config={config}
                           tabIndex={1}
                           onChange={(newContent) => setStyleArticleDesc(newContent)}
-                        />
+                        /> */}
                       </FormGroup>
                     </Col>
                     <Col lg="6">
@@ -1704,13 +1800,31 @@ const index = () => {
                         <Label className="form-label">
                           {t("specialFinishers")}
                         </Label>
-                         <JoditEditor
-                          ref={editor}
-                          value={specialFinishes}
-                          config={config}
-                          tabIndex={1}
-                          onChange={(newContent) => setSpecialFinishes(newContent)}
-                        />
+                        <span
+                          className="m-l-20"
+                          style={{ cursor: "pointer" }}
+                          value
+                          onClick={() => {
+                            toggleFinishersModal ();
+                          }}
+                        >
+                        {specialFinishes=="" ?   <img 
+                                src={addIcon}
+                                width="25px"
+                                height="25px"
+                                
+                              ></img>:<i className="icofont icofont-ui-edit"></i>} 
+                        </span>
+                        <SpecialFinishers
+                              modal={specialFinishersModal}
+                              toggle={toggleFinishersModal}
+                              specialFinishes={specialFinishes}
+                              setSpecialFinishes={setSpecialFinishes}
+                              setSpecialFinishersModal={setSpecialFinishersModal}
+                              specialFinishersModal={specialFinishersModal}
+                            />
+                            <div>{parse(specialFinishes)}</div>
+                       
                       </FormGroup>
                     </Col>
                 </Row>
@@ -2786,13 +2900,39 @@ const index = () => {
                         <Label className="form-label">
                           {t("trimsNotificationsSpecify")}
                         </Label>
-                       <JoditEditor
+                        <span
+                          className="m-l-20"
+                          style={{ cursor: "pointer" }}
+                          value
+                          onClick={() => {
+                            toggleTrimsNotifications ();
+                          }}
+                        >
+                         {trimsNotification=="" ?   <img 
+                                src={addIcon}
+                                width="25px"
+                                height="25px"
+                                
+                              ></img>:<i className="icofont icofont-ui-edit"></i>} 
+                        </span>
+                        <TrimsNotificationsSpecify
+                              modal={trimsNotificationsModal}
+                              toggle={toggleTrimsNotifications}
+                              trimsNotification={trimsNotification}
+                              setTrimsNotification={setTrimsNotification}
+                              setTrimsNotificationsModal={setTrimsNotificationsModal}
+                              trimsNotificationsModal={trimsNotificationsModal}
+                            />
+                       {/* <JoditEditor
                           ref={editor}
                           value={trimsNotification}
                           config={config}
                           tabIndex={1}
                           onChange={(newContent) => setTrimsNotification(newContent)}
-                        />
+                        /> */}
+                           <div> 
+                            {parse(trimsNotification)}
+                            </div>         
                       </FormGroup>
                     </Col>
                   </Row>
@@ -2962,12 +3102,12 @@ const index = () => {
                     </Col>
                     <Col lg="4">
                       <FormGroup>
-                        <Label>{t("cartonMaterial")}</Label>
+                        <Label>{t("noOfPly")}</Label>
                         <InputGroup>
                           <Input
                             className=""
                             name="Carton Material"
-                            placeholder={t("enterCartonMaterial")}
+                            placeholder={t("selectNoOfPly")}
                             onChange={(e) => setCartonMaterial(e.target.value)}
                           ></Input>
                         </InputGroup>
@@ -3205,13 +3345,38 @@ const index = () => {
                         <Label className="form-label">
                           {t("forbiddenSubstancesInformation")}
                         </Label>
-                      <JoditEditor
+                        <span
+                          className="m-l-20"
+                          style={{ cursor: "pointer" }}
+                          value
+                          onClick={() => {
+                            toggleSubstances ();
+                          }}
+                        >
+                         {forbiddenSubstancesInfo =="" ?   <img 
+                                src={addIcon}
+                                width="25px"
+                                height="25px"
+                                
+                              ></img>:<i className="icofont icofont-ui-edit"></i>} 
+                        </span>
+                        <ForbiddenSubstancesInformation
+                              modal={substancesInformationModal}
+                              toggle={toggleSubstances}
+                              setForbiddenSubstancesInfo={setForbiddenSubstancesInfo}
+                              forbiddenSubstancesInfo={forbiddenSubstancesInfo}
+                              setSubstancesInformationModal={setSubstancesInformationModal}
+                              substancesInformationModal={substancesInformationModal}
+                            />
+                           <div>  {parse(forbiddenSubstancesInfo)}</div>
+
+                      {/* <JoditEditor
                           ref={editor}
                           value={forbiddenSubstancesInfo}
                           config={config}
                           tabIndex={1}
                           onChange={(newContent) => setForbiddenSubstancesInfo(newContent)}
-                        />
+                        /> */}
                       </FormGroup>
                     </Col>
                     <Col lg="6">
@@ -3219,13 +3384,40 @@ const index = () => {
                         <Label className="form-label">
                           {t("testingRequirement")}
                         </Label>
-                       <JoditEditor
+
+                        <span
+                          className="m-l-20"
+                          style={{ cursor: "pointer" }}
+                          value
+                          onClick={() => {
+                            toggletesting ();
+                          }}
+                        >
+                        {testingRequirement =="" ?   <img 
+                                src={addIcon}
+                                width="25px"
+                                height="25px"
+                                
+                              ></img>:<i className="icofont icofont-ui-edit"></i>} 
+                        </span>
+                        <TestingRequirement
+                              modal={testingRequirementModal}
+                              toggle={toggletesting}
+                              setTestingRequirement={setTestingRequirement}
+                              testingRequirement={testingRequirement}
+                              setTestingRequirementModal={setTestingRequirementModal}
+                              testingRequirementModal={testingRequirementModal}
+                            />
+                        <div>{parse(testingRequirement)}</div>
+                    
+                    
+                       {/* <JoditEditor
                           ref={editor}
                           value={testingRequirement}
                           config={config}
                           tabIndex={1}
                           onChange={(newContent) => setTestingRequirement(newContent)}
-                        />
+                        /> */}
                       </FormGroup>
                     </Col>
 
@@ -3237,13 +3429,39 @@ const index = () => {
                         <Label className="form-label">
                           {t("SampleRequirements")}
                         </Label>
-                       <JoditEditor
+                        <span
+                          className="m-l-20"
+                          style={{ cursor: "pointer" }}
+                          value
+                          onClick={() => {
+                            toggleRequirement ();
+                          }}
+                        >
+                          {sampleRequirement =="" ?   <img 
+                                src={addIcon}
+                                width="25px"
+                                height="25px"
+                                
+                              ></img>:<i className="icofont icofont-ui-edit"></i>} 
+                        </span>
+                        <SampleRequirements
+                              modal={sampleRequirementsModal}
+                              toggle={toggleRequirement}
+                              setSampleRequirement={setSampleRequirement}
+                              sampleRequirement={sampleRequirement}
+                              setSampleRequirementsModal={setSampleRequirementsModal}
+                              sampleRequirementsModal={sampleRequirementsModal}
+                            />
+                            <div>
+                              {parse(sampleRequirement)}
+                            </div>
+                       {/* <JoditEditor
                           ref={editor}
                           value={sampleRequirement}
                           config={config}
                           tabIndex={1}
                           onChange={(newContent) => setSampleRequirement(newContent)}
-                        />
+                        /> */}
                       </FormGroup>
                     </Col>
                     <Col lg="6">
@@ -3251,13 +3469,39 @@ const index = () => {
                         <Label className="form-label">
                           {t("specialRequestIfAny")}
                         </Label>
-                       <JoditEditor
+                        <span
+                          className="m-l-20"
+                          style={{ cursor: "pointer" }}
+                          value
+                          onClick={() => {
+                            togglespecialRequest ();
+                          }}
+                        >
+                           {specialRequest =="" ?   <img 
+                                src={addIcon}
+                                width="25px"
+                                height="25px"
+                                
+                              ></img>:<i className="icofont icofont-ui-edit"></i>} 
+                        </span>
+                        <SpecialRequest
+                              modal={specialRequestsModal}
+                              toggle={togglespecialRequest}
+                              setSpecialRequest={setSpecialRequest}
+                              specialRequest={specialRequest}
+                              setSpecialRequestModal={setSpecialRequestModal}
+                              specialRequestsModal={specialRequestsModal}
+                            />
+                            <div>
+                              {parse(specialRequest)}
+                            </div>
+                       {/* <JoditEditor
                           ref={editor}
                           value={specialRequest}
                           config={config}
                           tabIndex={1}
                           onChange={(newContent) => setSpecialRequest(newContent)}
-                        />
+                        /> */}
                       </FormGroup>
                     </Col>
                   </Row>
