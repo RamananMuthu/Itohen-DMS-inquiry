@@ -28,11 +28,11 @@ const ViewInquiry = () => {
   const [inquiryId, setInquiryId] = useState("");
   const [factory, setFactory] = useState([]);
   const [inquiryDownloadPath, setInquiryDownloadPath] = useState("");
-  const [pageNumber, setPageNumber] = useState(1);
+  // const [pageNumber, setPageNumber] = useState(1);
   const [factoryList, setFactoryList] = useState([]);
   const [selectedFactoriesList, setSelectedFactoriesList] = useState([]);
-  const [totalInquiryListSet, setTotalInquiryListSet] = useState();
-  const [links, setlinks] = useState([]);
+  // const [totalInquiryListSet, setTotalInquiryListSet] = useState();
+  // const [links, setlinks] = useState([]);
   const { t } = useTranslation();
   const toggle = () => setModal(!modal);
   const toggleart = () => setModalart(!modalart);
@@ -49,16 +49,17 @@ const ViewInquiry = () => {
     getInputParams["company_id"] = getLoginCompanyId;
     getInputParams["workspace_id"] = getWorkspaceId;
     getInputParams["user_id"] = getLoginUserId;
-    getInputParams["page"] =     pageNumber;
+    // getInputParams["page"] =     pageNumber;
     axios
     .post(ServerUrl + "/get-inquiry", apiencrypt(getInputParams))
     .then((response) => {
       response.data = apidecrypt(response.data);
-      setInquiryDetails(response.data.data.data);
+      setInquiryDetails(response.data.data);
       setInquiryDownloadPath(response.data.pdfpath);
-      setTotalInquiryListSet(response.data.data.last_page);
-      setlinks(response.data.data.links);
-      setPageNumber(pageNumber);
+      // setInquiryDetails(response.data.data.data);
+      // setTotalInquiryListSet(response.data.data.last_page);
+      // setlinks(response.data.data.links);
+      // setPageNumber(pageNumber);
     });
 
     axios
@@ -525,7 +526,7 @@ const ViewInquiry = () => {
         </Row>
       </Container>
     {/* **********************Pagination***************************** */}
-      {totalInquiryListSet>1 ? 
+      {/* {totalInquiryListSet>1 ? 
       <>
         <Pagination  aria-label="Page navigation example" className="pagination-primary f-right" >
           {
@@ -547,7 +548,7 @@ const ViewInquiry = () => {
       </> 
       : 
       <>
-      </>}
+      </>} */}
     </Fragment>
   );
 };

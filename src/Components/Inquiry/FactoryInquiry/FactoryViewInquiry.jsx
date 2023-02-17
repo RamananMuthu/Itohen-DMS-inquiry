@@ -33,28 +33,29 @@ const FactoryViewInquiry = () => {
   getInputParams["workspace_id"] = getWorkspaceId;
   getInputParams["factory_id"] = getLoginUserId;
 
-  const [inquiryDetails, setInquiryDetails] = useState([]);
   const { t } = useTranslation();
+  const [inquiryDetails, setInquiryDetails] = useState([]);
   const [inquiryResponse, setInquiryResponse] = useState([]);
-  const [totalFactList, setTotalFactList] = useState();
-  const [links, setlinks] = useState([]);
-  const [pageNumber, setPageNumber] = useState(1);
+  // const [totalFactList, setTotalFactList] = useState();
+  // const [links, setlinks] = useState([]);
+  // const [pageNumber, setPageNumber] = useState(1);
 
   const apiCall = (pageNumber) => {
     var getInputParams = {};
     getInputParams["company_id"] = getLoginCompanyId;
     getInputParams["workspace_id"] = getWorkspaceId;
     getInputParams["factory_id"] = getLoginUserId;
-    getInputParams["page"] =     pageNumber;
+    // getInputParams["page"] =     pageNumber;
     axios
     .post(ServerUrl + "/factory-get-inquiry", apiencrypt(getInputParams))
     .then((response) => {
       response.data = apidecrypt(response.data);
-      setTotalFactList(response.data.data.last_page);
-      setlinks(response.data.data.links);
-      setInquiryDetails(response.data.data.data);
+      setInquiryDetails(response.data.data);
       setInquiryResponse(response.data.response);
-      setPageNumber(pageNumber);
+      // setTotalFactList(response.data.data.last_page);
+      // setlinks(response.data.data.links);
+      // setInquiryDetails(response.data.data.data);
+      // setPageNumber(pageNumber);
     })
   }
 
@@ -351,7 +352,7 @@ const FactoryViewInquiry = () => {
         </Row>
       </Container>
     {/* **********************Pagination***************************** */}
-      {totalFactList > 1 ? 
+      {/* {totalFactList > 1 ? 
       <>
         <Pagination  aria-label="Page navigation example" className="pagination-primary f-right" >
           {
@@ -373,7 +374,7 @@ const FactoryViewInquiry = () => {
       </> 
       : 
       <>
-      </>}
+      </>} */}
     </Fragment>
   );
 };
