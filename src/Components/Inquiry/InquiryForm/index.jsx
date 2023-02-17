@@ -165,6 +165,9 @@ const index = () => {
   const [specialRequestsModal, setSpecialRequestModal] = useState(false);
   const togglespecialRequest= () => setSpecialRequestModal(!specialRequestsModal);
 
+  const [paymentinstructionsModal, setpaymentinstructionsModal] = useState(false);
+  const togglepaymentinstructions = () => setpaymentinstructionsModal(!paymentinstructionsModal);
+
   var getInputParams = {};
   getInputParams["company_id"] = getLoginCompanyId;
   getInputParams["workspace_id"] = getWorkspaceId;
@@ -1783,7 +1786,13 @@ const index = () => {
                               setShowArticleModal={setShowArticleModal}
                               showArticleModal={showArticleModal}
                             />
-                           <div> {parse(styleArtcileDesc)}</div>
+
+                          {styleArtcileDesc=="" ?   ""
+                          :
+                          <Card>
+                            <CardBody> {parse(styleArtcileDesc)}</CardBody>
+                            </Card>}  
+                           
                            
                        
                         {/* <JoditEditor
@@ -1823,7 +1832,11 @@ const index = () => {
                               setSpecialFinishersModal={setSpecialFinishersModal}
                               specialFinishersModal={specialFinishersModal}
                             />
-                            <div>{parse(specialFinishes)}</div>
+                            {specialFinishes=="" ?   ""
+                          :
+                          <Card>
+                            <CardBody> {parse(specialFinishes)}</CardBody>
+                            </Card>} 
                        
                       </FormGroup>
                     </Col>
@@ -2930,9 +2943,11 @@ const index = () => {
                           tabIndex={1}
                           onChange={(newContent) => setTrimsNotification(newContent)}
                         /> */}
-                           <div> 
-                            {parse(trimsNotification)}
-                            </div>         
+                       {trimsNotification=="" ?   ""
+                          :
+                          <Card>
+                            <CardBody> {parse(trimsNotification)}</CardBody>
+                            </Card>}         
                       </FormGroup>
                     </Col>
                   </Row>
@@ -3368,7 +3383,11 @@ const index = () => {
                               setSubstancesInformationModal={setSubstancesInformationModal}
                               substancesInformationModal={substancesInformationModal}
                             />
-                           <div>  {parse(forbiddenSubstancesInfo)}</div>
+                           {forbiddenSubstancesInfo=="" ?   ""
+                          :
+                          <Card>
+                            <CardBody> {parse(forbiddenSubstancesInfo)}</CardBody>
+                            </Card>} 
 
                       {/* <JoditEditor
                           ref={editor}
@@ -3408,7 +3427,11 @@ const index = () => {
                               setTestingRequirementModal={setTestingRequirementModal}
                               testingRequirementModal={testingRequirementModal}
                             />
-                        <div>{parse(testingRequirement)}</div>
+                          {testingRequirement=="" ?   ""
+                          :
+                          <Card>
+                            <CardBody> {parse(testingRequirement)}</CardBody>
+                            </Card>}  
                     
                     
                        {/* <JoditEditor
@@ -3452,9 +3475,11 @@ const index = () => {
                               setSampleRequirementsModal={setSampleRequirementsModal}
                               sampleRequirementsModal={sampleRequirementsModal}
                             />
-                            <div>
-                              {parse(sampleRequirement)}
-                            </div>
+                           {sampleRequirement=="" ?   ""
+                          :
+                          <Card>
+                            <CardBody> {parse(sampleRequirement)}</CardBody>
+                            </Card>}  
                        {/* <JoditEditor
                           ref={editor}
                           value={sampleRequirement}
@@ -3492,9 +3517,11 @@ const index = () => {
                               setSpecialRequestModal={setSpecialRequestModal}
                               specialRequestsModal={specialRequestsModal}
                             />
-                            <div>
-                              {parse(specialRequest)}
-                            </div>
+                            {specialRequest=="" ?   ""
+                          :
+                          <Card>
+                            <CardBody> {parse(specialRequest)}</CardBody>
+                            </Card>}  
                        {/* <JoditEditor
                           ref={editor}
                           value={specialRequest}
