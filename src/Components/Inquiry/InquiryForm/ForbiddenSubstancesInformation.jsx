@@ -72,7 +72,7 @@ const ForbiddenSubstancesInformation = ({ modal, toggle,forbiddenSubstancesInfo,
     [placeholder])
   return (
     <Modal isOpen={modal} toggle={toggle} centered>
-      <ModalHeader>Forbidden Substances Information</ModalHeader>
+      <ModalHeader>{t("forbiddenSubstancesInformation")}</ModalHeader>
       <ModalBody id="htmljoditListCSS">
       <JoditEditor
                           ref={editor}

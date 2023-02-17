@@ -72,7 +72,7 @@ const SampleRequirements = ({ modal, toggle,sampleRequirement,setSampleRequireme
     [placeholder])
   return (
     <Modal isOpen={modal} toggle={toggle} centered>
-      <ModalHeader>Sample Requirements</ModalHeader>
+      <ModalHeader>{t("SampleRequirements")}</ModalHeader>
       <ModalBody id="htmljoditListCSS">
       <JoditEditor
                           ref={editor}

@@ -72,7 +72,7 @@ const TestingRequirement = ({ modal, toggle,testingRequirement,setTestingRequire
     [placeholder])
   return (
     <Modal isOpen={modal} toggle={toggle} centered>
-      <ModalHeader>Testing Requirement</ModalHeader>
+      <ModalHeader>{t("testingRequirement")}</ModalHeader>
       <ModalBody id="htmljoditListCSS">
       <JoditEditor
                           ref={editor}

@@ -64,7 +64,7 @@ const SpecialRequest = ({ modal, toggle,specialRequest,setSpecialRequest,setSpec
     [placeholder])
   return (
     <Modal isOpen={modal} toggle={toggle} centered>
-      <ModalHeader>Special Request -If any</ModalHeader>
+      <ModalHeader>{t("specialRequestIfAny")}</ModalHeader>
       <ModalBody id="htmljoditListCSS">
       <JoditEditor
                           ref={editor}

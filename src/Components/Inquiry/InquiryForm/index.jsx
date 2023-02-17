@@ -136,6 +136,10 @@ const index = () => {
   const [measurementChart, setMeasurementChart] = useState([]);
   const [showTopBtn, setShowTopBtn] = useState(false);
   const [paymentTermList,setPaymentTermList]= useState([]);
+  const [printTypeList,setPrintTypeList]= useState([]);
+  const[noOfPlyList,setNoOfPlyList] = useState([]);
+  const[cartonEdgeFinishList,setCartonEdgeFinishList] = useState([]);
+  const [patternList,setPatternList]=useState([]);
   const toggleart = () => setModalArt(!modalArt);
   const togglefabric = () => setModalfabric(!modalfabric);
   const toggleclr = () => setModalClr(!modalClr);
@@ -247,6 +251,17 @@ const index = () => {
     setMasterType(valueType);
     toggleInfoCanvas();
   };
+  // const inquiryMaster = (valueType) => {
+
+  //   var params = {};
+  //   params["type"] = valueType;
+  //   axios.post(ServerUrl + "/get-inquiry-master", apiencrypt(params)).then((response) => {
+  //     response.data = apidecrypt(response.data);
+  //     console.log("AAAAAAAA",response.data);
+  //     setInfoDetails(response.data.data);
+  //   });
+  // };
+
 
   const onFilesChange = (files) => {
     setFiles(files);
@@ -481,6 +496,30 @@ const index = () => {
         response.data = apidecrypt(response.data);
         setPaymentTermList(response.data.data);
       });
+      axios
+      .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "PrintType"}))
+      .then((response) => {
+        response.data = apidecrypt(response.data);
+        setPrintTypeList(response.data.data);
+      });
+      axios
+      .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "NoofPly"}))
+      .then((response) => {
+        response.data = apidecrypt(response.data);
+        setNoOfPlyList(response.data.data);
+      });
+      axios
+      .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "CartonEdgeFinish"}))
+      .then((response) => {
+        response.data = apidecrypt(response.data);
+        setCartonEdgeFinishList(response.data.data);
+      });
+      axios
+      .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "Patterns"}))
+      .then((response) => {
+        response.data = apidecrypt(response.data);
+        setPatternList(response.data.data);
+      });      
     window.addEventListener("scroll", () => {
       if (window.scrollY > 400) {
         setShowTopBtn(true);
@@ -778,47 +817,6 @@ const index = () => {
     }
   };
 
-  /****------- Text Editor OnChange ---------- ****/ 
-  const onChangeArticleDescription = (e) => {
-    const newContent = e.editor.getData();
-    setStyleArticleDesc(newContent);
-  };
- 
-  const onChangePaymentTerms = (e) => {
-    const newContent = e.editor.getData();
-    setPaymentTerm(newContent);
-  };
-
-  const onChangeSpecialFinshers = (e) => {
-    const newContent = e.editor.getData();
-    setSpecialFinishes(newContent);
-  };
-
-  const onChangeTrimsNotifications = (e) => {
-    const newContent = e.editor.getData();
-    setTrimsNotification(newContent);
-  };
-
-  const onChangeForbiddenSubstancesInfo = (e) => {
-    const newContent = e.editor.getData();
-    setForbiddenSubstancesInfo(newContent);
-  };
-
-  const onChangeTestingRequirement = (e) => {
-    const newContent = e.editor.getData();
-    setTestingRequirement(newContent);
-  };
-
-  const onChangeSampleRequirement = (e) => {
-    const newContent = e.editor.getData();
-    setSampleRequirement(newContent);
-  };
-
-  const onChangeSpecialRequest = (e) => {
-    const newContent = e.editor.getData();
-    setSpecialRequest(newContent);
-  };
-  /****----------------- ****/ 
   /****------- Image Upload Validation ---------- ****/
   const SampleFormatImg = (files) => {
     files.map((sampleFormatImg) => {
@@ -2370,20 +2368,34 @@ const index = () => {
                   {/* Patterns,Place of Jurisdiction,Customs Declaration Document */}
 
                   <Row className="m-t-10">
-                    <Col lg="4">
+                  <Col lg="4">
                       <FormGroup>
                         <Label>{t("patterns")}</Label>
                         <InputGroup>
                           <Input
-                            className=""
-                            name="Patterns"
-                            placeholder={t("enterPatterns")}
-                            onChange={(e) => setPatterns(e.target.value)}
-                          ></Input>
+                            type="select"
+                            className="form-control digits selectheight"
+                            name="Income Terms"
+                            defaultValue=""
+                            //onClick={()=>{inquiryMaster("PrintType")}}
+                            onChange={(e) =>{ setPatterns(e.target.value)}}
+                          >
+                            <option Value="" disabled>
+                              {t("selectPatterns")}
+                            </option>
+                            { patternList.length > 0 ? 
+                            patternList.map((patternLists) => (
+                              <option
+                                value={patternLists.id}
+                                title={patternLists.content}
+                              >
+                                {patternLists.content}
+                              </option>
+                            )):""}
+                          </Input>
                         </InputGroup>
                       </FormGroup>
                     </Col>
-
                     <Col lg="4">
                       <FormGroup>
                         <Label>{t("placeofJurisdiction")}</Label>
@@ -2399,20 +2411,31 @@ const index = () => {
                         </InputGroup>
                       </FormGroup>
                     </Col>
-
                     <Col lg="4">
                       <FormGroup>
                         <Label>{t("customsDeclarationDocument")}</Label>
-                        <InputGroup>
-                          <Input
-                            className=""
-                            name="Customs Declaration Document"
-                            placeholder={t("enterCustomsDeclarationDocument")}
-                            onChange={(e) =>
-                              setCustomsDeclarationDoc(e.target.value)
-                            }
-                          ></Input>
-                        </InputGroup>
+                        <span
+                          className="m-l-20"
+                          style={{ cursor: "pointer" }}
+                          value
+                          onClick={() => {
+                            checkedVal("CustomsDeclarationDocument");
+                          }}
+                          >
+                           <img 
+                                src={infoIcon}
+                                width="25px"
+                                height="25px"
+                                
+                              ></img>   
+                        
+                          {/* <img src={infoIcon} width="25px" height="25px"></img> */}
+                        </span>
+                        {customsDeclarationDoc=="" ?   ""
+                          :
+                          <Card>
+                            <CardBody> {parse(customsDeclarationDoc)}</CardBody>
+                            </Card>}     
                       </FormGroup>
                     </Col>
                   </Row>
@@ -2446,16 +2469,31 @@ const index = () => {
                   </Row>
 
                   <Row>
-                    <Col lg="4">
+                  <Col lg="4">
                       <FormGroup>
                         <Label>{t("printType")}</Label>
                         <InputGroup>
                           <Input
-                            className=""
-                            name="Print Type"
-                            placeholder={t("enterPrintType")}
-                            onChange={(e) => setPrintType(e.target.value)}
-                          ></Input>
+                            type="select"
+                            className="form-control digits selectheight"
+                            name="Income Terms"
+                            defaultValue=""
+                            //onClick={()=>{inquiryMaster("PrintType")}}
+                            onChange={(e) =>{ setPrintType(e.target.value)}}
+                          >
+                            <option Value="" disabled>
+                              {t("selectPrintType")}
+                            </option>
+                            { printTypeList.length > 0 ? 
+                            printTypeList.map((printTypeLists) => (
+                              <option
+                                value={printTypeLists.id}
+                                title={printTypeLists.content}
+                              >
+                                {printTypeLists.content}
+                              </option>
+                            )):""}
+                          </Input>
                         </InputGroup>
                       </FormGroup>
                     </Col>
@@ -2566,17 +2604,31 @@ const index = () => {
                     </Col>
                   </Row>
                   <Row>
-                    <Col lg="4">
+                  <Col lg="4">
                       <FormGroup>
                         <Label>{t("mainLabel")}</Label>
-                        <InputGroup>
-                          <Input
-                            className=""
-                            name="Main Label"
-                            placeholder={t("enterMainLabel")}
-                            onChange={(e) => setMainLabel(e.target.value)}
-                          ></Input>
-                        </InputGroup>
+                        <span
+                          className="m-l-20"
+                          style={{ cursor: "pointer" }}
+                          value
+                          onClick={() => {
+                            checkedVal("MainLabel");
+                          }}
+                          >
+                           <img 
+                                src={infoIcon}
+                                width="25px"
+                                height="25px"
+                                
+                              ></img>   
+                        
+                          {/* <img src={infoIcon} width="25px" height="25px"></img> */}
+                        </span>
+                        {mainLabel=="" ?   ""
+                          :
+                          <Card>
+                            <CardBody> {parse(mainLabel)}</CardBody>
+                            </Card>}     
                       </FormGroup>
                     </Col>
                     <Col lg="4">
@@ -3120,11 +3172,25 @@ const index = () => {
                         <Label>{t("noOfPly")}</Label>
                         <InputGroup>
                           <Input
-                            className=""
-                            name="Carton Material"
-                            placeholder={t("selectNoOfPly")}
+                            type="select"
+                            // placeholder={t("selectStatus")}
+                            className="form-control digits selectheight"
+                            name="Income Terms"
+                            defaultValue=""
                             onChange={(e) => setCartonMaterial(e.target.value)}
-                          ></Input>
+                          >
+                            <option Value="" disabled>
+                              {t("selectNoOfPly")}
+                            </option>
+                            {noOfPlyList.map((plyList) => (
+                              <option
+                                value={plyList.id}
+                                title={plyList.content}
+                              >
+                                {plyList.content}
+                              </option>
+                            ))}
+                          </Input>
                         </InputGroup>
                       </FormGroup>
                     </Col>
@@ -3133,16 +3199,30 @@ const index = () => {
                   {/* Packing Information: Carton Edge Finish,Carton Mark Details,Make-Up */}
 
                   <Row>
-                    <Col lg="4">
+                  <Col lg="4">
                       <FormGroup>
                         <Label>{t("cartonEdgeFinish")}</Label>
                         <InputGroup>
                           <Input
-                            className=""
+                            type="select"
+                            // placeholder={t("selectStatus")}
+                            className="form-control digits selectheight"
                             name="Carton Edge Finish"
-                            placeholder={t("enterCartonEdgeFinish")}
+                            defaultValue=""
                             onChange={(e) => setCartonEdgeFinish(e.target.value)}
-                          ></Input>
+                          >
+                            <option Value="" disabled>
+                              {t("selectCartonEdgeFinish")}
+                            </option>
+                            {cartonEdgeFinishList.map((cartonEdgeFinList) => (
+                              <option
+                                value={cartonEdgeFinList.id}
+                                title={cartonEdgeFinList.content}
+                              >
+                                {cartonEdgeFinList.content}
+                              </option>
+                            ))}
+                          </Input>
                         </InputGroup>
                       </FormGroup>
                     </Col>
@@ -3161,12 +3241,12 @@ const index = () => {
                     </Col>
                     <Col lg="2">
                       <FormGroup>
-                        <Label>{t("Carton Sample Image")}</Label>
+                        <Label>{t("cartonMarkImg")}</Label>
                         <InputGroup>
                           <Input
                             className=""
                             name="Carton Sample"
-                            placeholder={t("attachCartonSampleImage")}
+                            placeholder={t("attachCartonMarkImage")}
                             value={
                               cartonSampleImg
                                 ? cartonSampleImg
@@ -3571,6 +3651,10 @@ const index = () => {
         setShowInfoCanvas={setShowInfoCanvas}
         showInfoCanvas={showInfoCanvas}
         PaymentTerm={paymentTerm}
+        setCustomsDeclarationDoc={setCustomsDeclarationDoc}
+        customsDeclaration ={customsDeclarationDoc}
+        setMainLabel={setMainLabel}
+        mainLabel={mainLabel}
       />
     </Fragment>
   );
@@ -3578,3 +3662,6 @@ const index = () => {
 export default index;
 
 /*************************Code By: R.AKSHAYA MOL************************/
+/*************************Updated By: P.Praveen************************/
+/*************************Updated By: R.Ramanan ************************/
+

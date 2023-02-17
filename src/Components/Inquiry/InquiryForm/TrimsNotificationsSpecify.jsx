@@ -60,7 +60,7 @@ const TrimsNotificationsSpecify = ({ modal, toggle,trimsNotification,setTrimsNot
     [placeholder])
   return (
     <Modal isOpen={modal} toggle={toggle} centered>
-      <ModalHeader>Trims Notifications- Specify If any</ModalHeader>
+      <ModalHeader>{t("trimsNotificationsSpecify")}</ModalHeader>
       <ModalBody id="htmljoditListCSS">
       <JoditEditor
                           ref={editor}

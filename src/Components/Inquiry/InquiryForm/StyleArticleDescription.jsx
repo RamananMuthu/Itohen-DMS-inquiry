@@ -72,7 +72,7 @@ const StyleArticleDescription = ({ modal, toggle,styleArtcileDesc,setStyleArticl
     [placeholder])
   return (
     <Modal isOpen={modal} toggle={toggle} centered>
-      <ModalHeader>Style/Article Description</ModalHeader>
+      <ModalHeader>{t("styleArticleDescription")}</ModalHeader>
       <ModalBody  id="htmljoditListCSS">
       <JoditEditor
                           ref={editor}

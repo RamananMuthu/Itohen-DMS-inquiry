@@ -7,14 +7,15 @@ import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
 
 const InquiryInfoOffCanvas = ({ modal, toggle, infoDetails, masterType,
-  setPaymentTerm, setShowInfoCanvas, showInfoCanvas, PaymentTerm }) => {
+  setPaymentTerm, setShowInfoCanvas, showInfoCanvas, PaymentTerm,setCustomsDeclarationDoc,customsDeclaration,setMainLabel,mainLabel }) => {
   const { t } = useTranslation();
 /******************Save Cheched Factory************************/
   const saveChecked = (checkedData) => {
-    var checkboxeschecked = [];
+    if( masterType=='CustomsDeclarationDocument'){
+      var checkboxeschecked = [];
     var markedCheckbox = document.querySelectorAll('input[type="checkbox"]');
     var checkboxLength = markedCheckbox.length;
-    var content = PaymentTerm + "<ul>";
+    var content = customsDeclaration + "<ul>";
     for (var i = 0; i < checkboxLength; i++) {
       if (markedCheckbox[i].checked) {
         checkboxeschecked.push(markedCheckbox[i].value);
@@ -22,20 +23,52 @@ const InquiryInfoOffCanvas = ({ modal, toggle, infoDetails, masterType,
       }
       content = content + '</ul>';
     }
+    }
+    else if(masterType=='MainLabel'){
+      var checkboxeschecked = [];
+    var markedCheckbox = document.querySelectorAll('input[type="checkbox"]');
+    var checkboxLength = markedCheckbox.length;
+    var content = mainLabel + "<ul>";
+    for (var i = 0; i < checkboxLength; i++) {
+      if (markedCheckbox[i].checked) {
+        checkboxeschecked.push(markedCheckbox[i].value);
+        content = content + '<li>' + markedCheckbox[i].value + '</li>';
+      }
+      content = content + '</ul>';
+    }
+    }
 
     if (checkboxeschecked.length > 0) {
+      if( masterType=='CustomsDeclarationDocument')
+      {
       Swal.fire({
-        title: t("selectedPaymentTermsAddedSuccessfully"),
+        title: t("selectedCustomsDeclarationDocument"),
         icon: "success",
         showCancelButton: true,
         button: t("okLabel"),
       }).then((result) => {
         if (result.isConfirmed) {
           setShowInfoCanvas(!showInfoCanvas);
-          setPaymentTerm(content);
+          
+          setCustomsDeclarationDoc(content);
           // toggle();
         }
       });
+    }
+    else if( masterType=='MainLabel'){
+      Swal.fire({
+        title: t("selectedMainLabel"),
+        icon: "success",
+        showCancelButton: true,
+        button: t("okLabel"),
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setShowInfoCanvas(!showInfoCanvas);
+          setMainLabel(content);
+          // toggle();
+        }
+      });
+    }
     } else {
       Swal.fire({
         title: t("checkAtleastOneBeforeSave"),
@@ -49,7 +82,7 @@ const InquiryInfoOffCanvas = ({ modal, toggle, infoDetails, masterType,
   return (
     <Offcanvas className="offcanvas-width" isOpen={modal} toggle={toggle} direction={"end"} >
       <OffcanvasHeader className="bg-primary offcanvas-header">
-        {masterType === "PaymentTerms" ? "Payment Terms" : ""}
+        {masterType === "MainLabel" ? t("mainLabel") : masterType==="CustomsDeclarationDocument"? t("customsDeclarationDocument"):"" }
         <span className="f-right cursor-pointer"
           title={t("close")} tooltip={t("close")}
           alt={t("close")} onClick={toggle} > X

@@ -72,7 +72,7 @@ const SpecialFinishers = ({ modal, toggle,specialFinishes,setSpecialFinishes,set
     [placeholder])
   return (
     <Modal isOpen={modal} toggle={toggle} centered>
-      <ModalHeader>Special Finishers -If any</ModalHeader>
+      <ModalHeader>{t("specialFinishers")}</ModalHeader>
       <ModalBody id="htmljoditListCSS">
       <JoditEditor
                           ref={editor}
