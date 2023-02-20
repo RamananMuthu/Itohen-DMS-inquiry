@@ -23,6 +23,8 @@ import { useTranslation } from "react-i18next";
 import { ServerUrl } from "../../../Constant";
 import FactoryDetailInquiry from "./FactoryDetailInquiry";
 import Documentfactory from "../../../assets/images/dms/icons/Document_Factory_icon.svg";
+// import FilterIcon from "../../../assets/images/dms/icons/filter.svg"
+// import FilterOffCanvas from "./FilterOffCanvas";
 
 // Showing the factory inquiry list
 const FactoryViewInquiry = () => {
@@ -36,26 +38,27 @@ const FactoryViewInquiry = () => {
   const { t } = useTranslation();
   const [inquiryDetails, setInquiryDetails] = useState([]);
   const [inquiryResponse, setInquiryResponse] = useState([]);
-  // const [totalFactList, setTotalFactList] = useState();
-  // const [links, setlinks] = useState([]);
-  // const [pageNumber, setPageNumber] = useState(1);
-
+  const [totalFactList, setTotalFactList] = useState();
+  const [links, setlinks] = useState([]);
+  const [pageNumber, setPageNumber] = useState(1);
+  // const [filterOffCanvas , setFilterOffCanvas] = useState(false);
+  // const toggleFilterCanvas = () => setFilterOffCanvas(!filterOffCanvas);
   const apiCall = (pageNumber) => {
     var getInputParams = {};
     getInputParams["company_id"] = getLoginCompanyId;
     getInputParams["workspace_id"] = getWorkspaceId;
     getInputParams["factory_id"] = getLoginUserId;
-    // getInputParams["page"] =     pageNumber;
+    getInputParams["page"] =     pageNumber;
     axios
     .post(ServerUrl + "/factory-get-inquiry", apiencrypt(getInputParams))
     .then((response) => {
       response.data = apidecrypt(response.data);
-      setInquiryDetails(response.data.data);
+      // setInquiryDetails(response.data.data);
       setInquiryResponse(response.data.response);
-      // setTotalFactList(response.data.data.last_page);
-      // setlinks(response.data.data.links);
-      // setInquiryDetails(response.data.data.data);
-      // setPageNumber(pageNumber);
+      setTotalFactList(response.data.data.last_page);
+      setlinks(response.data.data.links);
+      setInquiryDetails(response.data.data.data);
+      setPageNumber(pageNumber);
     })
   }
 
@@ -165,6 +168,11 @@ const FactoryViewInquiry = () => {
                 <Row className="g-12 m-t-20">
                   <Col md="12" lg="12" sm="12">
                     <Row className="g-12">
+                    {/* <Col md="12" lg="12" sm="12">
+                    <div className="cursor-pointer p-1 p-r-0 m-t-5 f-right" onClick={() => toggleFilterCanvas()}>
+                        <img src={FilterIcon} />
+                     </div>
+                    </Col> */}
                       <div className="table-responsive">
                         <table className="table shadow shadow-showcase  table-bordered">
                           <thead className="bg-primary">
@@ -172,6 +180,7 @@ const FactoryViewInquiry = () => {
                               <th scope="col" className="centerAlign">{" "}{t("serialNo")}{" "}</th>
                               <th className="centerAlign">{" "}{t("inquiryNo")}{" "}</th>
                               <th className="centerAlign"> {t("styleNo")} </th>
+                              {/* <th className="centerAlign">{t("Buyer Name")}</th> */}
                               <th className="centerAlign">{" "}{t("inquiryDate")}{" "}</th> 
                               <th className="centerAlign">{" "} {t("itemsArticleName")}{" "}</th>
                               <th className="centerAlign"> {t("dueDate")} </th>
@@ -197,6 +206,7 @@ const FactoryViewInquiry = () => {
                                   </td>
                                   <td className="text-left middle"> {" "}  {"IN-" + inquirydtls.id}  </td>
                                   <td className="text-left middle "> {inquirydtls.style_no} </td>
+                                  {/* <td className="text-left middle "> PQC India </td> */}
                                   <td className="text-left middle "> {inquirydtls.created_date} </td> 
                                   <td className="text-left middle ">{inquirydtls.name}</td>
                                   <td className="text-left middle ">{inquirydtls.due_date}</td>
@@ -350,9 +360,15 @@ const FactoryViewInquiry = () => {
             </Card>
           </Col>
         </Row>
+        {/* <FilterOffCanvas modal={filterOffCanvas} toggle={toggleFilterCanvas} 
+                    // statusFilter={statusFilter} 
+                    // filterStartDate={setFilterStartDate} filterEndDate={setFilterEndDate} filterOperator={setFilterOperator} 
+                    // filterDaysDelay={setFilterDaysDelay} filterStyleNo={setFilterStyleNo} filterType={setFilterType} 
+                    // selectFilterType={filterType}
+                    /> */}
       </Container>
     {/* **********************Pagination***************************** */}
-      {/* {totalFactList > 1 ? 
+      {totalFactList > 1 ? 
       <>
         <Pagination  aria-label="Page navigation example" className="pagination-primary f-right" >
           {
@@ -374,7 +390,7 @@ const FactoryViewInquiry = () => {
       </> 
       : 
       <>
-      </>} */}
+      </>}
     </Fragment>
   );
 };
