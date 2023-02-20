@@ -57,16 +57,16 @@
 .u-step{
   &.active,
   &.current {
-    color: #000000 !important;
-    background-color: #FFFFFF;
+    color:  #FFFFFF!important;
+    background-color: #4E90DE;
     box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
     p {
-      color: #000000 !important;
+      color: #FFFFFF !important;
     }
   }
   &.active .u-step-title,
   &.current .u-step-title {
-    color: #000000 !important;
+    color: #FFFFFF !important;
   }
   &.active .u-step-number,
   &.current .u-step-number {

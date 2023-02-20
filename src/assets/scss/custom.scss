@@ -47,6 +47,7 @@
   background-color: #ffffff !important;
   border: 1px solid #DDDEE2;
   border-radius: 0.25rem;
+  z-index: 1 !important;
 }
 
 .input-group-text i {
@@ -810,7 +811,6 @@ h2.fc-toolbar-title {
   font-size: 14px !important;
   font-weight: 500px !important;
 }
-
 .input-group-text2 {
   display: flex;
   align-items: center;
@@ -1104,6 +1104,8 @@ td.text-left {
   .activeTab:hover span{
     color:#ffffff; 
   }
+
+
   .icon-position{
     position: fixed;
     bottom: 40px;
@@ -1161,73 +1163,57 @@ td.text-left {
   .badge-notify{
     background-color: #4F90DE !important;
   }
-  // @media only screen and (max-width: 425px){
-  //   .count-animated {
-  //     position: relative;
-  //     top: -35px;
-  //     left: 6px;
-  //     font-size:medium;
-  //     animation: fadeIn 2s ease infinite;
-  //   }
-  //   .badge-notify{
-  //     background-color: #4F90DE !important;
-  //   } 
-  // }
-  /* Inquiry Forn -Tab*/
+ 
+
 .sticky {
   position: fixed;
   width: 97%;
-  z-index: 9999;
-  top: calc(23% - 113px);
-}
-.sticky + .contenthb {
-  padding-top: 150px !important;
-
-}
-.myHeader{
-  background-color: #ffffff !important;
-
-}
-@media only screen and (max-width: 1440px){
-  .sticky {
-    position: fixed;
-    width: 96%;
-    z-index: 9999;
-    top: calc(23% - 147px);
-  }
-  
+  z-index: 2;
+  top: 108px;
 }
 
-@media only screen and (max-width: 1024px) {
-  .sticky {
-    position: fixed;
-    width: 96%;
-    z-index: 9999;
-    top: calc(23% - 96px);
-  }
-  
-}
-@media only screen and (max-width: 768px) {
-  .sticky {
-    position: fixed;
-    width: 96%;
-    z-index: 9999;
-    top: calc(23% - 109px);
-  }
-  
-}
-@media only screen and (max-width: 425px) {
+@media only screen and (max-width: 990px) and (min-width: 480px){
   .sticky {
     position: fixed;
     width: 97%;
-    z-index: 9999;
-    top: calc(23% - 150px);
+    z-index: 2;
+    top: 94px;
   }
-  
 }
+
+@media only screen and (max-width: 480px) and (min-width: 250px){
+  .sticky {
+    position: fixed;
+    width: 97%;
+    z-index: 2;
+    top: 61px;
+  }
+}
+
+@media only screen and (max-width: 250px){
+  .sticky {
+    position: fixed;
+    width: 97%;
+    z-index: 2;
+    top: 85px;
+  }
+}
+
 .inquiry_create{
-  z-index: 5;
+  z-index: 2;
 }
+
+.myHeader{
+  background-color: #fff !important;
+}
+
+.sticky + .contenthb {
+  padding-top: 150px !important;
+}
+
+
+
+
 
 @media only screen and (max-width: 804px) {
   .rightBarAddImg{
@@ -1298,4 +1284,5 @@ td.text-left {
     animation: fadeIn 2s ease infinite;
   }
 }
+
 /******************************************************/
