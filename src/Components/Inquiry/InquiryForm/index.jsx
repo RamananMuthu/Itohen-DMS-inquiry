@@ -27,6 +27,7 @@ import AddArticleModal from "./AddArticleModal";
 import AddColorModal from "./AddColorModal";
 import AddSizeModal from "./AddSizeModal";
 import AddFabricModal from "./AddFabricModal";
+import AddNewDropdownModal from "./AddNewDropdownModal";
 import InfoCanvas from "./InquiryInfoOffCanvas";
 import JoditEditor from 'jodit-react';
 import StyleArticleDescription from "./StyleArticleDescription";
@@ -129,7 +130,7 @@ const index = () => {
   const [cartonSampleImg, setCartonSampleImg] = React.useState("");
   const [referenceId, setReferenceId] = useState(Date.now());
   const [awsUrl, setAwsUrl] = useState();
-  const [showInfoCanvas, setShowInfoCanvas] = useState(false);
+
   const [infoDetails, setInfoDetails] = useState([]);
   const [masterType, setMasterType] = useState();
   const [currencies, setCurrencies] = useState([]);
@@ -145,9 +146,14 @@ const index = () => {
   const togglefabric = () => setModalfabric(!modalfabric);
   const toggleclr = () => setModalClr(!modalClr);
   const togglesize = () => setModalSize(!modalSize);
-  const toggleInfoCanvas = () => setShowInfoCanvas(!showInfoCanvas);
+
   const [validerrors, setValiderros] = React.useState({});
 
+  const [showAddNew, setShowAddNew] = useState(false);
+  const toggleAddNew = () => setShowAddNew(!showAddNew);
+
+  const [showInfoCanvas, setShowInfoCanvas] = useState(false);
+  const toggleInfoCanvas = () => setShowInfoCanvas(!showInfoCanvas);
 
   const [showArticleModal, setShowArticleModal] = useState(false);
   const togglearticle = () => setShowArticleModal(!showArticleModal);
@@ -192,6 +198,13 @@ const index = () => {
   const totalQtyValidation = useRef(null);
   const currencyValidation = useRef(null);
   const inquiryDueDateValidation = useRef(null);
+
+  const [ basicStyle, setBasicStyle ] = useState('u-step');
+  const [ fabricStyle, setFabricStyle ] = useState('u-step');
+  const [ printStyle, setPrintStyle ] = useState('u-step');
+  const [ trimsStyle, setTrimsStyle ] = useState('u-step');
+  const [ packingStyle, setPackingStyle ] = useState('u-step');
+  const [ othersStyle, setOthersStyle ] = useState('u-step');
   /****------- Tab Scroll ---------- ****/
   const scrollToSection = (elementRef) => {
     window.scrollTo({
@@ -253,17 +266,22 @@ const index = () => {
     setMasterType(valueType);
     toggleInfoCanvas();
   };
-  // const inquiryMaster = (valueType) => {
 
-  //   var params = {};
-  //   params["type"] = valueType;
-  //   axios.post(ServerUrl + "/get-inquiry-master", apiencrypt(params)).then((response) => {
-  //     response.data = apidecrypt(response.data);
-  //     console.log("AAAAAAAA",response.data);
-  //     setInfoDetails(response.data.data);
-  //   });
-  // };
+  const dropVal = (valueType) => {
 
+    setMasterType(valueType);
+    toggleAddNew();
+    if(valueType ==="PaymentTerms")
+    {document.getElementById("paymentTermsId").value = "";}
+    else if(valueType ==="Patterns")
+    {document.getElementById("PatternsId").value = "";}
+    else if(valueType ==="PrintType")
+    {document.getElementById("PrintTypeId").value = "";}
+    else if(valueType ==="NoofPly")
+    {document.getElementById("NoofPlyId").value = "";}
+    else if(valueType ==="CartonEdgeFinish")
+    {document.getElementById("cartonEdgeFinishId").value = "";}
+  };
 
   const onFilesChange = (files) => {
     setFiles(files);
@@ -295,17 +313,23 @@ const index = () => {
     }
 
     if( validerrors.article ){
-      scrollToSection(basicInfoValidation)
+      scrollToSection(basicInfoValidation);
+      selectedTab("basicStyleInfo")
     } else if( validerrors.styleNo ){
       scrollToSection(basicInfoValidation)
+      selectedTab("basicStyleInfo")
     } else if( validerrors.fabricCom ){
       scrollToSection(fabricinfo)
+      selectedTab("fabricStyleInfo")
     } else if( validerrors.inquiryDueDate ){
-      scrollToSection(inquiryDueDateValidation)
+      scrollToSection(inquiryDueDateValidation);
+      selectedTab("fabricStyleInfo")
     } else if( validerrors.currency ) {
-      scrollToSection(currencyValidation)
+      scrollToSection(currencyValidation);
+      selectedTab("fabricStyleInfo")
     } else if( validerrors.totalQuantity ){
-      scrollToSection(totalQtyValidation)
+      scrollToSection(totalQtyValidation);
+      selectedTab("fabricStyleInfo")
     } 
     setValiderros(validerrors);
     return validerrors;
@@ -449,13 +473,13 @@ const index = () => {
 
   const scrollSticky=()=> {
     var header = document.getElementById("myHeader");
-     var sticky = header.offsetTop;
+    var sticky = header.offsetTop;
     if (window.pageYOffset > sticky) {
       header.classList.add("sticky");
-    } else {
+    } if(window.pageYOffset < 108) {
       header.classList.remove("sticky");
     }
-  }
+  };
 
   const apiCall = () => {
     axios
@@ -1268,6 +1292,59 @@ const index = () => {
     }
   };
 
+  const selectedTab = ( name ) => 
+  {
+        if(name == "basicStyleInfo"){
+                setBasicStyle("u-step current"), 
+                setFabricStyle( () => "u-step"), 
+                setPrintStyle( () => "u-step"), 
+                setTrimsStyle( () => "u-step"), 
+                setPackingStyle( () => "u-step"), 
+                setOthersStyle( () => "u-step")
+                scrollToSection(basicinfo)
+        } if(name == "fabricStyleInfo"){
+                setBasicStyle("u-step"), 
+                setFabricStyle( () => "u-step current"), 
+                setPrintStyle( () => "u-step"), 
+                setTrimsStyle( () => "u-step"), 
+                setPackingStyle( () => "u-step"), 
+                setOthersStyle( () => "u-step"),
+                scrollToSection(fabricinfo)
+        } if(name == "printStyleInfo"){
+                  setBasicStyle("u-step"), 
+                  setFabricStyle( () => "u-step"), 
+                  setPrintStyle( () => "u-step current"), 
+                  setTrimsStyle( () => "u-step"), 
+                  setPackingStyle( () => "u-step"), 
+                  setOthersStyle( () => "u-step"),
+                  scrollToSection(printinfo)
+        } if(name == "trimsStyleInfo"){
+          setBasicStyle("u-step"), 
+          setFabricStyle( () => "u-step"), 
+          setPrintStyle( () => "u-step"), 
+          setTrimsStyle( () => "u-step current"), 
+          setPackingStyle( () => "u-step"), 
+          setOthersStyle( () => "u-step"),
+          scrollToSection(trimsinfo)
+        } if( name == "packingStyleInfo" ){
+        setBasicStyle("u-step"), 
+        setFabricStyle( () => "u-step"), 
+        setPrintStyle( () => "u-step"), 
+        setTrimsStyle( () => "u-step"), 
+        setPackingStyle( () => "u-step current"), 
+        setOthersStyle( () => "u-step"),
+        scrollToSection(packinginfo)
+        } if( name == "othersStyleInfo" ){
+          setBasicStyle("u-step"), 
+          setFabricStyle( () => "u-step"), 
+          setPrintStyle( () => "u-step"), 
+          setTrimsStyle( () => "u-step"), 
+          setPackingStyle( () => "u-step"), 
+          setOthersStyle( () => "u-step current"),
+          scrollToSection(othersinfo)
+        }
+  };
+
   return (
     <Fragment>
       <Row className="pgbgcolor hdbgfixed" >
@@ -1280,47 +1357,57 @@ const index = () => {
       <Container fluid={true} className="general-widget topaln">
         <Col >
           <Card id="htmljoditListCSS">
-            <div className="myHeader inquiry_create" id="myHeader">
-              <Row className="u-steps " style={{ cursor: 'pointer' }}>
-                <Col className="u-step activeTab" onClick={() => scrollToSection(basicinfo)}>
-                  <div className="u-step-desc" >
-                    <span className="u-step-title">
-                      {t("basicInformation")}
-                    </span>
+          <div className="myHeader inquiry_create" id="myHeader">
+              <Row className="u-steps" style={{ cursor: 'pointer' }}>
+                <Col className={basicStyle} onClick={() => { 
+                  selectedTab("basicStyleInfo")
+                }}>
+                  <div className="u-step-desc">
+                    <span className="u-step-title">{t("basicInformation")}</span>
                   </div>
                 </Col>
 
-                <Col className="u-step activeTab" onClick={() => scrollToSection(fabricinfo)}>
+                <Col className={fabricStyle}  onClick={() => {
+                  selectedTab("fabricStyleInfo")
+                  }}>
                   <div className="u-step-desc">
                     <span className="u-step-title">{t("fabricInformation")}</span>
                   </div>
                 </Col>
 
-                <Col className="u-step activeTab" onClick={() => scrollToSection(printinfo)}>
+                <Col className={printStyle} onClick={() => { 
+                  selectedTab("printStyleInfo")
+                  }}>
                   <div className="u-step-desc"  >
                     <span className="u-step-title">{t("printInformation")}</span>
                   </div>
                 </Col>
 
-                <Col className="u-step activeTab" onClick={() => scrollToSection(trimsinfo)}>
+                <Col className={trimsStyle} onClick={() => {
+                  selectedTab("trimsStyleInfo")
+                  }}>
                   <div className="u-step-desc"  >
                     <span className="u-step-title">{t("trimsInformation")}</span>
                   </div>
                 </Col>
 
-                <Col className="u-step activeTab" onClick={() => scrollToSection(packinginfo)}>
+                <Col className={packingStyle} onClick={() => {
+                  selectedTab("packingStyleInfo")
+                  }}>
                   <div className="u-step-desc"  >
                     <span className="u-step-title">{t("packingInformation")}</span>
                   </div>
                 </Col>
 
-              <Col className="u-step activeTab" onClick={() => scrollToSection(othersinfo)}>
+              <Col className={othersStyle} onClick={() => {
+                selectedTab("othersStyleInfo")
+                }}>
                 <div className="u-step-desc"  >
                   <span className="u-step-title">{t("others")}</span>
                 </div>
               </Col>
             </Row>
-            </div>
+          </div>
 
             <CardBody className="contenthb"> 
             <div ref={basicInfoValidation}></div>
@@ -1730,24 +1817,29 @@ const index = () => {
                         <Label>{t("paymentTerms")}</Label>
                         <InputGroup>
                           <Input
+                            id="paymentTermsId"
                             type="select"
                             // placeholder={t("selectStatus")}
                             className="form-control digits selectheight"
-                            name="Income Terms"
+                            name="Payment Terms"
                             defaultValue=""
-                            onChange={(e) => setPaymentTerm(e.target.value)}
+                            onChange={(e) => {
+                              e.target.value!="addNew"?
+                              setPaymentTerm(e.target.value): dropVal("PaymentTerms")}}
                           >
                             <option Value="" disabled>
                               {t("selectPaymentTerms")}
                             </option>
                             {paymentTermList.map((payTerm) => (
                               <option
-                                value={payTerm.id}
+                                value={payTerm.content}
                                 title={payTerm.content}
                               >
                                 {payTerm.content}
                               </option>
+                              
                             ))}
+                            <option value="addNew">+Add New</option>
                           </Input>
                         </InputGroup>
                       </FormGroup>
@@ -2387,11 +2479,14 @@ const index = () => {
                         <InputGroup>
                           <Input
                             type="select"
+                            id ="PatternsId"
                             className="form-control digits selectheight"
-                            name="Income Terms"
+                            name="Patterns"
                             defaultValue=""
                             //onClick={()=>{inquiryMaster("PrintType")}}
-                            onChange={(e) =>{ setPatterns(e.target.value)}}
+                            onChange={(e) =>{ 
+                              e.target.value!="addNew"?
+                              setPatterns(e.target.value):dropVal("Patterns")}}
                           >
                             <option Value="" disabled>
                               {t("selectPatterns")}
@@ -2399,12 +2494,13 @@ const index = () => {
                             { patternList.length > 0 ? 
                             patternList.map((patternLists) => (
                               <option
-                                value={patternLists.id}
+                                value={patternLists.content}
                                 title={patternLists.content}
                               >
                                 {patternLists.content}
                               </option>
                             )):""}
+                            <option value="addNew">+Add New</option>
                           </Input>
                         </InputGroup>
                       </FormGroup>
@@ -2493,11 +2589,14 @@ const index = () => {
                         <InputGroup>
                           <Input
                             type="select"
+                            id="PrintTypeId"
                             className="form-control digits selectheight"
                             name="Income Terms"
                             defaultValue=""
                             //onClick={()=>{inquiryMaster("PrintType")}}
-                            onChange={(e) =>{ setPrintType(e.target.value)}}
+                            onChange={(e) =>{ 
+                              e.target.value!="addNew"?
+                              setPrintType(e.target.value):dropVal("PrintType")}}
                           >
                             <option Value="" disabled>
                               {t("selectPrintType")}
@@ -2505,12 +2604,13 @@ const index = () => {
                             { printTypeList.length > 0 ? 
                             printTypeList.map((printTypeLists) => (
                               <option
-                                value={printTypeLists.id}
+                                value={printTypeLists.content}
                                 title={printTypeLists.content}
                               >
                                 {printTypeLists.content}
                               </option>
                             )):""}
+                           <option value="addNew">+Add New</option>
                           </Input>
                         </InputGroup>
                       </FormGroup>
@@ -3201,23 +3301,27 @@ const index = () => {
                         <InputGroup>
                           <Input
                             type="select"
+                            id="NoofPlyId"
                             // placeholder={t("selectStatus")}
                             className="form-control digits selectheight"
                             name="Income Terms"
                             defaultValue=""
-                            onChange={(e) => setCartonMaterial(e.target.value)}
+                            onChange={(e) => {
+                              e.target.value!="addNew"?
+                              setCartonMaterial(e.target.value):dropVal("NoofPly")}}
                           >
                             <option Value="" disabled>
                               {t("selectNoOfPly")}
                             </option>
                             {noOfPlyList.map((plyList) => (
                               <option
-                                value={plyList.id}
+                                value={plyList.content}
                                 title={plyList.content}
                               >
                                 {plyList.content}
-                              </option>
+                              </option>                              
                             ))}
+                            <option value="addNew">+Add New</option>
                           </Input>
                         </InputGroup>
                       </FormGroup>
@@ -3233,23 +3337,27 @@ const index = () => {
                         <InputGroup>
                           <Input
                             type="select"
+                            id="cartonEdgeFinishId"
                             // placeholder={t("selectStatus")}
                             className="form-control digits selectheight"
                             name="Carton Edge Finish"
                             defaultValue=""
-                            onChange={(e) => setCartonEdgeFinish(e.target.value)}
+                            onChange={(e) => {
+                              e.target.value!="addNew"?
+                              setCartonEdgeFinish(e.target.value):dropVal("CartonEdgeFinish")}}
                           >
                             <option Value="" disabled>
                               {t("selectCartonEdgeFinish")}
                             </option>
                             {cartonEdgeFinishList.map((cartonEdgeFinList) => (
                               <option
-                                value={cartonEdgeFinList.id}
+                                value={cartonEdgeFinList.content}
                                 title={cartonEdgeFinList.content}
                               >
                                 {cartonEdgeFinList.content}
                               </option>
                             ))}
+                            <option value="addNew">+Add New</option>
                           </Input>
                         </InputGroup>
                       </FormGroup>
@@ -3705,6 +3813,20 @@ const index = () => {
         setMainLabel={setMainLabel}
         mainLabel={mainLabel}
         referenceId={referenceId}
+      />
+      <AddNewDropdownModal
+      modal={showAddNew}
+      toggle={toggleAddNew}
+      infoDetails={infoDetails}
+      setInfoDetails={setInfoDetails}
+      masterType={masterType}
+      referenceId={referenceId}
+      setPaymentTermList={setPaymentTermList}
+      setPrintTypeList={setPrintTypeList}
+      setNoOfPlyList={setNoOfPlyList}
+      setCartonEdgeFinishList={setCartonEdgeFinishList}
+      setPatternList={setPatternList}
+      setPaymentTerm={setPaymentTerm}
       />
     </Fragment>
   );

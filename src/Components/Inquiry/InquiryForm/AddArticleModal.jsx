@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
 import { encode, decode, apiencrypt, apidecrypt } from "../../../helper";
 
-const FormAddArticalModal = ({ modal, toggle, companyId, workspaceId, article }) => {
+const FormAddArticalModal = ({ modal, toggle, companyId, workspaceId, article,setArticle }) => {
   const { t } = useTranslation();
 
   const [articleName, setArticleName] = useState("");
@@ -48,7 +48,9 @@ const FormAddArticalModal = ({ modal, toggle, companyId, workspaceId, article })
                     response.data = apidecrypt(response.data);
                     article(response.data.data);
                   });
+                  
               }
+              setArticle('');
             });
           }
           /* To show error if the Role is already present*/
