@@ -54,7 +54,7 @@ const ViewInquiry = () => {
     .post(ServerUrl + "/get-inquiry", apiencrypt(getInputParams))
     .then((response) => {
       response.data = apidecrypt(response.data);
-      setInquiryDetails(response.data.data);
+      // setInquiryDetails(response.data.data);
       setInquiryDownloadPath(response.data.pdfpath);
       setInquiryDetails(response.data.data.data);
       setTotalInquiryListSet(response.data.data.last_page);

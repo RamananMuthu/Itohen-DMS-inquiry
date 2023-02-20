@@ -16,6 +16,8 @@ import docIcon from "../../../assets/images/dms/icons/inquiryDocIcon.svg";
 import infoIcon from "../../../assets/images/dms/icons/inquiryInfoIcon.svg";
 import deleteIcon from "../../../assets/images/dms/inquiryDelIcon.svg";
 import scrollUpIcon from "../../../assets/images/dms/inquiryScrollUpIcon.svg";
+import addBlueIcon from "../../../assets/images/dms/inquiryAddBlueIcon.svg";
+import editBlueIcon from "../../../assets/images/dms/inquiryEditBlueIcon.svg";
 import { Breadcrumbs, H6, } from "../../../AbstractElements";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
@@ -27,7 +29,6 @@ import AddSizeModal from "./AddSizeModal";
 import AddFabricModal from "./AddFabricModal";
 import InfoCanvas from "./InquiryInfoOffCanvas";
 import JoditEditor from 'jodit-react';
-
 import StyleArticleDescription from "./StyleArticleDescription";
 import SpecialFinishers from "./SpecialFinishers";
 import TrimsNotificationsSpecify from "./TrimsNotificationsSpecify";
@@ -244,6 +245,7 @@ const index = () => {
 
     var params = {};
     params["type"] = valueType;
+    params["referenceId"] = referenceId
     axios.post(ServerUrl + "/get-inquiry-master", apiencrypt(params)).then((response) => {
       response.data = apidecrypt(response.data);
       setInfoDetails(response.data.data);
@@ -491,31 +493,31 @@ const index = () => {
         setCurrencies(response.data.data);
       });
       axios
-      .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "PaymentTerms"}))
+      .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "PaymentTerms",referenceId: referenceId}))
       .then((response) => {
         response.data = apidecrypt(response.data);
         setPaymentTermList(response.data.data);
       });
       axios
-      .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "PrintType"}))
+      .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "PrintType",referenceId: referenceId}))
       .then((response) => {
         response.data = apidecrypt(response.data);
         setPrintTypeList(response.data.data);
       });
       axios
-      .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "NoofPly"}))
+      .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "NoofPly",referenceId: referenceId}))
       .then((response) => {
         response.data = apidecrypt(response.data);
         setNoOfPlyList(response.data.data);
       });
       axios
-      .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "CartonEdgeFinish"}))
+      .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "CartonEdgeFinish",referenceId: referenceId}))
       .then((response) => {
         response.data = apidecrypt(response.data);
         setCartonEdgeFinishList(response.data.data);
       });
       axios
-      .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "Patterns"}))
+      .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "Patterns",referenceId: referenceId}))
       .then((response) => {
         response.data = apidecrypt(response.data);
         setPatternList(response.data.data);
@@ -1268,7 +1270,7 @@ const index = () => {
 
   return (
     <Fragment>
-      <Row className="pgbgcolor hdbgfixed " >
+      <Row className="pgbgcolor hdbgfixed" >
         <Breadcrumbs
           mainTitle={t("inquiry")}
           parent={t("inquiry")}
@@ -1356,6 +1358,7 @@ const index = () => {
                               {articles.map((article) => (
                                 <option value={article.id}>{article.name}</option>
                               ))}
+
                             </Input>
                             <InputGroupText
                               style={{ cursor: "pointer" }}
@@ -1768,11 +1771,16 @@ const index = () => {
                           }}
                           >
                           {styleArtcileDesc=="" ?   <img 
-                                src={addIcon}
+                                src={addBlueIcon}
                                 width="25px"
                                 height="25px"
                                 
-                              ></img>:<i className="icofont icofont-ui-edit"></i>}    
+                              ></img>:<img 
+                              src={editBlueIcon}
+                              width="25px"
+                              height="25px"
+                              
+                            ></img>}    
                         
                           {/* <img src={infoIcon} width="25px" height="25px"></img> */}
                         </span>
@@ -1816,11 +1824,16 @@ const index = () => {
                           }}
                         >
                         {specialFinishes=="" ?   <img 
-                                src={addIcon}
+                                src={addBlueIcon}
                                 width="25px"
                                 height="25px"
                                 
-                              ></img>:<i className="icofont icofont-ui-edit"></i>} 
+                              ></img>:<img 
+                              src={editBlueIcon}
+                              width="25px"
+                              height="25px"
+                              
+                            ></img>} 
                         </span>
                         <SpecialFinishers
                               modal={specialFinishersModal}
@@ -2422,12 +2435,17 @@ const index = () => {
                             checkedVal("CustomsDeclarationDocument");
                           }}
                           >
-                           <img 
-                                src={infoIcon}
+                           {customsDeclarationDoc =="" ?   <img 
+                                src={addBlueIcon}
                                 width="25px"
                                 height="25px"
                                 
-                              ></img>   
+                              ></img>:<img 
+                              src={editBlueIcon}
+                              width="25px"
+                              height="25px"
+                              
+                            ></img>} 
                         
                           {/* <img src={infoIcon} width="25px" height="25px"></img> */}
                         </span>
@@ -2615,12 +2633,17 @@ const index = () => {
                             checkedVal("MainLabel");
                           }}
                           >
-                           <img 
-                                src={infoIcon}
+                           {mainLabel =="" ?   <img 
+                                src={addBlueIcon}
                                 width="25px"
                                 height="25px"
                                 
-                              ></img>   
+                              ></img>:<img 
+                              src={editBlueIcon}
+                              width="25px"
+                              height="25px"
+                              
+                            ></img>} 
                         
                           {/* <img src={infoIcon} width="25px" height="25px"></img> */}
                         </span>
@@ -2974,11 +2997,16 @@ const index = () => {
                           }}
                         >
                          {trimsNotification=="" ?   <img 
-                                src={addIcon}
+                                src={addBlueIcon}
                                 width="25px"
                                 height="25px"
                                 
-                              ></img>:<i className="icofont icofont-ui-edit"></i>} 
+                              ></img>:<img 
+                              src={editBlueIcon}
+                              width="25px"
+                              height="25px"
+                              
+                            ></img>} 
                         </span>
                         <TrimsNotificationsSpecify
                               modal={trimsNotificationsModal}
@@ -3449,11 +3477,16 @@ const index = () => {
                           }}
                         >
                          {forbiddenSubstancesInfo =="" ?   <img 
-                                src={addIcon}
+                                src={addBlueIcon}
                                 width="25px"
                                 height="25px"
                                 
-                              ></img>:<i className="icofont icofont-ui-edit"></i>} 
+                              ></img>:<img 
+                              src={editBlueIcon}
+                              width="25px"
+                              height="25px"
+                              
+                            ></img>} 
                         </span>
                         <ForbiddenSubstancesInformation
                               modal={substancesInformationModal}
@@ -3493,11 +3526,16 @@ const index = () => {
                           }}
                         >
                         {testingRequirement =="" ?   <img 
-                                src={addIcon}
+                                src={addBlueIcon}
                                 width="25px"
                                 height="25px"
                                 
-                              ></img>:<i className="icofont icofont-ui-edit"></i>} 
+                              ></img>:<img 
+                              src={editBlueIcon}
+                              width="25px"
+                              height="25px"
+                              
+                            ></img>} 
                         </span>
                         <TestingRequirement
                               modal={testingRequirementModal}
@@ -3541,11 +3579,16 @@ const index = () => {
                           }}
                         >
                           {sampleRequirement =="" ?   <img 
-                                src={addIcon}
+                                src={addBlueIcon}
                                 width="25px"
                                 height="25px"
                                 
-                              ></img>:<i className="icofont icofont-ui-edit"></i>} 
+                              ></img>:<img 
+                              src={editBlueIcon}
+                              width="25px"
+                              height="25px"
+                              
+                            ></img>} 
                         </span>
                         <SampleRequirements
                               modal={sampleRequirementsModal}
@@ -3583,11 +3626,16 @@ const index = () => {
                           }}
                         >
                            {specialRequest =="" ?   <img 
-                                src={addIcon}
+                                src={addBlueIcon}
                                 width="25px"
                                 height="25px"
                                 
-                              ></img>:<i className="icofont icofont-ui-edit"></i>} 
+                              ></img>:<img 
+                              src={editBlueIcon}
+                              width="25px"
+                              height="25px"
+                              
+                            ></img>} 
                         </span>
                         <SpecialRequest
                               modal={specialRequestsModal}
@@ -3646,6 +3694,7 @@ const index = () => {
         modal={showInfoCanvas}
         toggle={toggleInfoCanvas}
         infoDetails={infoDetails}
+        setInfoDetails={setInfoDetails}
         masterType={masterType}
         setPaymentTerm={setPaymentTerm}
         setShowInfoCanvas={setShowInfoCanvas}
@@ -3655,6 +3704,7 @@ const index = () => {
         customsDeclaration ={customsDeclarationDoc}
         setMainLabel={setMainLabel}
         mainLabel={mainLabel}
+        referenceId={referenceId}
       />
     </Fragment>
   );

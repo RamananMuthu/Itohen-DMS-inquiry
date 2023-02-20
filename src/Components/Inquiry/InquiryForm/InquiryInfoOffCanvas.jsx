@@ -5,10 +5,12 @@ import {
 } from "reactstrap";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
-
-const InquiryInfoOffCanvas = ({ modal, toggle, infoDetails, masterType,
-  setPaymentTerm, setShowInfoCanvas, showInfoCanvas, PaymentTerm,setCustomsDeclarationDoc,customsDeclaration,setMainLabel,mainLabel }) => {
+import AddMoreModal from "./AddMoreModal";
+const InquiryInfoOffCanvas = ({ modal, toggle, infoDetails,setInfoDetails, masterType,
+  setPaymentTerm, setShowInfoCanvas, showInfoCanvas, PaymentTerm,setCustomsDeclarationDoc,customsDeclaration,setMainLabel,mainLabel,referenceId }) => {
   const { t } = useTranslation();
+  const [modalNew, setModalNew] = useState(false);
+  const toggleNew = () => setModalNew(!modalNew);
 /******************Save Cheched Factory************************/
   const saveChecked = (checkedData) => {
     if( masterType=='CustomsDeclarationDocument'){
@@ -124,6 +126,19 @@ const InquiryInfoOffCanvas = ({ modal, toggle, infoDetails, masterType,
       </OffcanvasBody>
       <OffcanvasHeader>
         <FormGroup className="f-right m-r-20">
+        <Button className="m-r-10" style={{ textAlign: "center" }}
+            width="40px" height="20px"
+            onClick={toggleNew}
+          > {t("Add More")}
+          </Button>
+          <AddMoreModal 
+          modal={modalNew}
+          toggle={toggleNew}
+          infoDetails={infoDetails}
+          setInfoDetails={setInfoDetails}
+          masterType={masterType}
+          referenceId={referenceId}
+        />
           <Button style={{ textAlign: "center" }}
             width="40px" height="20px"
             onClick={() => { saveChecked({ infoDetails }); }}
