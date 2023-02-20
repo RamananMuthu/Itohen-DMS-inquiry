@@ -43,15 +43,15 @@ const ForbiddenSubstancesInformation = ({ modal, toggle,forbiddenSubstancesInfo,
     enableDragAndDropFileToEditor: true,
     buttonsXS: [
       'Bold', 'Italic', 'underline', 'strikethrough', '|', 'brush', 'font', 'fontsize',
-      'align', '|', 'ul', 'ol', '|', 'cut', 'copy', 'paste', '|', 'undo', 'redo', '|', 'dots'
+      'align', '|', 'ul', 'ol', 
     ],
     buttonsSM: [
       'Bold', 'Italic', 'underline', 'strikethrough', '|', 'brush', 'font', 'fontsize',
-      'align', '|', 'ul', 'ol', '|', 'cut', 'copy', 'paste', '|', 'undo', 'redo', '|', 'dots'
+      'align', '|', 'ul', 'ol', 
     ],
     buttonsMD: [
       'Bold', 'Italic', 'underline', 'strikethrough', '|', 'brush', 'font', 'fontsize',
-      'align', '|', 'ul', 'ol', '|', 'cut', 'copy', 'paste', '|', 'undo', 'redo', '|', 'dots',
+      'align', '|', 'ul', 'ol',
     ],
     buttonsXL: [
       'Bold',
@@ -71,7 +71,7 @@ const ForbiddenSubstancesInformation = ({ modal, toggle,forbiddenSubstancesInfo,
   }),
     [placeholder])
   return (
-    <Modal isOpen={modal} toggle={toggle} centered>
+    <Modal isOpen={modal} toggle={toggle} centered style={{"max-width":"700px"}}>
       <ModalHeader>{t("forbiddenSubstancesInformation")}</ModalHeader>
       <ModalBody id="htmljoditListCSS">
       <JoditEditor

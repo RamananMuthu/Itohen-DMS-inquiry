@@ -43,15 +43,15 @@ const StyleArticleDescription = ({ modal, toggle,styleArtcileDesc,setStyleArticl
     enableDragAndDropFileToEditor: true,
     buttonsXS: [
       'Bold', 'Italic', 'underline', 'strikethrough', '|', 'brush', 'font', 'fontsize',
-      'align', '|', 'ul', 'ol', '|', 'cut', 'copy', 'paste', '|', 'undo', 'redo', '|', 'dots'
+      'align', '|', 'ul', 'ol', 
     ],
     buttonsSM: [
       'Bold', 'Italic', 'underline', 'strikethrough', '|', 'brush', 'font', 'fontsize',
-      'align', '|', 'ul', 'ol', '|', 'cut', 'copy', 'paste', '|', 'undo', 'redo', '|', 'dots'
+      'align', '|', 'ul', 'ol', 
     ],
     buttonsMD: [
       'Bold', 'Italic', 'underline', 'strikethrough', '|', 'brush', 'font', 'fontsize',
-      'align', '|', 'ul', 'ol', '|', 'cut', 'copy', 'paste', '|', 'undo', 'redo', '|', 'dots',
+      'align', '|', 'ul', 'ol',
     ],
     buttonsXL: [
       'Bold',
@@ -62,7 +62,7 @@ const StyleArticleDescription = ({ modal, toggle,styleArtcileDesc,setStyleArticl
     ],
     buttons: [
       'Bold', 'Italic', 'cut', 'copy', 'paste', 'underline', '|', 'ul', 'ol', 'outdent', 'indent', '|',
-      'paragraph', '|', 'cut', 'copy', 'paste', '|', 'link', 'table', '|', 'undo', 'redo', '|', 'hr', 'eraser', 'fullsize',
+      'paragraph', '|', 'undo', 'redo', '|', 'hr', 'eraser', 'fullsize',
     ],
     uploader: { insertImageAsBase64URI: true },
 
@@ -71,8 +71,9 @@ const StyleArticleDescription = ({ modal, toggle,styleArtcileDesc,setStyleArticl
   }),
     [placeholder])
   return (
-    <Modal isOpen={modal} toggle={toggle} centered>
-      <ModalHeader>{t("styleArticleDescription")}</ModalHeader>
+     
+    <Modal  isOpen={modal} toggle={toggle} centered  style={{"max-width":"700px"}}>
+      <ModalHeader >{t("styleArticleDescription")}</ModalHeader>
       <ModalBody  id="htmljoditListCSS">
       <JoditEditor
                           ref={editor}
@@ -82,11 +83,12 @@ const StyleArticleDescription = ({ modal, toggle,styleArtcileDesc,setStyleArticl
                            onChange={(newContent) => onStyle(newContent)}
                         />
       </ModalBody>
-      <ModalFooter>
+      <ModalFooter >
         <Btn attrBtn={{ color: "btn secondaryBtn btn-sm", onClick: toggle }}>{t("close")}</Btn>
         <button className='btn btn-primary' onClick={()=>{onSaveHandle()}}>{t("save")}</button>
       </ModalFooter>
     </Modal>
+   
   );
 };
 
