@@ -11,27 +11,21 @@ import moment from "moment/moment";
 import { apidecrypt, apiencrypt } from "../../../helper";
 
 const FilterOffCanvas = ({ modal, toggle, Article,Inquiryarticles,Inquiryusers,
-  InquiryDetails,InquiryResponse,TotalFactList,links,pageNumber}) => {
+  InquiryDetails,InquiryResponse,TotalFactList,links,pageNumber,setFilterEndDateDetails,setFilterStartDateDetails,setFilterArticleDetails,setFilterBuyerDetails}) => {
   const [workspace_id, setworkspace_id] = useState(getWorkspaceId);
   const [company_id, setcompany_id] = useState(getLoginCompanyId);
   const { t } = useTranslation();
   const [days, setDay] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [BuyerPCU, setBuyerPCU] = useState("");
-  const [articleName, setArticleName] = useState("");
+  const [BuyerPCU, setBuyerPCU] = useState("0");
+  const [articleName, setArticleName] = useState("0");
   //const [pageNumber, setPageNumber] = useState("1");
 
-  const dayss = [1, 2, 3, 4, 5, 6, 7, 8, 9,10];
+
  
   const submitFunction = ()=>{
-    
-    let dataToSend ;
-    getStaff === "Staff" ?  dataToSend = {
-       
-    } : dataToSend = {
-        
-    } 
+  
    
    
  
@@ -55,11 +49,15 @@ const FilterOffCanvas = ({ modal, toggle, Article,Inquiryarticles,Inquiryusers,
     getInputParams["workspace_id"] = getWorkspaceId;
     getInputParams["factory_id"] = getLoginUserId;
     getInputParams["page"] =     pageNumber;
-    getInputParams["article_id"] =     articleName;
-    getInputParams["user_id"] =     BuyerPCU;
+    
+    getInputParams["article_id"] = articleName !="0"? articleName : "";
+    getInputParams["user_id"] = BuyerPCU != "0"?BuyerPCU:"";
     getInputParams["from_date"] =     startDate;
     getInputParams["to_date"] =     endDate;
-
+    setFilterEndDateDetails(endDate)
+    setFilterStartDateDetails(startDate)
+    setFilterArticleDetails(articleName)
+    setFilterBuyerDetails(BuyerPCU)
     axios
     .post(ServerUrl + "/factory-get-inquiry", apiencrypt(getInputParams))
     .then((response) => {
@@ -70,6 +68,7 @@ const FilterOffCanvas = ({ modal, toggle, Article,Inquiryarticles,Inquiryusers,
       links(response.data.data.links);
       InquiryDetails(response.data.data.data);
       pageNumber(pageNumber);
+      toggle()
     })
      
         
@@ -141,50 +140,34 @@ const FilterOffCanvas = ({ modal, toggle, Article,Inquiryarticles,Inquiryusers,
   //       toggle();
   //       })
   // };
-  // const clearFunction=()=>{
-  //   let dataToSend ;
-  //   getStaff === "Staff" ?  dataToSend = {
-  //       company_id: company_id,
-  //       workspace_id: workspace_id,
-  //       staff_id : getLoginStaffId,
-  //       statusFilter : statusFilter,
-  //   } : dataToSend = {
-  //       company_id: company_id,
-  //       workspace_id: workspace_id,
-  //       statusFilter : statusFilter,
-  //   }
-  //   setStartDate("0");
-  //   setEndDate("0");
-  //   setStyleNo("0");
-  //   filterStartDate("");
-  //   filterEndDate("");
-  //   filterType([]);
-  //   filterDaysDelay("");
-  //   filterOperator("");
-  //   filterStyleNo("");
-  //   setOperator("");
-  //   setDay("");
-  //   if(getWorkspaceType === "Buyer"){
-  //   dataToSend.factory_id = factory;
-  //   dataToSend.pcu_id = pcu;
-  //   }
-  //   else if(getWorkspaceType === "PCU"){
-  //   dataToSend.factory_id = factory;
-  //   dataToSend.buyer_id = buyer;
-  //   }
-  //   else if(getWorkspaceType === "Factory"){
-  //   dataToSend.buyer_id = buyer;
-  //   dataToSend.pcu_id = pcu;
-  //   }
-  //   axios.post(ServerUrl + "/get-production-report",apiencrypt(dataToSend))
-  //   .then((response) =>{
-  //     response.data = apidecrypt(response.data);
-  //       if(response.data.status_code === 200){
-  //           taskDetails(response.data.data.productionData);
-  //           toggle();
-  //       }
-  //   })
-  // };
+  const clearFunction=()=>{
+
+    setStartDate("")
+    setEndDate("")
+    setBuyerPCU("0")
+    setArticleName("0")
+    var getInputParams = {};
+    getInputParams["company_id"] = getLoginCompanyId;
+    getInputParams["workspace_id"] = getWorkspaceId;
+    getInputParams["factory_id"] = getLoginUserId;
+    getInputParams["page"] =     pageNumber;
+   
+    axios
+    .post(ServerUrl + "/factory-get-inquiry", apiencrypt(getInputParams))
+    .then((response) => {
+      response.data = apidecrypt(response.data);
+      // setInquiryDetails(response.data.data);
+      InquiryResponse(response.data.response);
+      TotalFactList(response.data.data.last_page);
+      links(response.data.data.links);
+      InquiryDetails(response.data.data.data);
+      pageNumber(pageNumber);
+      toggle()
+    })
+ 
+    
+   
+  };
   return (
     <Offcanvas isOpen={modal} toggle={toggle}  direction={"end"}>
       <OffcanvasHeader className="bg-primary offcanvas-header"><i className="fa fa-filter f-24"></i> {t("filter")} 
@@ -196,11 +179,11 @@ const FilterOffCanvas = ({ modal, toggle, Article,Inquiryarticles,Inquiryusers,
             <Col md={12}>
             
             
-              <Label>{t("Buyer (or) PCU")}</Label>
-                <Input type="select" defaultValue={"0"} name="articleName" id="articleName" 
+              <Label>{t("BuyerPCU")}</Label>
+                <Input type="select" defaultValue={BuyerPCU} name="articleName" id="Buyerpcu" 
                 onChange={(e)=>setBuyerPCU(e.target.value)}
                 >
-                <option value="0" selected disabled>{t("select Buyer or PCU")}</option>
+                <option value="0" selected disabled>{t("selectBuyerPCU")}</option>
                 {Inquiryusers.map((article)=>(
                 <option  value={article.id} selected>{article.name}</option> 
                
@@ -213,7 +196,7 @@ const FilterOffCanvas = ({ modal, toggle, Article,Inquiryarticles,Inquiryusers,
         <Row className="p-2">
             <Col md={12}>
                 <Label>{t("articleName")}</Label>
-                <Input type="select"  defaultValue={"0"} name="articleName" id="articleName" 
+                <Input type="select"  defaultValue={articleName} name="articleName" id="articleName" 
                  onChange={(e)=>setArticleName(e.target.value)}
                 >
                 <option value="0" selected disabled>{t("selectArticleName")}</option>
@@ -258,8 +241,8 @@ const FilterOffCanvas = ({ modal, toggle, Article,Inquiryarticles,Inquiryusers,
             <br></br>
       </OffcanvasBody>
       <footer className="m-20 p-2">
-        <Button className="btn secondaryBtn" 
-        // onClick={ ()=>clearFunction() }
+        <Button  className="btn secondaryBtn" 
+         onClick={ ()=>clearFunction() }
         >
           {t("clear")}
         </Button>

@@ -15,7 +15,8 @@ import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
 import { ServerUrl } from "../../../Constant";
 import InquirySentToModal from "./InquirySentToModal";
-
+import FilterIcon from "../../../assets/images/dms/icons/filter.svg"
+import FilterBuyerOffCanvas from "./FilterBuyerOffCanvas";
 const ViewInquiry = () => {
   const workspace_id = getWorkspaceId;
   const company_id = getLoginCompanyId;
@@ -38,18 +39,40 @@ const ViewInquiry = () => {
   const toggleart = () => setModalart(!modalart);
   const [modalInquirySentTo, setModalInquirySentTo] = useState(false);
   const toggleInquirySentTo = () => setModalInquirySentTo(!modalInquirySentTo);
+  const [InquiryfactorieDetails, setInquiryfactorieDetails] = useState([]);
+  const [InquiryarticlesDetails, setInquiryarticlesDetails] = useState([]);
+  
+
+
+  const [filterFactoryDetails, setFilterFactoryDetails] = useState("0");
+  const [filterArticleDetails, setFilterArticleDetails] = useState("0");
+  const [filterstartDateDetails, setFilterStartDateDetails] = useState("");
+  const [filterEndDateDetails, setFilterEndDateDetails] = useState("");
   let selectedFactoriesArray = [];
   const dataToSendAtStarting = {
     company_id: company_id,
     workspace_id: workspace_id,
   };
-
+  const [buyerFilterOffCanvas , setBuyerFilterOffCanvas] = useState(false);
+  const toggleBuyerFilterCanvas = () => setBuyerFilterOffCanvas(!buyerFilterOffCanvas);
   const apiCall = (pageNumber) => {
     var getInputParams = {};
     getInputParams["company_id"] = getLoginCompanyId;
     getInputParams["workspace_id"] = getWorkspaceId;
     getInputParams["user_id"] = getLoginUserId;
     getInputParams["page"] =     pageNumber;
+    if(filterFactoryDetails!="0"){
+      getInputParams["user_id"] = filterBuyerDetails;
+    }
+    if(filterArticleDetails!="0"){
+      getInputParams["article_id"] = filterArticleDetails;      
+    } 
+    if(filterstartDateDetails!=""){
+      getInputParams["from_date"] = filterstartDateDetails;  
+    } 
+    if(filterEndDateDetails!=""){
+      getInputParams["to_date"] = filterEndDateDetails;
+    }
     axios
     .post(ServerUrl + "/get-inquiry", apiencrypt(getInputParams))
     .then((response) => {
@@ -60,6 +83,9 @@ const ViewInquiry = () => {
       setTotalInquiryListSet(response.data.data.last_page);
       setlinks(response.data.data.links);
       setPageNumber(pageNumber);
+      setInquiryfactorieDetails(response.data.factories);
+      setInquiryarticlesDetails(response.data.articles);
+
     });
 
     axios
@@ -167,6 +193,11 @@ const ViewInquiry = () => {
                 <Row className="g-12 m-t-20">
                   <Col md="12" lg="12" sm="12">
                     <Row className="g-12">
+                    <Col md="12" lg="12" sm="12">
+                    <div className="cursor-pointer p-1 p-r-0 m-t-5 f-right" onClick={() => toggleBuyerFilterCanvas()}>
+                        <img src={FilterIcon} />
+                     </div>
+                    </Col>
                       <div className="table-responsive">
                         <table className="table shadow shadow-showcase table-striped table-bordered">
                           <thead className="bg-primary">
@@ -524,6 +555,15 @@ const ViewInquiry = () => {
             </Card>
           </Col>
         </Row>
+        <FilterBuyerOffCanvas modal={buyerFilterOffCanvas} toggle={toggleBuyerFilterCanvas} InquiryfactorieDetails={InquiryfactorieDetails} InquiryarticlesDetails={InquiryarticlesDetails}
+         InquiryDetails={setInquiryDetails} TotalInquiryListSet={setTotalInquiryListSet} links={setlinks} pageNumber={setPageNumber} InquiryDownloadPath={setInquiryDownloadPath}
+         setFilterEndDateDetails={setFilterEndDateDetails} setFilterStartDateDetails={setFilterStartDateDetails}
+         setFilterArticleDetails={setFilterArticleDetails} setFilterFactoryDetails={setFilterFactoryDetails}
+                    // statusFilter={statusFilter} 
+                    // filterStartDate={setFilterStartDate} filterEndDate={setFilterEndDate} filterOperator={setFilterOperator} 
+                    // filterDaysDelay={setFilterDaysDelay} filterStyleNo={setFilterStyleNo} filterType={setFilterType} 
+                    // selectFilterType={filterType}
+                    />
       </Container>
     {/* **********************Pagination***************************** */}
       {totalInquiryListSet>1 ? 

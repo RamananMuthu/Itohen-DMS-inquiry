@@ -34,8 +34,9 @@ const FactoryViewInquiry = () => {
   getInputParams["company_id"] = getLoginCompanyId;
   getInputParams["workspace_id"] = getWorkspaceId;
   getInputParams["factory_id"] = getLoginUserId;
-
+ 
   const { t } = useTranslation();
+
   const [inquiryDetails, setInquiryDetails] = useState([]);
   const [Inquiryarticles, setInquiryarticles] = useState([]);
   const [Inquiryusers, setInquiryusers] = useState([]);
@@ -45,12 +46,31 @@ const FactoryViewInquiry = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [filterOffCanvas , setFilterOffCanvas] = useState(false);
   const toggleFilterCanvas = () => setFilterOffCanvas(!filterOffCanvas);
+
+
+  const [filterBuyerDetails, setFilterBuyerDetails] = useState("0");
+  const [filterArticleDetails, setFilterArticleDetails] = useState("0");
+  const [filterstartDateDetails, setFilterStartDateDetails] = useState("");
+  const [filterEndDateDetails, setFilterEndDateDetails] = useState("");
+
   const apiCall = (pageNumber) => {
     var getInputParams = {};
     getInputParams["company_id"] = getLoginCompanyId;
     getInputParams["workspace_id"] = getWorkspaceId;
     getInputParams["factory_id"] = getLoginUserId;
     getInputParams["page"] =     pageNumber;
+    if(filterBuyerDetails!="0"){
+      getInputParams["user_id"] = filterBuyerDetails;
+    }
+    if(filterArticleDetails!="0"){
+      getInputParams["article_id"] = filterArticleDetails;      
+    } 
+    if(filterstartDateDetails!=""){
+      getInputParams["from_date"] = filterstartDateDetails;  
+    } 
+    if(filterEndDateDetails!=""){
+      getInputParams["to_date"] = filterEndDateDetails;
+    }
     axios
     .post(ServerUrl + "/factory-get-inquiry", apiencrypt(getInputParams))
     .then((response) => {
@@ -184,7 +204,7 @@ const FactoryViewInquiry = () => {
                               <th scope="col" className="centerAlign">{" "}{t("serialNo")}{" "}</th>
                               <th className="centerAlign">{" "}{t("inquiryNo")}{" "}</th>
                               <th className="centerAlign"> {t("styleNo")} </th>
-                              <th className="centerAlign">{t("Buyer Name")}</th>
+                              <th className="centerAlign">{t("inquiryfrom")}</th>
                               <th className="centerAlign">{" "}{t("inquiryDate")}{" "}</th> 
                               <th className="centerAlign">{" "} {t("itemsArticleName")}{" "}</th>
                               <th className="centerAlign"> {t("dueDate")} </th>
@@ -210,8 +230,7 @@ const FactoryViewInquiry = () => {
                                   </td>
                                   <td className="text-left middle"> {" "}  {"IN-" + inquirydtls.id}  </td>
                                   <td className="text-left middle "> {inquirydtls.style_no} </td>
-                                  {inquirydtls.staff==null ? <td className="text-left middle "> {inquirydtls.user}</td>
-                                  : <td className="text-left middle ">{inquirydtls.staff}</td>}
+                                   <td className="text-left middle "> {inquirydtls.user}</td>
                                   <td className="text-left middle "> {inquirydtls.created_date} </td> 
                                   <td className="text-left middle ">{inquirydtls.name}</td>
                                   <td className="text-left middle ">{inquirydtls.due_date}</td>
@@ -368,7 +387,9 @@ const FactoryViewInquiry = () => {
 
                      
         <FilterOffCanvas modal={filterOffCanvas} toggle={toggleFilterCanvas} Article={inquiryDetails}  Inquiryarticles={Inquiryarticles} Inquiryusers={Inquiryusers} InquiryDetails={setInquiryDetails} 
-        InquiryResponse ={setInquiryResponse} TotalFactList={setTotalFactList} links={setlinks} pageNumber={setPageNumber}
+        InquiryResponse ={setInquiryResponse} TotalFactList={setTotalFactList} links={setlinks} pageNumber={setPageNumber} 
+        setFilterEndDateDetails={setFilterEndDateDetails} setFilterStartDateDetails={setFilterStartDateDetails}
+        setFilterArticleDetails={setFilterArticleDetails} setFilterBuyerDetails={setFilterBuyerDetails}
                     // statusFilter={statusFilter} 
                     // filterStartDate={setFilterStartDate} filterEndDate={setFilterEndDate} filterOperator={setFilterOperator} 
                     // filterDaysDelay={setFilterDaysDelay} filterStyleNo={setFilterStyleNo} filterType={setFilterType} 
