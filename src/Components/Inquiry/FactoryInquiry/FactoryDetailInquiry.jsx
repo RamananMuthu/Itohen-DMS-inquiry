@@ -534,7 +534,7 @@ const FactoryDetailInquiry = () => {
                               {factoryInquiryDetails.customs_declaraion_document ?
                                 <>
                                   <td className="factoryDetailsTable">{t("customsDeclarationDocument")}  </td>
-                                  <td className="text-left"> {factoryInquiryDetails.customs_declaraion_document} </td>
+                                  <td className="text-left"> {parse(factoryInquiryDetails.customs_declaraion_document)} </td>
                                 </>
                                 : ""}
                             </tr><tr>
@@ -585,7 +585,7 @@ const FactoryDetailInquiry = () => {
                               {factoryInquiryDetails.main_lable ?
                                 <>
                                   <td className="factoryDetailsTable">{t("mainLabel")}  </td>
-                                  <td className="text-left"> {factoryInquiryDetails.main_lable} </td>
+                                  <td className="text-left"> {parse(factoryInquiryDetails.main_lable)} </td>
                                 </>
                                 : ""}
                             </tr><tr>
