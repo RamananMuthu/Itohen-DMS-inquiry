@@ -73,7 +73,7 @@ const index = () => {
   const [fabricCom, setFabricCom] = useState("");
   const [styleNo, setStyleNo] = useState("");
   const [sampleFormat, setSampleFormat] = useState("");
-  const [MeasurementSheet, setMeasurementSheet] = useState("");
+  const [measurementSheet, setMeasurementSheet] = useState("");
   const [fabricGSM, setFabricGSM] = useState("");
   const [yarnCount, setYarnCount] = useState("");
   const [targetPrice, setTargetPrice] = useState("");
@@ -594,6 +594,15 @@ const index = () => {
 /***************Measurement Sheet Radio Button OnChange**********/
   const changeHandlerRadio = e => {
     setSelected(e.target.value);
+    // if(e.target.value=="1" && measurementSheet != null) {
+    //   let get= document.getElementById("radioinline2")
+    //   get.disabled = true;
+    // }
+    // else{
+    //   let get= document.getElementById("radioinline2")
+    //   get.disabled = false;
+    // }
+    
   };
  /****------- Image Upload API Call ---------- ****/
  const uploadImageApiCall = (imageType, file) => {
@@ -630,7 +639,11 @@ const index = () => {
           setAwsUrl(measurementSheetData.serverURL);
           {
             measurementSheetData.files.length >0 ?
-            (measurementSheetData.files).map((mapData)=>{setMeasurementSheetImg(mapData.orginalfilename);})
+            (measurementSheetData.files).map((mapData)=>{
+              setMeasurementSheetImg(mapData.orginalfilename)
+              let get= document.getElementById("radioinline2")
+               get.disabled = true;
+              ;})
             :
             setMeasurementSheetImg(()=>"");
           }
@@ -732,7 +745,6 @@ const index = () => {
                   icon: "success",
                   showCancelButton: true,
                   button: t("okLabel"),
-
                 }).then((result) => {
                   if (result.isConfirmed) {
                     uploadImageApiCall(imageType, file);
@@ -1350,7 +1362,14 @@ const index = () => {
           scrollToSection(othersinfo)
         }
   };
-
+  /************************* ONLY NUMBERS VALIDATION (INPUT FIELD) *************/
+  function handleKeyPress(e) {
+    var key = e.key;
+    var regex = /[0-9]/;
+    if( !regex.test(key) ) {
+        e.preventDefault();
+    }
+  }
   return (
     <Fragment>
       <Row className="pgbgcolor hdbgfixed" >
@@ -1614,8 +1633,11 @@ const index = () => {
                           <Label>{t("fabricGSM")}</Label>
                           <InputGroup>
                             <Input
+                            type="tel"
+                             maxLength="3"
                               className=""
                               name="Fabric GSM"
+                              onKeyPress={(e) => handleKeyPress(e)}
                               placeholder={t("enterFabricGSM")}
                               onChange={(e) => setFabricGSM(e.target.value)}
                             ></Input>
@@ -2315,7 +2337,7 @@ const index = () => {
                     <div></div>
                   )}
                        {/* MeasuementSheet Radio Button*/}
-                        <Row>
+                        {/* <Row>
                          <Col lg="12" md="12" sm="12" xs="12">                          
                                 <FormGroup className="m-t-15 m-checkbox-inline mb-0 custom-radio-ml">
                                 <span className="subTitleLine3 f-left">
@@ -2333,9 +2355,10 @@ const index = () => {
                                     </div>
                                 </FormGroup>
                             </Col>
-                          </Row>
+                          </Row> */}
                   {/* Measuement Show based on sku*/}
-                  <Row aria-hidden={selected !== "2" ? true : false}>
+                  
+                  {/* <Row aria-hidden={selected !== "2" ? true : false}>
                   {color.length > 0 && size.length > 0 ? (
                     <>                   
                       <Row className="g-12">
@@ -2441,9 +2464,9 @@ const index = () => {
                       </Row>
                      
                     </>) : (<div></div>)}
-                    </Row>
+                    </Row> */}
                   {/* Measuement Sheet Upload*/}
-                  <Row aria-hidden={selected !== "1" ? true : false}>
+                  {/* <Row aria-hidden={selected !== "1" ? true : false}> */}
                     <Col lg="4"  >
                       <FormGroup>
                         <Label> {t("measurementSheet")} </Label>
@@ -2512,7 +2535,7 @@ const index = () => {
                         </Row>
                         : ""}
                     </Row>
-                  </Row>
+                  {/* </Row> */}
                   {/* Patterns,Place of Jurisdiction,Customs Declaration Document */}
                   <Row className="m-t-10">
                   <Col lg="4">
