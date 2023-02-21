@@ -1284,5 +1284,9 @@ td.text-left {
     animation: fadeIn 2s ease infinite;
   }
 }
+// Inquiry Form - Measurement Sheet Radio Button
+[aria-hidden="true"] {
+  display: none;
+}
 
 /******************************************************/

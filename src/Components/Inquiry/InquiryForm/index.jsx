@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useEffect, useRef, useMemo } from "react";
+import ReactDOM from "react-dom";
 import {
   Form, Label, Card, CardBody, Col, Row, Input, InputGroup,
   InputGroupText, Button, FormGroup, Container, Table,
@@ -38,7 +39,7 @@ import TestingRequirement from "./TestingRequirement";
 import SampleRequirements from "./SampleRequirements";
 import SpecialRequest from "./SpecialRequest";
 import parse from 'html-react-parser';
-
+import PaymentinstructionsModal from "./PaymentinstructionsModal";
 const index = () => {
   const { t } = useTranslation();
   const editor = useRef(null); // **** Using for jodit Editor**//
@@ -130,7 +131,6 @@ const index = () => {
   const [cartonSampleImg, setCartonSampleImg] = React.useState("");
   const [referenceId, setReferenceId] = useState(Date.now());
   const [awsUrl, setAwsUrl] = useState();
-
   const [infoDetails, setInfoDetails] = useState([]);
   const [masterType, setMasterType] = useState();
   const [currencies, setCurrencies] = useState([]);
@@ -142,6 +142,8 @@ const index = () => {
   const[noOfPlyList,setNoOfPlyList] = useState([]);
   const[cartonEdgeFinishList,setCartonEdgeFinishList] = useState([]);
   const [patternList,setPatternList]=useState([]);
+  const [selected, setSelected] = useState("");
+  const [paymentinstructionsDesc, setPaymentinstructionsDesc] = useState("");
   const toggleart = () => setModalArt(!modalArt);
   const togglefabric = () => setModalfabric(!modalfabric);
   const toggleclr = () => setModalClr(!modalClr);
@@ -589,7 +591,10 @@ const index = () => {
 
   
   }, []);
-
+/***************Measurement Sheet Radio Button OnChange**********/
+  const changeHandlerRadio = e => {
+    setSelected(e.target.value);
+  };
  /****------- Image Upload API Call ---------- ****/
  const uploadImageApiCall = (imageType, file) => {
   axios
@@ -1258,6 +1263,7 @@ const index = () => {
       inquiryFormInputParams["sku_details"] = sku;
       inquiryFormInputParams["referenceId"] = referenceId.toString();
       inquiryFormInputParams['measurement_Chart'] = measure_chart_array;
+      inquiryFormInputParams['payment_instructions']=paymentinstructionsDesc;
       axios
         .post(ServerUrl + "/save-inquiry", apiencrypt(inquiryFormInputParams))
         .then((response) => {
@@ -1356,6 +1362,7 @@ const index = () => {
       </Row>
       <Container fluid={true} className="general-widget topaln">
         <Col >
+        {/************Tab to Scroll***************************/}
           <Card id="htmljoditListCSS">
           <div className="myHeader inquiry_create" id="myHeader">
               <Row className="u-steps" style={{ cursor: 'pointer' }}>
@@ -1542,6 +1549,7 @@ const index = () => {
                     </Row>
                   </Col>
                 </div>
+
                 {/* Fabric Composition,Fabric GSM, */}
                 <div ref={fabricinfo} className="fabricinfo">
                   <Row className="g-12">
@@ -1623,6 +1631,7 @@ const index = () => {
                           </InputGroup>
                         </FormGroup>
                       </Col>
+
                       {/* Sample Format Image Preview */}
                       <Col lg="4">
                         {fileSampleFormat.length > 0 ?
@@ -1657,7 +1666,7 @@ const index = () => {
                     </Row>
                   </Col>
 
-                  {/* Fabric Type,Yarn Count,Target Price */}
+                  {/* Fabric Type,Yarn Count,Inquiry Due Date */}
                 <div ref={inquiryDueDateValidation}></div>
                   <Row>
                     <Col lg="4">
@@ -1686,7 +1695,6 @@ const index = () => {
                         </InputGroup>
                       </FormGroup>
                     </Col>
-
                     <Col lg="4">
                       <FormGroup>
                         <Label>{t("inquiryDueDate")}</Label><sup className="font-danger">*</sup>
@@ -1709,7 +1717,7 @@ const index = () => {
                     </Col>
                   </Row>
 
-                  {/* Incoterms,Payment Terms,Inquiry Due Date */}
+                  {/* Incoterms,Currency,Target Price */}
                 <div ref={currencyValidation}></div>
                   <Row>
                     <Col lg="4">
@@ -1782,36 +1790,9 @@ const index = () => {
                       </FormGroup>
                     </Col>
                   </Row>
+
+                   {/* ,Payment Terms,Payment Instructions */}
                   <Row>
-                    {/* <Col lg="6" >
-                      <FormGroup>
-                        <Label className="form-label">{t("paymentTerms")}</Label>
-                        <span
-                          className="m-l-20"
-                          style={{ cursor: "pointer" }}
-                          value
-                          onClick={() => {
-                            checkedVal("PaymentTerms");
-                          }}
-                        >
-                          {" "}
-                          <img src={infoIcon} width="25px" height="25px"></img>
-                        </span>
-                        <JoditEditor
-                          ref={editor}
-                          value={paymentTerm}
-                          config={config}
-                          tabIndex={1}
-                          // tabIndex of textarea
-                          //  onBlur={(newContent) => setSampleRequirement(newContent)}
-                         // preferred to use only this option to update the content for performance reasons
-                          onChange={(newContent) => setPaymentTerm(newContent)}
-                        />
-                      </FormGroup>
-
-
-                    </Col> */}
-
                     <Col lg="4">
                       <FormGroup>
                         <Label>{t("paymentTerms")}</Label>
@@ -1842,6 +1823,48 @@ const index = () => {
                             <option value="addNew">+Add New</option>
                           </Input>
                         </InputGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col lg="8">
+                      <FormGroup>
+                        <Label className="form-label">
+                          {t("paymentinstructions")}
+                        </Label>
+                        <span
+                          className="m-l-20"
+                          style={{ cursor: "pointer" }}
+                          value
+                          onClick={() => {
+                            togglepaymentinstructions ();
+                          }}
+                          >
+                          {paymentinstructionsDesc=="" ?   <img 
+                                src={addBlueIcon}
+                                width="25px"
+                                height="25px"
+                                
+                              ></img>:<img 
+                              src={editBlueIcon}
+                              width="25px"
+                              height="25px"
+                              
+                            ></img>}    
+                        
+                          {/* <img src={infoIcon} width="25px" height="25px"></img> */}
+                        </span>
+                        <PaymentinstructionsModal
+                              modal={paymentinstructionsModal}
+                              toggle={togglepaymentinstructions}
+                              paymentinstructionsDesc={paymentinstructionsDesc}
+                              setPaymentinstructionsDesc={setPaymentinstructionsDesc}
+                              setpaymentinstructionsModal={setpaymentinstructionsModal}
+                              paymentinstructionsModal={paymentinstructionsModal}
+                            />
+                          {paymentinstructionsDesc=="" ?   ""
+                          :
+                          <Card>
+                            <CardBody> {parse(paymentinstructionsDesc)}</CardBody>
+                            </Card>}  
                       </FormGroup>
                     </Col>
                   </Row>
@@ -1890,9 +1913,6 @@ const index = () => {
                           <Card>
                             <CardBody> {parse(styleArtcileDesc)}</CardBody>
                             </Card>}  
-                           
-                           
-                       
                         {/* <JoditEditor
                           ref={editor}
                           value={styleArtcileDesc}
@@ -2294,10 +2314,30 @@ const index = () => {
                   ) : (
                     <div></div>
                   )}
-
+                       {/* MeasuementSheet Radio Button*/}
+                        <Row>
+                         <Col lg="12" md="12" sm="12" xs="12">                          
+                                <FormGroup className="m-t-15 m-checkbox-inline mb-0 custom-radio-ml">
+                                <span className="subTitleLine3 f-left">
+                            <H6 className="ordersubhead">
+                            {t("measurementSheet")} 
+                            </H6>
+                          </span>
+                                    <div className="radio radio-primary">
+                                        <Input id="radioinline1" type="radio" name="radio1" value="1" checked={selected === "1"} onChange={changeHandlerRadio}  />
+                                        <Label className="mb-0" for="radioinline1">{t("upload")}</Label>
+                                    </div>
+                                    <div className="radio radio-primary">
+                                        <Input id="radioinline2" type="radio" name="radio1" value="2" checked={selected === "2"} onChange={changeHandlerRadio}  />
+                                        <Label className="mb-0" for="radioinline2">{t("create")}</Label>
+                                    </div>
+                                </FormGroup>
+                            </Col>
+                          </Row>
                   {/* Measuement Show based on sku*/}
+                  <Row aria-hidden={selected !== "2" ? true : false}>
                   {color.length > 0 && size.length > 0 ? (
-                    <>
+                    <>                   
                       <Row className="g-12">
                         <Col lg="12" md="12" sm="12" xs="12">
                           <span className="subTitleLine3 f-left">
@@ -2399,9 +2439,12 @@ const index = () => {
                           </Row>
                         </Col>
                       </Row>
+                     
                     </>) : (<div></div>)}
-                  <Row>
-                    <Col lg="4">
+                    </Row>
+                  {/* Measuement Sheet Upload*/}
+                  <Row aria-hidden={selected !== "1" ? true : false}>
+                    <Col lg="4"  >
                       <FormGroup>
                         <Label> {t("measurementSheet")} </Label>
                         <InputGroup>
@@ -2471,7 +2514,6 @@ const index = () => {
                     </Row>
                   </Row>
                   {/* Patterns,Place of Jurisdiction,Customs Declaration Document */}
-
                   <Row className="m-t-10">
                   <Col lg="4">
                       <FormGroup>
@@ -2643,7 +2685,7 @@ const index = () => {
                     </Col>
                   </Row>
 
-                  {/* Print Information: Print Image */}
+                  {/* Print Information: Print Artwork */}
 
                   <Row>
                     <Col lg="4">
@@ -3189,6 +3231,7 @@ const index = () => {
                       </FormGroup>
                     </Col>
                   </Row>
+                  {/* Packing Information: Polybag Print Artwork  */}
                   <Row>
                     <Col lg="4">
                       <FormGroup>
@@ -3264,7 +3307,7 @@ const index = () => {
                     </Col>
                   </Row>
 
-                  {/* Packing Information: Carton Box Dimensions,Carton Color,Carton Material */}
+                  {/* Packing Information: Carton Box Dimensions,Carton Color,Carton Material(No of Ply) */}
 
                   <Row>
                     <Col lg="4">
@@ -3328,7 +3371,7 @@ const index = () => {
                     </Col>
                   </Row>
 
-                  {/* Packing Information: Carton Edge Finish,Carton Mark Details,Make-Up */}
+                  {/* Packing Information: Carton Edge Finish,Carton Mark Details */}
 
                   <Row>
                   <Col lg="4">
@@ -3452,7 +3495,7 @@ const index = () => {
                     </Col>
                   </Row>
 
-                  {/* Packing Information: Films/CD,Picture-Card,Inner Cardboard */}
+                  {/* Packing Information: MakeUp,Films/CD,Picture-Card */}
 
                   <Row>
                     <Col lg="4">
@@ -3497,7 +3540,7 @@ const index = () => {
 
                   </Row>
 
-                  {/* Packing Information: Estimated Delivery Date,Shipping Size,Air Freight */}
+                  {/* Packing Information: Inner Cardboard,Estimated Delivery Date,Shipping Size*/}
                   <Row>
                     <Col lg="4">
                       <FormGroup>
@@ -3542,7 +3585,7 @@ const index = () => {
                         </InputGroup>
                       </FormGroup>
                     </Col>
-
+                  {/***************Air Freight **********/}
                   </Row>
                   <Row>
                     <Col lg="4">
@@ -3609,7 +3652,6 @@ const index = () => {
                           <Card>
                             <CardBody> {parse(forbiddenSubstancesInfo)}</CardBody>
                             </Card>} 
-
                       {/* <JoditEditor
                           ref={editor}
                           value={forbiddenSubstancesInfo}
@@ -3657,9 +3699,7 @@ const index = () => {
                           :
                           <Card>
                             <CardBody> {parse(testingRequirement)}</CardBody>
-                            </Card>}  
-                    
-                    
+                            </Card>} 
                        {/* <JoditEditor
                           ref={editor}
                           value={testingRequirement}
@@ -3783,8 +3823,8 @@ const index = () => {
               </Form>
             </CardBody>
           </Card>
-          {/* Scroll To Top  */}
 
+          {/* Scroll To Top  */}
           <div className="top-to-btm" style={{ cursor: 'pointer' }}>
             {" "}
             {showTopBtn && (
@@ -3798,6 +3838,7 @@ const index = () => {
           </div>
         </Col>
       </Container>
+      { /*****CustomsDeclarationDocument,MainLabel - Modal*****/ }
       <InfoCanvas
         modal={showInfoCanvas}
         toggle={toggleInfoCanvas}
@@ -3814,6 +3855,7 @@ const index = () => {
         mainLabel={mainLabel}
         referenceId={referenceId}
       />
+      { /*****PaymentTerms,penalty,No of ply,Patterns,Carton Edge Finish Drop Down "+Add More" ****/ }
       <AddNewDropdownModal
       modal={showAddNew}
       toggle={toggleAddNew}

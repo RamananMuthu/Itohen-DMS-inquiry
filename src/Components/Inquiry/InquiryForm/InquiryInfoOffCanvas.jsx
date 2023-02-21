@@ -17,27 +17,27 @@ const InquiryInfoOffCanvas = ({ modal, toggle, infoDetails,setInfoDetails, maste
       var checkboxeschecked = [];
     var markedCheckbox = document.querySelectorAll('input[type="checkbox"]');
     var checkboxLength = markedCheckbox.length;
-    var content = customsDeclaration + "<ul>";
+    var content = customsDeclaration +'<ul>' ;
     for (var i = 0; i < checkboxLength; i++) {
       if (markedCheckbox[i].checked) {
         checkboxeschecked.push(markedCheckbox[i].value);
-        content = content + '<li>' + markedCheckbox[i].value + '</li>';
+        content =  content + '<li>' + markedCheckbox[i].value + '</li>';
       }
-      content = content + '</ul>';
     }
+    content =  content +'</ul>' ;
     }
     else if(masterType=='MainLabel'){
       var checkboxeschecked = [];
     var markedCheckbox = document.querySelectorAll('input[type="checkbox"]');
     var checkboxLength = markedCheckbox.length;
-    var content = mainLabel + "<ul>";
+    var content = mainLabel +'<ul>';
     for (var i = 0; i < checkboxLength; i++) {
       if (markedCheckbox[i].checked) {
         checkboxeschecked.push(markedCheckbox[i].value);
         content = content + '<li>' + markedCheckbox[i].value + '</li>';
       }
-      content = content + '</ul>';
     }
+    content =  content +'</ul>'
     }
 
     if (checkboxeschecked.length > 0) {
