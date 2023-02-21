@@ -179,7 +179,7 @@ const FilterOffCanvas = ({ modal, toggle, Article,Inquiryarticles,Inquiryusers,
             <Col md={12}>
             
             
-              <Label>{t("BuyerPCU")}</Label>
+              <Label>{t("buyerPCU")}</Label>
                 <Input type="select" defaultValue={BuyerPCU} name="articleName" id="Buyerpcu" 
                 onChange={(e)=>setBuyerPCU(e.target.value)}
                 >
