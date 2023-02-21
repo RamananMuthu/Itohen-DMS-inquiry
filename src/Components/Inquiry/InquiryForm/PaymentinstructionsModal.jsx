@@ -70,7 +70,7 @@ const PaymentinstructionsModal = ({ modal, toggle,paymentinstructionsDesc,setPay
     [placeholder])
   return (
     <Modal isOpen={modal} toggle={toggle} centered style={{"max-width":"700px"}}>
-      <ModalHeader>payment instructions</ModalHeader>
+      <ModalHeader>{t("paymentinstructions")}</ModalHeader>
       <ModalBody  id="htmljoditListCSS">
       <JoditEditor
                           ref={editor}

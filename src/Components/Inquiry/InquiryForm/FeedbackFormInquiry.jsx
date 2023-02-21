@@ -267,8 +267,8 @@ const FeedbackFormInquiry = () => {
       collabrativeComment == ""
     ) {
       Swal.fire({
-        title: "Please Complete the Feedback ",
-        text: "Incomplete Data",
+        title: t("plsComFeedback"),
+        text: t("inCompleteData"),
         icon: "warning",
         allowOutsideClick: false,
         timer: 2500,

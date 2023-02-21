@@ -129,7 +129,7 @@ const InquiryInfoOffCanvas = ({ modal, toggle, infoDetails,setInfoDetails, maste
         <Button className="m-r-10" style={{ textAlign: "center" }}
             width="40px" height="20px"
             onClick={toggleNew}
-          > {t("Add More")}
+          > {t("addMore")}
           </Button>
           <AddMoreModal 
           modal={modalNew}

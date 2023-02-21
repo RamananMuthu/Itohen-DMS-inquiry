@@ -1820,7 +1820,7 @@ const index = () => {
                               </option>
                               
                             ))}
-                            <option value="addNew">+Add New</option>
+                            <option value="addNew">+{t("addNew")}</option>
                           </Input>
                         </InputGroup>
                       </FormGroup>
@@ -2542,7 +2542,7 @@ const index = () => {
                                 {patternLists.content}
                               </option>
                             )):""}
-                            <option value="addNew">+Add New</option>
+                            <option value="addNew">+{t("addNew")}</option>
                           </Input>
                         </InputGroup>
                       </FormGroup>
@@ -2633,7 +2633,7 @@ const index = () => {
                             type="select"
                             id="PrintTypeId"
                             className="form-control digits selectheight"
-                            name="Income Terms"
+                            name="Print Type"
                             defaultValue=""
                             //onClick={()=>{inquiryMaster("PrintType")}}
                             onChange={(e) =>{ 
@@ -2652,7 +2652,7 @@ const index = () => {
                                 {printTypeLists.content}
                               </option>
                             )):""}
-                           <option value="addNew">+Add New</option>
+                          <option value="addNew">+{t("addNew")}</option>
                           </Input>
                         </InputGroup>
                       </FormGroup>
@@ -3347,7 +3347,7 @@ const index = () => {
                             id="NoofPlyId"
                             // placeholder={t("selectStatus")}
                             className="form-control digits selectheight"
-                            name="Income Terms"
+                            name="No Of Ply"
                             defaultValue=""
                             onChange={(e) => {
                               e.target.value!="addNew"?
@@ -3364,7 +3364,7 @@ const index = () => {
                                 {plyList.content}
                               </option>                              
                             ))}
-                            <option value="addNew">+Add New</option>
+                            <option value="addNew">+{t("addNew")}</option>
                           </Input>
                         </InputGroup>
                       </FormGroup>
@@ -3400,7 +3400,7 @@ const index = () => {
                                 {cartonEdgeFinList.content}
                               </option>
                             ))}
-                            <option value="addNew">+Add New</option>
+                            <option value="addNew">+{t("addNew")}</option>
                           </Input>
                         </InputGroup>
                       </FormGroup>
