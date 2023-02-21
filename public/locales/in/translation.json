@@ -1053,8 +1053,9 @@
     "View Inquiry":"पूछताछ देखें",
     "Feedback Form":"प्रतिपुष्टी फ़ार्म",
     "Inquiry Contacts":"पूछताछ संपर्क",
-    "selectBuyerPCU":"खरीदार (या) पीसीयू का चयन करें",
+    "selectBuyerPCU":"खरीदार / पीसीयू का चयन करें",
     "polybagSampleImage":"पॉलीबैग नमूना छवि",
     "cartonSampleImage":"कार्टन नमूना छवि",
-    "inquiryfrom":"से पूछताछ"
+    "inquiryfrom":"से पूछताछ",
+    "buyerPCU":"खरीदार/पीसीयू"
     }

@@ -1053,8 +1053,9 @@
     "View Inquiry":"View Inquiry",
     "Feedback Form":"Feedback Form",
     "Inquiry Contacts":"Inquiry Contacts",
-    "selectBuyerPCU":"select Buyer(or)PCU",
+    "selectBuyerPCU":"select Buyer/PCU",
     "polybagSampleImage":"Polybag Sample Image",
     "cartonSampleImage":"Carton Sample Image",
-    "inquiryfrom":"Inquiry From"
+    "inquiryfrom":"Inquiry From",
+    "buyerPCU":"Buyer/PCU"
 }

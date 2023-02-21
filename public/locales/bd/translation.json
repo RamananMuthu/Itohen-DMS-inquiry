@@ -1053,8 +1053,9 @@
     "View Inquiry":"তদন্ত দেখুন",
     "Feedback Form":"ফিডব্যাক ফর্ম",
     "Inquiry Contacts":"তদন্ত পরিচিতি",
-    "selectBuyerPCU":"ক্রেতা (বা) পিসিইউ নির্বাচন করুন",
+    "selectBuyerPCU":"ক্রেতা / পিসিইউ নির্বাচন করুন",
     "polybagSampleImage":"পলিব্যাগের নমুনা চিত্র",
     "cartonSampleImage":"শক্ত কাগজের নমুনা চিত্র",
-    "inquiryfrom":"থেকে তদন্ত"
+    "inquiryfrom":"থেকে তদন্ত",
+    "buyerPCU":"ক্রেতা/পিসিইউ"
     }
