@@ -1052,5 +1052,9 @@
     "********** Inquiry side menu **********": "********** Inquiry side menu **********",
     "View Inquiry":"তদন্ত দেখুন",
     "Feedback Form":"ফিডব্যাক ফর্ম",
-    "Inquiry Contacts":"তদন্ত পরিচিতি"
+    "Inquiry Contacts":"তদন্ত পরিচিতি",
+    "selectBuyerPCU":"select Buyer(or)PCU",
+    "polybagSampleImage":"Polybag Sample Image",
+    "cartonSampleImage":"Carton Sample Image",
+    "inquiryfrom":"Inquiry Form"
     }

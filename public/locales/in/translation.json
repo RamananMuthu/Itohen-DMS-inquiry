@@ -1052,5 +1052,9 @@
     "********** Inquiry side menu **********": "********** Inquiry side menu **********",
     "View Inquiry":"पूछताछ देखें",
     "Feedback Form":"प्रतिपुष्टी फ़ार्म",
-    "Inquiry Contacts":"पूछताछ संपर्क"
+    "Inquiry Contacts":"पूछताछ संपर्क",
+    "selectBuyerPCU":"select Buyer(or)PCU",
+    "polybagSampleImage":"Polybag Sample Image",
+    "cartonSampleImage":"Carton Sample Image",
+    "inquiryfrom":"Inquiry Form"
     }
