@@ -2003,14 +2003,14 @@ const index = () => {
                             placeholder={t("enterTotalQuantity")}
                             onChange={(e) => setTotalQuantity(e.target.value)}
                           ></Input>
-                          <InputGroupText>
+                          {/* <InputGroupText>
                             <img
                               src={quantity}
                               width="15px"
                               height="15px"
                               type="file"
                             ></img>
-                          </InputGroupText>
+                          </InputGroupText> */}
                         </InputGroup>
                         {validerrors.totalQuantity && (
                           <span className="error-msg">
@@ -3441,7 +3441,7 @@ const index = () => {
                         </InputGroup>
                       </FormGroup>
                     </Col>
-                    <Col lg="2">
+                    {/* <Col lg="2">
                       <FormGroup>
                         <Label>{t("cartonMarkImg")}</Label>
                         <InputGroup>
@@ -3515,9 +3515,85 @@ const index = () => {
                         <div>{''}</div>
                       )}
 
-                    </Col>
+                    </Col> */}
                   </Row>
+<Row>
+<Col lg="4">
+                      <FormGroup>
+                        <Label>{t("cartonMarkImg")}</Label>
+                        <InputGroup>
+                          <Input
+                            className=""
+                            name="Carton Sample"
+                            placeholder={t("attachCartonMarkImage")}
+                            value={
+                              cartonSampleImg
+                                ? cartonSampleImg
+                                : ""
+                            }
+                            onChange={(e) =>
+                              setCartonSampleImg(e.target.value)
+                            }
+                            disabled
+                          ></Input>
+                          <Files
+                            className="files-dropzone fileContainer"
+                            accept=".png,.jpg,.jpeg"
+                            multiple={false}
+                            canCancel={false}
+                            onChange={CartonSample}
+                            clickable
+                          >
+                            <InputGroupText className=" btn imgBackground">
+                              <img
+                                src={imgUpload}
+                                width="25px"
+                                height="25px"
+                                type="file"
+                              ></img>
+                            </InputGroupText>
+                          </Files>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col lg="4">
 
+                      {fileCartonImg.length > 0 ? (
+
+                        fileCartonImg
+                          .map((file) => (
+                            <>
+                              <div className="profile-pic">
+                                <img
+                                  src={awsUrl + file.filepath}
+                                  width="100px"
+                                  height="100px"
+                                  className="m-10"
+                                />
+                                <div className="edit m-t-30 m-r-30">
+                                  <img
+                                    src={deleteIcon}
+                                    width="30px"
+                                    height="30px"
+                                    style={{ cursor: 'pointer' }}
+                                    onClick={() => {
+                                      deleteImageFiles("Carton", file)
+                                    }
+                                    }
+                                  />
+
+                                </div>
+                              </div>
+
+                            </>
+                          ))
+
+                      ) : (
+                        <div>{''}</div>
+                      )}
+
+                    </Col>
+</Row>
                   {/* Packing Information: MakeUp,Films/CD,Picture-Card */}
 
                   <Row>
