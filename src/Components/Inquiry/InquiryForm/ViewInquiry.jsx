@@ -154,7 +154,7 @@ const ViewInquiry = () => {
                     .post(ServerUrl + "/get-inquiry", apiencrypt(getInputParams))
                     .then((response) => {
                       response.data = apidecrypt(response.data);
-                      setInquiryDetails(response.data.data);
+                      setInquiryDetails(response.data.data.data);
                     });
                 }
               });
