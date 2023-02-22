@@ -8,8 +8,9 @@ import smile from "../../../assets/images/dms/InquiryQuoteSent.svg";
 import yellowSmile from "../../../assets/images/dms/inquiryYellowSmile.svg";
 import graySadSmile from "../../../assets/images/dms/inquirygray_icon.svg";
 import graySmile from"../../../assets/images/dms/InquiryRemainingSmile.svg";
+import download_icon from"../../../assets/images/dms/icons/grey_factory_view_download_icon.svg";
 import axios from "axios";
-import { encode, apiencrypt, apidecrypt,calculateDateDiffCountFromTwoDates } from "../../../helper";
+import { encode, apiencrypt, apidecrypt,calculateDateDiffCountFromTwoDates,DownloadFile } from "../../../helper";
 import {
   getLoginCompanyId,
   getWorkspaceId,
@@ -25,6 +26,8 @@ import FactoryDetailInquiry from "./FactoryDetailInquiry";
 import Documentfactory from "../../../assets/images/dms/icons/Document_Factory_icon.svg";
 import FilterIcon from "../../../assets/images/dms/icons/filter.svg"
 import FilterOffCanvas from "./FilterOffCanvas";
+import FactoryFilesDownloadModal from "./FactoryFilesDownloadModal";
+import DownloadIcon from "../../../assets/images/dms/icons/download.svg";
 
 // Showing the factory inquiry list
 const FactoryViewInquiry = () => {
@@ -47,11 +50,17 @@ const FactoryViewInquiry = () => {
   const [filterOffCanvas , setFilterOffCanvas] = useState(false);
   const toggleFilterCanvas = () => setFilterOffCanvas(!filterOffCanvas);
 
-
   const [filterBuyerDetails, setFilterBuyerDetails] = useState("0");
   const [filterArticleDetails, setFilterArticleDetails] = useState("0");
   const [filterstartDateDetails, setFilterStartDateDetails] = useState("");
   const [filterEndDateDetails, setFilterEndDateDetails] = useState("");
+
+  const [downloadFileDetails, setDownloadFileDetails] = useState([]);
+  const [downloadMsSheetDetails, setDownloadMsSheetDetails] = useState([]);
+  
+  const [modalBuyerFilesDownload, setModalBuyerFileDownload] = useState(false);
+  const toggleFactoryFilesDownload = () => setModalBuyerFileDownload(!modalBuyerFilesDownload);
+  const [inquiryNo, setInquiryNo] = useState();
 
   const apiCall = (pageNumber) => {
     var getInputParams = {};
@@ -106,7 +115,6 @@ const FactoryViewInquiry = () => {
       window.location.href = `${process.env.PUBLIC_URL}/feedbackform` 
         // window.location.href='/inquiry/feedbackform' 
   }, []);
-
 
   const factoryDetails = (inquiryId, factoryId) => 
   {
@@ -173,7 +181,48 @@ const FactoryViewInquiry = () => {
       }
     }
   };
+  
+  const toggleDownload = (inquiryId) => {
+    setInquiryNo(inquiryId);
+    var downloadParams = {};
+    downloadParams["inquiry_id"] = inquiryId.toString();
+    axios
+    .post(ServerUrl + "/inquiry-pdf-download", apiencrypt(downloadParams))
+    .then((response) => {
+        response.data = apidecrypt(response.data);
+        setModalBuyerFileDownload(!modalBuyerFilesDownload);
+        setDownloadFileDetails(response.data.data);
+        setDownloadMsSheetDetails(response.data.data.ms_sheet);
+    })
+  };
 
+  const toDownloadAsPdf =()=>{
+    var getDownloadParams = {};
+    getDownloadParams["company_id"] = getLoginCompanyId;
+    getDownloadParams["workspace_id"] = getWorkspaceId;
+    getDownloadParams["user_id"] = getLoginUserType == "user" ? getLoginUserId : 0;
+    getDownloadParams["staff_id"] = getLoginUserType == "staff" ? getLoginStaffId : 0;
+    getDownloadParams["factory_id"] = getLoginUserId;
+    if(filterArticleDetails!="0" )
+    {
+      getDownloadParams["article_id"]=filterArticleDetails;
+    }
+    if(filterBuyerDetails!="0")
+    {
+      getDownloadParams["buyer_id"]=filterBuyerDetails;
+    }
+    if(filterstartDateDetails!="" || filterEndDateDetails!=""){
+      getDownloadParams["from_date"] = filterstartDateDetails;  
+      getDownloadParams["to_date"] = filterEndDateDetails;
+    } 
+    axios
+    .post(ServerUrl + "/factory-inquiries-download", apiencrypt(getDownloadParams),{responseType: 'blob'})
+    .then((response) => {
+        console.log(response.data);
+        let name = "inquiry_list.pdf";
+        DownloadFile(response.data, name);
+    });
+  }
   return (
     <Fragment>
       <Row className="pgbgcolor">
@@ -196,6 +245,9 @@ const FactoryViewInquiry = () => {
                     <div className="cursor-pointer p-1 p-r-0 m-t-5 f-right" onClick={() => toggleFilterCanvas()}>
                         <img src={FilterIcon} />
                      </div>
+                     <div className="cursor-pointer p-1 p-l-0 m-t-5 m-r-10 f-right" onClick={()=> toDownloadAsPdf()}>
+                      <img src={DownloadIcon} />
+                     </div>
                     </Col>
                       <div className="table-responsive">
                         <table className="table shadow shadow-showcase  table-bordered">
@@ -216,6 +268,7 @@ const FactoryViewInquiry = () => {
                                 (getStaff === "Staff" && getStaffPermission.includes("Add Response")) || getStaff == null ?
                                 <th className="centerAlign"> {t("response")} </th> : ""
                               }
+                              <th className="centerAlign"> Action </th>
                             </tr>
                           </thead>
                           <tbody>
@@ -246,7 +299,7 @@ const FactoryViewInquiry = () => {
 
                                   {
                                     getLoginUserType == "user" ? 
-                                    <td className="centerAlign middle ">
+                                    <td className="centerAlign middle">
                                   {inquirydtls.is_read == 0 ?
                                     <img
                                       name="inquiryId"
@@ -305,7 +358,6 @@ const FactoryViewInquiry = () => {
                                   </td>
                                     :
                                     (getStaff === "Staff" && getStaffPermission.includes("Add Response")) || getStaff == null ?
-
                                     <td className="centerAlign middle ">
                                     {inquirydtls.is_read == 0 ?
                                       <img
@@ -365,6 +417,19 @@ const FactoryViewInquiry = () => {
                                     </td>
                                     : ""
                                   }
+                                  <td className="centerAlign middle">
+                                    <img
+                                        width="36px"
+                                        style={{ cursor: "pointer" }}
+                                        className="p-1" 
+                                        title="Download"
+                                        value={inquirydtls.id}
+                                        src={download_icon}
+                                        onClick={() => {
+                                          toggleDownload(inquirydtls.id);
+                                        }}
+                                      />
+                                  </td>
                                 </tr>
                               ))
                             ) : (
@@ -385,7 +450,15 @@ const FactoryViewInquiry = () => {
           </Col>
         </Row>
 
-                     
+        <FactoryFilesDownloadModal
+          modalBuyerFilesDownload={modalBuyerFilesDownload}
+          setModalBuyerFileDownload={setModalBuyerFileDownload}
+          toggleFactoryFilesDownload={toggleFactoryFilesDownload}
+          downloadFileDetails={downloadFileDetails}
+          downloadMsSheetDetails={downloadMsSheetDetails}
+          inquiryNo={inquiryNo}
+        />  
+
         <FilterOffCanvas modal={filterOffCanvas} toggle={toggleFilterCanvas} Article={inquiryDetails}  Inquiryarticles={Inquiryarticles} Inquiryusers={Inquiryusers} InquiryDetails={setInquiryDetails} 
         InquiryResponse ={setInquiryResponse} TotalFactList={setTotalFactList} links={setlinks} pageNumber={setPageNumber} 
         setFilterEndDateDetails={setFilterEndDateDetails} setFilterStartDateDetails={setFilterStartDateDetails}

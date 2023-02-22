@@ -69,7 +69,6 @@ const InquirySentToModal = ({ factoryList, modalInquirySentTo, toggleInquirySent
         </ModalBody>
       </Modal>
     </>
-
   );
 };
 

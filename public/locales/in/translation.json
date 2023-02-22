@@ -1057,5 +1057,10 @@
     "polybagSampleImage":"पॉलीबैग नमूना छवि",
     "cartonSampleImage":"कार्टन नमूना छवि",
     "inquiryfrom":"से पूछताछ",
-    "buyerPCU":"खरीदार/पीसीयू"
+    "buyerPCU":"खरीदार/पीसीयू",
+    "filesDownload" : "फ़ाइलें डाउनलोड करें",
+    "inquiryNoTitle" : "पूछताछ संख्या - ", 
+    "inquiryPdf":  "पूछताछ.पीडीएफ",
+    "measurementSheets":  "माप पत्रक :",
+    "measSheetNotAvail" : "माप पत्रक उपलब्ध नहीं है"
     }

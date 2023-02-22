@@ -1057,5 +1057,10 @@
     "polybagSampleImage":"পলিব্যাগের নমুনা চিত্র",
     "cartonSampleImage":"শক্ত কাগজের নমুনা চিত্র",
     "inquiryfrom":"থেকে তদন্ত",
-    "buyerPCU":"ক্রেতা/পিসিইউ"
+    "buyerPCU":"ক্রেতা/পিসিইউ",
+    "filesDownload" : "ফাইল ডাউনলোড করুন",
+    "inquiryNoTitle" : "তদন্ত নম্বর - ", 
+    "inquiryPdf":  "অনুসন্ধান.পিডিএফ",
+    "measurementSheets":  "পরিমাপ শীট:",
+    "measSheetNotAvail" : "পরিমাপ শীট উপলব্ধ নেই"
     }

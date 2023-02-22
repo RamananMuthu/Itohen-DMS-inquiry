@@ -1057,5 +1057,10 @@
     "polybagSampleImage":"Polybag Sample Image",
     "cartonSampleImage":"Carton Sample Image",
     "inquiryfrom":"Inquiry From",
-    "buyerPCU":"Buyer/PCU"
+    "buyerPCU":"Buyer/PCU",
+    "filesDownload" : "Download Files",
+    "inquiryNoTitle" : "IN -", 
+    "inquiryPdf":  "Inquiry.pdf",
+    "measurementSheets":  "Measurement Sheets :",
+    "measSheetNotAvail" : "Measurement sheet not available"
 }
