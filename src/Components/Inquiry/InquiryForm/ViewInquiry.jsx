@@ -11,7 +11,7 @@ import responseBlueIcon from "../../../assets/images/dms/inquiryResponseBlueIcon
 import axios from "axios";
 import ViewFactoryModal from "./ViewFactoryModal";
 import { encode,apiencrypt, apidecrypt, DownloadFile } from "../../../helper";
-import { getLoginCompanyId, getWorkspaceId, getWorkspaceType, getLoginUserId, getStaff, getStaffPermission, getLoginUserType } from "../../../Constant/LoginConstant";
+import { getLoginCompanyId, getWorkspaceId, getWorkspaceType, getLoginUserId, getStaff, getStaffPermission, getLoginUserType,getLoginStaffId } from "../../../Constant/LoginConstant";
 import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
 import { ServerUrl } from "../../../Constant";
