@@ -4,7 +4,7 @@ import { Breadcrumbs } from "../../../AbstractElements";
 import Loader from "../../../Layout/Loader/index";
 import { getLoginUserId, getWorkspaceType, getStaff, getStaffPermission, 
          getLoginUserType, getWorkspaceId, getLoginCompanyId } from '../../../Constant/LoginConstant';
-import { encode, decode, apiencrypt, apidecrypt } from "../../../helper";
+import { encode, decode, apiencrypt, apidecrypt,DownloadFile } from "../../../helper";
 import { useSearchParams, } from "react-router-dom";
 import axios from "axios";
 import parse from 'html-react-parser';
@@ -14,6 +14,7 @@ import FactoryResponseRatingIcon from '../../../assets/images/dms/icons/factoryR
 import FactoryResponseRatingModal from "./FactoryResponseRatingModal";
 import { useTranslation } from "react-i18next";
 import AddFactoryResponseOffCanvas from '../InquiryForm/AddFactoryResponseOffCanvas';
+import DownloadIcon from "../../../assets/images/dms/icons/download.svg";
 
 const FactoryResponse = () => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -90,6 +91,22 @@ const FactoryResponse = () => {
     const onGoBack=() => {
         window.location.href = `${process.env.PUBLIC_URL}/viewinquiry` 
     }
+    const toDownloadAsPdf =()=>{
+        var getDownloadParams = {};
+        getDownloadParams["company_id"] = getLoginCompanyId;
+        getDownloadParams["workspace_id"] = getWorkspaceId;
+        getDownloadParams["inquiry_id"] = inquiryId;
+        getDownloadParams["user_id"] = getLoginUserType == "user" ? getLoginUserId : 0;
+        getDownloadParams["staff_id"] = getLoginUserType == "staff" ? getLoginStaffId : 0;
+        
+        axios
+        .post(ServerUrl + "/factory-response-inquiries-download", apiencrypt(getDownloadParams),{responseType: 'blob'})
+        .then((response) => {
+            console.log(response.data);
+            let name = "factoryResponse_list.pdf";   
+            DownloadFile(response.data, name);
+        });
+      }
 
     return (
         <Fragment>
@@ -139,6 +156,13 @@ const FactoryResponse = () => {
                                               currency={currency}
                                             />
                                         </Col>
+                                    </Row>
+                                    <Row>
+                                    <Col md="12" lg="12" sm="12">
+                                    <div className="cursor-pointer p-1 p-l-0 m-t-5 m-r-10 f-right" onClick={()=> toDownloadAsPdf()}>
+                      <img src={DownloadIcon} />
+                     </div>
+                     </Col>
                                     </Row>
                                 </Col>
 
