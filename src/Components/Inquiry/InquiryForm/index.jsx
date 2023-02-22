@@ -337,6 +337,69 @@ const index = () => {
     return validerrors;
   };
 
+   /*********************************** COLOR TOTAL [DELETE] ***********/
+   const getTotalColorWise = (typ=null) => 
+   {
+     let tqty = 0;
+     if (color.length > 0 && size.length > 0) {
+       color.forEach((colorData) => {
+         let i = 0;
+         let astotval = 0;
+         size.forEach((sizeData) => {
+           let element = document.getElementById(colorData.id + "#" + sizeData.id);
+           if (typeof (element) != 'undefined' && element != null) {
+             if(typ=='delete'){
+               //console.log(colorData.id + "#" + sizeData.id,"typ==>",typ);
+               document.getElementById(colorData.id + "#" + sizeData.id).value='';
+               let t = 0;
+              }else{
+             let t = document.getElementById(colorData.id + "#" + sizeData.id).value;
+             astotval += Number(t);
+              }
+            document.getElementById("totqty_"+colorData.id).value = astotval;
+           }
+         });
+       });
+     }
+   }
+ 
+   /********************************** SIZE TOTAL [DELETE] ************/
+   const getTotalSizeWise = (typ=null) => 
+   {
+     let tqty = 0;
+     if (color.length > 0 && size.length > 0) {
+     size.forEach((sizeData) => {
+         let i = 0;
+         let astotval = 0;
+         color.forEach((colorData) => {
+           let element = document.getElementById(sizeData.id + "#" + colorData.id);
+           if (typeof (element) != 'undefined' && element != null) {
+           if(typ=='delete'){
+             document.getElementById(sizeData.id + "#" + colorData.id).value='';
+             let t = 0;
+           }else{
+             let t = document.getElementById(sizeData.id + "#" + colorData.id).value;
+           
+           }
+           astotval += Number(t);
+           }
+           document.getElementById("SizeId_total_quantity" + sizeData.id).value = astotval;
+         });
+       });
+     }
+   }
+ 
+   /********************************* OVERALL TOTAL [DELETE] *********/
+   const getOverallTotal = () => { 
+   var sum = 0;
+   color.forEach( (colorData) => {
+     var colorTotalQty =  document.getElementById("totqty_" + colorData.id).value;
+     if( colorTotalQty > 0 ){
+       sum += Number(colorTotalQty);
+     }
+   })
+   }
+
   /****------- Delete Color ---------- ****/
   const deleteColor = (e) => {
     var getColor = e.target.id;
@@ -359,6 +422,7 @@ const index = () => {
             return color.name !== getColor;
           })
         );
+        document.getElementById("colorId").selectedIndex = 0; 
         document.getElementById("Overall_total_quantity").value = 0;
         getTotalColorWise("delete");
         getTotalSizeWise("delete");
@@ -367,7 +431,7 @@ const index = () => {
     });
   };
   /****------- Delete Size ---------- ****/
-  const deleteSize = (e) => {
+  const deleteSize = (e, sizesData) => {
     var getSize = e.target.id;
     Swal.fire({
       title: t("sizeDeleteAlert"),
@@ -379,16 +443,16 @@ const index = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         setShowSize((current) =>
-          current.filter((showSize, v) => {
+          current.filter((showSize) => {
             return showSize !== getSize;
           })
-        );
-
+          );
         setSize((currentv) =>
-          currentv.filter((size, vf) => {
+          currentv.filter((size) => {
             return size.name !== getSize;
           })
-        );
+          );
+        document.getElementById("sizeId").selectedIndex = 0; 
         document.getElementById("Overall_total_quantity").value = 0;
         getTotalColorWise("delete");
         getTotalSizeWise("delete");
@@ -455,6 +519,8 @@ const index = () => {
   };
   /****------- Color -Size ,Size wise Total ---------- ****/
   const sizeTotalQty = (e) => {
+
+
     var id = e.target.id;
     var value = e.target.value;
 
@@ -557,7 +623,6 @@ const index = () => {
     });
   };
 
-
   useEffect(() => {
     getLoginUserType == "user" ? getWorkspaceType != "Factory" ? apiCall() :
       window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry`
@@ -588,9 +653,8 @@ const index = () => {
           setShowTopBtn(false);
       }
   });
-
-  
   }, []);
+
 /***************Measurement Sheet Radio Button OnChange**********/
   const changeHandlerRadio = e => {
     setSelected(e.target.value);
@@ -1192,18 +1256,6 @@ const index = () => {
     return measureChart;
   };
 
-  // const sizeTotal = (value, index) => 
-  // {
-  //   var sum = 0;
-  //   size.map((mapData) => 
-  //   {
-  //      sum += Number( document.getElementById(index+"_size_id_"+mapData.id).value)
-  //   });
-
-  //   document.getElementById("overall_total"+index).value  =  sum ? sum : "0";
-  // };
-
-
   /****------- Inquiry Form Data Submission - Save ---------- ****/
   const submitInquiryForm = (e) => {
     let retval = validation();
@@ -1317,37 +1369,37 @@ const index = () => {
                 setOthersStyle( () => "u-step"),
                 scrollToSection(fabricinfo)
         } if(name == "printStyleInfo"){
-                  setBasicStyle("u-step"), 
-                  setFabricStyle( () => "u-step"), 
-                  setPrintStyle( () => "u-step current"), 
-                  setTrimsStyle( () => "u-step"), 
-                  setPackingStyle( () => "u-step"), 
-                  setOthersStyle( () => "u-step"),
-                  scrollToSection(printinfo)
+                setBasicStyle("u-step"), 
+                setFabricStyle( () => "u-step"), 
+                setPrintStyle( () => "u-step current"), 
+                setTrimsStyle( () => "u-step"), 
+                setPackingStyle( () => "u-step"), 
+                setOthersStyle( () => "u-step"),
+                scrollToSection(printinfo)
         } if(name == "trimsStyleInfo"){
-          setBasicStyle("u-step"), 
-          setFabricStyle( () => "u-step"), 
-          setPrintStyle( () => "u-step"), 
-          setTrimsStyle( () => "u-step current"), 
-          setPackingStyle( () => "u-step"), 
-          setOthersStyle( () => "u-step"),
-          scrollToSection(trimsinfo)
+                setBasicStyle("u-step"), 
+                setFabricStyle( () => "u-step"), 
+                setPrintStyle( () => "u-step"), 
+                setTrimsStyle( () => "u-step current"), 
+                setPackingStyle( () => "u-step"), 
+                setOthersStyle( () => "u-step"),
+                scrollToSection(trimsinfo)
         } if( name == "packingStyleInfo" ){
-        setBasicStyle("u-step"), 
-        setFabricStyle( () => "u-step"), 
-        setPrintStyle( () => "u-step"), 
-        setTrimsStyle( () => "u-step"), 
-        setPackingStyle( () => "u-step current"), 
-        setOthersStyle( () => "u-step"),
-        scrollToSection(packinginfo)
+                setBasicStyle("u-step"), 
+                setFabricStyle( () => "u-step"), 
+                setPrintStyle( () => "u-step"), 
+                setTrimsStyle( () => "u-step"), 
+                setPackingStyle( () => "u-step current"), 
+                setOthersStyle( () => "u-step"),
+                scrollToSection(packinginfo)
         } if( name == "othersStyleInfo" ){
-          setBasicStyle("u-step"), 
-          setFabricStyle( () => "u-step"), 
-          setPrintStyle( () => "u-step"), 
-          setTrimsStyle( () => "u-step"), 
-          setPackingStyle( () => "u-step"), 
-          setOthersStyle( () => "u-step current"),
-          scrollToSection(othersinfo)
+                setBasicStyle("u-step"), 
+                setFabricStyle( () => "u-step"), 
+                setPrintStyle( () => "u-step"), 
+                setTrimsStyle( () => "u-step"), 
+                setPackingStyle( () => "u-step"), 
+                setOthersStyle( () => "u-step current"),
+                scrollToSection(othersinfo)
         }
   };
 
@@ -1419,1201 +1471,1209 @@ const index = () => {
             <CardBody className="contenthb"> 
             <div ref={basicInfoValidation}></div>
               <Form>
-                <div ref={basicinfo} className="basicinfo m-t-20">
-                <Row className="g-12">
-                  <Col lg="12" md="12" sm="12" xs="12">
-                    <span>
-                      <H6 className="ordersubhead">{t("basicInformation")}</H6>
-                    </span>
-                  </Col>
-                </Row>
-                <Col lg="12">
-                  <Row>
-                    {/* Article Name, Style Number ,Sample Image*/}
-
-                      <Col lg="4">
-                        <FormGroup>
-                          <Label style={{ color: "#5F5F5F" }}>
-                            {t("articleName")}
-                          </Label>
-                          <sup className="font-danger">*</sup>
-                          <InputGroup>
-                            <Input
-                              className=""
-                              name="article"
-                              type="select"
-                              defaultValue=""
-                              onChange={(e) => setArticle(e.target.value)}
-                            >
-                              <option Value="" disabled>
-                                {t("selectArticle")}
-                              </option>
-
-                              {articles.map((article) => (
-                                <option value={article.id}>{article.name}</option>
-                              ))}
-
-                            </Input>
-                            <InputGroupText
-                              style={{ cursor: "pointer" }}
-                              onClick={toggleart}
-                            >
-                              {/* <span className="btn" onClick="" > */}
-                              <img
-                                src={addIcon}
-                                width="15px"
-                                height="15px"
-                                onClick={toggleart}
-                              ></img>
-                              {/* </span> */}
-                            </InputGroupText>
-
-                            <AddArticleModal
-                              modal={modalArt}
-                              toggle={toggleart}
-                              companyId={company_id}
-                              workspaceId={workspace_id}
-                              article={setArticles}
-                            />
-                          </InputGroup>
-                          {validerrors.article && (
-                            <span className="error-msg">
-                              {validerrors.article}
-                            </span>
-                          )}
-                        </FormGroup>
-                      </Col>
-
-                      <Col lg="4">
-                        <FormGroup>
-                          <Label>{t("styleNo")}</Label>
-                          <sup className="font-danger">*</sup>
-                          <InputGroup>
-                            <Input
-                              className=""
-                              name="style Number"
-                              placeholder={t("enterStyleNumber")}
-                              onChange={(e) => setStyleNo(e.target.value)}
-                            ></Input>
-                          </InputGroup>
-                          {validerrors.styleNo && (
-                            <span className="error-msg">
-                              {validerrors.styleNo}
-                            </span>
-                          )}
-                        </FormGroup>
-                      </Col>
-
-                      <Col lg="4">
-                        <FormGroup>
-                          <Label style={{ color: "#5F5F5F" }}>
-                            {t("sampleFormat")}
-                          </Label>
-                          <InputGroup>
-                            <Input
-                              className=""
-                              name="Sample Image"
-                              value={sampleFormatImg ? sampleFormatImg : ""}
-                              placeholder={t("attachSampleFormat")}
-                              onchange={(e) => setSampleFormat(e.target.value)}
-                              disabled
-                            ></Input>
-
-                            <Files
-                              className="files-dropzone fileContainer"
-                              accept=".png,.jpg,.jpeg"
-                              multiple={false}
-                              canCancel={false}
-                              onChange={SampleFormatImg}
-                              clickable
-                            >
-                              <InputGroupText className=" btn imgBackground">
-                                <img
-                                  src={imgUpload}
-                                  width="25px"
-                                  height="25px"
-                                  type="file"
-                                ></img>
-
-                              </InputGroupText>
-                            </Files>
-                            {/* {files.length > 0 ?
-                                                            <span className="ritemargine" style={{ float: "Center" }} >
-
-                                                                <Btn attrBtn={{ className: "mt-2", color: 'primary', type: "button", onClick: () => deleteFile(files) }} >
-                                                                    {t("delete")}
-                                                                </Btn></span> : " "}  */}
-                          </InputGroup>
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                  </Col>
-                </div>
-
-                {/* Fabric Composition,Fabric GSM, */}
-                <div ref={fabricinfo} className="fabricinfo">
+                <section id="basicStyleInfo">
+                  <div ref={basicinfo} className="basicinfo m-t-20">
                   <Row className="g-12">
                     <Col lg="12" md="12" sm="12" xs="12">
                       <span>
-                        <H6 className="ordersubhead">{t("fabricInformation")}</H6>
+                        <H6 className="ordersubhead">{t("basicInformation")}</H6>
                       </span>
                     </Col>
                   </Row>
                   <Col lg="12">
                     <Row>
+                      {/* Article Name, Style Number ,Sample Image*/}
+
+                        <Col lg="4">
+                          <FormGroup>
+                            <Label style={{ color: "#5F5F5F" }}>
+                              {t("articleName")}
+                            </Label>
+                            <sup className="font-danger">*</sup>
+                            <InputGroup>
+                              <Input
+                                className=""
+                                name="article"
+                                type="select"
+                                defaultValue=""
+                                onChange={(e) => setArticle(e.target.value)}
+                              >
+                                <option Value="" disabled>
+                                  {t("selectArticle")}
+                                </option>
+
+                                {articles.map((article) => (
+                                  <option value={article.id}>{article.name}</option>
+                                ))}
+
+                              </Input>
+                              <InputGroupText
+                                style={{ cursor: "pointer" }}
+                                onClick={toggleart}
+                              >
+                                {/* <span className="btn" onClick="" > */}
+                                <img
+                                  src={addIcon}
+                                  width="15px"
+                                  height="15px"
+                                  onClick={toggleart}
+                                ></img>
+                                {/* </span> */}
+                              </InputGroupText>
+
+                              <AddArticleModal
+                                modal={modalArt}
+                                toggle={toggleart}
+                                companyId={company_id}
+                                workspaceId={workspace_id}
+                                article={setArticles}
+                              />
+                            </InputGroup>
+                            {validerrors.article && (
+                              <span className="error-msg">
+                                {validerrors.article}
+                              </span>
+                            )}
+                          </FormGroup>
+                        </Col>
+
+                        <Col lg="4">
+                          <FormGroup>
+                            <Label>{t("styleNo")}</Label>
+                            <sup className="font-danger">*</sup>
+                            <InputGroup>
+                              <Input
+                                className=""
+                                name="style Number"
+                                placeholder={t("enterStyleNumber")}
+                                onChange={(e) => setStyleNo(e.target.value)}
+                              ></Input>
+                            </InputGroup>
+                            {validerrors.styleNo && (
+                              <span className="error-msg">
+                                {validerrors.styleNo}
+                              </span>
+                            )}
+                          </FormGroup>
+                        </Col>
+
+                        <Col lg="4">
+                          <FormGroup>
+                            <Label style={{ color: "#5F5F5F" }}>
+                              {t("sampleFormat")}
+                            </Label>
+                            <InputGroup>
+                              <Input
+                                className=""
+                                name="Sample Image"
+                                value={sampleFormatImg ? sampleFormatImg : ""}
+                                placeholder={t("attachSampleFormat")}
+                                onchange={(e) => setSampleFormat(e.target.value)}
+                                disabled
+                              ></Input>
+
+                              <Files
+                                className="files-dropzone fileContainer"
+                                accept=".png,.jpg,.jpeg"
+                                multiple={false}
+                                canCancel={false}
+                                onChange={SampleFormatImg}
+                                clickable
+                              >
+                                <InputGroupText className=" btn imgBackground">
+                                  <img
+                                    src={imgUpload}
+                                    width="25px"
+                                    height="25px"
+                                    type="file"
+                                  ></img>
+
+                                </InputGroupText>
+                              </Files>
+                              {/* {files.length > 0 ?
+                                                              <span className="ritemargine" style={{ float: "Center" }} >
+
+                                                                  <Btn attrBtn={{ className: "mt-2", color: 'primary', type: "button", onClick: () => deleteFile(files) }} >
+                                                                      {t("delete")}
+                                                                  </Btn></span> : " "}  */}
+                            </InputGroup>
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </div>
+                </section>
+                <section  id="fabricStyleInfo">
+                  {/* Fabric Composition,Fabric GSM, */}
+                  <div ref={fabricinfo} className="fabricinfo">
+                    <Row className="g-12">
+                      <Col lg="12" md="12" sm="12" xs="12">
+                        <span>
+                          <H6 className="ordersubhead">{t("fabricInformation")}</H6>
+                        </span>
+                      </Col>
+                    </Row>
+                    <Col lg="12">
+                      <Row>
+                        <Col lg="4">
+                          <FormGroup>
+                            <Label>{t("fabricComposition")}</Label>
+                            <sup className="font-danger">*</sup>
+                            <InputGroup>
+                              <Input
+                                className=""
+                                name="fabric"
+                                type="select"
+                                defaultValue=""
+                                onChange={(e) => setFabricCom(e.target.value)}
+                              >
+                                <option Value="" disabled>
+                                  {t("selectFabricComposition")}
+                                </option>
+                                {fabrics.map((fabric) => (
+                                  <option value={fabric.id}>{fabric.name}</option>
+                                ))}
+                              </Input>
+                              <InputGroupText
+                                style={{ cursor: "pointer" }}
+                                onClick={togglefabric}
+                              >
+                                {/* <span className="btn" onClick="" > */}
+                                <img
+                                  src={addIcon}
+                                  width="15px"
+                                  height="15px"
+                                  onClick={togglefabric}
+                                ></img>
+                                {/* </span> */}
+                              </InputGroupText>
+                            </InputGroup>
+                            {validerrors.fabricCom && (
+                              <span className="error-msg">
+                                {validerrors.fabricCom}
+                              </span>
+                            )}
+                            <AddFabricModal
+                              modal={modalfabric}
+                              toggle={togglefabric}
+                              companyId={company_id}
+                              workspaceId={workspace_id}
+                              fabric={setFabrics}
+                            />
+                          </FormGroup>
+                        </Col>
+
+                        <Col lg="4">
+                          <FormGroup>
+                            <Label>{t("fabricGSM")}</Label>
+                            <InputGroup>
+                              <Input
+                                className=""
+                                name="Fabric GSM"
+                                placeholder={t("enterFabricGSM")}
+                                onChange={(e) => setFabricGSM(e.target.value)}
+                              ></Input>
+                              {/* <option Value="">Select Fabric GSM</option>
+                      <option Value="">Mon</option> 
+                      <option value=""> Tues</option>
+                      </Input>
+                      <InputGroupText >
+                      
+                        <img src={addIcon} width="15px" height="15px"></img>
+                      
+                      </InputGroupText> */}
+                            </InputGroup>
+                          </FormGroup>
+                        </Col>
+
+                        {/* Sample Format Image Preview */}
+                        <Col lg="4">
+                          {fileSampleFormat.length > 0 ?
+                            fileSampleFormat.map((file) => (
+                              <>
+                                <div className="profile-pic">
+                                  <img
+                                    src={awsUrl + file.filepath}
+                                    width="100px"
+                                    height="100px"
+                                    className="m-10"
+                                  />
+                                  <div className="edit m-t-30 m-r-30">
+                                    <img
+                                      src={deleteIcon}
+                                      width="30px"
+                                      height="30px"
+                                      style={{ cursor: 'pointer' }}
+                                      onClick={() => {
+                                        deleteImageFiles("SampleFormat", file)
+                                      }
+                                      }
+                                    />
+                                  </div>
+                                </div>
+                              </>
+                            ))
+                            : (
+                              <div>{''}</div>
+                            )}
+                        </Col>
+                      </Row>
+                    </Col>
+
+                    {/* Fabric Type,Yarn Count,Inquiry Due Date */}
+                    <div ref={inquiryDueDateValidation}></div>
+                    <Row>
                       <Col lg="4">
                         <FormGroup>
-                          <Label>{t("fabricComposition")}</Label>
+                          <Label>{t("fabricType")}</Label>
+                          <InputGroup>
+                            <Input
+                              className=""
+                              name="Yarn Count"
+                              placeholder={t("enterFabricType")}
+                              onChange={(e) => setFabricType(e.target.value)}
+                            ></Input>
+                          </InputGroup>
+                        </FormGroup>
+                      </Col>
+                      <Col lg="4">
+                        <FormGroup>
+                          <Label>{t("yarnCount")}</Label>
+                          <InputGroup>
+                            <Input
+                              className=""
+                              name="Yarn Count"
+                              placeholder={t("enterYarnCount")}
+                              onChange={(e) => setYarnCount(e.target.value)}
+                            ></Input>
+                          </InputGroup>
+                        </FormGroup>
+                      </Col>
+                      <Col lg="4">
+                        <FormGroup>
+                          <Label>{t("inquiryDueDate")}</Label><sup className="font-danger">*</sup>
+                          <InputGroup>
+                            <Input
+                              className=""
+                              name="Inquiry Due Date"
+                              type="date"
+                              min={new Date().toISOString().split('T')[0]}
+                            placeholder={t("selectInquiryDueDate")}
+                              onChange={(e) => setInquiryDueDate(e.target.value)}
+                            ></Input>
+                          </InputGroup>
+                          {validerrors.inquiryDueDate && (
+                            <span className="error-msg">
+                              {validerrors.inquiryDueDate}
+                            </span>
+                          )}
+                        </FormGroup>
+                      </Col>
+                    </Row>
+
+                    {/* Incoterms,Currency,Target Price */}
+                    <div ref={currencyValidation}></div>
+                    <Row>
+                      <Col lg="4">
+                        <FormGroup>
+                          <Label>{t("incomeTerms")}</Label>
+                          <InputGroup>
+                            <Input
+                              type="select"
+                              // placeholder={t("selectStatus")}
+                              className="form-control digits selectheight"
+                              name="Income Terms"
+                              defaultValue=""
+                              onChange={(e) => setIncomeTerm(e.target.value)}
+                            >
+                              <option Value="" disabled>
+                                {t("selectIncomeTerms")}
+                              </option>
+                              {incomeTerms.map((incomeTerm) => (
+                                <option
+                                  value={incomeTerm.id}
+                                  title={incomeTerm.description}
+                                >
+                                  {incomeTerm.name}
+                                </option>
+                              ))}
+                            </Input>
+                          </InputGroup>
+                        </FormGroup>
+                      </Col>
+                      <Col lg="4">
+                        <FormGroup>
+                          <Label>{t("currency")}</Label>
+                          <sup className="font-danger">*</sup>
+                          <InputGroup>
+                            <Input
+                              type="select"
+                              className="form-control digits selectheight"
+                              name="Currency"
+                              defaultValue=""
+                              onChange={(e) => setCurrency(e.target.value)}
+                            >
+                              <option value="" disabled>
+                                {t("selectCurrency")}
+                              </option>
+                              {currencies.map((currency) => (
+                                <option value={currency.symbol}>
+                                  {currency.symbol + " " + currency.name}
+                                </option>
+                              ))}
+                            </Input>
+                          </InputGroup>
+                          {validerrors.currency && (
+                            <span className="error-msg">
+                              {validerrors.currency}
+                            </span>
+                          )}
+                        </FormGroup>
+                      </Col>
+                      <Col lg="4">
+                        <FormGroup>
+                          <Label>{t("targetPrice")}</Label>
+                          <InputGroup>
+                            <Input
+                              className=""
+                              name="Target Price"
+                              placeholder={t("enterTargetPrice")}
+                              onChange={(e) => setTargetPrice(e.target.value)}
+                            ></Input>
+                          </InputGroup>
+                        </FormGroup>
+                      </Col>
+                    </Row>
+
+                    {/* Payment Terms,Payment Instructions */}
+                    <Row>
+                      <Col lg="4">
+                        <FormGroup>
+                          <Label>{t("paymentTerms")}</Label>
+                          <InputGroup>
+                            <Input
+                              id="paymentTermsId"
+                              type="select"
+                              // placeholder={t("selectStatus")}
+                              className="form-control digits selectheight"
+                              name="Payment Terms"
+                              defaultValue=""
+                              onChange={(e) => {
+                                e.target.value!="addNew"?
+                                setPaymentTerm(e.target.value): dropVal("PaymentTerms")}}
+                            >
+                              <option Value="" disabled>
+                                {t("selectPaymentTerms")}
+                              </option>
+                              {paymentTermList.map((payTerm) => (
+                                <option
+                                  value={payTerm.content}
+                                  title={payTerm.content}
+                                >
+                                  {payTerm.content}
+                                </option>
+                                
+                              ))}
+                              <option value="addNew">+{t("addNew")}</option>
+                            </Input>
+                          </InputGroup>
+                        </FormGroup>
+                      </Col>
+                      <Col lg="8">
+                        <FormGroup>
+                          <Label className="form-label">
+                            {t("paymentinstructions")}
+                          </Label>
+                          <span
+                            className="m-l-20"
+                            style={{ cursor: "pointer" }}
+                            value
+                            onClick={() => {
+                              togglepaymentinstructions ();
+                            }}
+                            >
+                            {paymentinstructionsDesc=="" ?   <img 
+                                  src={addBlueIcon}
+                                  width="25px"
+                                  height="25px"
+                                  
+                                ></img>:<img 
+                                src={editBlueIcon}
+                                width="25px"
+                                height="25px"
+                                
+                              ></img>}    
+                          
+                            {/* <img src={infoIcon} width="25px" height="25px"></img> */}
+                          </span>
+                          <PaymentinstructionsModal
+                                modal={paymentinstructionsModal}
+                                toggle={togglepaymentinstructions}
+                                paymentinstructionsDesc={paymentinstructionsDesc}
+                                setPaymentinstructionsDesc={setPaymentinstructionsDesc}
+                                setpaymentinstructionsModal={setpaymentinstructionsModal}
+                                paymentinstructionsModal={paymentinstructionsModal}
+                              />
+                            {paymentinstructionsDesc=="" ?   ""
+                            :
+                            <Card>
+                              <CardBody> {parse(paymentinstructionsDesc)}</CardBody>
+                              </Card>}  
+                        </FormGroup>
+                      </Col>
+                    </Row>
+
+                  {/* Style/Article Description,Special Finishers -if any */}
+
+                  <Row>
+                  <Col lg="6">
+                        <FormGroup>
+                          <Label className="form-label">
+                            {t("styleArticleDescription")}
+                          </Label>
+                          <span
+                            className="m-l-20"
+                            style={{ cursor: "pointer" }}
+                            value
+                            onClick={() => {
+                              togglearticle ();
+                            }}
+                            >
+                            {styleArtcileDesc=="" ?   <img 
+                                  src={addBlueIcon}
+                                  width="25px"
+                                  height="25px"
+                                  
+                                ></img>:<img 
+                                src={editBlueIcon}
+                                width="25px"
+                                height="25px"
+                                
+                              ></img>}    
+                          
+                            {/* <img src={infoIcon} width="25px" height="25px"></img> */}
+                          </span>
+                          <StyleArticleDescription
+                                modal={showArticleModal}
+                                toggle={togglearticle}
+                                styleArtcileDesc={styleArtcileDesc}
+                                setStyleArticleDesc={setStyleArticleDesc}
+                                setShowArticleModal={setShowArticleModal}
+                                showArticleModal={showArticleModal}
+                              />
+
+                            {styleArtcileDesc=="" ?   ""
+                            :
+                            <Card>
+                              <CardBody> {parse(styleArtcileDesc)}</CardBody>
+                              </Card>}  
+                          {/* <JoditEditor
+                            ref={editor}
+                            value={styleArtcileDesc}
+                            config={config}
+                            tabIndex={1}
+                            onChange={(newContent) => setStyleArticleDesc(newContent)}
+                          /> */}
+                        </FormGroup>
+                      </Col>
+                      <Col lg="6">
+                        <FormGroup>
+                          <Label className="form-label">
+                            {t("specialFinishers")}
+                          </Label>
+                          <span
+                            className="m-l-20"
+                            style={{ cursor: "pointer" }}
+                            value
+                            onClick={() => {
+                              toggleFinishersModal ();
+                            }}
+                          >
+                          {specialFinishes=="" ?   <img 
+                                  src={addBlueIcon}
+                                  width="25px"
+                                  height="25px"
+                                  
+                                ></img>:<img 
+                                src={editBlueIcon}
+                                width="25px"
+                                height="25px"
+                                
+                              ></img>} 
+                          </span>
+                          <SpecialFinishers
+                                modal={specialFinishersModal}
+                                toggle={toggleFinishersModal}
+                                specialFinishes={specialFinishes}
+                                setSpecialFinishes={setSpecialFinishes}
+                                setSpecialFinishersModal={setSpecialFinishersModal}
+                                specialFinishersModal={specialFinishersModal}
+                              />
+                              {specialFinishes=="" ?   ""
+                            :
+                            <Card>
+                              <CardBody> {parse(specialFinishes)}</CardBody>
+                              </Card>} 
+                        
+                        </FormGroup>
+                      </Col>
+                  </Row>
+                  
+
+                    {/* Total Quantity,Color,Size */}
+                    <div ref={totalQtyValidation}></div>
+                    <Row>
+                    <Col lg="4">
+                        <FormGroup>
+                          <Label> {t("totalQuantity")}</Label>
                           <sup className="font-danger">*</sup>
                           <InputGroup>
                             <Input
                               className=""
-                              name="fabric"
+                              type="number"
+                              name="Total Quantity"
+                              placeholder={t("enterTotalQuantity")}
+                              onChange={(e) => setTotalQuantity(e.target.value)}
+                            ></Input>
+                            <InputGroupText>
+                              <img
+                                src={quantity}
+                                width="15px"
+                                height="15px"
+                                type="file"
+                              ></img>
+                            </InputGroupText>
+                          </InputGroup>
+                          {validerrors.totalQuantity && (
+                            <span className="error-msg">
+                              {validerrors.totalQuantity}
+                            </span>
+                          )}
+                        </FormGroup>
+                      </Col>
+                      <Col lg="4">
+                        <FormGroup>
+                          <Label>{t("color")}</Label>
+                          <InputGroup>
+                            <Input
+                              id="colorId"
                               type="select"
-                              defaultValue=""
-                              onChange={(e) => setFabricCom(e.target.value)}
+                              className="js-example-basic-single form-control"
+                              isMulti
+                              onChange={(e) => {
+                                handleChangeColor(e);
+                              }}
                             >
-                              <option Value="" disabled>
-                                {t("selectFabricComposition")}
+                              <option selected disabled>
+                                {t("selectColor")}
                               </option>
-                              {fabrics.map((fabric) => (
-                                <option value={fabric.id}>{fabric.name}</option>
+                              {getColor.map((colorList) => (
+                                <option key={colorList.id} value={colorList.id}>
+                                  {colorList.name}
+                                </option>
                               ))}
                             </Input>
                             <InputGroupText
                               style={{ cursor: "pointer" }}
-                              onClick={togglefabric}
+                              onClick={toggleclr}
                             >
-                              {/* <span className="btn" onClick="" > */}
                               <img
                                 src={addIcon}
                                 width="15px"
                                 height="15px"
-                                onClick={togglefabric}
+                                onClick={toggleclr}
                               ></img>
-                              {/* </span> */}
                             </InputGroupText>
+                            <AddColorModal
+                              modal={modalClr}
+                              toggle={toggleclr}
+                              inputParams={getInputParams}
+                              color={setGetColor}
+                            />
                           </InputGroup>
-                          {validerrors.fabricCom && (
-                            <span className="error-msg">
-                              {validerrors.fabricCom}
-                            </span>
-                          )}
-                          <AddFabricModal
-                            modal={modalfabric}
-                            toggle={togglefabric}
-                            companyId={company_id}
-                            workspaceId={workspace_id}
-                            fabric={setFabrics}
-                          />
                         </FormGroup>
+                        {showColor.map((colour, i) => (
+                          <span
+                            className="btn btn-primary m-r-5 m-t-5 p-b-10"
+                            id={colour}
+                            name={colour}
+                            onClick={(e) => deleteColor(e)}
+                          >
+                            {colour}
+                          </span>
+                        ))}
                       </Col>
-
                       <Col lg="4">
                         <FormGroup>
-                          <Label>{t("fabricGSM")}</Label>
+                          <Label>{t("size")}</Label>
                           <InputGroup>
                             <Input
-                              className=""
-                              name="Fabric GSM"
-                              placeholder={t("enterFabricGSM")}
-                              onChange={(e) => setFabricGSM(e.target.value)}
-                            ></Input>
-                            {/* <option Value="">Select Fabric GSM</option>
-                    <option Value="">Mon</option> 
-                    <option value=""> Tues</option>
-                    </Input>
-                    <InputGroupText >
-                    
-                      <img src={addIcon} width="15px" height="15px"></img>
-                    
-                    </InputGroupText> */}
+                              id="sizeId"
+                              type="select"
+                              className="js-example-basic-single form-control"
+                              onChange={(e) => {
+                                handleChangeSize(e);
+                              }}
+                            >
+                              <option 
+                                value="sizeId"
+                                selected disabled>
+                                {t("selectSize")}
+                              </option>
+                              {getSize.map((sizeList) => (
+                                <option
+                                  key={sizeList.id}
+                                  value={sizeList.id}
+                                  attr-name={sizeList.name}
+                                >
+                                  {sizeList.name}
+                                </option>
+                              ))}
+                            </Input>
+                            <InputGroupText
+                              style={{ cursor: "pointer" }}
+                              onClick={togglesize}
+                            >
+                              <img
+                                src={addIcon}
+                                width="15px"
+                                height="15px"
+                                onClick={togglesize}
+                              ></img>
+                            </InputGroupText>
+                            <AddSizeModal
+                              modal={modalSize}
+                              toggle={togglesize}
+                              inputParams={getInputParams}
+                              size={setGetSize}
+                            />
                           </InputGroup>
                         </FormGroup>
-                      </Col>
-
-                      {/* Sample Format Image Preview */}
-                      <Col lg="4">
-                        {fileSampleFormat.length > 0 ?
-                          fileSampleFormat.map((file) => (
-                            <>
-                              <div className="profile-pic">
-                                <img
-                                  src={awsUrl + file.filepath}
-                                  width="100px"
-                                  height="100px"
-                                  className="m-10"
-                                />
-                                <div className="edit m-t-30 m-r-30">
-                                  <img
-                                    src={deleteIcon}
-                                    width="30px"
-                                    height="30px"
-                                    style={{ cursor: 'pointer' }}
-                                    onClick={() => {
-                                      deleteImageFiles("SampleFormat", file)
-                                    }
-                                    }
-                                  />
-                                </div>
-                              </div>
-                            </>
-                          ))
-                          : (
-                            <div>{''}</div>
-                          )}
+                        {showSize.map((sizes) => (
+                          <span
+                            className="btn btn-primary m-r-5 m-t-5 p-b-20"
+                            id={sizes}
+                            onClick={(e) => deleteSize(e)}
+                          >
+                            {sizes}
+                          </span>
+                        ))}
                       </Col>
                     </Row>
-                  </Col>
 
-                  {/* Fabric Type,Yarn Count,Inquiry Due Date */}
-                <div ref={inquiryDueDateValidation}></div>
-                  <Row>
-                    <Col lg="4">
-                      <FormGroup>
-                        <Label>{t("fabricType")}</Label>
-                        <InputGroup>
-                          <Input
-                            className=""
-                            name="Yarn Count"
-                            placeholder={t("enterFabricType")}
-                            onChange={(e) => setFabricType(e.target.value)}
-                          ></Input>
-                        </InputGroup>
-                      </FormGroup>
-                    </Col>
-                    <Col lg="4">
-                      <FormGroup>
-                        <Label>{t("yarnCount")}</Label>
-                        <InputGroup>
-                          <Input
-                            className=""
-                            name="Yarn Count"
-                            placeholder={t("enterYarnCount")}
-                            onChange={(e) => setYarnCount(e.target.value)}
-                          ></Input>
-                        </InputGroup>
-                      </FormGroup>
-                    </Col>
-                    <Col lg="4">
-                      <FormGroup>
-                        <Label>{t("inquiryDueDate")}</Label><sup className="font-danger">*</sup>
-                        <InputGroup>
-                          <Input
-                            className=""
-                            name="Inquiry Due Date"
-                            type="date"
-                            min={new Date().toISOString().split('T')[0]}
-                          placeholder={t("selectInquiryDueDate")}
-                            onChange={(e) => setInquiryDueDate(e.target.value)}
-                          ></Input>
-                        </InputGroup>
-                        {validerrors.inquiryDueDate && (
-                          <span className="error-msg">
-                            {validerrors.inquiryDueDate}
-                          </span>
-                        )}
-                      </FormGroup>
-                    </Col>
-                  </Row>
+                    {/* Color,Size table View */}
 
-                  {/* Incoterms,Currency,Target Price */}
-                <div ref={currencyValidation}></div>
-                  <Row>
-                    <Col lg="4">
-                      <FormGroup>
-                        <Label>{t("incomeTerms")}</Label>
-                        <InputGroup>
-                          <Input
-                            type="select"
-                            // placeholder={t("selectStatus")}
-                            className="form-control digits selectheight"
-                            name="Income Terms"
-                            defaultValue=""
-                            onChange={(e) => setIncomeTerm(e.target.value)}
-                          >
-                            <option Value="" disabled>
-                              {t("selectIncomeTerms")}
-                            </option>
-                            {incomeTerms.map((incomeTerm) => (
-                              <option
-                                value={incomeTerm.id}
-                                title={incomeTerm.description}
-                              >
-                                {incomeTerm.name}
-                              </option>
-                            ))}
-                          </Input>
-                        </InputGroup>
-                      </FormGroup>
-                    </Col>
-                    <Col lg="4">
-                      <FormGroup>
-                        <Label>{t("currency")}</Label>
-                        <sup className="font-danger">*</sup>
-                        <InputGroup>
-                          <Input
-                            type="select"
-                            className="form-control digits selectheight"
-                            name="Currency"
-                            defaultValue=""
-                            onChange={(e) => setCurrency(e.target.value)}
-                          >
-                            <option value="" disabled>
-                              {t("selectCurrency")}
-                            </option>
-                            {currencies.map((currency) => (
-                              <option value={currency.symbol}>
-                                {currency.symbol + " " + currency.name}
-                              </option>
-                            ))}
-                          </Input>
-                        </InputGroup>
-                        {validerrors.currency && (
-                          <span className="error-msg">
-                            {validerrors.currency}
-                          </span>
-                        )}
-                      </FormGroup>
-                    </Col>
-                    <Col lg="4">
-                      <FormGroup>
-                        <Label>{t("targetPrice")}</Label>
-                        <InputGroup>
-                          <Input
-                            className=""
-                            name="Target Price"
-                            placeholder={t("enterTargetPrice")}
-                            onChange={(e) => setTargetPrice(e.target.value)}
-                          ></Input>
-                        </InputGroup>
-                      </FormGroup>
-                    </Col>
-                  </Row>
+                    {color.length > 0 && size.length > 0 ? (
+                      <>
+                        <Row className="g-12">
+                          <Col lg="12" md="12" sm="12" xs="12">
+                            <span className="subTitleLine3 f-left">
+                              <H6 className="ordersubhead">
+                                {t("addQuantityRatio")}
+                              </H6>
+                            </span>
+                          </Col>
+                        </Row>
+                        <Row className="p-b-20">
+                          <Col md="12" lg="12" sm="12">
+                            <Row className="g-12">
+                              <div className="table-responsive">
+                                <form id="countQty">
+                                  <table className="table">
+                                    <thead>
+                                      <tr>
+                                        <th scope="col">
+                                          {" "}
+                                          {t("color/sizeLabel")}{" "}
+                                        </th>
+                                        {size.map((option) => {
+                                          return (
+                                            <th className="middle">
+                                              {" "}
+                                              {option.name}
+                                            </th>
+                                          );
+                                        })}
+                                        <th scope="col">{t("totalLabel")}</th>{" "}
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {color.map((optionc) => {
+                                        return (
+                                          <tr>
+                                            <th className="middle">
+                                              {optionc.name}
+                                            </th>
+                                            {size.map((option) => {
+                                              return (
+                                                <th>
+                                                  <Row>
+                                                    <Row>
+                                                      <Table className="table table-striped">
+                                                        <tr>
+                                                          <td>
+                                                            <table>
+                                                              <tbody className="f-w-600 text-center">
+                                                                <tr>
+                                                                  <td
+                                                                    style={{
+                                                                      padding:
+                                                                        "0.1em",
+                                                                    }}
+                                                                  >
+                                                                    <input
+                                                                      style={{
+                                                                        width:
+                                                                          "90px",
+                                                                      }}
+                                                                      className=" form-control inpwidthsmall middle"
+                                                                      name="userName"
+                                                                      id={
+                                                                        optionc.id +
+                                                                        "#" +
+                                                                        option.id
+                                                                      }
+                                                                      type="number"
+                                                                      placeholder="0"
+                                                                      autocomplete="off"
+                                                                      min="0"
+                                                                      onChange={(
+                                                                        e
+                                                                      ) => {
+                                                                        addQty(e);
+                                                                      }}
+                                                                      onKeyDown={
+                                                                        handleEnter
+                                                                      }
+                                                                      onKeyPress={(
+                                                                        e
+                                                                      ) =>
+                                                                        handleKeyPress(
+                                                                          e
+                                                                        )
+                                                                      }
+                                                                    />
 
-                   {/* ,Payment Terms,Payment Instructions */}
-                  <Row>
-                    <Col lg="4">
-                      <FormGroup>
-                        <Label>{t("paymentTerms")}</Label>
-                        <InputGroup>
-                          <Input
-                            id="paymentTermsId"
-                            type="select"
-                            // placeholder={t("selectStatus")}
-                            className="form-control digits selectheight"
-                            name="Payment Terms"
-                            defaultValue=""
-                            onChange={(e) => {
-                              e.target.value!="addNew"?
-                              setPaymentTerm(e.target.value): dropVal("PaymentTerms")}}
-                          >
-                            <option Value="" disabled>
-                              {t("selectPaymentTerms")}
-                            </option>
-                            {paymentTermList.map((payTerm) => (
-                              <option
-                                value={payTerm.content}
-                                title={payTerm.content}
-                              >
-                                {payTerm.content}
-                              </option>
-                              
-                            ))}
-                            <option value="addNew">+{t("addNew")}</option>
-                          </Input>
-                        </InputGroup>
-                      </FormGroup>
-                    </Col>
-                    <Col lg="8">
-                      <FormGroup>
-                        <Label className="form-label">
-                          {t("paymentinstructions")}
-                        </Label>
-                        <span
-                          className="m-l-20"
-                          style={{ cursor: "pointer" }}
-                          value
-                          onClick={() => {
-                            togglepaymentinstructions ();
-                          }}
-                          >
-                          {paymentinstructionsDesc=="" ?   <img 
-                                src={addBlueIcon}
-                                width="25px"
-                                height="25px"
-                                
-                              ></img>:<img 
-                              src={editBlueIcon}
-                              width="25px"
-                              height="25px"
-                              
-                            ></img>}    
-                        
-                          {/* <img src={infoIcon} width="25px" height="25px"></img> */}
-                        </span>
-                        <PaymentinstructionsModal
-                              modal={paymentinstructionsModal}
-                              toggle={togglepaymentinstructions}
-                              paymentinstructionsDesc={paymentinstructionsDesc}
-                              setPaymentinstructionsDesc={setPaymentinstructionsDesc}
-                              setpaymentinstructionsModal={setpaymentinstructionsModal}
-                              paymentinstructionsModal={paymentinstructionsModal}
-                            />
-                          {paymentinstructionsDesc=="" ?   ""
-                          :
-                          <Card>
-                            <CardBody> {parse(paymentinstructionsDesc)}</CardBody>
-                            </Card>}  
-                      </FormGroup>
-                    </Col>
-                  </Row>
+                                                                    <input
+                                                                      type="hidden"
+                                                                      style={{
+                                                                        width:
+                                                                          "90px",
+                                                                      }}
+                                                                      id={
+                                                                        optionc.id +
+                                                                        "+" +
+                                                                        option.id
+                                                                      }
+                                                                      className=" form-control inpwidthsmall"
+                                                                      readOnly
+                                                                    />
+                                                                  </td>
+                                                                </tr>
+                                                                <tr>
+                                                                  <td
+                                                                    style={{
+                                                                      padding:
+                                                                        "0.1em",
+                                                                    }}
+                                                                    className="showperqty"
+                                                                  >
+                                                                    <span
+                                                                      id={
+                                                                        optionc.id +
+                                                                        "v" +
+                                                                        option.id
+                                                                      }
+                                                                      className="showperqty"
+                                                                    ></span>
+                                                                  </td>
+                                                                </tr>
+                                                              </tbody>
+                                                            </table>
+                                                          </td>
+                                                          <td>
+                                                            <input
+                                                              type="hidden"
+                                                              style={{
+                                                                width: "90px",
+                                                                marginLeft: "10px",
+                                                              }}
+                                                              id={
+                                                                optionc.id +
+                                                                "@" +
+                                                                option.id
+                                                              }
+                                                              className=" form-control inpwidthsmall"
+                                                              readOnly
+                                                            />
+                                                          </td>
+                                                        </tr>
+                                                      </Table>
+                                                    </Row>
+                                                  </Row>
+                                                </th>
+                                              );
+                                            })}
+                                            <th>
+                                              <input
+                                                className="form-control inpwidthsmall mt-3"
+                                                name="totalQuantity"
+                                                type="number"
+                                                readOnly
+                                                placeholder={t("totalQty")}
+                                                id={"totqty_" + optionc.id}
+                                              />
+                                            </th>
+                                          </tr>
+                                        );
+                                      })}
 
-                {/* Style/Article Description,Special Finishers -if any */}
+                                      <tr>
+                                        <th></th>
+                                        {size.map((data) => {
+                                          return (
+                                            <>
+                                              <th>
+                                                <input
+                                                  className="form-control inpwidthsmall"
+                                                  id={
+                                                    "SizeId_total_quantity" +
+                                                    data.id
+                                                  }
+                                                  type="number"
+                                                  placeholder="0"
+                                                  autocomplete="on"
+                                                  readOnly
+                                                  onKeyDown={handleEnter}
+                                                />
+                                              </th>
+                                            </>
+                                          );
+                                        })}
+                                        <th>
+                                          <input
+                                            className="form-control inpwidthsmall"
+                                            id="Overall_total_quantity"
+                                            type="number"
+                                            placeholder="0"
+                                            autocomplete="off"
+                                            readOnly
+                                          />
+                                        </th>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </form>
+                              </div>
+                            </Row>
+                          </Col>
+                        </Row>
+                      </>
+                    ) : (
+                      <div></div>
+                    )}
+                        {/* MeasuementSheet Radio Button*/}
+                          <Row>
+                          <Col lg="12" md="12" sm="12" xs="12">                          
+                                  <FormGroup className="m-t-15 m-checkbox-inline mb-0 custom-radio-ml">
+                                  <span className="subTitleLine3 f-left">
+                              <H6 className="ordersubhead">
+                              {t("measurementSheet")} 
+                              </H6>
+                            </span>
+                                      <div className="radio radio-primary">
+                                          <Input id="radioinline1" type="radio" name="radio1" value="1" checked={selected === "1"} onChange={changeHandlerRadio}  />
+                                          <Label className="mb-0" for="radioinline1">{t("upload")}</Label>
+                                      </div>
+                                      <div className="radio radio-primary">
+                                          <Input id="radioinline2" type="radio" name="radio1" value="2" checked={selected === "2"} onChange={changeHandlerRadio}  />
+                                          <Label className="mb-0" for="radioinline2">{t("create")}</Label>
+                                      </div>
+                                  </FormGroup>
+                              </Col>
+                            </Row>
+                    {/* Measuement Show based on sku*/}
+                    <Row aria-hidden={selected !== "2" ? true : false}>
+                    {color.length > 0 && size.length > 0 ? (
+                      <>                   
+                        <Row className="g-12">
+                          <Col lg="12" md="12" sm="12" xs="12">
+                            <span className="subTitleLine3 f-left">
+                              <H6 className="ordersubhead">
+                                {t("measurementChart")}
+                              </H6>
+                            </span>
+                          </Col>
+                        </Row>
+                        <Row className="p-b-20">
+                          <Col md="12" lg="12" sm="12">
+                            <Row className="g-12">
+                              <div className="table-responsive">
 
-                <Row>
-                <Col lg="6">
-                      <FormGroup>
-                        <Label className="form-label">
-                          {t("styleArticleDescription")}
-                        </Label>
-                        <span
-                          className="m-l-20"
-                          style={{ cursor: "pointer" }}
-                          value
-                          onClick={() => {
-                            togglearticle ();
-                          }}
-                          >
-                          {styleArtcileDesc=="" ?   <img 
-                                src={addBlueIcon}
-                                width="25px"
-                                height="25px"
-                                
-                              ></img>:<img 
-                              src={editBlueIcon}
-                              width="25px"
-                              height="25px"
-                              
-                            ></img>}    
-                        
-                          {/* <img src={infoIcon} width="25px" height="25px"></img> */}
-                        </span>
-                        <StyleArticleDescription
-                              modal={showArticleModal}
-                              toggle={togglearticle}
-                              styleArtcileDesc={styleArtcileDesc}
-                              setStyleArticleDesc={setStyleArticleDesc}
-                              setShowArticleModal={setShowArticleModal}
-                              showArticleModal={showArticleModal}
-                            />
-
-                          {styleArtcileDesc=="" ?   ""
-                          :
-                          <Card>
-                            <CardBody> {parse(styleArtcileDesc)}</CardBody>
-                            </Card>}  
-                        {/* <JoditEditor
-                          ref={editor}
-                          value={styleArtcileDesc}
-                          config={config}
-                          tabIndex={1}
-                          onChange={(newContent) => setStyleArticleDesc(newContent)}
-                        /> */}
-                      </FormGroup>
-                    </Col>
-                    <Col lg="6">
-                      <FormGroup>
-                        <Label className="form-label">
-                          {t("specialFinishers")}
-                        </Label>
-                        <span
-                          className="m-l-20"
-                          style={{ cursor: "pointer" }}
-                          value
-                          onClick={() => {
-                            toggleFinishersModal ();
-                          }}
-                        >
-                        {specialFinishes=="" ?   <img 
-                                src={addBlueIcon}
-                                width="25px"
-                                height="25px"
-                                
-                              ></img>:<img 
-                              src={editBlueIcon}
-                              width="25px"
-                              height="25px"
-                              
-                            ></img>} 
-                        </span>
-                        <SpecialFinishers
-                              modal={specialFinishersModal}
-                              toggle={toggleFinishersModal}
-                              specialFinishes={specialFinishes}
-                              setSpecialFinishes={setSpecialFinishes}
-                              setSpecialFinishersModal={setSpecialFinishersModal}
-                              specialFinishersModal={specialFinishersModal}
-                            />
-                            {specialFinishes=="" ?   ""
-                          :
-                          <Card>
-                            <CardBody> {parse(specialFinishes)}</CardBody>
-                            </Card>} 
-                       
-                      </FormGroup>
-                    </Col>
-                </Row>
-                
-
-                   {/* Total Quantity,Color,Size */}
-                  <div ref={totalQtyValidation}></div>
-                <Row>
-                  <Col lg="4">
-                      <FormGroup>
-                        <Label> {t("totalQuantity")}</Label>
-                        <sup className="font-danger">*</sup>
-                        <InputGroup>
-                          <Input
-                            className=""
-                            type="number"
-                            name="Total Quantity"
-                            placeholder={t("enterTotalQuantity")}
-                            onChange={(e) => setTotalQuantity(e.target.value)}
-                          ></Input>
-                          <InputGroupText>
-                            <img
-                              src={quantity}
-                              width="15px"
-                              height="15px"
-                              type="file"
-                            ></img>
-                          </InputGroupText>
-                        </InputGroup>
-                        {validerrors.totalQuantity && (
-                          <span className="error-msg">
-                            {validerrors.totalQuantity}
-                          </span>
-                        )}
-                      </FormGroup>
-                    </Col>
-                    <Col lg="4">
-                      <FormGroup>
-                        <Label>{t("color")}</Label>
-                        <InputGroup>
-                          <Input
-                            type="select"
-                            className="js-example-basic-single form-control"
-                            isMulti
-                            onChange={(e) => {
-                              handleChangeColor(e);
-                            }}
-                          >
-                            <option selected disabled>
-                              {t("selectColor")}
-                            </option>
-                            {getColor.map((colorList) => (
-                              <option key={colorList.id} value={colorList.id}>
-                                {colorList.name}
-                              </option>
-                            ))}
-                          </Input>
-                          <InputGroupText
-                            style={{ cursor: "pointer" }}
-                            onClick={toggleclr}
-                          >
-                            <img
-                              src={addIcon}
-                              width="15px"
-                              height="15px"
-                              onClick={toggleclr}
-                            ></img>
-                          </InputGroupText>
-                          <AddColorModal
-                            modal={modalClr}
-                            toggle={toggleclr}
-                            inputParams={getInputParams}
-                            color={setGetColor}
-                          />
-                        </InputGroup>
-                      </FormGroup>
-                      {showColor.map((colour, i) => (
-                        <span
-                          className="btn btn-primary m-r-5 m-t-5 p-b-10"
-                          id={colour}
-                          name={colour}
-                          onClick={(e) => deleteColor(e)}
-                        >
-                          {colour}
-                        </span>
-                      ))}
-                    </Col>
-                    <Col lg="4">
-                      <FormGroup>
-                        <Label>{t("size")}</Label>
-                        <InputGroup>
-                          <Input
-                            type="select"
-                            className="js-example-basic-single form-control"
-                            onChange={(e) => {
-                              handleChangeSize(e);
-                            }}
-                          >
-                            <option selected disabled>
-                              {t("selectSize")}
-                            </option>
-                            {getSize.map((sizeList) => (
-                              <option
-                                key={sizeList.id}
-                                value={sizeList.id}
-                                attr-name={sizeList.name}
-                              >
-                                {sizeList.name}
-                              </option>
-                            ))}
-                          </Input>
-                          <InputGroupText
-                            style={{ cursor: "pointer" }}
-                            onClick={togglesize}
-                          >
-                            <img
-                              src={addIcon}
-                              width="15px"
-                              height="15px"
-                              onClick={togglesize}
-                            ></img>
-                          </InputGroupText>
-                          <AddSizeModal
-                            modal={modalSize}
-                            toggle={togglesize}
-                            inputParams={getInputParams}
-                            size={setGetSize}
-                          />
-                        </InputGroup>
-                      </FormGroup>
-                      {showSize.map((sizes) => (
-                        <span
-                          className="btn btn-primary m-r-5 m-t-5 p-b-20"
-                          id={sizes}
-                          onClick={(e) => deleteSize(e)}
-                        >
-                          {sizes}
-                        </span>
-                      ))}
-                    </Col>
-                  </Row>
-
-                  {/* Color,Size table View */}
-
-                  {color.length > 0 && size.length > 0 ? (
-                    <>
-                      <Row className="g-12">
-                        <Col lg="12" md="12" sm="12" xs="12">
-                          <span className="subTitleLine3 f-left">
-                            <H6 className="ordersubhead">
-                              {t("addQuantityRatio")}
-                            </H6>
-                          </span>
-                        </Col>
-                      </Row>
-                      <Row className="p-b-20">
-                        <Col md="12" lg="12" sm="12">
-                          <Row className="g-12">
-                            <div className="table-responsive">
-                              <form id="countQty">
                                 <table className="table">
                                   <thead>
                                     <tr>
-                                      <th scope="col">
-                                        {" "}
-                                        {t("color/sizeLabel")}{" "}
-                                      </th>
+                                      <th scope="col">{t("position")}</th>
+                                      <th scope="col" colSpan="3">{t("description")}</th>
+                                      <th scope="col">{t("tolerance")}</th>
                                       {size.map((option) => {
                                         return (
-                                          <th className="middle">
+                                          <th scope="col">
                                             {" "}
                                             {option.name}
                                           </th>
                                         );
                                       })}
-                                      <th scope="col">{t("totalLabel")}</th>{" "}
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {color.map((optionc) => {
-                                      return (
-                                        <tr>
-                                          <th className="middle">
-                                            {optionc.name}
-                                          </th>
-                                          {size.map((option) => {
-                                            return (
-                                              <th>
-                                                <Row>
-                                                  <Row>
-                                                    <Table className="table table-striped">
-                                                      <tr>
-                                                        <td>
-                                                          <table>
-                                                            <tbody className="f-w-600 text-center">
-                                                              <tr>
-                                                                <td
-                                                                  style={{
-                                                                    padding:
-                                                                      "0.1em",
-                                                                  }}
-                                                                >
-                                                                  <input
-                                                                    style={{
-                                                                      width:
-                                                                        "90px",
-                                                                    }}
-                                                                    className=" form-control inpwidthsmall middle"
-                                                                    name="userName"
-                                                                    id={
-                                                                      optionc.id +
-                                                                      "#" +
-                                                                      option.id
-                                                                    }
-                                                                    type="number"
-                                                                    placeholder="0"
-                                                                    autocomplete="off"
-                                                                    min="0"
-                                                                    onChange={(
-                                                                      e
-                                                                    ) => {
-                                                                      addQty(e);
-                                                                    }}
-                                                                    onKeyDown={
-                                                                      handleEnter
-                                                                    }
-                                                                    onKeyPress={(
-                                                                      e
-                                                                    ) =>
-                                                                      handleKeyPress(
-                                                                        e
-                                                                      )
-                                                                    }
-                                                                  />
-
-                                                                  <input
-                                                                    type="hidden"
-                                                                    style={{
-                                                                      width:
-                                                                        "90px",
-                                                                    }}
-                                                                    id={
-                                                                      optionc.id +
-                                                                      "+" +
-                                                                      option.id
-                                                                    }
-                                                                    className=" form-control inpwidthsmall"
-                                                                    readOnly
-                                                                  />
-                                                                </td>
-                                                              </tr>
-                                                              <tr>
-                                                                <td
-                                                                  style={{
-                                                                    padding:
-                                                                      "0.1em",
-                                                                  }}
-                                                                  className="showperqty"
-                                                                >
-                                                                  <span
-                                                                    id={
-                                                                      optionc.id +
-                                                                      "v" +
-                                                                      option.id
-                                                                    }
-                                                                    className="showperqty"
-                                                                  ></span>
-                                                                </td>
-                                                              </tr>
-                                                            </tbody>
-                                                          </table>
-                                                        </td>
-                                                        <td>
-                                                          <input
-                                                            type="hidden"
-                                                            style={{
-                                                              width: "90px",
-                                                              marginLeft: "10px",
-                                                            }}
-                                                            id={
-                                                              optionc.id +
-                                                              "@" +
-                                                              option.id
-                                                            }
-                                                            className=" form-control inpwidthsmall"
-                                                            readOnly
-                                                          />
-                                                        </td>
-                                                      </tr>
-                                                    </Table>
-                                                  </Row>
-                                                </Row>
-                                              </th>
-                                            );
-                                          })}
-                                          <th>
-                                            <input
-                                              className="form-control inpwidthsmall mt-3"
-                                              name="totalQuantity"
-                                              type="number"
-                                              readOnly
-                                              placeholder={t("totalQty")}
-                                              id={"totqty_" + optionc.id}
-                                            />
-                                          </th>
-                                        </tr>
-                                      );
-                                    })}
-
-                                    <tr>
-                                      <th></th>
-                                      {size.map((data) => {
-                                        return (
-                                          <>
-                                            <th>
-                                              <input
-                                                className="form-control inpwidthsmall"
-                                                id={
-                                                  "SizeId_total_quantity" +
-                                                  data.id
-                                                }
-                                                type="number"
-                                                placeholder="0"
-                                                autocomplete="on"
-                                                readOnly
-                                                onKeyDown={handleEnter}
-                                              />
-                                            </th>
-                                          </>
-                                        );
-                                      })}
                                       <th>
-                                        <input
-                                          className="form-control inpwidthsmall"
-                                          id="Overall_total_quantity"
-                                          type="number"
-                                          placeholder="0"
-                                          autocomplete="off"
-                                          readOnly
-                                        />
+                                        <div
+                                          className="btn btn-outline-success"
+                                          onClick={() => addTableRows()}>+</div>
+
                                       </th>
                                     </tr>
-                                  </tbody>
+                                  </thead>
+                                  {measurementChart.map((measureChart, index) => {
+                                    const { position, description, tolerance } = measureChart;
+                                    return (
+                                      <>
+                                        <tbody id="measurementshow">
+                                          <tr key={index}>
+                                            <td>
+                                              <input
+                                                className="form-control "
+                                                id={"position_" + index}
+                                                type="text"
+                                                autocomplete="on"
+                                                value={position}
+                                                onKeyDown={handleEnter}
+                                              />
+                                            </td>
+                                            <td colSpan="3">
+                                              <input
+                                                className="form-control "
+                                                id={"description_" + index}
+                                                type="text"
+                                                autocomplete="on"
+                                                value={description}
+                                                onKeyDown={handleEnter}
+                                              />
+                                            </td>
+                                            <td>
+                                              <input
+                                                className="form-control "
+                                                id={"tolerance_" + index}
+                                                type="text"
+                                                autocomplete="on"
+                                                value={tolerance}
+                                                onKeyDown={handleEnter}
+                                              />
+                                            </td>
+                                            {size.map((sizeMapData) => {
+
+                                              return (
+                                                <td>
+                                                  <input
+                                                    className="form-control "
+                                                    id={index + "_size_id_" + sizeMapData.id}
+                                                    type="text"
+                                                    autocomplete="on"
+                                                    onKeyDown={handleEnter}
+                                                  />
+                                                </td>
+                                              );
+                                            })}
+                                            <td>
+                                              <div className="btn btn-outline-danger" onClick={() => (deleteTableRows(index))}>-</div>
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                      </>
+                                    )
+                                  }
+                                  )}
                                 </table>
-                              </form>
-                            </div>
-                          </Row>
-                        </Col>
-                      </Row>
-                    </>
-                  ) : (
-                    <div></div>
-                  )}
-                       {/* MeasuementSheet Radio Button*/}
-                        <Row>
-                         <Col lg="12" md="12" sm="12" xs="12">                          
-                                <FormGroup className="m-t-15 m-checkbox-inline mb-0 custom-radio-ml">
-                                <span className="subTitleLine3 f-left">
-                            <H6 className="ordersubhead">
-                            {t("measurementSheet")} 
-                            </H6>
-                          </span>
-                                    <div className="radio radio-primary">
-                                        <Input id="radioinline1" type="radio" name="radio1" value="1" checked={selected === "1"} onChange={changeHandlerRadio}  />
-                                        <Label className="mb-0" for="radioinline1">{t("upload")}</Label>
-                                    </div>
-                                    <div className="radio radio-primary">
-                                        <Input id="radioinline2" type="radio" name="radio1" value="2" checked={selected === "2"} onChange={changeHandlerRadio}  />
-                                        <Label className="mb-0" for="radioinline2">{t("create")}</Label>
-                                    </div>
-                                </FormGroup>
-                            </Col>
-                          </Row>
-                  {/* Measuement Show based on sku*/}
-                  <Row aria-hidden={selected !== "2" ? true : false}>
-                  {color.length > 0 && size.length > 0 ? (
-                    <>                   
-                      <Row className="g-12">
-                        <Col lg="12" md="12" sm="12" xs="12">
-                          <span className="subTitleLine3 f-left">
-                            <H6 className="ordersubhead">
-                              {t("measurementChart")}
-                            </H6>
-                          </span>
-                        </Col>
-                      </Row>
-                      <Row className="p-b-20">
-                        <Col md="12" lg="12" sm="12">
-                          <Row className="g-12">
-                            <div className="table-responsive">
 
-                              <table className="table">
-                                <thead>
-                                  <tr>
-                                    <th scope="col">{t("position")}</th>
-                                    <th scope="col" colSpan="3">{t("description")}</th>
-                                    <th scope="col">{t("tolerance")}</th>
-                                    {size.map((option) => {
-                                      return (
-                                        <th scope="col">
-                                          {" "}
-                                          {option.name}
-                                        </th>
-                                      );
-                                    })}
-                                    <th>
-                                      <div
-                                        className="btn btn-outline-success"
-                                        onClick={() => addTableRows()}>+</div>
-
-                                    </th>
-                                  </tr>
-                                </thead>
-                                {measurementChart.map((measureChart, index) => {
-                                  const { position, description, tolerance } = measureChart;
-                                  return (
-                                    <>
-                                      <tbody id="measurementshow">
-                                        <tr key={index}>
-                                          <td>
-                                            <input
-                                              className="form-control "
-                                              id={"position_" + index}
-                                              type="text"
-                                              autocomplete="on"
-                                              value={position}
-                                              onKeyDown={handleEnter}
-                                            />
-                                          </td>
-                                          <td colSpan="3">
-                                            <input
-                                              className="form-control "
-                                              id={"description_" + index}
-                                              type="text"
-                                              autocomplete="on"
-                                              value={description}
-                                              onKeyDown={handleEnter}
-                                            />
-                                          </td>
-                                          <td>
-                                            <input
-                                              className="form-control "
-                                              id={"tolerance_" + index}
-                                              type="text"
-                                              autocomplete="on"
-                                              value={tolerance}
-                                              onKeyDown={handleEnter}
-                                            />
-                                          </td>
-                                          {size.map((sizeMapData) => {
-
-                                            return (
-                                              <td>
-                                                <input
-                                                  className="form-control "
-                                                  id={index + "_size_id_" + sizeMapData.id}
-                                                  type="text"
-                                                  autocomplete="on"
-                                                  onKeyDown={handleEnter}
-                                                />
-                                              </td>
-                                            );
-                                          })}
-                                          <td>
-                                            <div className="btn btn-outline-danger" onClick={() => (deleteTableRows(index))}>-</div>
-                                          </td>
-                                        </tr>
-                                      </tbody>
-                                    </>
-                                  )
-                                }
-                                )}
-                              </table>
-
-                            </div>
-                          </Row>
-                        </Col>
-                      </Row>
-                     
-                    </>) : (<div></div>)}
-                    </Row>
-                  {/* Measuement Sheet Upload*/}
-                  <Row aria-hidden={selected !== "1" ? true : false}>
-                    <Col lg="4"  >
-                      <FormGroup>
-                        <Label> {t("measurementSheet")} </Label>
-                        <InputGroup>
-                          <Input
-                            className=""
-                            name="Measurement Sheet"
-                            value={measurementSheetImg ? measurementSheetImg : ""}
-                            placeholder={t("attachMeasurementSheet")}
-                            onChange={(e) => setMeasurementSheet(e.target.value)}
-                            disabled
-                          ></Input>
-                          <Files
-                            className="files-dropzone fileContainer"
-                            accept=".docx,.doc,.xls,.xlsx,.txt,.pdf"
-                            multiple={false}
-                            canCancel={false}
-                            onChange={MeasurementImg}
-                            clickable
-                          >
-                            <InputGroupText className=" btn imgBackground">
-                              <img
-                                src={docIcon}
-                                width="25px"
-                                height="25px"
-                                type="file"
-                              ></img>
-                            </InputGroupText>
-                          </Files>
-                        </InputGroup>
-                      </FormGroup>
-                    </Col>
-
-                    <Row>
-                      {fileMeasurementSheet.length > 0 ?
-                        <Row className="m-t-15 taskUpdate-table-sideHeader">
-                          <Row>
-                            {fileMeasurementSheet.map((file) => (
-                              <Col md="3" lg="3" sm="6" xs="12" className="m-5">
-                                <table className="" cellPadding="4px" width="100%">
-                                  <tr>
-                                    <td className="" width="5%">
-                                      <i className="fa fa-file-o f-30"></i>
-                                    </td>
-                                    <td className="">
-                                      <p className="f-left f-12 f-w-600">{(file.orginalfilename)}<br /></p>
-                                    </td>
-                                    <td className="m-l-6">
-                                      <img
-                                        src={deleteIcon}
-                                        width="30px"
-                                        height="30px"
-                                        style={{ cursor: 'pointer' }}
-                                        onClick={() => {
-                                          deleteImageFiles("MeasurementSheet", file)
-                                        }
-                                        }
-                                      />
-                                    </td>
-
-                                  </tr>
-                                </table>
-                              </Col>
-                            ))}
-                          </Row>
+                              </div>
+                            </Row>
+                          </Col>
                         </Row>
-                        : ""}
+                      
+                      </>) : (<div></div>)}
+                      </Row>
+                    {/* Measuement Sheet Upload*/}
+                    <Row aria-hidden={selected !== "1" ? true : false}>
+                      <Col lg="4"  >
+                        <FormGroup>
+                          <Label> {t("measurementSheet")} </Label>
+                          <InputGroup>
+                            <Input
+                              className=""
+                              name="Measurement Sheet"
+                              value={measurementSheetImg ? measurementSheetImg : ""}
+                              placeholder={t("attachMeasurementSheet")}
+                              onChange={(e) => setMeasurementSheet(e.target.value)}
+                              disabled
+                            ></Input>
+                            <Files
+                              className="files-dropzone fileContainer"
+                              accept=".docx,.doc,.xls,.xlsx,.txt,.pdf"
+                              multiple={false}
+                              canCancel={false}
+                              onChange={MeasurementImg}
+                              clickable
+                            >
+                              <InputGroupText className=" btn imgBackground">
+                                <img
+                                  src={docIcon}
+                                  width="25px"
+                                  height="25px"
+                                  type="file"
+                                ></img>
+                              </InputGroupText>
+                            </Files>
+                          </InputGroup>
+                        </FormGroup>
+                      </Col>
+
+                      <Row>
+                        {fileMeasurementSheet.length > 0 ?
+                          <Row className="m-t-15 taskUpdate-table-sideHeader">
+                            <Row>
+                              {fileMeasurementSheet.map((file) => (
+                                <Col md="3" lg="3" sm="6" xs="12" className="m-5">
+                                  <table className="" cellPadding="4px" width="100%">
+                                    <tr>
+                                      <td className="" width="5%">
+                                        <i className="fa fa-file-o f-30"></i>
+                                      </td>
+                                      <td className="">
+                                        <p className="f-left f-12 f-w-600">{(file.orginalfilename)}<br /></p>
+                                      </td>
+                                      <td className="m-l-6">
+                                        <img
+                                          src={deleteIcon}
+                                          width="30px"
+                                          height="30px"
+                                          style={{ cursor: 'pointer' }}
+                                          onClick={() => {
+                                            deleteImageFiles("MeasurementSheet", file)
+                                          }
+                                          }
+                                        />
+                                      </td>
+
+                                    </tr>
+                                  </table>
+                                </Col>
+                              ))}
+                            </Row>
+                          </Row>
+                          : ""}
+                      </Row>
                     </Row>
-                  </Row>
-                  {/* Patterns,Place of Jurisdiction,Customs Declaration Document */}
-                  <Row className="m-t-10">
-                  <Col lg="4">
-                      <FormGroup>
-                        <Label>{t("patterns")}</Label>
-                        <InputGroup>
-                          <Input
-                            type="select"
-                            id ="PatternsId"
-                            className="form-control digits selectheight"
-                            name="Patterns"
-                            defaultValue=""
-                            //onClick={()=>{inquiryMaster("PrintType")}}
-                            onChange={(e) =>{ 
-                              e.target.value!="addNew"?
-                              setPatterns(e.target.value):dropVal("Patterns")}}
-                          >
-                            <option Value="" disabled>
-                              {t("selectPatterns")}
-                            </option>
-                            { patternList.length > 0 ? 
-                            patternList.map((patternLists) => (
-                              <option
-                                value={patternLists.content}
-                                title={patternLists.content}
-                              >
-                                {patternLists.content}
+                    {/* Patterns,Place of Jurisdiction,Customs Declaration Document */}
+                    <Row className="m-t-10">
+                    <Col lg="4">
+                        <FormGroup>
+                          <Label>{t("patterns")}</Label>
+                          <InputGroup>
+                            <Input
+                              type="select"
+                              id ="PatternsId"
+                              className="form-control digits selectheight"
+                              name="Patterns"
+                              defaultValue=""
+                              //onClick={()=>{inquiryMaster("PrintType")}}
+                              onChange={(e) =>{ 
+                                e.target.value!="addNew"?
+                                setPatterns(e.target.value):dropVal("Patterns")}}
+                            >
+                              <option Value="" disabled>
+                                {t("selectPatterns")}
                               </option>
-                            )):""}
-                            <option value="addNew">+{t("addNew")}</option>
-                          </Input>
-                        </InputGroup>
-                      </FormGroup>
-                    </Col>
-                    <Col lg="4">
-                      <FormGroup>
-                        <Label>{t("placeofJurisdiction")}</Label>
-                        <InputGroup>
-                          <Input
-                            className=""
-                            name="Place of Jurisdiction"
-                            placeholder={t("enterPlaceofJurisdiction")}
-                            onChange={(e) =>
-                              setPlaceOfJurisdiction(e.target.value)
-                            }
-                          ></Input>
-                        </InputGroup>
-                      </FormGroup>
-                    </Col>
-                    <Col lg="4">
-                      <FormGroup>
-                        <Label>{t("customsDeclarationDocument")}</Label>
-                        <span
-                          className="m-l-20"
-                          style={{ cursor: "pointer" }}
-                          value
-                          onClick={() => {
-                            checkedVal("CustomsDeclarationDocument");
-                          }}
-                          >
-                           {customsDeclarationDoc =="" ?   <img 
-                                src={addBlueIcon}
+                              { patternList.length > 0 ? 
+                              patternList.map((patternLists) => (
+                                <option
+                                  value={patternLists.content}
+                                  title={patternLists.content}
+                                >
+                                  {patternLists.content}
+                                </option>
+                              )):""}
+                              <option value="addNew">+{t("addNew")}</option>
+                            </Input>
+                          </InputGroup>
+                        </FormGroup>
+                      </Col>
+                      <Col lg="4">
+                        <FormGroup>
+                          <Label>{t("placeofJurisdiction")}</Label>
+                          <InputGroup>
+                            <Input
+                              className=""
+                              name="Place of Jurisdiction"
+                              placeholder={t("enterPlaceofJurisdiction")}
+                              onChange={(e) =>
+                                setPlaceOfJurisdiction(e.target.value)
+                              }
+                            ></Input>
+                          </InputGroup>
+                        </FormGroup>
+                      </Col>
+                      <Col lg="4">
+                        <FormGroup>
+                          <Label>{t("customsDeclarationDocument")}</Label>
+                          <span
+                            className="m-l-20"
+                            style={{ cursor: "pointer" }}
+                            value
+                            onClick={() => {
+                              checkedVal("CustomsDeclarationDocument");
+                            }}
+                            >
+                            {customsDeclarationDoc =="" ?   <img 
+                                  src={addBlueIcon}
+                                  width="25px"
+                                  height="25px"
+                                  
+                                ></img>:<img 
+                                src={editBlueIcon}
                                 width="25px"
                                 height="25px"
                                 
-                              ></img>:<img 
-                              src={editBlueIcon}
-                              width="25px"
-                              height="25px"
-                              
-                            ></img>} 
-                        
-                          {/* <img src={infoIcon} width="25px" height="25px"></img> */}
-                        </span>
-                        {customsDeclarationDoc=="" ?   ""
-                          :
-                          <Card>
-                            <CardBody> {parse(customsDeclarationDoc)}</CardBody>
-                            </Card>}     
-                      </FormGroup>
-                    </Col>
-                  </Row>
+                              ></img>} 
+                          
+                            {/* <img src={infoIcon} width="25px" height="25px"></img> */}
+                          </span>
+                          {customsDeclarationDoc=="" ?   ""
+                            :
+                            <Card>
+                              <CardBody> {parse(customsDeclarationDoc)}</CardBody>
+                              </Card>}     
+                        </FormGroup>
+                      </Col>
+                    </Row>
 
-                  {/* Penalty */}
+                    {/* Penalty */}
 
-                  <Row>
-                    <Col lg="4">
-                      <FormGroup>
-                        <Label>{t("penaltyLabel")}</Label>
-                        <InputGroup>
-                          <Input
-                            className=""
-                            name="Penalty"
-                            placeholder={t("enterPenalty")}
-                            onChange={(e) => setPenalty(e.target.value)}
-                          ></Input>
-                        </InputGroup>
-                      </FormGroup>
-                    </Col>
-                  </Row>
-                </div>
+                    <Row>
+                      <Col lg="4">
+                        <FormGroup>
+                          <Label>{t("penaltyLabel")}</Label>
+                          <InputGroup>
+                            <Input
+                              className=""
+                              name="Penalty"
+                              placeholder={t("enterPenalty")}
+                              onChange={(e) => setPenalty(e.target.value)}
+                            ></Input>
+                          </InputGroup>
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                  </div>
+                </section>
+                <section  id="printStyleInfo">
                 {/* Print Information:Print Type,Print Price,No of Colors */}
                 <div ref={printinfo} className="printinfo">
                   <Row className="g-12">
@@ -2754,6 +2814,8 @@ const index = () => {
                     <Col lg="4"></Col>
                   </Row>
                 </div>
+                </section>
+                <section id="trimsStyleInfo">
                 {/* Trims Information: Main Label,Main Label Sample */}
                 <div ref={trimsinfo} className="printinfo">
                   <Row className="g-12">
@@ -3174,6 +3236,8 @@ const index = () => {
                     </Col>
                   </Row>
                 </div>
+                </section>
+                <section id="packingStyleInfo">
                 {/* Packing Information: Polybag Size & thickness,Polybag Material,Print details on Polybag  */}
                 <div ref={packinginfo} className="packinginfo">
                   <Row className="g-12">
@@ -3603,6 +3667,8 @@ const index = () => {
                     </Col>
                   </Row>
                 </div>
+                </section>
+                <section id="othersStyleInfo">
                 {/* Others: Forbidden Substances Information,Testing Requirement */}
                 <div ref={othersinfo} className="othersinfo">
                   <Row className="g-12">
@@ -3809,6 +3875,7 @@ const index = () => {
                     </Col>
                   </Row>
                 </div>
+                </section>
                 <FormGroup className="f-right">
                   <Button
                     className="btn btn-primary "
@@ -3819,7 +3886,6 @@ const index = () => {
                     {t("save")}
                   </Button>
                 </FormGroup>
-
               </Form>
             </CardBody>
           </Card>
