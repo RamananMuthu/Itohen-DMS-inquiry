@@ -13,7 +13,7 @@ const FactoryFilesDownloadModal = ({ toggleFactoryDownload, downloadFileDetails,
     <>
     <Modal  isOpen={modalBuyerFilesDownload} toggle={toggleFactoryDownload} centered backdrop="static">
       <ModalHeader >
-      {t("inquiryNoTitle")} {inquiryNo}  <span className='m-l-10'>  {t("downloadFiles")} </span>
+      {t("inquiryNoTitle")} {inquiryNo}  <span className='m-l-10'>  {t("filesDownload")} </span>
       </ModalHeader>
       <ModalBody  id="htmljoditListCSS">
         {
