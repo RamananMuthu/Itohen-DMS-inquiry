@@ -337,6 +337,74 @@ const index = () => {
     return validerrors;
   };
 
+    /*********************************** COLOR TOTAL [DELETE] ***********/
+    const getTotalColorWise = (typ=null) => 
+    {
+     
+      let tqty = 0;
+      if (color.length > 0 && size.length > 0) {
+        color.forEach((colorData) => {
+          let i = 0;
+          let astotval = 0;
+          size.forEach((sizeData) => {
+            let element = document.getElementById(colorData.id + "#" + sizeData.id);
+            if (typeof (element) != 'undefined' && element != null) {
+              if(typ=='delete'){
+                //console.log(colorData.id + "#" + sizeData.id,"typ==>",typ);
+                document.getElementById(colorData.id + "#" + sizeData.id).value='';
+                let t = 0;
+               }else{
+              let t = document.getElementById(colorData.id + "#" + sizeData.id).value;
+              astotval += Number(t);
+               }
+             document.getElementById("totqty_"+colorData.id).value = astotval;
+            }
+          });
+         // console.log("totqty_" ,colorData.id,"@@@", astotval);
+        
+          
+        });
+      }
+    }
+  
+    /********************************** SIZE TOTAL [DELETE] ************/
+    const getTotalSizeWise = (typ=null) => 
+    {
+      let tqty = 0;
+      if (color.length > 0 && size.length > 0) {
+      size.forEach((sizeData) => {
+          let i = 0;
+          let astotval = 0;
+          color.forEach((colorData) => {
+            let element = document.getElementById(sizeData.id + "#" + colorData.id);
+            if (typeof (element) != 'undefined' && element != null) {
+            if(typ=='delete'){
+              document.getElementById(sizeData.id + "#" + colorData.id).value='';
+              let t = 0;
+            }else{
+              let t = document.getElementById(sizeData.id + "#" + colorData.id).value;
+            
+            }
+            astotval += Number(t);
+            }
+            document.getElementById("SizeId_total_quantity" + sizeData.id).value = astotval;
+          });
+        });
+      }
+    }
+  
+    /********************************* OVERALL TOTAL [DELETE] *********/
+    const getOverallTotal = () => { 
+    var sum = 0;
+    color.forEach( (colorData) => {
+      var colorTotalQty =  document.getElementById("totqty_" + colorData.id).value;
+      if( colorTotalQty > 0 ){
+        sum += Number(colorTotalQty);
+      }
+    })
+    }
+
+    
   /****------- Delete Color ---------- ****/
   const deleteColor = (e) => {
     var getColor = e.target.id;
@@ -359,6 +427,7 @@ const index = () => {
             return color.name !== getColor;
           })
         );
+        document.getElementById("colorId").selectedIndex = 0; 
         document.getElementById("Overall_total_quantity").value = 0;
         getTotalColorWise("delete");
         getTotalSizeWise("delete");
@@ -389,6 +458,7 @@ const index = () => {
             return size.name !== getSize;
           })
         );
+        document.getElementById("sizeId").selectedIndex = 0; 
         document.getElementById("Overall_total_quantity").value = 0;
         getTotalColorWise("delete");
         getTotalSizeWise("delete");
@@ -2024,6 +2094,7 @@ const index = () => {
                         <Label>{t("color")}</Label>
                         <InputGroup>
                           <Input
+                            id="colorId"
                             type="select"
                             className="js-example-basic-single form-control"
                             isMulti
@@ -2075,6 +2146,7 @@ const index = () => {
                         <Label>{t("size")}</Label>
                         <InputGroup>
                           <Input
+                            id="sizeId"
                             type="select"
                             className="js-example-basic-single form-control"
                             onChange={(e) => {
