@@ -273,6 +273,7 @@ const StaffLogin = () => {
                             localStorage.setItem("workspaces", apiencrypt(JSON.stringify(response.data.workspacesList)));
                             localStorage.setItem("modules", encode(response.data.module));
                             localStorage.setItem("language", encode(response.data.language));
+                            localStorage.setItem("email", encode(response.data.email));
 
                             if (response.data.dateformat != '' && response.data.dateformat != null) {
                                 localStorage.setItem("dateFormat", encode(response.data.dateformat));
@@ -375,18 +376,20 @@ const StaffLogin = () => {
                                                 <Col xs="8" sm="8" md="8" lg="8">
                                                     <H4>{t("login")}</H4>
                                                 </Col>
-                                                <Col xs="4" sm="4" md="4" lg="4" className="f-right">
-                                                <div style={{ backgroundColor: '#f2f2f2', width: '100%', height: '75%'}}>
+
+                                                <Col xs="4" sm="4" md="4" lg="4" className="middle">
+                                                <div style={{ backgroundColor: '#f2f2f2', width: '100%', height: '75%'}}> 
                                                 <LI attrLI={{ className: 'onhover-dropdown m-l-10' }}>
                                                     <div className={`translate_wrapper ${langdropdown ? 'active' : ''}`}>
-                                                        <div className="current_lang">
-                                                            <div className="lang d-flex" onClick={() => LanguageSelection(langdropdown)}>
-                                                            <i className={`flag-icon flag-icon-${flagSelect((i18n.language.toLowerCase()))}`}></i> 
-                                                            <span className="lang-txt m-l-10">{selected.toUpperCase()}</span>
+                                                        <div className="current_lang"> 
+                                                            <div className="lang d-flex" 
+                                                                 onClick={() => LanguageSelection(langdropdown)}>
+                                                                <i className={`flag-icon flag-icon-${flagSelect((i18n.language.toLowerCase()))}`}></i> 
+                                                                <span className="lang-txt m-l-10">{selected.toUpperCase()}</span>
                                                                 <i style={{ marginTop: '3px'}} className="fa fa-chevron-down m-l-10"></i>
                                                             </div>
                                                         </div>
-                                                        <div className={`more_lang onhover-show-div ${langdropdown ? 'active' : ''}`}>
+                                                        <div style={{ marginTop: '-8px' }} className={`more_lang onhover-show-div ${langdropdown ? 'active' : ''}`}>
                                                         <div className="lang" onClick={() => {changeLanguage('EN'), setEmailValidError( () => "" ), setOtpValidError( () => "")}}>
                                                             <i className="flag-icon flag-icon-us"></i>
                                                             <span className="lang-txt m-l-10">English</span>
@@ -406,8 +409,8 @@ const StaffLogin = () => {
                                                         </div>
                                                     </div>
                                                 </LI>
-                                                </div>
-                                                </Col>
+                                                </div> 
+                                                </Col> 
                                             </Row>
                                         </div>
 

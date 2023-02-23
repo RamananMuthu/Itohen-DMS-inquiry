@@ -227,7 +227,7 @@ const UserLogin = () => {
                   localStorage.setItem("workspaceId",response.data.workspace_id!=""?encode(response.data.workspace_id):0);
                   localStorage.setItem("workspaceName",response.data.workspaceName!=""?encode(response.data.workspaceName):"");
                   localStorage.setItem("workspaceType",response.data.workspaceName!=""?encode(response.data.workspaceType):"");
-
+                  localStorage.setItem("email", encode(response.data.email));
                   if (
                     response.data.dateformat != "" &&
                     response.data.dateformat != null
@@ -273,7 +273,7 @@ const UserLogin = () => {
                       localStorage.setItem("workspaceId",response.data.workspace_id!=""?encode(response.data.workspace_id):0);
                       localStorage.setItem("workspaceName",response.data.workspaceName!=""?encode(response.data.workspaceName):"");
                       localStorage.setItem("workspaceType",response.data.workspaceName!=""?encode(response.data.workspaceType):"");
-                      
+                      localStorage.setItem("email", encode(response.data.email));
                       if (
                         response.data.dateformat != "" &&
                         response.data.dateformat != null
@@ -307,6 +307,7 @@ const UserLogin = () => {
                     localStorage.setItem("workspaceId",response.data.workspace_id!=""?encode(response.data.workspace_id):0);
                     localStorage.setItem("workspaceName",response.data.workspaceName!=""?encode(response.data.workspaceName):"");
                     localStorage.setItem("workspaceType",response.data.workspaceName!=""?encode(response.data.workspaceType):"");
+                    localStorage.setItem("email", encode(response.data.email));
                     /***************************************************************************************************/
                     if (
                       response.data.dateformat != "" &&
@@ -452,7 +453,7 @@ const UserLogin = () => {
                                           <i style={{ marginTop: '3px'}} className="fa fa-chevron-down m-l-10"></i>
                                       </div>
                                   </div>
-                                  <div className={`more_lang onhover-show-div ${langdropdown ? 'active' : ''}`}>
+                                  <div style={{ marginTop: '-8px' }} className={`more_lang onhover-show-div ${langdropdown ? 'active' : ''}`}>
                                       <div className="lang" onClick={() => {changeLanguage('EN'), setEmailValidError( () => "" ), setOtpValidError( () => "")}}>
                                         <i className="flag-icon flag-icon-us"></i>
                                         <span className="lang-txt m-l-10">English</span>

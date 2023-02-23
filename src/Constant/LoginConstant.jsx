@@ -26,6 +26,7 @@ export const getModules=localStorage.getItem("modules")!=null?decode(localStorag
 export const getWorkspaces=localStorage.getItem( "workspaces")!=null?apidecrypt(localStorage.getItem("workspaces")): null;
 export const getLanguage=localStorage.getItem("LangCode");
 export const i18nextLng=localStorage.getItem("i18nextLng");
+export const getEmail=decode(localStorage.getItem("email"));
 
 
 // export const getLoginToken=localStorage.getItem("apiToken");

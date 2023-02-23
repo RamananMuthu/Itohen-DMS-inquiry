@@ -5,7 +5,7 @@ import { Image, LI, P, UL } from "../../../AbstractElements";
 import headericon from "../../../assets/images/dms/user-avatar.png";
 import axios from 'axios';
 import { ServerUrl } from '../../../Constant';
-import { getStaff, getRoleName, getLoginUserType, getLoginUserId, getLoginStaffId, getFirstLoginStaffId } from '../../../Constant/LoginConstant';
+import { getStaff, getRoleName, getLoginUserType, getLoginUserId, getLoginStaffId, getFirstLoginStaffId, getEmail } from '../../../Constant/LoginConstant';
 import { useTranslation } from 'react-i18next';
 import { apidecrypt, apiencrypt, decode } from "../../../helper";
 
@@ -101,6 +101,16 @@ const MessageDrop = () => {
               </Link>
             </div>
           </LI>
+          <LI>
+            <div className="media">
+              <Link to='#'>
+                <div className="media-body">
+                  <span>{t("email")} - {getEmail}</span>
+                </div>
+              </Link>
+            </div>
+          </LI>
+         
           <LI attrLI={{ onClick: Logout }}>
             <div className="media">
               <Link to={`${process.env.PUBLIC_URL}/logout`} >
