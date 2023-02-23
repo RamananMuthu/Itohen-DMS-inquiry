@@ -50,6 +50,7 @@ const FactoryDetailInquiry = () => {
   const [inquiryResponse, setInquiryResponse] = React.useState([]);
   const [currencySymbol, setCurrencySymbol] = useState('');
   const [measurementSheetList, setMeasurementSheetList] = React.useState([]);
+  const [paymentInstructionsHtmlString, setPaymentInstructionsHtmlString] = useState('');
   const { t } = useTranslation();
   var measurementSheetData = [];
   var sampleFormatData = [];
@@ -74,6 +75,7 @@ const FactoryDetailInquiry = () => {
     .then((response) => {
       response.data = apidecrypt(response.data);
       setFactoryInquiryDetails(response.data.data[0]);
+      setPaymentInstructionsHtmlString(parse(response.data.data[0].payment_instructions));
       setSpecialFinishHtmlString(parse(response.data.data[0].special_finish));
       setSpecialRequesHtmlString(parse(response.data.data[0].sample_requirements));
       setHtmlString(parse(response.data.data[0].special_requests));
@@ -379,6 +381,13 @@ const FactoryDetailInquiry = () => {
                                   <td className="text-left"> {factoryInquiryDetails.incoterms} </td>
                                 </>
                                 : ""}
+                                </tr><tr>
+                            {factoryInquiryDetails.payment_instructions ?
+                                <>
+                                  <td className="factoryDetailsTable">{t("paymentinstructions")}  </td>
+                                  <td className="text-left"> {paymentInstructionsHtmlString} </td>
+                                </>
+                                : <td className="text-left"> {paymentInstructionsHtmlString} </td>}
                             </tr><tr>
                               {factoryInquiryDetails.payment_terms ?
                                 <>
@@ -534,7 +543,7 @@ const FactoryDetailInquiry = () => {
                               {factoryInquiryDetails.customs_declaraion_document ?
                                 <>
                                   <td className="factoryDetailsTable">{t("customsDeclarationDocument")}  </td>
-                                  <td className="text-left"> {factoryInquiryDetails.customs_declaraion_document} </td>
+                                  <td className="text-left"> {parse(factoryInquiryDetails.customs_declaraion_document)} </td>
                                 </>
                                 : ""}
                             </tr><tr>
@@ -585,7 +594,7 @@ const FactoryDetailInquiry = () => {
                               {factoryInquiryDetails.main_lable ?
                                 <>
                                   <td className="factoryDetailsTable">{t("mainLabel")}  </td>
-                                  <td className="text-left"> {factoryInquiryDetails.main_lable} </td>
+                                  <td className="text-left"> {parse(factoryInquiryDetails.main_lable)} </td>
                                 </>
                                 : ""}
                             </tr><tr>
