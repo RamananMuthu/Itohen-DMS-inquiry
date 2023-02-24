@@ -1062,5 +1062,12 @@
     "inquiryNoTitle" : "তদন্ত নম্বর - ", 
     "inquiryPdf":  "অনুসন্ধান.পিডিএফ",
     "measurementSheets":  "পরিমাপ শীট:",
-    "measSheetNotAvail" : "পরিমাপ শীট উপলব্ধ নেই"
+    "measSheetNotAvail" : "পরিমাপ শীট উপলব্ধ নেই",
+    "Youcanonlyaddfactories":"(আপনি শুধুমাত্র DMS-এ উপলব্ধ নয় এমন কারখানা যোগ করতে পারেন)",    
+    "feedbackFormView":"প্রতিক্রিয়া ফর্ম দেখুন",    
+    "viewComments":"মন্তব্য দেখুন",
+    "editIcon":"আইকন সম্পাদনা করুন",
+    "inquiryUpdateSuccess":"তদন্ত সফলভাবে আপডেট করা হয়েছে",
+    "editInquiry":"অনুসন্ধান সম্পাদনা করুন"
+
     }

@@ -1062,5 +1062,12 @@
     "inquiryNoTitle" : "IN -", 
     "inquiryPdf":  "Inquiry.pdf",
     "measurementSheets":  "Measurement Sheets :",
-    "measSheetNotAvail" : "Measurement sheet not available"
+    "measSheetNotAvail" : "Measurement sheet not available",
+    "Youcanonlyaddfactories":"(You can only add factories that are not available in DMS)",
+    "feedbackFormView":"Feedback Form View",
+    "viewComments":"View Comments",
+    "editIcon":"Edit Icon",
+    "inquiryUpdateSuccess":"Inquiry Updated Successfully",
+    "editInquiry":"Edit Inquiry"
+
 }

@@ -1062,5 +1062,12 @@
     "inquiryNoTitle" : "पूछताछ संख्या - ", 
     "inquiryPdf":  "पूछताछ.पीडीएफ",
     "measurementSheets":  "माप पत्रक :",
-    "measSheetNotAvail" : "माप पत्रक उपलब्ध नहीं है"
+    "measSheetNotAvail" : "माप पत्रक उपलब्ध नहीं है",
+    "Youcanonlyaddfactories":"(आप केवल उन फैक्ट्रियों को जोड़ सकते हैं जो डीएमएस में उपलब्ध नहीं हैं)",
+    "feedbackFormView":"फीडबैक फॉर्म देखें",
+    "viewComments":"टिप्पणियाँ देखें",
+    "editIcon":"संपादन चिह्न",
+    "inquiryUpdateSuccess":"पूछताछ सफलतापूर्वक अपडेट की गई",
+    "editInquiry":"पूछताछ संपादित करें"
+
     }
