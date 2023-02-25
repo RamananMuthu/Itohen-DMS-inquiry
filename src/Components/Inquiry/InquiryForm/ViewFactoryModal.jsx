@@ -58,6 +58,7 @@ const ViewFactoryModal = ({ modal, toggle, inquiryId, factory, setFactory, selec
             .then((result) => {
               if (result.isConfirmed) {
                 toggle(false);
+                window.location.href = `${process.env.PUBLIC_URL}/viewinquiry`
               }
             }
             )
