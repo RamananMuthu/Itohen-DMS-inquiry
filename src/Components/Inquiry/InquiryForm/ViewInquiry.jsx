@@ -423,9 +423,9 @@ const ViewInquiry = () => {
                                       <>
                                        <img
                                          width="29px"
-                                         style={{ cursor: "pointer" }}
+                                         //style={{ cursor: "pointer" }}
                                          className="m-r-30 p-1"
-                                         title={t("editIcon")}
+                                         //title={t("editIcon")}
                                          src={disabledEditIcon}                                        
                                          /> 
                                         
@@ -450,9 +450,9 @@ const ViewInquiry = () => {
                                       <>
                                       <img
                                          width="29px"
-                                         style={{ cursor: "pointer" }}
+                                         //style={{ cursor: "pointer" }}
                                          className="m-r-30 p-1"
-                                         title={t("editIcon")}
+                                         //title={t("editIcon")}
                                          src={disabledEditIcon}                                        
                                          /> 
                                    </>)
@@ -649,9 +649,9 @@ const ViewInquiry = () => {
                                      <>
                                       <img
                                         width="29px"
-                                        style={{ cursor: "pointer" }}
+                                        //style={{ cursor: "pointer" }}
                                         className="m-r-30 p-1"
-                                        title={t("editIcon")}
+                                       // title={t("editIcon")}
                                         src={disabledEditIcon}                                        
                                         /> 
                                        
@@ -675,9 +675,9 @@ const ViewInquiry = () => {
                                      <>
                                      <img
                                         width="29px"
-                                        style={{ cursor: "pointer" }}
+                                       // style={{ cursor: "pointer" }}
                                         className="m-r-30 p-1"
-                                        title={t("editIcon")}
+                                        //title={t("editIcon")}
                                         src={disabledEditIcon}                                        
                                         /> 
                                   </>)
