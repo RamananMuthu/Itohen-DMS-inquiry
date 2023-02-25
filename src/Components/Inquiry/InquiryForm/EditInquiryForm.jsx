@@ -607,7 +607,7 @@ const editInquiryForm = () => {
       .then((response) => {
         response.data = apidecrypt(response.data);
       // Check the media type for showing the PDF
-      (response.data.data.files).map((mapData) => {
+       (response.data.data.files).map((mapData) => {
         if (mapData.media_type == "MeasurementSheet") {
           var getMeasurementDetails = mapData;
           measurementSheetData.push(getMeasurementDetails);
@@ -621,11 +621,6 @@ const editInquiryForm = () => {
           sampleFormatData.push(getDetails);
           setFileSampleFormat(sampleFormatData);
           setAwsUrl(response.data.data.serverURL);
-          { sampleFormatData.files.length > 0 ?
-            (sampleFormatData.files).map((mapData) => {setSampleFormatImg(mapData.orginalfilename);}) 
-            : 
-            setSampleFormatImg(() => "");
-          }
         }
         if (mapData.media_type == "PrintImage") {
           var getDetails = mapData;
@@ -1207,7 +1202,7 @@ const editInquiryForm = () => {
             timer: 2500,
           });
         } else {
-          let responseData = uploadImageApiCall("WashCareLabel", files);
+          let responseData = uploadImagmakeUpeApiCall("WashCareLabel", files);
           setWashCareLabelSampleImg(washCareLabelSample.name);
         }
       } else {
