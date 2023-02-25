@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useMemo, useRef } from "react";
 import {
   Form,
   Label,
@@ -23,6 +23,7 @@ import { useTranslation } from "react-i18next";
 import { ServerUrl } from "../../../Constant";
 import Rating from "react-rating";
 import {apiencrypt, apidecrypt } from "../../../helper";
+import JoditEditor from 'jodit-react';
 const FeedbackFormInquiry = () => {
   const [ratingLowestPrice, setRatingLowestPrice] = useState();
   const [ratingCommunication, setRatingCommunication] = useState();
@@ -33,10 +34,10 @@ const FeedbackFormInquiry = () => {
   const [ratingOnTimeSampleSubmit, setRatingOnTimeSampleSubmit] = useState();
   const [ratingCollabrative, setRatingCollabrative] = useState();
 
-  const [inquiryIds, setInquiryIds] = useState([]);
+  const [factoryList, setFactoryList] = useState([]);
   const [inquiryID, setInquiryID] = useState("");
-  const [factory, setFactory] = useState("");
-  const [factoriesListData, setFactoriesListData] = useState([]);
+  const [factoryId, setFactoryId] = useState("");
+  const [inquiryList, setInquiryList] = useState([]);
   const [lowestPriceComment, setLowestPriceComment] = useState("");
   const [effiCommunicationComment, setEffiCommunicationComment] = useState("");
   const [onTimeDeliveryComment, setOnTimeDeliveryComment] = useState("");
@@ -47,6 +48,8 @@ const FeedbackFormInquiry = () => {
     useState("");
   const [collabrativeComment, setCollabrativeComment] = useState("");
   const [btnStatus, setBtnStatus] = useState(false);
+  const placeholder = null;
+  const editor = useRef(null); // **** Using for jodit Editor**//
 
   const { t } = useTranslation();
 
@@ -61,63 +64,25 @@ const FeedbackFormInquiry = () => {
       (getWorkspaceType == "PCU" && getWorkspaceType != "Factory")
     ) {
       setInquiryID(() => "");
-      setFactory(() => "");
-      setFactoriesListData(() => "");
+      setFactoryId(() => "");
+      setFactoryList(() => "");
+      setInquiryList(() => "");
 
       axios
-        .post(ServerUrl + "/get-buyer-inquiry-list", apiencrypt(getInputParams))
+        .post(ServerUrl + "/get-buyer-factory-list", apiencrypt(getInputParams))
         .then((response) => {
           response.data = apidecrypt(response.data);
-          setInquiryIds(response.data.data);
+          setFactoryList(response.data.data);
         });
     } else {
       window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry` 
-      // window.location.href = "/inquiry/factoryviewinquiry";
     }
   }, []);
 
-  const factoryCall = (id) => {
-    var getInquiryId = {};
-    getInquiryId["inquiry_id"] = id;
-
-    axios
-      .post(ServerUrl + "/get-inquiry-factory-list", apiencrypt(getInquiryId))
-      .then((response) => {
-        response.data = apidecrypt(response.data);
-        if (response.data.data.length == 0) {
-          setBtnStatus(true);
-
-          setFactoriesListData(() => "");
-          setFactory(() => "");
-
-          setRatingLowestPrice(() => "");
-          setRatingCommunication(() => "");
-          setRatingOnTimeDelivery(() => "");
-          setRatingLessQuantityIssues(() => "");
-          setRatingVBRelationship(() => "");
-          setRatingGoodSell(() => "");
-          setRatingOnTimeSampleSubmit(() => "");
-          setRatingCollabrative(() => "");
-
-          setLowestPriceComment(() => "");
-          setEffiCommunicationComment(() => "");
-          setOnTimeDeliveryComment(() => "");
-          setFactoriesListData(() => "");
-          setLessQuantityComment(() => "");
-          setVbRelationshipComment(() => "");
-          setGoodSellComment(() => "");
-          setOnTimeSampleSubmitComment(() => "");
-          setCollabrativeComment(() => "");
-        } else {
-          setFactoriesListData(response.data.data);
-        }
-      });
-  };
-
-  const feedbackFormDataApiCall = (factoryId) => {
+  const feedbackFormDataApiCall = (inquiryIdValue) => {
     var feedbackFormDataInputParams = {};
-    feedbackFormDataInputParams["inquiry_id"] = inquiryID;
     feedbackFormDataInputParams["factory_id"] = factoryId;
+    feedbackFormDataInputParams["inquiry_id"] = inquiryIdValue;
 
     axios
       .post(ServerUrl + "/check-factory-feedback", apiencrypt(feedbackFormDataInputParams))
@@ -181,7 +146,7 @@ const FeedbackFormInquiry = () => {
             setLowestPriceComment(() => "");
             setEffiCommunicationComment(() => "");
             setOnTimeDeliveryComment(() => "");
-            setFactoriesListData(() => "");
+            setInquiryList(() => "");
             setLessQuantityComment(() => "");
             setVbRelationshipComment(() => "");
             setGoodSellComment(() => "");
@@ -212,6 +177,44 @@ const FeedbackFormInquiry = () => {
       });
   };
 
+  const getInquiryList = (id) => {
+    var getInquiryId = {};
+    getInquiryId["factory_id"] = id;
+
+    axios
+      .post(ServerUrl + "/get-factory-inquiry-list", apiencrypt(getInquiryId))
+      .then((response) => {
+        response.data = apidecrypt(response.data);
+        if (response.data.data.length == 0) {
+          setBtnStatus(true);
+
+          setInquiryList(() => "");
+          setFactoryId(() => "");
+
+          setRatingLowestPrice(() => "");
+          setRatingCommunication(() => "");
+          setRatingOnTimeDelivery(() => "");
+          setRatingLessQuantityIssues(() => "");
+          setRatingVBRelationship(() => "");
+          setRatingGoodSell(() => "");
+          setRatingOnTimeSampleSubmit(() => "");
+          setRatingCollabrative(() => "");
+
+          setLowestPriceComment(() => "");
+          setEffiCommunicationComment(() => "");
+          setOnTimeDeliveryComment(() => "");
+          setInquiryList(() => "");
+          setLessQuantityComment(() => "");
+          setVbRelationshipComment(() => "");
+          setGoodSellComment(() => "");
+          setOnTimeSampleSubmitComment(() => "");
+          setCollabrativeComment(() => "");
+        } else {
+          setInquiryList(response.data.data);
+        }
+      });
+  };
+
   const onSaveHandle = (e) => {
     var feedbackInputParams = {};
 
@@ -220,7 +223,7 @@ const FeedbackFormInquiry = () => {
     feedbackInputParams["user_id"] = getLoginUserId;
 
     feedbackInputParams["inquiry_id"] = inquiryID;
-    feedbackInputParams["factory_id"] = factory;
+    feedbackInputParams["factory_id"] = factoryId;
 
     feedbackInputParams["lowest_price"] = ratingLowestPrice;
     feedbackInputParams["lowest_price_comments"] = lowestPriceComment;
@@ -235,36 +238,26 @@ const FeedbackFormInquiry = () => {
     feedbackInputParams["less_quality_issue_comments"] = lessQuantityComment;
 
     feedbackInputParams["vendor_buyer_relation"] = ratingVBRelationship;
-    feedbackInputParams["vendor_buyer_relation_comments"] =
-      vbRelationshipComment;
+    feedbackInputParams["vendor_buyer_relation_comments"] = vbRelationshipComment;
 
     feedbackInputParams["good_sell_through"] = ratingGoodSell;
     feedbackInputParams["good_sell_through_comments"] = goodSellComment;
 
     feedbackInputParams["sample_submission"] = ratingOnTimeSampleSubmit;
-    feedbackInputParams["sample_submission_comments"] =
-      onTimeSampleSubmitComment;
+    feedbackInputParams["sample_submission_comments"] = onTimeSampleSubmitComment;
 
     feedbackInputParams["collaborative_approach"] = ratingCollabrative;
-    feedbackInputParams["ollaborative_approach_comments"] = collabrativeComment;
+    feedbackInputParams["collaborative_approach_comments"] = collabrativeComment;
 
     if (
       ratingLowestPrice == "" ||
-      lowestPriceComment == "" ||
       ratingCommunication == "" ||
-      effiCommunicationComment == "" ||
       ratingOnTimeDelivery == "" ||
-      onTimeDeliveryComment == "" ||
       ratingLessQuantityIssues == "" ||
-      lessQuantityComment == "" ||
       ratingVBRelationship == "" ||
-      vbRelationshipComment == "" ||
       ratingGoodSell == "" ||
-      goodSellComment == "" ||
       ratingOnTimeSampleSubmit == "" ||
-      onTimeSampleSubmitComment == "" ||
-      ratingCollabrative == "" ||
-      collabrativeComment == ""
+      ratingCollabrative == "" 
     ) {
       Swal.fire({
         title: t("plsComFeedback"),
@@ -293,10 +286,57 @@ const FeedbackFormInquiry = () => {
                 window.location.reload();
               }
             });
+          } else if(response.data.status_code == 401){
+            Swal.fire({
+              title: t("plsComFeedback"),
+              text: t("inCompleteData"),
+              icon: "warning",
+              allowOutsideClick: false,
+              timer: 2500,
+            });
           }
         });
     }
   };
+
+  const config = useMemo(() => ({
+    readonly: btnStatus,
+    removeButtons: ['hr', 'image', 'table', 'copyformat', 'paragraph', 'eraser', 'link', 'fullsize',],
+    showXPathInStatusbar: false,
+    showCharsCounter: false,
+    showWordsCounter: false,
+    toolbarAdaptive: true,
+    toolbarSticky: true,
+    enableDragAndDropFileToEditor: true,
+    buttonsXS: [
+      'Bold', 'Italic', 'underline', 'strikethrough', '|', 'brush', 'font', 'fontsize',
+      'align', '|', 'ul', 'ol', 
+    ],
+    buttonsSM: [
+      'Bold', 'Italic', 'underline', 'strikethrough', '|', 'brush', 'font', 'fontsize',
+      'align', '|', 'ul', 'ol', 
+    ],
+    buttonsMD: [
+      'Bold', 'Italic', 'underline', 'strikethrough', '|', 'brush', 'font', 'fontsize',
+      'align', '|', 'ul', 'ol', 
+    ],
+    buttonsXL: [
+      'Bold',
+      'Italic',
+      'cut',
+      'copy',
+      'paste',
+    ],
+    buttons: [
+      'Bold', 'Italic', 'cut', 'copy', 'paste', 'underline', '|', 'ul', 'ol', 'outdent', 'indent', '|',
+      'paragraph', '|', 'cut', 'copy', 'paste', '|', 'link', 'table', '|', 'undo', 'redo', '|', 'hr', 'eraser', 'fullsize',
+    ],
+    uploader: { insertImageAsBase64URI: true },
+
+    placeholder: placeholder || t("startTyping"),
+    hidePoweredByJodit: false,
+  }),
+    [placeholder, btnStatus])
 
   return (
     <Fragment>
@@ -314,37 +354,7 @@ const FeedbackFormInquiry = () => {
               <Form>
                 <Col lg="12">
                   <Row>
-                    <Col lg="4">
-                      <FormGroup>
-                        <Label style={{ color: "#5F5F5F" }}>
-                          {t("inquiryId")}
-                        </Label>
-                        <Input
-                          className=""
-                          name="Inquiry Id"
-                          type="select"
-                          defaultValue=""
-                          onChange={(e) => {
-                            setInquiryID(e.target.value),
-                              factoryCall(e.target.value);
-                          }}
-                        >
-                          <option value="" disabled>
-                            {" "}
-                            {t("selectInquiryId")}{" "}
-                          </option>
-                          {inquiryIds.map((inqryId) => (
-                            <option value={inqryId.id}>
-                              {"IN-" +
-                                inqryId.id +
-                                "(" +
-                                inqryId.style_no +
-                                ")"}
-                            </option>
-                          ))}
-                        </Input>
-                      </FormGroup>
-                    </Col>
+                    
                     <Col lg="4">
                       <FormGroup>
                         <Label style={{ color: "#5F5F5F" }}>
@@ -357,20 +367,60 @@ const FeedbackFormInquiry = () => {
                           placeholder="Select Factory"
                           type="select"
                           onChange={(e) => {
-                            setFactory(e.target.value);
-                            feedbackFormDataApiCall(e.target.value);
+                            setFactoryId(e.target.value);
+                            getInquiryList(e.target.value);
                           }}
                         >
                           <option value="" selected disabled>
                             {t("selectFactory")}
                           </option>
-                          {factoriesListData.length > 0
-                            ? factoriesListData.map((factry) => (
-                                <option value={factry.id}>
-                                  {factry.factory}
-                                </option>
-                              ))
-                            : ""}
+                          {factoryList.length > 0 ? factoryList.map((factory) => (
+                            <option value={factory.id}>
+                              {factory.factory}
+                            </option>))
+                            :
+                            ""
+                          }
+                        </Input>
+                      </FormGroup>
+                    </Col>
+                    <Col lg="4">
+                      <FormGroup>
+                        <Label style={{ color: "#5F5F5F" }}>
+                          {t("inquiryId")}
+                        </Label>
+                        <Input
+                          className=""
+                          name="Inquiry Id"
+                          type="select"
+                          defaultValue=""
+                          onChange={(e) => {
+                            setInquiryID(e.target.value),
+                            feedbackFormDataApiCall(e.target.value)
+                          }}
+                        >
+                          <option value="" disabled>
+                            {" "}
+                            {t("selectInquiryId")}{" "}
+                          </option>
+                          {inquiryList.length > 0 ? inquiryList.map((inqryId) => (
+                            <option value={inqryId.id}>
+                              {"IN-" +
+                                inqryId.id +
+                                "(" +
+                                inqryId.style_no +
+                                ")"}
+                            </option>
+                          ))
+                        :
+                        ""}
+                          {/* {factoryList.length > 0 ? factoryList.map((factory) => (
+                            <option value={factory.id}>
+                              {factory.factory}
+                            </option>))
+                            :
+                            ""
+                          } */}
                         </Input>
                       </FormGroup>
                     </Col>
@@ -393,7 +443,15 @@ const FeedbackFormInquiry = () => {
                             onChange={(rate) => setRatingLowestPrice(rate)}
                           ></Rating>
                         </Row>
-                        <Input
+                        <JoditEditor
+                          readOnly={btnStatus}
+                          ref={editor}
+                          value={lowestPriceComment}
+                          config={config}
+                          tabIndex={1}
+                          onChange={(newContent) =>  setLowestPriceComment(newContent)}
+                        /> 
+                        {/* <Input
                           disabled={btnStatus}
                           className=""
                           placeholder={t("comments")}
@@ -401,7 +459,7 @@ const FeedbackFormInquiry = () => {
                           onChange={(e) =>
                             setLowestPriceComment(e.target.value)
                           }
-                        ></Input>
+                        ></Input> */}
                       </FormGroup>
                     </Col>
                     <Col lg="4">
@@ -419,7 +477,15 @@ const FeedbackFormInquiry = () => {
                             onChange={(rate) => setRatingCommunication(rate)}
                           ></Rating>
                         </Row>
-                        <Input
+                        <JoditEditor
+                          disabled={btnStatus}
+                          ref={editor}
+                          value={effiCommunicationComment}
+                          config={config}
+                          tabIndex={1}
+                          onChange={(newContent) =>  setEffiCommunicationComment(newContent)}
+                        /> 
+                        {/* <Input
                           disabled={btnStatus}
                           className=""
                           placeholder={t("comments")}
@@ -427,7 +493,7 @@ const FeedbackFormInquiry = () => {
                           onChange={(e) =>
                             setEffiCommunicationComment(e.target.value)
                           }
-                        ></Input>
+                        ></Input> */}
                       </FormGroup>
                     </Col>
                   </Row>
@@ -449,7 +515,15 @@ const FeedbackFormInquiry = () => {
                             onChange={(rate) => setRatingOnTimeDelivery(rate)}
                           ></Rating>
                         </Row>
-                        <Input
+                        <JoditEditor
+                          disabled={btnStatus}
+                          ref={editor}
+                          value={onTimeDeliveryComment}
+                          config={config}
+                          tabIndex={1}
+                          onChange={(newContent) =>  setOnTimeDeliveryComment(newContent)}
+                        /> 
+                        {/* <Input
                           disabled={btnStatus}
                           className=""
                           name="on Time"
@@ -458,7 +532,7 @@ const FeedbackFormInquiry = () => {
                           onChange={(e) =>
                             setOnTimeDeliveryComment(e.target.value)
                           }
-                        ></Input>
+                        ></Input> */}
                       </FormGroup>
                     </Col>
                     <Col lg="4">
@@ -478,7 +552,15 @@ const FeedbackFormInquiry = () => {
                             }
                           ></Rating>
                         </Row>
-                        <Input
+                        <JoditEditor
+                          disabled={btnStatus}
+                          ref={editor}
+                          value={lessQuantityComment}
+                          config={config}
+                          tabIndex={1}
+                          onChange={(newContent) =>  setLessQuantityComment(newContent)}
+                        /> 
+                        {/* <Input
                           disabled={btnStatus}
                           className=""
                           placeholder={t("comments")}
@@ -486,7 +568,7 @@ const FeedbackFormInquiry = () => {
                           onChange={(e) =>
                             setLessQuantityComment(e.target.value)
                           }
-                        ></Input>
+                        ></Input> */}
                       </FormGroup>
                     </Col>
                   </Row>
@@ -508,7 +590,15 @@ const FeedbackFormInquiry = () => {
                             onChange={(rate) => setRatingVBRelationship(rate)}
                           ></Rating>
                         </Row>
-                        <Input
+                        <JoditEditor
+                          disabled={btnStatus}
+                          ref={editor}
+                          value={vbRelationshipComment}
+                          config={config}
+                          tabIndex={1}
+                          onChange={(newContent) =>  setVbRelationshipComment(newContent)}
+                        /> 
+                        {/* <Input
                           disabled={btnStatus}
                           className=""
                           name="on Time"
@@ -517,7 +607,7 @@ const FeedbackFormInquiry = () => {
                           onChange={(e) =>
                             setVbRelationshipComment(e.target.value)
                           }
-                        ></Input>
+                        ></Input> */}
                       </FormGroup>
                     </Col>
                     <Col lg="4">
@@ -535,13 +625,21 @@ const FeedbackFormInquiry = () => {
                             onChange={(rate) => setRatingGoodSell(rate)}
                           ></Rating>
                         </Row>
-                        <Input
+                        <JoditEditor
+                          disabled={btnStatus}
+                          ref={editor}
+                          value={goodSellComment}
+                          config={config}
+                          tabIndex={1}
+                          onChange={(newContent) =>  setGoodSellComment(newContent)}
+                        /> 
+                        {/* <Input
                           disabled={btnStatus}
                           className=""
                           placeholder={t("comments")}
                           defaultValue={goodSellComment}
                           onChange={(e) => setGoodSellComment(e.target.value)}
-                        ></Input>
+                        ></Input> */}
                       </FormGroup>
                     </Col>
                   </Row>
@@ -565,7 +663,15 @@ const FeedbackFormInquiry = () => {
                             }
                           ></Rating>
                         </Row>
-                        <Input
+                        <JoditEditor
+                          disabled={btnStatus}
+                          ref={editor}
+                          value={onTimeSampleSubmitComment}
+                          config={config}
+                          tabIndex={1}
+                          onChange={(newContent) =>  setOnTimeSampleSubmitComment(newContent)}
+                        /> 
+                        {/* <Input
                           disabled={btnStatus}
                           className=""
                           name="on Time"
@@ -574,7 +680,7 @@ const FeedbackFormInquiry = () => {
                           onChange={(e) =>
                             setOnTimeSampleSubmitComment(e.target.value)
                           }
-                        ></Input>
+                        ></Input> */}
                       </FormGroup>
                     </Col>
                     <Col lg="4">
@@ -592,7 +698,15 @@ const FeedbackFormInquiry = () => {
                             onChange={(rate) => setRatingCollabrative(rate)}
                           ></Rating>
                         </Row>
-                        <Input
+                        <JoditEditor
+                          disabled={btnStatus}
+                          ref={editor}
+                          value={collabrativeComment}
+                          config={config}
+                          tabIndex={1}
+                          onChange={(newContent) =>  setCollabrativeComment(newContent)}
+                        /> 
+                        {/* <Input
                           disabled={btnStatus}
                           className=""
                           placeholder={t("comments")}
@@ -600,7 +714,7 @@ const FeedbackFormInquiry = () => {
                           onChange={(e) =>
                             setCollabrativeComment(e.target.value)
                           }
-                        ></Input>
+                        ></Input> */}
                       </FormGroup>
                     </Col>
                   </Row>
