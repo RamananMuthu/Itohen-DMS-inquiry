@@ -218,8 +218,7 @@ const FactoryViewInquiry = () => {
     axios
     .post(ServerUrl + "/factory-inquiries-download", apiencrypt(getDownloadParams),{responseType: 'blob'})
     .then((response) => {
-        console.log(response.data);
-        let name = "inquiry_list.pdf";
+        let name = "inquiry_list-"+Date.now()+".pdf";
         DownloadFile(response.data, name);
     });
   }

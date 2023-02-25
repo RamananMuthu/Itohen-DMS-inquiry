@@ -102,8 +102,7 @@ const FactoryResponse = () => {
         axios
         .post(ServerUrl + "/factory-response-inquiries-download", apiencrypt(getDownloadParams),{responseType: 'blob'})
         .then((response) => {
-            console.log(response.data);
-            let name = "factoryResponse_list.pdf";   
+            let name = "factoryResponse_list-"+Date.now()+".pdf"; 
             DownloadFile(response.data, name);
         });
       }

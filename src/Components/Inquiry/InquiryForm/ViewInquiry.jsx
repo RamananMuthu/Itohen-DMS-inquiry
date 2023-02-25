@@ -8,6 +8,7 @@ import shareIcon from "../../../assets/images/dms/icons/inquiryShareIcon.svg";
 import deleteIcon from "../../../assets/images/dms/icons/inquiryDeleteIcon.svg";
 import download_icon from"../../../assets/images/dms/icons/grey_factory_view_download_icon.svg";
 import responseBlueIcon from "../../../assets/images/dms/inquiryResponseBlueIcon.svg";
+import editIcon from "../../../assets/images/dms/inquiryEditIcon.svg";
 import axios from "axios";
 import ViewFactoryModal from "./ViewFactoryModal";
 import { encode,apiencrypt, apidecrypt, DownloadFile } from "../../../helper";
@@ -143,6 +144,10 @@ const ViewInquiry = () => {
     // window.location.href = "/inquiry/factoryresponse?id=" + encode(inquiryId);
   };
   
+  const editInquiry = (inquiryId) => {
+    window.location.href = `${process.env.PUBLIC_URL}/editInquiryForm?id=` + encode(inquiryId);
+    // window.location.href = "/inquiry/factoryresponse?id=" + encode(inquiryId);
+  };  
   /**Delete Inquiry based on Id*********/
   const deleteInquiry = (inquiryId) => {
     var deleteParams = {};
@@ -224,9 +229,7 @@ const ViewInquiry = () => {
     axios
     .post(ServerUrl + "/buyer-inquiries-download", apiencrypt(getDownloadParams),{responseType: 'blob'})
     .then((response) => {
-        console.log(response.data);
-        let name = "inquiry_list.pdf";
-
+        let name = "inquiry_list-"+Date.now()+".pdf";
         DownloadFile(response.data, name);
     });
   }
@@ -395,6 +398,36 @@ const ViewInquiry = () => {
                                       src={shareIcon}
                                       onClick={() => {
                                         factResponse(inquirydtls.id);
+                                      }}
+                                    />
+                                      :
+                                      ""}
+                                    {/********** EDIT ICON ********/ }
+                                    {getLoginUserType == "user" ? 
+                                      <>
+                                         <img
+                                            width="29px"
+                                            style={{ cursor: "pointer" }}
+                                            className="m-r-30 p-1"
+                                            title={t("editIcon")}
+                                            value={inquirydtls.id}
+                                            src={editIcon}
+                                            onClick={() => {
+                                              editInquiry(inquirydtls.id);
+                                            }}
+                                          />
+                                      </>
+                                    :
+                                    (getStaff === "Staff" && getStaffPermission.includes("View Response")) || getStaff == null ?
+                                    <img
+                                      width="29px"
+                                      style={{ cursor: "pointer" }}
+                                      className="m-r-30 p-1"
+                                      title={t("editIcon")}
+                                      value={inquirydtls.id}
+                                      src={editIcon}
+                                      onClick={() => {
+                                        editInquiry(inquirydtls.id);
                                       }}
                                     />
                                       :
@@ -569,6 +602,37 @@ const ViewInquiry = () => {
                                     />
                                       :
                                       ""}
+                                    {/********** EDIT ICON ********/ }
+                                    {getLoginUserType == "user" ? 
+                                      <>
+                                         <img
+                                            width="29px"
+                                            style={{ cursor: "pointer" }}
+                                            className="m-r-30 p-1"
+                                            title={t("editIcon")}
+                                            value={inquirydtls.id}
+                                            src={editIcon}
+                                            onClick={() => {
+                                              editInquiry(inquirydtls.id);
+                                            }}
+                                          />
+                                      </>
+                                    :
+                                    (getStaff === "Staff" && getStaffPermission.includes("View Response")) || getStaff == null ?
+                                    <img
+                                      width="29px"
+                                      style={{ cursor: "pointer" }}
+                                      className="m-r-30 p-1"
+                                      title={t("editIcon")}
+                                      value={inquirydtls.id}
+                                      src={editIcon}
+                                      onClick={() => {
+                                        editInquiry(inquirydtls.id);
+                                      }}
+                                    />
+                                      :
+                                      ""}
+
 
                                     {/********** DELETE ICON ********/ }
                                     {getLoginUserType == "user" ? 
