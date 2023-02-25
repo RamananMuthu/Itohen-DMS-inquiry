@@ -1346,6 +1346,7 @@ const index = () => {
       inquiryFormInputParams["referenceId"] = referenceId.toString();
       inquiryFormInputParams['measurement_Chart'] = measure_chart_array;
       inquiryFormInputParams['payment_instructions']=paymentinstructionsDesc;
+      inquiryFormInputParams["poly_bag_print"]=printDetailsPolybag;
       axios
         .post(ServerUrl + "/save-inquiry", apiencrypt(inquiryFormInputParams))
         .then((response) => {

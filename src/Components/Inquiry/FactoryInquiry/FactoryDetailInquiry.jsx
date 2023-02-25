@@ -683,10 +683,17 @@ const FactoryDetailInquiry = () => {
                                 </>
                                 : ""}
                             </tr><tr>
+                            {factoryInquiryDetails.poly_bag_print ?
+                                <>
+                                  <td className="factoryDetailsTable">{t("printDetailsPolybag")}</td>
+                                  <td className="text-left">{factoryInquiryDetails.poly_bag_print}</td>
+                                </>
+                                : ""}
+                            </tr><tr>
                               {factoryInquiryDetails.poly_bag_price ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("printDetailsPolybag")}  </td>
-                                  <td className="text-left"> {factoryInquiryDetails.poly_bag_price} </td>
+                                  <td className="factoryDetailsTable">{t("printDetailsPolybag")}</td>
+                                  <td className="text-left">{factoryInquiryDetails.poly_bag_price}</td>
                                 </>
                                 : ""}
                             </tr><tr>

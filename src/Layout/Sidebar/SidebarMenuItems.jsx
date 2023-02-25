@@ -24,7 +24,7 @@ import companyIcon from "../../assets/images/dms/icons/company_profile.svg";
 import companyIconWhite from "../../assets/images/dms/icons/company_white.svg";
 import calendarIconWhite from "../../assets/images/dms/icons/Calendar_white.svg";
 import calendarIcon from "../../assets/images/dms/icons/Calendar.svg";
-
+import feedBackViewIcon from "../../assets/images/dms/icons/feedbackViewIIcon.svg";
 import Viewinquiry from "../../assets/images/dms/icons/viewinquiry.svg";
 import ViewinquiryActive from "../../assets/images/dms/icons/viewInquiryActive.svg";
 
@@ -128,7 +128,7 @@ const SidebarMenuItems = ({ setMainMenu, sidebartoogle, setNavActive }) => {
                      {/* {(menuItem.title=='Inquiry List' && (menuItem.active))?<img src={InquiryList} />:(menuItem.title=='Inquiry List')?<img src={InquiryList}/>:""} */}
                      {(menuItem.title=='Feedback Form' && (menuItem.active))?<img src={FeedbackActive} />:(menuItem.title=='Feedback Form')?<img src={Feedback}/>:""}
                      {(menuItem.title=='Inquiry Contacts' && (menuItem.active))?<img src={InquiryContactsActive} />:(menuItem.title=='Inquiry Contacts')?<img src={InquiryContacts}/>:""}
-                     {(menuItem.title=='Feedback View' && (menuItem.active))?<img src={datainputIconWhite} />:(menuItem.title=='Feedback View')?<img src={datainputIcon}/>:""}
+                     {(menuItem.title=='Feedback View' && (menuItem.active))?<img  src={feedBackViewIcon} />:(menuItem.title=='Feedback View')?<img src={feedBackViewIcon}/>:""}
                     
                   {/* {(menuItem.title=='Order Status' && (menuItem.active))?<img src={orderstatusIcon}/>:<img src={orderstatusIcon}/>} */}
                         {/* {menuItem.icon !== undefined && <menuItem.icon />} */}

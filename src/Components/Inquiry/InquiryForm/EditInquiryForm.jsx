@@ -587,12 +587,17 @@ const editInquiryForm = () => {
           setInquiryDueDate(response.data.data[0].due_date);
           setPaymentTerm(response.data.data[0].payment_terms);
           setTargetPrice(response.data.data[0].target_price);
-         setForbiddenSubstancesInfo(response.data.data[0].forbidden_substance_info);
-         setTestingRequirement(response.data.data[0].testing_requirements);
-         setSampleRequirement(response.data.data[0].sample_requirements);
+          setForbiddenSubstancesInfo(response.data.data[0].forbidden_substance_info);
+          setTestingRequirement(response.data.data[0].testing_requirements);
+          setSampleRequirement(response.data.data[0].sample_requirements);
           setSpecialRequest(response.data.data[0].special_requests);
           setPaymentinstructionsDesc(response.data.data[0].payment_instructions);
           setCurrency(response.data.data[0].currency)
+          setMakeUp(response.data.data[0].make_up);
+          setFlimsCD(response.data.data[0].films_cd);
+          setPictureCard(response.data.data[0].picture_card);
+          setPrintDetailsPolybag(response.data.data[0].poly_bag_print);
+         // setHangtag(response.data.data[0].hangtag_lable);
           });
       // ********** API call for SKU Quantity Ratio ************
       axios
@@ -1457,6 +1462,7 @@ const editInquiryForm = () => {
       inquiryFormInputParams["currency"] = currency;
       inquiryFormInputParams["sku_details"] = sku;
       inquiryFormInputParams["referenceId"] =  referenceId;
+      inquiryFormInputParams["poly_bag_print"]=printDetailsPolybag;
      // inquiryFormInputParams['measurement_Chart'] = measure_chart_array;
       inquiryFormInputParams['payment_instructions']=paymentinstructionsDesc;
       axios
@@ -3214,7 +3220,7 @@ const editInquiryForm = () => {
                           <Input
                             className=""
                             name="Hangtag"
-                            default={hangtag}
+                            defaultValue={hangtag}
                             placeholder={t("enterHangtag")}
                             onChange={(e) => setHangtag(e.target.value)}
                           ></Input>
