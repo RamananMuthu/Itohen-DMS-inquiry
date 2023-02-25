@@ -61,15 +61,14 @@ const AddFactoryResponseOffCanvas = ({ modal, toggle, factoriesList,currency }) 
     enableDragAndDropFileToEditor: true,
     buttonsXS: [
       'Bold', 'Italic', 'underline', 'strikethrough', '|', 'brush', 'font', 'fontsize',
-      'align', '|', 'ul', 'ol', '|', 'cut', 'copy', 'paste', '|', 'undo', 'redo', '|', 'dots'
+      'align', '|', 'ul', 'ol',
     ],
     buttonsSM: [
       'Bold', 'Italic', 'underline', 'strikethrough', '|', 'brush', 'font', 'fontsize',
-      'align', '|', 'ul', 'ol', '|', 'cut', 'copy', 'paste', '|', 'undo', 'redo', '|', 'dots'
-    ],
+      'align', '|', 'ul', 'ol',],
     buttonsMD: [
       'Bold', 'Italic', 'underline', 'strikethrough', '|', 'brush', 'font', 'fontsize',
-      'align', '|', 'ul', 'ol', '|', 'cut', 'copy', 'paste', '|', 'undo', 'redo', '|', 'dots',
+      'align', '|', 'ul', 'ol',
     ],
     buttonsXL: [
       'Bold',
@@ -80,7 +79,7 @@ const AddFactoryResponseOffCanvas = ({ modal, toggle, factoriesList,currency }) 
     ],
     buttons: [
       'Bold', 'Italic', 'cut', 'copy', 'paste', 'underline', '|', 'ul', 'ol', 'outdent', 'indent', '|',
-      'paragraph', '|', 'cut', 'copy', 'paste', '|', 'link', 'table', '|', 'undo', 'redo', '|', 'hr', 'eraser', 'fullsize',
+      'paragraph'
     ],
     uploader: { insertImageAsBase64URI: true },
 
@@ -129,8 +128,8 @@ const AddFactoryResponseOffCanvas = ({ modal, toggle, factoriesList,currency }) 
   };
 
   return (
-    <Offcanvas className="offcanvas-width" isOpen={modal} toggle={toggle} direction={"end"}  backdrop="static">
-      <OffcanvasHeader className="bg-primary offcanvas-header text-center">
+    <Offcanvas style={{width:"600px"}}className="offcanvas-width" isOpen={modal} toggle={toggle} direction={"end"}  backdrop="static">
+      <OffcanvasHeader className="bg-primary offcanvas-header ">
       {t("addFactoryResponse")}
       </OffcanvasHeader>
       <OffcanvasBody>
@@ -140,7 +139,8 @@ const AddFactoryResponseOffCanvas = ({ modal, toggle, factoriesList,currency }) 
               <Label style={{ color: "#5F5F5F" }}>
                 {t("factory")}
               </Label>
-              <sup className="font-danger">*</sup>
+              <sup className="font-danger">* </sup>
+              <span className="m-r-5"> {t("Youcanonlyaddfactories")}</span>
               <InputGroup>
                 <Input
                   className=""

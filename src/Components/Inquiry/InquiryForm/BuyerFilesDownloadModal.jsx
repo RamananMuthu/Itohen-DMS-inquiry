@@ -24,7 +24,7 @@ const BuyerFilesDownloadModal = ({
           <ul>
               <li>
                 <a href={downloadFileDetails.inq_pdf} target="_blank"> <span className="m-l-5 m-t-5">
-                  <span className="link">{t("inquiryPdf")}</span>  
+                  <span className="link"> {"IN-"+inquiryNo}{" . pdf"}</span>  
                     <img
                     width="29px"
                     style={{ cursor: "pointer" }}

@@ -24,7 +24,13 @@ export const MENUITEMS = [
                 path: `${process.env.PUBLIC_URL}/feedbackform`, type: 'link', active: false, title: 'Feedback Form'
             }  
             : {},
-
+              
+            getWorkspaceType == "Buyer" ||  getWorkspaceType == "PCU" && getWorkspaceType != "Factory"?  
+            { 
+                // path: `${process.env.PUBLIC_URL}/inquiry/factoryviewinquiry`, type: 'link', active: false, title: 'View Inquiry'
+                 path: `${process.env.PUBLIC_URL}/feedbackview`,  type: 'link', active: false, title: 'Feedback View'
+            }  
+            : {},
             (getStaff === "Staff"&&getModules.includes("Inquiry-Factory")&&(getStaffPermission.includes('View Factory Inquiry')))||getStaff == null?
             getWorkspaceType == "Factory" &&  getWorkspaceType != "PCU" && getWorkspaceType != "Buyer" ? 
             { 
@@ -40,6 +46,7 @@ export const MENUITEMS = [
                  path: `${process.env.PUBLIC_URL}/inquirycontacts`,  type: 'link', active: false, title: 'Inquiry Contacts'
             }  
             : {},
+          
 
         ]
     },
