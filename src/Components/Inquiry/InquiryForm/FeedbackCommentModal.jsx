@@ -2,16 +2,10 @@ import React, {useState,useRef,useMemo} from 'react';
 import { Modal,
   ModalBody,
   ModalFooter,
-  ModalHeader, Input, Label } from 'reactstrap';
+  ModalHeader} from 'reactstrap';
 import { Btn } from '../../../AbstractElements';
-import { Close, SaveChanges, ServerUrl } from '../../../Constant';
-import  axios  from "axios";
-import Swal from "sweetalert2";
-import JoditEditor from 'jodit-react';
-
-
+import parse from 'html-react-parser';
 import {useTranslation} from "react-i18next";
-import { apidecrypt, apiencrypt } from '../../../helper';
 
 const FeedbackCommentModal = ({ modal, toggle,factoryFeedbackView,inquiryNo,factoryId,feedComments}) =>{
   const { t } = useTranslation();
@@ -37,50 +31,50 @@ const FeedbackCommentModal = ({ modal, toggle,factoryFeedbackView,inquiryNo,fact
       feedComments=="lowestPrice"?   
         (factoryFeedbackView).map((Feedback) => (
           <>
-          {Feedback.inquiry_id==inquiryNo && Feedback.factory_contact_id==factoryId ?<span className='m-l-15 m-t-5'>{Feedback.lowest_price_comments}</span>:""}
+          {Feedback.inquiry_id==inquiryNo && Feedback.factory_contact_id==factoryId ?parse(Feedback.lowest_price_comments):""}
           </>)) :""}
           {
       feedComments=="effiCommunication"?   
         (factoryFeedbackView).map((Feedback) => (
           <>
-          {Feedback.inquiry_id==inquiryNo && Feedback.factory_contact_id==factoryId ?Feedback.communication_comments:""}
+          {Feedback.inquiry_id==inquiryNo && Feedback.factory_contact_id==factoryId ?parse(Feedback.communication_comments):""}
          
           </>)) :""}
           {
       feedComments=="reliableTimeDelivery"?   
         (factoryFeedbackView).map((Feedback) => (
           <>
-          {Feedback.inquiry_id==inquiryNo && Feedback.factory_contact_id==factoryId ?Feedback.ontime_delivery_comments:""}
+          {Feedback.inquiry_id==inquiryNo && Feedback.factory_contact_id==factoryId ?parse(Feedback.ontime_delivery_comments):""}
           </>)) :""}
           {
       feedComments=="lessQuantityIssues"?   
         (factoryFeedbackView).map((Feedback) => (
           <>
-          {Feedback.inquiry_id==inquiryNo && Feedback.factory_contact_id==factoryId ?Feedback.less_quality_issue_comments:""}
+          {Feedback.inquiry_id==inquiryNo && Feedback.factory_contact_id==factoryId ?parse(Feedback.less_quality_issue_comments):""}
           </>)) :""}
           {
       feedComments=="vbRelations"?   
         (factoryFeedbackView).map((Feedback) => (
           <>
-          {Feedback.inquiry_id==inquiryNo && Feedback.factory_contact_id==factoryId ?Feedback.vendor_buyer_relation_comments:""}
+          {Feedback.inquiry_id==inquiryNo && Feedback.factory_contact_id==factoryId ?parse(Feedback.vendor_buyer_relation_comments):""}
           </>)) :""}
           {
       feedComments=="goodSell"?   
         (factoryFeedbackView).map((Feedback) => (
           <>
-          {Feedback.inquiry_id==inquiryNo && Feedback.factory_contact_id==factoryId ?Feedback.good_sell_through_comments:""}
+          {Feedback.inquiry_id==inquiryNo && Feedback.factory_contact_id==factoryId ?parse(Feedback.good_sell_through_comments):""}
           </>)) :""}
           {
       feedComments=="onTimeSampleSub"?   
         (factoryFeedbackView).map((Feedback) => (
           <>
-          {Feedback.inquiry_id==inquiryNo && Feedback.factory_contact_id==factoryId ?Feedback.sample_submission_comments:""}
+          {Feedback.inquiry_id==inquiryNo && Feedback.factory_contact_id==factoryId ?parse(Feedback.sample_submission_comments):""}
           </>)) :""}
           {
       feedComments=="collabApproach"?   
         (factoryFeedbackView).map((Feedback) => (
           <>
-          {Feedback.inquiry_id==inquiryNo && Feedback.factory_contact_id==factoryId ?Feedback.collaborative_approach_comments:""}
+          {Feedback.inquiry_id==inquiryNo && Feedback.factory_contact_id==factoryId ?parse(Feedback.collaborative_approach_comments):""}
           </>)) :""}
           
      </>:""}

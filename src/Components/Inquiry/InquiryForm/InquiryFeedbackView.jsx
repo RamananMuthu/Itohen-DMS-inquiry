@@ -105,7 +105,7 @@ const InquiryFeedbackView = () => {
     .then((response) => {
         console.log(response.data);
         const currDate = new Date().toLocaleDateString();
-        let namelist=   currDate + "-"+ "inquiry_feedback.pdf"
+        let namelist=   currDate + "-"+ "inquiry_feedback"+ Date.now()+".pdf"
         DownloadFile(response.data, namelist);
     });
   }
@@ -289,7 +289,7 @@ const InquiryFeedbackView = () => {
                                       /></span>}
                                  </td>     
                                   <td className="centerAlign">{Feedback.collaborative_approach} 
-                                  {Feedback.collaborative_approach_comments==""?"":  <span><img
+                                  {Feedback.collaborative_approach_comments==""?"":  <span className="m-l-10"><img
                                         src={infoIcon}
                                         width="15px"
                                         height="15px"
