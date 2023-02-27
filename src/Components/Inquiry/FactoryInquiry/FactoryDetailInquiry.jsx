@@ -41,6 +41,7 @@ const FactoryDetailInquiry = () => {
   const [validerrors, setValiderrors] = React.useState({});
   const [sampleRequirementsHtmlString, setHtmlString] = useState('');
   const [specialRequesHtmlString, setSpecialRequesHtmlString] = useState('');
+  const [forbiddenSubstanceHtmlString, setForbiddenSubstanceHtmlString] = useState('');
   const [testingRequirementsHtmlString, setTestingRequirementsHtmlString] = useState('');
   const [specialFinishHtmlString, setSpecialFinishHtmlString] = useState('');
   const [styleArticleDescriptionHtmlString, setStyleArticleDescriptionHtmlString] = useState('');
@@ -78,6 +79,7 @@ const FactoryDetailInquiry = () => {
       setPaymentInstructionsHtmlString(parse(response.data.data[0].payment_instructions));
       setSpecialFinishHtmlString(parse(response.data.data[0].special_finish));
       setSpecialRequesHtmlString(parse(response.data.data[0].sample_requirements));
+      setForbiddenSubstanceHtmlString(parse(response.data.data[0].forbidden_substance_info));
       setHtmlString(parse(response.data.data[0].special_requests));
       setTestingRequirementsHtmlString(parse(response.data.data[0].testing_requirements));
       setStyleArticleDescriptionHtmlString(parse(response.data.data[0].style_article_description));
@@ -802,7 +804,7 @@ const FactoryDetailInquiry = () => {
                                 </>
                                 : ""}
                             </tr><tr>
-                              {/* {factoryInquiryDetails.testing_requirements || factoryInquiryDetails.sample_requirements ||
+                              {/* {factoryInquiryDetails.testing_requirements || factoryInquiryDetails.forbidden_substance_info ||
                             factoryInquiryDetails.sample_requirements || factoryInquiryDetails.special_requests ? 
                             <>
                             <td className="text-left" colSpan="3">
@@ -811,6 +813,13 @@ const FactoryDetailInquiry = () => {
                             :  ""} */}
                               <td className="factoryDetailsTable" colSpan="3">
                                 <H6 className="ordersubhead">{t("others")}</H6> </td>
+                            </tr><tr>
+                              {factoryInquiryDetails.forbidden_substance_info ?
+                                <>
+                                  <td className="factoryDetailsTable">{t("forbiddenSubstancesInformation")}  </td>
+                                  <td className="text-left"> {forbiddenSubstanceHtmlString} </td>
+                                </>
+                                : ""}
                             </tr><tr>
                               {factoryInquiryDetails.testing_requirements ?
                                 <>
