@@ -297,10 +297,6 @@ const editInquiryForm = () => {
     else if(valueType ==="CartonEdgeFinish")
     {document.getElementById("cartonEdgeFinishId").value = "";}
   };
-
-  const onFilesChange = (files) => {
-    setFiles(files);
-  };
   /****------- Validation ---------- ****/
   const validation = (data) => {
 
@@ -597,6 +593,7 @@ const editInquiryForm = () => {
           setFlimsCD(response.data.data[0].films_cd);
           setPictureCard(response.data.data[0].picture_card);
           setPrintDetailsPolybag(response.data.data[0].poly_bag_print);
+          dropDownfn(response.data.data[0].media_reference_id);
          // setHangtag(response.data.data[0].hangtag_lable);
           });
       // ********** API call for SKU Quantity Ratio ************
@@ -705,37 +702,7 @@ const editInquiryForm = () => {
       .get(ServerUrl + "/get-currencies").then((response) => {
         response.data = apidecrypt(response.data);
         setCurrencies(response.data.data);
-      });
-      axios
-      .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "PaymentTerms",referenceId:  referenceId}))
-      .then((response) => {
-        response.data = apidecrypt(response.data);
-        setPaymentTermList(response.data.data);
-      });
-      axios
-      .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "PrintType",referenceId:  referenceId}))
-      .then((response) => {
-        response.data = apidecrypt(response.data);
-        setPrintTypeList(response.data.data);
-      });
-      axios
-      .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "NoofPly",referenceId:  referenceId}))
-      .then((response) => {
-        response.data = apidecrypt(response.data);
-        setNoOfPlyList(response.data.data);
-      });
-      axios
-      .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "CartonEdgeFinish",referenceId:  referenceId}))
-      .then((response) => {
-        response.data = apidecrypt(response.data);
-        setCartonEdgeFinishList(response.data.data);
-      });
-      axios
-      .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "Patterns",referenceId:  referenceId}))
-      .then((response) => {
-        response.data = apidecrypt(response.data);
-        setPatternList(response.data.data);
-      });      
+      });    
     window.addEventListener("scroll", () => {
       if (window.scrollY > 400) {
         setShowTopBtn(true);
@@ -744,7 +711,40 @@ const editInquiryForm = () => {
       }
     });
   };
-
+  /* SEPERATE DROP DOWN FUNCTION CALL - TO SET REFERENCE ID AFTER SET */
+ const dropDownfn = (ref) =>{
+    axios
+    .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "PaymentTerms",referenceId:  ref}))
+    .then((response) => {
+      response.data = apidecrypt(response.data);
+      setPaymentTermList(response.data.data);
+    });
+    axios
+    .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "PrintType",referenceId:  ref}))
+    .then((response) => {
+      response.data = apidecrypt(response.data);
+      console.log("PRINT tYPE",response.data);
+      setPrintTypeList(response.data.data);
+    });
+    axios
+    .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "NoofPly",referenceId:  ref}))
+    .then((response) => {
+      response.data = apidecrypt(response.data);
+      setNoOfPlyList(response.data.data);
+    });
+    axios
+    .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "CartonEdgeFinish",referenceId:  ref}))
+    .then((response) => {
+      response.data = apidecrypt(response.data);
+      setCartonEdgeFinishList(response.data.data);
+    });
+    axios
+    .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "Patterns",referenceId:  ref}))
+    .then((response) => {
+      response.data = apidecrypt(response.data);
+      setPatternList(response.data.data);
+    });      
+  }
 
   useEffect(() => {
     getLoginUserType == "user" ? getWorkspaceType != "Factory" ? apiCall() :
@@ -912,7 +912,7 @@ const editInquiryForm = () => {
   /****------- Delete Image  ---------- ****/
   const deleteImageFiles = (imageType, file) => {
     var media = {};
-    media["media_id"] = file.media_id;
+    media["media_id"] = file.media_id ? file.media_id : file.id;
     if (imageType == "MeasurementSheet") {
       Swal.fire({
         title: t("deleteConfirmationTitleAlert"),
@@ -1566,9 +1566,9 @@ const editInquiryForm = () => {
     <Fragment>
       <Row className="pgbgcolor hdbgfixed" >
         <Breadcrumbs
-          mainTitle={t("editInquiry")}
-          parent={t("editInquiry")}
-          title={t("editInquiry")}
+          mainTitle={t("editInquiry") + " " + "IN-"+ inquiry_id}
+          parent={t("editInquiry") + " " + "IN-"+ inquiry_id}
+          title={t("editInquiry") + " " + "IN-"+ inquiry_id}
         />
       </Row>
       <Container fluid={true} className="general-widget topaln">

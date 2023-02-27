@@ -286,7 +286,61 @@ const ViewInquiry = () => {
                                         title={t("viewInquiryDetails")} src={InquiryViewIcon}
                                       />
                                     </a>
+{/********** EDIT ICON ********/ }
+{getLoginUserType == "user" ?                                    
+                                    (inquirydtls.factory_ids == null ? 
+                                      <>
+                                         <img
+                                            width="29px"
+                                            style={{ cursor: "pointer" }}
+                                            className="m-r-30 p-1"
+                                            title={t("editIcon")}
+                                            value={inquirydtls.id}
+                                            src={editIcon}
+                                            onClick={() => {
+                                              editInquiry(inquirydtls.id);
+                                            }}
+                                          />
+                                      </>:
+                                      <>
+                                       <img
+                                         width="29px"
+                                         //style={{ cursor: "pointer" }}
+                                         className="m-r-30 p-1"
+                                         //title={t("editIcon")}
+                                         src={disabledEditIcon}                                        
+                                         /> 
+                                        
+                                   </>)
 
+                                    :
+                                    (getStaff === "Staff" && getStaffPermission.includes("View Response")) || getStaff == null ?
+                                    (inquirydtls.factory_ids == null ? 
+                                      <>
+                                         <img
+                                            width="29px"
+                                            style={{ cursor: "pointer" }}
+                                            className="m-r-30 p-1"
+                                            title={t("editIcon")}
+                                            value={inquirydtls.id}
+                                            src={editIcon}
+                                            onClick={() => {
+                                              editInquiry(inquirydtls.id);
+                                            }}
+                                          />
+                                      </>:
+                                      <>
+                                      <img
+                                         width="29px"
+                                         //style={{ cursor: "pointer" }}
+                                         className="m-r-30 p-1"
+                                         //title={t("editIcon")}
+                                         src={disabledEditIcon}                                        
+                                         /> 
+                                   </>)
+                                      :
+                                      ""}
+                                     {/**********  DOWNLOAD ICON ********/ } 
                                     <img
                                       width="33px"
                                       style={{ cursor: "pointer" }}
@@ -404,60 +458,7 @@ const ViewInquiry = () => {
                                     />
                                       :
                                       ""}
-                                    {/********** EDIT ICON ********/ }
-                                    {getLoginUserType == "user" ?                                    
-                                    (inquirydtls.factory_ids == null ? 
-                                      <>
-                                         <img
-                                            width="29px"
-                                            style={{ cursor: "pointer" }}
-                                            className="m-r-30 p-1"
-                                            title={t("editIcon")}
-                                            value={inquirydtls.id}
-                                            src={editIcon}
-                                            onClick={() => {
-                                              editInquiry(inquirydtls.id);
-                                            }}
-                                          />
-                                      </>:
-                                      <>
-                                       <img
-                                         width="29px"
-                                         //style={{ cursor: "pointer" }}
-                                         className="m-r-30 p-1"
-                                         //title={t("editIcon")}
-                                         src={disabledEditIcon}                                        
-                                         /> 
-                                        
-                                   </>)
-
-                                    :
-                                    (getStaff === "Staff" && getStaffPermission.includes("View Response")) || getStaff == null ?
-                                    (inquirydtls.factory_ids == null ? 
-                                      <>
-                                         <img
-                                            width="29px"
-                                            style={{ cursor: "pointer" }}
-                                            className="m-r-30 p-1"
-                                            title={t("editIcon")}
-                                            value={inquirydtls.id}
-                                            src={editIcon}
-                                            onClick={() => {
-                                              editInquiry(inquirydtls.id);
-                                            }}
-                                          />
-                                      </>:
-                                      <>
-                                      <img
-                                         width="29px"
-                                         //style={{ cursor: "pointer" }}
-                                         className="m-r-30 p-1"
-                                         //title={t("editIcon")}
-                                         src={disabledEditIcon}                                        
-                                         /> 
-                                   </>)
-                                      :
-                                      ""}
+                                    
 
                                     {/********** DELETE ICON ********/ }
                                     {getLoginUserType == "user" ? 
@@ -506,6 +507,61 @@ const ViewInquiry = () => {
                                         title={t("viewInquiryDetails")} src={InquiryViewIcon}
                                       />
                                     </a>
+
+                                    {/********** EDIT ICON ********/ }
+                                  {getLoginUserType == "user" ?                                    
+                                   (inquirydtls.factory_ids == null ? 
+                                     <>
+                               
+                                        <img
+                                           width="29px"
+                                           style={{ cursor: "pointer" }}
+                                           className="m-r-30 p-1"
+                                           title={t("editIcon")}
+                                           value={inquirydtls.id}
+                                           src={editIcon}
+                                           onClick={() => {
+                                             editInquiry(inquirydtls.id);
+                                           }}
+                                         />
+                                     </>:
+                                     <>
+                                      <img
+                                        width="29px"
+                                        //style={{ cursor: "pointer" }}
+                                        className="m-r-30 p-1"
+                                       // title={t("editIcon")}
+                                        src={disabledEditIcon}                                        
+                                        /> 
+                                       
+                                  </>)
+                                   :
+                                   (getStaff === "Staff" && getStaffPermission.includes("View Response")) || getStaff == null ?
+                                   (inquirydtls.factory_ids == null ? 
+                                     <>
+                                        <img
+                                           width="29px"
+                                           style={{ cursor: "pointer" }}
+                                           className="m-r-30 p-1"
+                                           title={t("editIcon")}
+                                           value={inquirydtls.id}
+                                           src={editIcon}
+                                           onClick={() => {
+                                             editInquiry(inquirydtls.id);
+                                           }}
+                                         />
+                                     </>:
+                                     <>
+                                     <img
+                                        width="29px"
+                                       // style={{ cursor: "pointer" }}
+                                        className="m-r-30 p-1"
+                                        //title={t("editIcon")}
+                                        src={disabledEditIcon}                                        
+                                        /> 
+                                  </>)
+                                     :
+                                     ""}
                                       <img
                                           width="33px"
                                           style={{ cursor: "pointer" }}
@@ -629,60 +685,7 @@ const ViewInquiry = () => {
                                       :
                                       ""}
                                    
-                                  {/********** EDIT ICON ********/ }
-                                  {getLoginUserType == "user" ?                                    
-                                   (inquirydtls.factory_ids == null ? 
-                                     <>
-                               
-                                        <img
-                                           width="29px"
-                                           style={{ cursor: "pointer" }}
-                                           className="m-r-30 p-1"
-                                           title={t("editIcon")}
-                                           value={inquirydtls.id}
-                                           src={editIcon}
-                                           onClick={() => {
-                                             editInquiry(inquirydtls.id);
-                                           }}
-                                         />
-                                     </>:
-                                     <>
-                                      <img
-                                        width="29px"
-                                        //style={{ cursor: "pointer" }}
-                                        className="m-r-30 p-1"
-                                       // title={t("editIcon")}
-                                        src={disabledEditIcon}                                        
-                                        /> 
-                                       
-                                  </>)
-                                   :
-                                   (getStaff === "Staff" && getStaffPermission.includes("View Response")) || getStaff == null ?
-                                   (inquirydtls.factory_ids == null ? 
-                                     <>
-                                        <img
-                                           width="29px"
-                                           style={{ cursor: "pointer" }}
-                                           className="m-r-30 p-1"
-                                           title={t("editIcon")}
-                                           value={inquirydtls.id}
-                                           src={editIcon}
-                                           onClick={() => {
-                                             editInquiry(inquirydtls.id);
-                                           }}
-                                         />
-                                     </>:
-                                     <>
-                                     <img
-                                        width="29px"
-                                       // style={{ cursor: "pointer" }}
-                                        className="m-r-30 p-1"
-                                        //title={t("editIcon")}
-                                        src={disabledEditIcon}                                        
-                                        /> 
-                                  </>)
-                                     :
-                                     ""}
+                                  
                                     {/********** DELETE ICON ********/ }
                                     {getLoginUserType == "user" ? 
                                           <img
