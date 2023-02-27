@@ -24,7 +24,7 @@ const FeedbackCommentModal = ({ modal, toggle,factoryFeedbackView,inquiryNo,fact
       
        
       <ModalBody  id="htmljoditListCSS">
-        <div className='f-15'><strong>Comments </strong></div>
+        <div className='f-15'><strong>{t("comments")} </strong></div>
       {(factoryFeedbackView).length > 0 ?
       <>
       {

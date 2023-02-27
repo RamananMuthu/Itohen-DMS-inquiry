@@ -134,17 +134,17 @@ const InquiryFeedbackView = () => {
                         <table className="table shadow shadow-showcase table-striped table-bordered">
                           <thead className="bg-primary">
                             <tr>
-                              <th style={{width:"5%"}} scope="col"  className="centerAlign">{t("serialNo")}</th>
+                              <th style={{width:"5%"}} scope="col"  className="centerAlign">{t("serialNo")} </th>
                               <th style={{width:"10%"}}className="centerAlign">{t("factory")}</th>
                               <th style={{width:"7%"}}className="centerAlign">{t("inquiryId")}</th>
-                              <th style={{width:"8%"}} className="centerAlign">{t("lowestPrice")}</th>
-                              <th style={{width:"9%"}} className="centerAlign">{t("effiCommunication")}</th>
-                              <th style={{width:"9%"}} className="centerAlign">{t("reliableTimeDelivery")}</th>
-                              <th style={{width:"9%"}} className="centerAlign">{t("lessQuantityIssues")}</th>
-                              <th style={{width:"9%"}} className="centerAlign">{t("vbRelations")}</th>
-                              <th style={{width:"7%"}} className="centerAlign">{t("goodSell")}</th>
-                              <th style={{width:"9%"}} className="centerAlign">{t("onTimeSampleSub")}</th>
-                              <th style={{width:"9%"}} className="centerAlign">{t("collabApproach")}</th>
+                              <th style={{width:"8%"}} className="centerAlign">{t("lowestPrice")}<div className="m-t-5 f-12">{t("rating")}</div></th>
+                              <th style={{width:"9%"}} className="centerAlign">{t("effiCommunication")}<div className="m-t-5 f-12">{t("rating")}</div></th>
+                              <th style={{width:"9%"}} className="centerAlign">{t("reliableTimeDelivery")}<div className="m-t-5 f-12">{t("rating")}</div></th>
+                              <th style={{width:"9%"}} className="centerAlign">{t("lessQuantityIssues")}<div className="m-t-5 f-12">{t("rating")}</div></th>
+                              <th style={{width:"9%"}} className="centerAlign">{t("vbRelations")}<div className="m-t-5 f-12">{t("rating")}</div></th>
+                              <th style={{width:"7%"}} className="centerAlign">{t("goodSell")}<div className="m-t-5 f-12">{t("rating")}</div></th>
+                              <th style={{width:"9%"}} className="centerAlign">{t("onTimeSampleSub")}<div className="m-t-5 f-12">{t("rating")}</div></th>
+                              <th style={{width:"9%"}} className="centerAlign">{t("collabApproach")}<div className="m-t-5 f-12">{t("rating")}</div></th>
                               <th style={{width:"9%"}} className="centerAlign">{t("date")}</th>
                             </tr>
                           </thead>
