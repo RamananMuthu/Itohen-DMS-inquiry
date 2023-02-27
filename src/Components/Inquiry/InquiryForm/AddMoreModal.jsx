@@ -46,7 +46,6 @@ const FormAddMoreModal = ({ modal, toggle, infoDetails,setInfoDetails,masterType
                     referenceId: referenceId}))
                   .then((response) => {
                     response.data = apidecrypt(response.data);
-                    console.log("aaa",response.data);
                     setInfoDetails(response.data.data);
                   });
               }

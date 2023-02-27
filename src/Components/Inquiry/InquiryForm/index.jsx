@@ -795,7 +795,7 @@ const index = () => {
   /****------- Delete Image  ---------- ****/
   const deleteImageFiles = (imageType, file) => {
     var media = {};
-    media["media_id"] = file.media_id;
+    media["media_id"] =  file.media_id ? file.media_id : file.id;
     if (imageType == "MeasurementSheet") {
       Swal.fire({
         title: t("deleteConfirmationTitleAlert"),
