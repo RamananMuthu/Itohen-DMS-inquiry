@@ -10,7 +10,7 @@ import download_icon from"../../../assets/images/dms/icons/grey_factory_view_dow
 import responseBlueIcon from "../../../assets/images/dms/inquiryResponseBlueIcon.svg";
 import axios from "axios";
 import ViewFactoryModal from "./ViewFactoryModal";
-import { encode,apiencrypt, apidecrypt, DownloadFile } from "../../../helper";
+import { encode,apiencrypt, apidecrypt, DownloadFile,PHPtoJSFormatConversion } from "../../../helper";
 import { getLoginCompanyId, getWorkspaceId, getWorkspaceType, getLoginUserId, getStaff, getStaffPermission, getLoginUserType,getLoginStaffId } from "../../../Constant/LoginConstant";
 import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
@@ -305,7 +305,7 @@ const InquiryFeedbackView = () => {
                                         }
                                       /></span>}
                                 </td>     
-                                  <td className="centerAlign">{Feedback.created_date} </td>     
+                                  <td className="centerAlign">{PHPtoJSFormatConversion.format(new Date(Feedback.created_date))}</td>     
                                 </tr>
                                 )) } </>:""}
 

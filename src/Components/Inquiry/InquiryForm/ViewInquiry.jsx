@@ -13,7 +13,7 @@ import disabledEditIcon from "../../../assets/images/dms/inquiryDisabledEditIcon
            
 import axios from "axios";
 import ViewFactoryModal from "./ViewFactoryModal";
-import { encode,apiencrypt, apidecrypt, DownloadFile } from "../../../helper";
+import { encode,apiencrypt, apidecrypt, DownloadFile,PHPtoJSFormatConversion } from "../../../helper";
 import { getLoginCompanyId, getWorkspaceId, getWorkspaceType, getLoginUserId, getStaff, getStaffPermission, getLoginUserType,getLoginStaffId } from "../../../Constant/LoginConstant";
 import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
@@ -276,7 +276,7 @@ const ViewInquiry = () => {
                                   <td scope="row" className="centerAlign"> {(index) + 1} </td>
                                   <td className="centerAlign"> {"IN-" + inquirydtls.id} </td>
                                   <td className="centerAlign"> {inquirydtls.style_no} </td>
-                                  <td className="centerAlign"> {inquirydtls.created_date} </td>
+                                  <td className="centerAlign"> {PHPtoJSFormatConversion.format(new Date(inquirydtls.created_date))}</td>
                                   <td className="centerAlign"> {inquirydtls.name} </td>
                                   <td className="centerAlign">
                                     <a href={inquiryDownloadPath + inquirydtls.id + ".pdf"}
@@ -497,7 +497,7 @@ const ViewInquiry = () => {
                                   <td scope="row" className="centerAlign"> {index + 1} </td>
                                   <td className="centerAlign"> {"IN-" + inquirydtls.id} </td>
                                   <td className="centerAlign"> {inquirydtls.style_no} </td>
-                                  <td className="centerAlign"> {inquirydtls.created_date} </td>
+                                  <td className="centerAlign"> {PHPtoJSFormatConversion.format(new Date(inquirydtls.created_date))}</td>
                                   <td className="centerAlign"> {inquirydtls.name} </td>
                                   <td className="centerAlign">
                                     <a href={inquiryDownloadPath + inquirydtls.id + ".pdf"}

@@ -10,7 +10,7 @@ import graySadSmile from "../../../assets/images/dms/inquirygray_icon.svg";
 import graySmile from"../../../assets/images/dms/InquiryRemainingSmile.svg";
 import download_icon from"../../../assets/images/dms/icons/grey_factory_view_download_icon.svg";
 import axios from "axios";
-import { encode, apiencrypt, apidecrypt,calculateDateDiffCountFromTwoDates,DownloadFile } from "../../../helper";
+import { encode, apiencrypt, apidecrypt,calculateDateDiffCountFromTwoDates,DownloadFile,PHPtoJSFormatConversion } from "../../../helper";
 import {
   getLoginCompanyId,
   getWorkspaceId,
@@ -267,7 +267,7 @@ const FactoryViewInquiry = () => {
                                 (getStaff === "Staff" && getStaffPermission.includes("Add Response")) || getStaff == null ?
                                 <th className="centerAlign"> {t("response")} </th> : ""
                               }
-                              <th className="centerAlign"> Action </th>
+                              <th className="centerAlign">{t("action")} </th>
                             </tr>
                           </thead>
                           <tbody>
@@ -283,9 +283,9 @@ const FactoryViewInquiry = () => {
                                   <td className="text-left middle"> {" "}  {"IN-" + inquirydtls.id}  </td>
                                   <td className="text-left middle "> {inquirydtls.style_no} </td>
                                    <td className="text-left middle "> {inquirydtls.user}</td>
-                                  <td className="text-left middle "> {inquirydtls.created_date} </td> 
+                                  <td className="text-left middle "> {PHPtoJSFormatConversion.format(new Date(inquirydtls.created_date))} </td> 
                                   <td className="text-left middle ">{inquirydtls.name}</td>
-                                  <td className="text-left middle ">{inquirydtls.due_date}</td>
+                                  <td className="text-left middle ">{PHPtoJSFormatConversion.format(new Date(inquirydtls.due_date))}</td>
                                   <td className="text-left middle ">
                                     {delayStatus(
                                       inquirydtls.due_days,
