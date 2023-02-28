@@ -86,6 +86,7 @@ const index = () => {
   const [patterns, setPatterns] = useState("");
   const [placesOfJurisdiction, setPlaceOfJurisdiction] = useState("");
   const [customsDeclarationDoc, setCustomsDeclarationDoc] = useState("");
+//  const [customsDeclarationID, setCustomsDeclarationID] = useState([]);
   const [penalty, setPenalty] = useState("");
   const [printType, setPrintType] = useState("");
   const [printSize, setPrintSize] = useState("");
@@ -4026,6 +4027,8 @@ const index = () => {
         setMainLabel={setMainLabel}
         mainLabel={mainLabel}
         referenceId={referenceId}
+        // customsDeclarationID={customsDeclarationID}
+        // setCustomsDeclarationID={setCustomsDeclarationID}
       />
       { /*****PaymentTerms,penalty,No of ply,Patterns,Carton Edge Finish Drop Down "+Add More" ****/ }
       <AddNewDropdownModal
