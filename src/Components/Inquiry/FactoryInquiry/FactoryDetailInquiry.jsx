@@ -1,13 +1,15 @@
-import React, { Fragment, useState, useEffect,useMemo,useRef } from "react";
+import React, { Fragment, useState, useEffect, useMemo, useRef } from "react";
 import { Container, Row, Col, CardBody, Card, Form, FormGroup, Label, Input, Button } from "reactstrap";
 import { Breadcrumbs, H6 } from "../../../AbstractElements";
 import { useTranslation } from 'react-i18next';
 import axios from "axios";
 import Swal from "sweetalert2";
-import { getLoginCompanyId, getWorkspaceId, getLoginUserId, getWorkspaceType, getLoginUserType, 
-         getStaff,getLoginStaffId ,getStaffPermission } from '../../../Constant/LoginConstant';
+import {
+  getLoginCompanyId, getWorkspaceId, getLoginUserId, getWorkspaceType, getLoginUserType,
+  getStaff, getLoginStaffId, getStaffPermission
+} from '../../../Constant/LoginConstant';
 import { ServerUrl } from "../../../Constant";
-import { getColorSizeQtyInquiry, decode, apiencrypt, apidecrypt } from "../../../helper";
+import { getColorSizeQtyInquiry, decode, apiencrypt, apidecrypt, PHPtoJSFormatConversion } from "../../../helper";
 import parse from 'html-react-parser';
 import { useSearchParams, } from "react-router-dom";
 import JoditEditor from 'jodit-react';
@@ -72,125 +74,126 @@ const FactoryDetailInquiry = () => {
 
   const apiCall = () => {
     axios
-    .post(ServerUrl + "/inquiry-details", apiencrypt(getInputParams))
-    .then((response) => {
-      response.data = apidecrypt(response.data);
-      setFactoryInquiryDetails(response.data.data[0]);
-      setPaymentInstructionsHtmlString(parse(response.data.data[0].payment_instructions));
-      setSpecialFinishHtmlString(parse(response.data.data[0].special_finish));
-      setSpecialRequesHtmlString(parse(response.data.data[0].sample_requirements));
-      setForbiddenSubstanceHtmlString(parse(response.data.data[0].forbidden_substance_info));
-      setHtmlString(parse(response.data.data[0].special_requests));
-      setTestingRequirementsHtmlString(parse(response.data.data[0].testing_requirements));
-      setStyleArticleDescriptionHtmlString(parse(response.data.data[0].style_article_description));
-      setTrimsNotificationsHtmlString(parse(response.data.data[0].trims_nominations));
-      setPaymentTermsHtmlString(parse(response.data.data[0].payment_terms));
-      setCurrencySymbol(response.data.data[0].currency);
-      setMeasurementSheetList(JSON.parse(response.data.data[0].measurement_sheet));
-    })
-
-  axios
-    .post(ServerUrl + "/factory-inquiry-response", apiencrypt(getInputParams))
-    .then((response) => {
-      response.data = apidecrypt(response.data);
-      setInquiryResponse(response.data.data[0] ? response.data.data[0] : "");
-      setPrice(response.data.data[0].price ? (response.data.data[0].price) : "");
-      setComments(response.data.data[0].comments ? response.data.data[0].comments : "");
-    })
-
-  axios
-    .post(ServerUrl + "/inquiry-media", apiencrypt(getInputParams))
-    .then((response) => {
-      response.data = apidecrypt(response.data);
-      (response.data.data.files).map((mapData) => {
-        if (mapData.media_type == "MeasurementSheet") {
-          var getMeasurementDetails = mapData.filepath;
-          measurementSheetData.push(getMeasurementDetails);
-          setMeasurementSheet(measurementSheetData)
-          setAwsUrl(response.data.data.serverURL)
-        }
-        // Check the media type for showing the Image
-        if (mapData.media_type == "SampleFormat") {
-          var getDetails = mapData.filepath;
-          sampleFormatData.push(getDetails);
-          setSampleFormat(sampleFormatData)
-          setAwsUrl(response.data.data.serverURL)
-        }
-        if (mapData.media_type == "PrintImage") {
-          var getDetails = mapData.filepath;
-          printImageData.push(getDetails);
-          setPrintImage(printImageData)
-          setAwsUrl(response.data.data.serverURL)
-        }
-        if (mapData.media_type == "MainLabel") {
-          var getDetails = mapData.filepath;
-          mainLableData.push(getDetails);
-          setMainLable(mainLableData)
-          setAwsUrl(response.data.data.serverURL)
-        }
-        if (mapData.media_type == "WashCareLabel") {
-          var getDetails = mapData.filepath;
-          washCareData.push(getDetails);
-          setWashCareLable(washCareData)
-          setAwsUrl(response.data.data.serverURL)
-        }
-        if (mapData.media_type == "Hangtag") {
-          var getDetails = mapData.filepath;
-          hangtagData.push(getDetails);
-          setHangtag(hangtagData)
-          setAwsUrl(response.data.data.serverURL)
-        }
-        if (mapData.media_type == "BarcodeStickers") {
-          var getDetails = mapData.filepath;
-          barcodeStickersData.push(getDetails);
-          setBarcodeStickers(barcodeStickersData)
-          setAwsUrl(response.data.data.serverURL)
-        }
-        if (mapData.media_type == "Polybag") {
-          var getDetails = mapData.filepath;
-          polybagData.push(getDetails);
-          setPolybagImage(polybagData)
-          setAwsUrl(response.data.data.serverURL)
-        }
-        if (mapData.media_type == "Carton") {
-          var getDetails = mapData.filepath;
-          cartonData.push(getDetails);
-          setCartonImage(cartonData)
-          setAwsUrl(response.data.data.serverURL)
-        }
+      .post(ServerUrl + "/inquiry-details", apiencrypt(getInputParams))
+      .then((response) => {
+        response.data = apidecrypt(response.data);
+        setFactoryInquiryDetails(response.data.data[0]);
+        setPaymentInstructionsHtmlString(parse(response.data.data[0].payment_instructions));
+        setSpecialFinishHtmlString(parse(response.data.data[0].special_finish));
+        setSpecialRequesHtmlString(parse(response.data.data[0].sample_requirements));
+        setForbiddenSubstanceHtmlString(parse(response.data.data[0].forbidden_substance_info));
+        setHtmlString(parse(response.data.data[0].special_requests));
+        setTestingRequirementsHtmlString(parse(response.data.data[0].testing_requirements));
+        setStyleArticleDescriptionHtmlString(parse(response.data.data[0].style_article_description));
+        setTrimsNotificationsHtmlString(parse(response.data.data[0].trims_nominations));
+        setPaymentTermsHtmlString(parse(response.data.data[0].payment_terms));
+        setCurrencySymbol(response.data.data[0].currency);
+        setMeasurementSheetList(JSON.parse(response.data.data[0].measurement_sheet));
       })
-    })
 
-// ********** API call for SKU Quantity Ratio ************
-  axios
-    .post(ServerUrl + "/inquiry-sku", apiencrypt(getInputParams))
-    .then((response) => {
-      response.data = apidecrypt(response.data);
-      setOrderskuDetails(response.data.data.sku);
-      setGetColor(response.data.data.colors);
-      setGetSize(response.data.data.sizes);
-    })
-  setValiderrors(() => "");
+    axios
+      .post(ServerUrl + "/factory-inquiry-response", apiencrypt(getInputParams))
+      .then((response) => {
+        response.data = apidecrypt(response.data);
+        setInquiryResponse(response.data.data[0] ? response.data.data[0] : "");
+        setPrice(response.data.data[0].price ? (response.data.data[0].price) : "");
+        setComments(response.data.data[0].comments ? response.data.data[0].comments : "");
+      })
+
+    axios
+      .post(ServerUrl + "/inquiry-media", apiencrypt(getInputParams))
+      .then((response) => {
+        response.data = apidecrypt(response.data);
+        (response.data.data.files).map((mapData) => {
+          if (mapData.media_type == "MeasurementSheet") {
+            var getMeasurementDetails = mapData.filepath;
+            measurementSheetData.push(getMeasurementDetails);
+            setMeasurementSheet(measurementSheetData)
+            setAwsUrl(response.data.data.serverURL)
+          }
+          // Check the media type for showing the Image
+          if (mapData.media_type == "SampleFormat") {
+            var getDetails = mapData.filepath;
+            sampleFormatData.push(getDetails);
+            setSampleFormat(sampleFormatData)
+            setAwsUrl(response.data.data.serverURL)
+          }
+          if (mapData.media_type == "PrintImage") {
+            var getDetails = mapData.filepath;
+            printImageData.push(getDetails);
+            setPrintImage(printImageData)
+            setAwsUrl(response.data.data.serverURL)
+          }
+          if (mapData.media_type == "MainLabel") {
+            var getDetails = mapData.filepath;
+            mainLableData.push(getDetails);
+            setMainLable(mainLableData)
+            setAwsUrl(response.data.data.serverURL)
+          }
+          if (mapData.media_type == "WashCareLabel") {
+            var getDetails = mapData.filepath;
+            washCareData.push(getDetails);
+            setWashCareLable(washCareData)
+            setAwsUrl(response.data.data.serverURL)
+          }
+          if (mapData.media_type == "Hangtag") {
+            var getDetails = mapData.filepath;
+            hangtagData.push(getDetails);
+            setHangtag(hangtagData)
+            setAwsUrl(response.data.data.serverURL)
+          }
+          if (mapData.media_type == "BarcodeStickers") {
+            var getDetails = mapData.filepath;
+            barcodeStickersData.push(getDetails);
+            setBarcodeStickers(barcodeStickersData)
+            setAwsUrl(response.data.data.serverURL)
+          }
+          if (mapData.media_type == "Polybag") {
+            var getDetails = mapData.filepath;
+            polybagData.push(getDetails);
+            setPolybagImage(polybagData)
+            setAwsUrl(response.data.data.serverURL)
+          }
+          if (mapData.media_type == "Carton") {
+            var getDetails = mapData.filepath;
+            cartonData.push(getDetails);
+            setCartonImage(cartonData)
+            setAwsUrl(response.data.data.serverURL)
+          }
+        })
+      })
+
+    // ********** API call for SKU Quantity Ratio ************
+    axios
+      .post(ServerUrl + "/inquiry-sku", apiencrypt(getInputParams))
+      .then((response) => {
+        response.data = apidecrypt(response.data);
+        setOrderskuDetails(response.data.data.sku);
+        setGetColor(response.data.data.colors);
+        setGetSize(response.data.data.sizes);
+      })
+    setValiderrors(() => "");
   };
 
   useEffect(() => {
-    {getLoginUserType == "user" ?  (getWorkspaceType == "Factory") ? 
-        apiCall()  : window.location.href = `${process.env.PUBLIC_URL}/viewinquiry`
-        // window.location.href='/inquiry/viewinquiry'
+    {
+      getLoginUserType == "user" ? (getWorkspaceType == "Factory") ?
+        apiCall() : window.location.href = `${process.env.PUBLIC_URL}/viewinquiry`
+      // window.location.href='/inquiry/viewinquiry'
       :
-      (getStaff === "Staff" && getWorkspaceType == "Factory") ?  
-        ( getStaffPermission.includes("View Factory Inquiry")) ? 
-        apiCall() :  window.location.href = `${process.env.PUBLIC_URL}/inquirycontacts`
+      (getStaff === "Staff" && getWorkspaceType == "Factory") ?
+        (getStaffPermission.includes("View Factory Inquiry")) ?
+          apiCall() : window.location.href = `${process.env.PUBLIC_URL}/inquirycontacts`
         //  window.location.href='/inquiry/inquirycontacts'
-      :
-        (getStaffPermission.includes("View Inquiry")) ? 
-        window.location.href = `${process.env.PUBLIC_URL}/viewinquiry`
+        :
+        (getStaffPermission.includes("View Inquiry")) ?
+          window.location.href = `${process.env.PUBLIC_URL}/viewinquiry`
           // window.location.href='/inquiry/viewinquiry' 
           :
           window.location.href = `${process.env.PUBLIC_URL}/feedbackform`
-          // window.location.href='/inquiry/feedbackform' 
+      // window.location.href='/inquiry/feedbackform' 
     }
-  
+
   }, []);
 
   const config = useMemo(() => ({
@@ -229,7 +232,7 @@ const FactoryDetailInquiry = () => {
     ],
     uploader: { insertImageAsBase64URI: true },
 
-    placeholder: placeholder ||t("startTyping"),
+    placeholder: placeholder || t("startTyping"),
     hidePoweredByJodit: false,
   }),
     [placeholder])
@@ -244,8 +247,8 @@ const FactoryDetailInquiry = () => {
       inquiryFormInputParams['factory_id'] = getLoginUserId;
       inquiryFormInputParams['price'] = price;
       inquiryFormInputParams['comments'] = comments;
-      inquiryFormInputParams['user_id']= getLoginUserType == "user"? getLoginUserId : getLoginStaffId;
-      inquiryFormInputParams['user_type']= getLoginUserType;
+      inquiryFormInputParams['user_id'] = getLoginUserType == "user" ? getLoginUserId : getLoginStaffId;
+      inquiryFormInputParams['user_type'] = getLoginUserType;
 
       axios.post(ServerUrl + "/save-inquiry-factory-response", apiencrypt(inquiryFormInputParams))
         .then((response) => {
@@ -257,8 +260,7 @@ const FactoryDetailInquiry = () => {
               button: t("okLabel"),
               allowOutsideClick: false
             }).then((result) => {
-              if (result.isConfirmed) 
-              {
+              if (result.isConfirmed) {
                 window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry`
                 // window.location.href = '/inquiry/factoryviewinquiry';
               }
@@ -320,19 +322,21 @@ const FactoryDetailInquiry = () => {
                             <tr>
                               {factoryInquiryDetails.article_name ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("articleName")}  </td>
+                                  <td className="">{t("articleName")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.article_name} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.style_no ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("styleNo")}  </td>
+                                  <td className="">{t("styleNo")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.style_no} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
-                              <td className="factoryDetailsTable">{t("sampleFormat")}  </td>
+                            </tr>
+                            <tr>
+                              <td className="">{t("sampleFormat")}  </td>
                               <td className="text-left">
                                 {sampleFormatImage.map((obj) => (
                                   <a href={awsUrl + obj} target="_blank">
@@ -341,91 +345,104 @@ const FactoryDetailInquiry = () => {
                                   </a>
                                 ))}
                               </td>
-                            </tr><tr>
-                              {factoryInquiryDetails.fabric_type_id ?
-                                <>
-                                  <td className="factoryDetailsTable">{t("fabricComposition")} </td>
-                                  <td className="text-left"> {factoryInquiryDetails.fabric_type_id} </td>
-                                </>
-                                : ""}
-                            </tr><tr>
-                              {factoryInquiryDetails.fabric_GSM ?
-                                <>
-                                  <td className="factoryDetailsTable">{t("fabricGSM")}  </td>
-                                  <td className="text-left"> {factoryInquiryDetails.fabric_GSM} </td>
-                                </>
-                                : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.fabric_type ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("fabricType")}</td>
+                                  <td className="">{t("fabricType")}</td>
                                   <td className="text-left"> {factoryInquiryDetails.fabric_type} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
-                              {factoryInquiryDetails.yarn_count ?
+                            </tr>
+                            <tr>
+                              {factoryInquiryDetails.fabric_type_id ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("yarnCount")}  </td>
-                                  <td className="text-left"> {factoryInquiryDetails.yarn_count} </td>
+                                  <td className="">{t("fabricComposition")} </td>
+                                  <td className="text-left"> {factoryInquiryDetails.fabric_type_id} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
+                              {factoryInquiryDetails.fabric_GSM ?
+                                <>
+                                  <td className="">{t("fabricGSM")}  </td>
+                                  <td className="text-left"> {factoryInquiryDetails.fabric_GSM} {"GSM"} </td>
+                                </>
+                                : ""}
+                            </tr>
+                            <tr>
+                              {factoryInquiryDetails.yarn_count ?
+                                <>
+                                  <td className="">{t("yarnCount")}  </td>
+                                  <td className="text-left"> {"Ne"} {factoryInquiryDetails.yarn_count} {"Count"} </td>
+                                </>
+                                : ""}
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.target_price ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("targetPrice")}  </td>
+                                  <td className="">{t("targetPrice")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.currency} {factoryInquiryDetails.target_price} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
-                              {factoryInquiryDetails.incoterms ?
+                            </tr>
+                            <tr>
+                              {factoryInquiryDetails.income_terms ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("incomeTerms")}  </td>
-                                  <td className="text-left"> {factoryInquiryDetails.incoterms} </td>
+                                  <td className="">{t("incomeTerms")}  </td>
+                                  <td className="text-left"> {factoryInquiryDetails.income_terms} </td>
                                 </>
                                 : ""}
-                                </tr><tr>
-                            {factoryInquiryDetails.payment_instructions ?
+                            </tr>
+                            <tr>
+                              {factoryInquiryDetails.payment_instructions ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("paymentinstructions")}  </td>
+                                  <td className="">{t("paymentinstructions")}  </td>
                                   <td className="text-left"> {paymentInstructionsHtmlString} </td>
                                 </>
-                                : <td className="text-left"> {paymentInstructionsHtmlString} </td>}
-                            </tr><tr>
+                                : ""}
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.payment_terms ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("paymentTerms")}  </td>
+                                  <td className="">{t("paymentTerms")}  </td>
                                   <td className="text-left"> {paymentTermsHtmlString} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.due_date && (factoryInquiryDetails.due_date != "0000-00-00") ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("inquiryDueDate")}  </td>
-                                  <td className="text-left"> {factoryInquiryDetails.due_date} </td>
+                                  <td className="">{t("inquiryDueDate")}  </td>
+                                  <td className="text-left"> {PHPtoJSFormatConversion.format(new Date(factoryInquiryDetails.due_date))} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.style_article_description ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("styleArticleDescription")}  </td>
+                                  <td className="">{t("styleArticleDescription")}  </td>
                                   <td className="text-left"> {styleArticleDescriptionHtmlString} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.special_finish ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("specialFinishers")}  </td>
+                                  <td className="">{t("specialFinishers")}  </td>
                                   <td className="text-left"> {specialFinishHtmlString} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.total_qty ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("totalQuantity")}  </td>
+                                  <td className="">{t("totalQuantity")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.total_qty} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               <td className="text-left" colSpan={3}>
                                 <Col className="table-responsive" md="12" sm="12" lg="12">
                                   <Card>
@@ -470,10 +487,11 @@ const FactoryDetailInquiry = () => {
                                   </Card>
                                 </Col>
                               </td>
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.measurement_sheet ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("measurementChart")}  </td>
+                                  <td className="">{t("measurementChart")}  </td>
                                   <td className="text-left">
                                     <Col className="table-responsive" md="12" sm="12" lg="12">
                                       <Card>
@@ -518,69 +536,79 @@ const FactoryDetailInquiry = () => {
                                   </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.measurementSheet ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("measurementSheet")}  </td>
+                                  <td className="">{t("measurementSheet")}  </td>
                                   <td className="text-left">
                                     <a href={awsUrl + measurementSheet} target="_blank"> {measurementSheet} </a>
                                   </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.patterns ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("patterns")}  </td>
+                                  <td className="">{t("patterns")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.patterns} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.jurisdiction ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("placeofJurisdiction")}  </td>
+                                  <td className="">{t("placeofJurisdiction")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.jurisdiction} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.customs_declaraion_document ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("customsDeclarationDocument")}  </td>
+                                  <td className="">{t("customsDeclarationDocument")}  </td>
                                   <td className="text-left"> {parse(factoryInquiryDetails.customs_declaraion_document)} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.penality ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("penaltyLabel")}  </td>
+                                  <td className="">{t("penaltyLabel")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.penality} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               <td className="text-left" colSpan="3">
                                 <H6 className="ordersubhead">{t("printInformation")}</H6>  </td>
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.print_type ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("printType")}  </td>
+                                  <td className="">{t("printType")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.print_type} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.print_size ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("printSize")}  </td>
+                                  <td className="">{t("printSize")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.print_size} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.print_no_of_colors ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("noOfColors")}  </td>
+                                  <td className="">{t("noOfColors")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.print_no_of_colors} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
-                              <td className="factoryDetailsTable">{t("printImage")}  </td>
+                            </tr>
+                            <tr>
+                              <td className="">{t("printImage")}  </td>
                               <td className="text-left">
                                 {printImage.map((obj) => (
                                   <a href={awsUrl + obj} target="_blank">
@@ -589,18 +617,20 @@ const FactoryDetailInquiry = () => {
                                   </a>
                                 ))}
                               </td>
-                            </tr><tr>
-                              <td className="factoryDetailsTable" colSpan="2">
+                            </tr>
+                            <tr>
+                              <td className="" colSpan="2">
                                 <H6 className="ordersubhead">{t("trimsInformation")}</H6></td>
                             </tr><tr>
                               {factoryInquiryDetails.main_lable ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("mainLabel")}  </td>
+                                  <td className="">{t("mainLabel")}  </td>
                                   <td className="text-left"> {parse(factoryInquiryDetails.main_lable)} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
-                              <td className="factoryDetailsTable">{t("mainLabelSample")}</td>
+                            </tr>
+                            <tr>
+                              <td className="">{t("mainLabelSample")}</td>
                               <td className="text-left">
                                 {mainLableImage.map((obj) => (
                                   <a href={awsUrl + obj} target="_blank">
@@ -609,15 +639,17 @@ const FactoryDetailInquiry = () => {
                                   </a>
                                 ))}
                               </td>
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.washcare_lable ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("washCareLabel")}  </td>
+                                  <td className="">{t("washCareLabel")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.washcare_lable} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
-                              <td className="factoryDetailsTable">{t("washCareLabelSample")}  </td>
+                            </tr>
+                            <tr>
+                              <td className="">{t("washCareLabelSample")}  </td>
                               <td className="text-left">
                                 {washCareLableImage.map((obj) => (
                                   <a href={awsUrl + obj} target="_blank">
@@ -626,15 +658,17 @@ const FactoryDetailInquiry = () => {
                                   </a>
                                 ))}
                               </td>
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.hangtag_lable ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("hangtag")}  </td>
+                                  <td className="">{t("hangtag")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.hangtag_lable} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
-                              <td className="factoryDetailsTable">{t("hangtagSample")}  </td>
+                            </tr>
+                            <tr>
+                              <td className="">{t("hangtagSample")}  </td>
                               <td className="text-left">
                                 {hangtagImage.map((obj) => (
                                   <a href={awsUrl + obj} target="_blank">
@@ -643,15 +677,17 @@ const FactoryDetailInquiry = () => {
                                   </a>
                                 ))}
                               </td>
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.barcode_lable ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("barcodeStickers")}  </td>
+                                  <td className="">{t("barcodeStickers")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.barcode_lable} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
-                              <td className="factoryDetailsTable">{t("barcodeStickersSample")}  </td>
+                            </tr>
+                            <tr>
+                              <td className="">{t("barcodeStickersSample")}  </td>
                               <td className="text-left">
                                 {barcodeStickersImage.map((obj) => (
                                   <a href={awsUrl + obj} target="_blank">
@@ -660,150 +696,171 @@ const FactoryDetailInquiry = () => {
                                   </a>
                                 ))}
                               </td>
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.trims_nominations ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("trimsNotificationsSpecify")}  </td>
+                                  <td className="">{t("trimsNotificationsSpecify")}  </td>
                                   <td className="text-left"> {trimsNotificationsHtmlString} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
-                              <td className="factoryDetailsTable" colSpan="2">
+                            </tr>
+                            <tr>
+                              <td className="" colSpan="2">
                                 <H6 className="ordersubhead">{t("packingInformation")}</H6> </td>
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.poly_bag_size ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("polybagSizeThickness")}  </td>
+                                  <td className="">{t("polybagSizeThickness")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.poly_bag_size} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.poly_bag_material ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("polybagMaterial")}  </td>
+                                  <td className="">{t("polybagMaterial")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.poly_bag_material} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
-                            {factoryInquiryDetails.poly_bag_print ?
+                            </tr>
+                            <tr>
+                              {factoryInquiryDetails.poly_bag_print ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("printDetailsPolybag")}</td>
+                                  <td className="">{t("printDetailsPolybag")}</td>
                                   <td className="text-left">{factoryInquiryDetails.poly_bag_print}</td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.poly_bag_price ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("printDetailsPolybag")}</td>
+                                  <td className="">{t("printDetailsPolybag")}</td>
                                   <td className="text-left">{factoryInquiryDetails.poly_bag_price}</td>
                                 </>
                                 : ""}
-                            </tr><tr>
-                              <td className="factoryDetailsTable">{t("polybagSampleImage")} </td>
+                            </tr>
+                            <tr>
+                              <td className="">{t("polybagPrintArtwork")} </td>
                               <td className="text-left">
                                 {polybagImage.map((obj) => (
                                   <a href={awsUrl + obj} target="_blank">
-                                    < img src={awsUrl + obj} alt={t("polybagSampleImage")} width="80px" height="80px"
+                                    < img src={awsUrl + obj} alt={t("polybagPrintArtwork")} width="80px" height="80px"
                                       className="p-r-5 rounded" />
                                   </a>
                                 ))}
                               </td>
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.carton_bag_dimensions ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("cartonBoxDimensions")}  </td>
+                                  <td className="">{t("cartonBoxDimensions")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.carton_bag_dimensions} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.carton_color ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("cartonColor")}  </td>
+                                  <td className="">{t("cartonColor")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.carton_color} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.carton_material ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("cartonMaterial")}  </td>
+                                  <td className="">{t("cartonMaterial")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.carton_material} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.barcode_lable ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("cartonEdgeFinish")}  </td>
+                                  <td className="">{t("cartonEdgeFinish")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.barcode_lable} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.carton_edge_finish ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("cartonMarkDetails")}  </td>
+                                  <td className="">{t("cartonMarkDetails")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.carton_edge_finish} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
-                              <td className="factoryDetailsTable">{t("cartonSampleImage")}  </td>
+                            </tr>
+                            <tr>
+                              <td className="">{t("cartonMarkImg")}  </td>
                               <td className="text-left">
                                 {cartonImage.map((obj) => (
                                   <a href={awsUrl + obj} target="_blank">
-                                    < img src={awsUrl + obj} alt={t("cartonSampleImage")} width="80px" height="80px"
+                                    < img src={awsUrl + obj} alt={t("cartonMarkImg")} width="80px" height="80px"
                                       className="p-r-5 rounded" />
                                   </a>
                                 ))}
                               </td>
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.make_up ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("makeUp")}  </td>
+                                  <td className="">{t("makeUp")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.make_up} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.films_cd ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("filmsCD")}  </td>
+                                  <td className="">{t("filmsCD")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.films_cd} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.picture_card ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("pictureCard")}  </td>
+                                  <td className="">{t("pictureCard")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.picture_card} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.inner_cardboard ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("innerCardboard")}  </td>
+                                  <td className="">{t("innerCardboard")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.inner_cardboard} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.estimate_delivery_date &&
                                 (factoryInquiryDetails.estimate_delivery_date != "0000-00-00") ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("estimatedDeliveryDate")}  </td>
+                                  <td className="">{t("estimatedDeliveryDate")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.estimate_delivery_date} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.shipping_size ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("shippingSize")}  </td>
+                                  <td className="">{t("shippingSize")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.shipping_size} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.air_frieght ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("airFreight")}  </td>
+                                  <td className="">{t("airFreight")}  </td>
                                   <td className="text-left"> {factoryInquiryDetails.air_frieght} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {/* {factoryInquiryDetails.testing_requirements || factoryInquiryDetails.forbidden_substance_info ||
                             factoryInquiryDetails.sample_requirements || factoryInquiryDetails.special_requests ? 
                             <>
@@ -811,33 +868,37 @@ const FactoryDetailInquiry = () => {
                               <H6 className="ordersubhead">{t("others")}</H6> </td>
                             </>
                             :  ""} */}
-                              <td className="factoryDetailsTable" colSpan="3">
+                              <td className="" colSpan="3">
                                 <H6 className="ordersubhead">{t("others")}</H6> </td>
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.forbidden_substance_info ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("forbiddenSubstancesInformation")}  </td>
+                                  <td className="">{t("forbiddenSubstancesInformation")}  </td>
                                   <td className="text-left"> {forbiddenSubstanceHtmlString} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.testing_requirements ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("testingRequirement")}  </td>
+                                  <td className="">{t("testingRequirement")}  </td>
                                   <td className="text-left"> {testingRequirementsHtmlString} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.sample_requirements ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("SampleRequirements")}  </td>
+                                  <td className="">{t("SampleRequirements")}  </td>
                                   <td className="text-left"> {specialRequesHtmlString} </td>
                                 </>
                                 : ""}
-                            </tr><tr>
+                            </tr>
+                            <tr>
                               {factoryInquiryDetails.special_requests ?
                                 <>
-                                  <td className="factoryDetailsTable">{t("specialRequestIfAny")}  </td>
+                                  <td className="">{t("specialRequestIfAny")}  </td>
                                   <td className="text-left"> {sampleRequirementsHtmlString} </td>
                                 </>
                                 : ""}
@@ -853,7 +914,7 @@ const FactoryDetailInquiry = () => {
                                 <tr>
                                   {inquiryResponse.price ?
                                     <>
-                                      <td className="factoryDetailsTable"> {t("price")} </td>
+                                      <td className=""> {t("price")} </td>
                                       <td className="text-left"> {currencySymbol} {price} </td>
                                     </>
                                     : ""}
@@ -861,7 +922,7 @@ const FactoryDetailInquiry = () => {
                                 <tr>
                                   {inquiryResponse.comments ?
                                     <>
-                                      <td className="factoryDetailsTable">{t("comments")}  </td>
+                                      <td className="">{t("comments")}  </td>
                                       <td className="text-left"> {parse(comments)} </td>
                                     </>
                                     : ""}
@@ -878,115 +939,127 @@ const FactoryDetailInquiry = () => {
                   </Col>
                 </Row>
 
-                {getLoginUserType == "user" ? 
+                {getLoginUserType == "user" ?
                   <Row className="mt-5">
-                  {inquiryResponse.length >= 0 ?
-                    <Form>
-                      <Col xl="4" lg="6" md="6" sm="12">
-                        <FormGroup>
-                          <Label>{t("price")}</Label> (in {currencySymbol})<sup className="font-danger">*</sup>
-                          <Input name="price" placeholder={t("pleaseEnterPrice")}
-                            // disabled={price ? true : false}
-                            maxLength="20"
-                            defaultValue={price}
-                            onChange={(e) => setPrice(e.target.value)}>
-                          </Input>
-                          {validerrors.price && (
-                            <span className="error-msg">{validerrors.price}</span>
-                          )}
+                    {inquiryResponse.length >= 0 ?
+                      <Form>
+                        <Col xl="4" lg="6" md="6" sm="12">
+                          <FormGroup>
+                            <Label>{t("price")}</Label> (in {currencySymbol})<sup className="font-danger">*</sup>
+                            <Input name="price" placeholder={t("pleaseEnterPrice")}
+                              // disabled={price ? true : false}
+                              maxLength="20"
+                              defaultValue={price}
+                              onChange={(e) => setPrice(e.target.value)}>
+                            </Input>
+                            {validerrors.price && (
+                              <span className="error-msg">{validerrors.price}</span>
+                            )}
+                          </FormGroup>
+                        </Col>
+
+                        <Col xl="4" lg="6" md="6" sm="12">
+                          <FormGroup>
+                            <Label className="form-label">{t("comments")}</Label><sup className="font-danger">*</sup>
+                            <JoditEditor
+                              ref={editor}
+                              value={comments}
+                              config={config}
+                              tabIndex={1}
+                              onChange={(newContent) => setComments(newContent)}
+                            />
+                            {validerrors.comments && (
+                              <span className="error-msg">{validerrors.comments}</span>
+                            )}
+                          </FormGroup>
+                        </Col>
+
+                        <FormGroup className="f-right">
+                          <Button
+                            className="btn btn-primary mx-2" onClick={() => { submitFactoryInquiryForm() }} >
+                            {t("sentQuote")}
+                          </Button>
+
+                          <Button className="btn-sm secondaryBtn m-r-10 f-right"
+                            onClick={() => onGoBack()}>
+                            {t("goBack")}
+                          </Button>
                         </FormGroup>
-                      </Col>
-
-                      <Col xl="4" lg="6" md="6" sm="12">
-                        <FormGroup>
-                          <Label className="form-label">{t("comments")}</Label><sup className="font-danger">*</sup>
-                          <JoditEditor
-                          ref={editor}
-                          value={comments}
-                          config={config}
-                          tabIndex={1}
-                          onChange={(newContent) => setComments(newContent)}
-                        />
-                          {validerrors.comments && (
-                            <span className="error-msg">{validerrors.comments}</span>
-                          )}
-                        </FormGroup>
-                      </Col>
-
-                      <FormGroup className="f-right">
-                        <Button
-                          className="btn btn-primary mx-2" onClick={() => { submitFactoryInquiryForm() }} >
-                          {t("sentQuote")}
-                        </Button>
-
-                        <Button className="btn-sm secondaryBtn m-r-10 f-right"
-                          onClick={() => onGoBack()}>
-                          {t("goBack")}
-                        </Button>
-                      </FormGroup>
-                    </Form>
-                    :
-                    <>
-                      <Col xl="8" lg="8" md="8" sm="12"></Col>
-                      <Col xl="4" lg="4" md="4" sm="12">
-                        <Button className="btn-sm secondaryBtn m-r-10 f-right"
-                          onClick={() => onGoBack()}>
-                          {t("goBack")}
-                        </Button>
-                      </Col>
-                    </>
-                  }
+                      </Form>
+                      :
+                      <>
+                        <Col xl="8" lg="8" md="8" sm="12"></Col>
+                        <Col xl="4" lg="4" md="4" sm="12">
+                          <Button className="btn-sm secondaryBtn m-r-10 f-right"
+                            onClick={() => onGoBack()}>
+                            {t("goBack")}
+                          </Button>
+                        </Col>
+                      </>
+                    }
                   </Row>
                   :
                   (getStaff === "Staff" && getStaffPermission.includes("Add Response")) || getStaff == null ?
-                  <Row className="mt-5">
-                  {inquiryResponse.length >= 0 ?
-                    <Form>
-                      <Col xl="4" lg="6" md="6" sm="12">
-                        <FormGroup>
-                          <Label>{t("price")}</Label> (in {currencySymbol})<sup className="font-danger">*</sup>
-                          <Input name="price" placeholder={t("pleaseEnterPrice")}
-                            // disabled={price ? true : false}
-                            maxLength="20"
-                            defaultValue={price}
-                            onChange={(e) => setPrice(e.target.value)}>
-                          </Input>
-                          {validerrors.price && (
-                            <span className="error-msg">{validerrors.price}</span>
-                          )}
-                        </FormGroup>
-                      </Col>
+                    <Row className="mt-5">
+                      {inquiryResponse.length >= 0 ?
+                        <Form>
+                          <Col xl="4" lg="6" md="6" sm="12">
+                            <FormGroup>
+                              <Label>{t("price")}</Label> (in {currencySymbol})<sup className="font-danger">*</sup>
+                              <Input name="price" placeholder={t("pleaseEnterPrice")}
+                                // disabled={price ? true : false}
+                                maxLength="20"
+                                defaultValue={price}
+                                onChange={(e) => setPrice(e.target.value)}>
+                              </Input>
+                              {validerrors.price && (
+                                <span className="error-msg">{validerrors.price}</span>
+                              )}
+                            </FormGroup>
+                          </Col>
 
-                      <Col xl="4" lg="6" md="6" sm="12">
-                        <FormGroup>
-                          <Label className="form-label">{t("comments")}</Label><sup className="font-danger">*</sup>
-                          <JoditEditor
-                          ref={editor}
-                          value={comments}
-                          config={config}
-                          tabIndex={1}
-                          onChange={(newContent) => setComments(newContent)}
-                        />
-                          {validerrors.comments && (
-                            <span className="error-msg">{validerrors.comments}</span>
-                          )}
-                        </FormGroup>
-                      </Col>
+                          <Col xl="4" lg="6" md="6" sm="12">
+                            <FormGroup>
+                              <Label className="form-label">{t("comments")}</Label><sup className="font-danger">*</sup>
+                              <JoditEditor
+                                ref={editor}
+                                value={comments}
+                                config={config}
+                                tabIndex={1}
+                                onChange={(newContent) => setComments(newContent)}
+                              />
+                              {validerrors.comments && (
+                                <span className="error-msg">{validerrors.comments}</span>
+                              )}
+                            </FormGroup>
+                          </Col>
 
-                      <FormGroup className="f-right">
-                        <Button
-                          className="btn btn-primary mx-2" onClick={() => { submitFactoryInquiryForm() }} >
-                          {t("sentQuote")}
-                        </Button>
+                          <FormGroup className="f-right">
+                            <Button
+                              className="btn btn-primary mx-2" onClick={() => { submitFactoryInquiryForm() }} >
+                              {t("sentQuote")}
+                            </Button>
 
-                        <Button className="btn-sm secondaryBtn m-r-10 f-right"
-                          onClick={() => onGoBack()}>
-                          {t("goBack")}
-                        </Button>
-                      </FormGroup>
-                    </Form>
+                            <Button className="btn-sm secondaryBtn m-r-10 f-right"
+                              onClick={() => onGoBack()}>
+                              {t("goBack")}
+                            </Button>
+                          </FormGroup>
+                        </Form>
+                        :
+                        <>
+                          <Col xl="8" lg="8" md="8" sm="12"></Col>
+                          <Col xl="4" lg="4" md="4" sm="12">
+                            <Button className="btn-sm secondaryBtn m-r-10 f-right"
+                              onClick={() => onGoBack()}>
+                              {t("goBack")}
+                            </Button>
+                          </Col>
+                        </>
+                      }
+                    </Row>
                     :
-                    <>
+                    <Row className="mt-5">
                       <Col xl="8" lg="8" md="8" sm="12"></Col>
                       <Col xl="4" lg="4" md="4" sm="12">
                         <Button className="btn-sm secondaryBtn m-r-10 f-right"
@@ -994,19 +1067,7 @@ const FactoryDetailInquiry = () => {
                           {t("goBack")}
                         </Button>
                       </Col>
-                    </>
-                  }
-                  </Row>
-                  : 
-                  <Row className="mt-5">
-                      <Col xl="8" lg="8" md="8" sm="12"></Col>
-                      <Col xl="4" lg="4" md="4" sm="12">
-                        <Button className="btn-sm secondaryBtn m-r-10 f-right"
-                          onClick={() => onGoBack()}>
-                          {t("goBack")}
-                        </Button>
-                      </Col>
-                  </Row>
+                    </Row>
                 }
 
               </CardBody>
