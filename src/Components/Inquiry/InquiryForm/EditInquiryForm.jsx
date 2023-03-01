@@ -1228,7 +1228,7 @@ const editInquiryForm = () => {
             timer: 2500,
           });
         } else {
-          let responseData = uploadImagmakeUpeApiCall("WashCareLabel", files);
+          let responseData = uploadImageApiCall("WashCareLabel", files);
           setWashCareLabelSampleImg(washCareLabelSample.name);
         }
       } else {
