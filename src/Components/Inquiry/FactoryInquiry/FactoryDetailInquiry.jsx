@@ -106,10 +106,14 @@ const FactoryDetailInquiry = () => {
         response.data = apidecrypt(response.data);
         (response.data.data.files).map((mapData) => {
           if (mapData.media_type == "MeasurementSheet") {
-            var getMeasurementDetails = mapData.filepath;
+            var getMeasurementDetails = {
+              filepath : mapData.filepath,
+              filename : mapData.orginalfilename,
+             };
             measurementSheetData.push(getMeasurementDetails);
             setMeasurementSheet(measurementSheetData)
             setAwsUrl(response.data.data.serverURL)
+            
           }
           // Check the media type for showing the Image
           if (mapData.media_type == "SampleFormat") {
@@ -355,10 +359,10 @@ const FactoryDetailInquiry = () => {
                                 : ""}
                             </tr>
                             <tr>
-                              {factoryInquiryDetails.fabric_type_id ?
+                              {factoryInquiryDetails.fabric_composition ?
                                 <>
                                   <td className="">{t("fabricComposition")} </td>
-                                  <td className="text-left"> {factoryInquiryDetails.fabric_type_id} </td>
+                                  <td className="text-left"> {factoryInquiryDetails.fabric_composition} </td>
                                 </>
                                 : ""}
                             </tr>
@@ -538,12 +542,18 @@ const FactoryDetailInquiry = () => {
                                 : ""}
                             </tr>
                             <tr>
-                              {factoryInquiryDetails.measurementSheet ?
+                              {measurementSheet ?
                                 <>
                                   <td className="">{t("measurementSheet")}  </td>
-                                  <td className="text-left">
-                                    <a href={awsUrl + measurementSheet} target="_blank"> {measurementSheet} </a>
-                                  </td>
+                                  <td>
+                                    {measurementSheet.map((obj)=>(
+                                  
+                                    <li><a href={awsUrl + obj.filepath} target="_blank"> {obj.filename } </a></li>
+                               
+                                    ))
+                                    }
+                                     </td>
+                                 
                                 </>
                                 : ""}
                             </tr>
