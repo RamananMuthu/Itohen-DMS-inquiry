@@ -149,6 +149,8 @@ const editInquiryForm = () => {
   const [paymentinstructionsDesc, setPaymentinstructionsDesc] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   const [inquiry_id, setOrderId] = useState(decode(searchParams.get("id")));
+  const [ custDeclarationCheckboxValue, setCustDeclarationCheckboxValue ] = useState([]);
+  const [ mainLabelCheckboxValue, setMainLabelCheckboxValue ] = useState([]);
   const toggleart = () => setModalArt(!modalArt);
   const togglefabric = () => setModalfabric(!modalfabric);
   const toggleclr = () => setModalClr(!modalClr);
@@ -538,6 +540,8 @@ const editInquiryForm = () => {
     }
   };
   const apiCall = () => {
+      var custDeclValue = [];
+      var mainLableValue = [];
       var editInquiryFormInputParams = {};
       editInquiryFormInputParams["inquiry_id"] =inquiry_id;
       axios
@@ -595,7 +599,25 @@ const editInquiryForm = () => {
           setPrintDetailsPolybag(response.data.data[0].poly_bag_print);
           dropDownfn(response.data.data[0].media_reference_id);
          // setHangtag(response.data.data[0].hangtag_lable);
-          });
+
+         var custDeclResponse = parse(response.data.data[0].customs_declaraion_document).props.children;
+         custDeclResponse.map((mapData) => 
+         {
+            custDeclValue.push(mapData.props.children);
+         })
+         setCustDeclarationCheckboxValue(custDeclValue);
+
+
+         var mainLableResponse = parse(response.data.data[0].main_lable).props.children;
+         mainLableResponse.map((mapData) => 
+         {
+            mainLableValue.push(mapData.props.children);
+         })
+         setMainLabelCheckboxValue(mainLableValue);
+
+        });
+
+        
       // ********** API call for SKU Quantity Ratio ************
       axios
       .post(ServerUrl + "/inquiry-sku", apiencrypt(editInquiryFormInputParams))
@@ -723,7 +745,6 @@ const editInquiryForm = () => {
     .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "PrintType",referenceId:  ref}))
     .then((response) => {
       response.data = apidecrypt(response.data);
-      console.log("PRINT tYPE",response.data);
       setPrintTypeList(response.data.data);
     });
     axios
@@ -3666,7 +3687,7 @@ const editInquiryForm = () => {
                             <option value="" disabled>
                               {t("selectCartonEdgeFinish")}
                             </option>
-                            {cartonEdgeFinishList.map((cartonEdgeFinList) => (
+                            {cartonEdgeFinishList.length > 0 ?cartonEdgeFinishList.map((cartonEdgeFinList) => (
                                 inquiryFormDtl.carton_edge_finish==cartonEdgeFinList.content ? 
                                 <option
                                 value={cartonEdgeFinList.content}
@@ -3680,7 +3701,10 @@ const editInquiryForm = () => {
                               >
                                 {cartonEdgeFinList.content}
                               </option>
-                            ))}
+                            ))
+                              :
+                              ""
+                          }
                             <option value="addNew">+{t("addNew")}</option>
                           </Input>
                         </InputGroup>
@@ -4205,20 +4229,20 @@ const editInquiryForm = () => {
       </Container>
       { /*****CustomsDeclarationDocument,MainLabel - Modal*****/ }
       <InfoCanvas
-        modal={showInfoCanvas}
-        toggle={toggleInfoCanvas}
-        infoDetails={infoDetails}
-        setInfoDetails={setInfoDetails}
-        masterType={masterType}
-        setPaymentTerm={setPaymentTerm}
-        setShowInfoCanvas={setShowInfoCanvas}
-        showInfoCanvas={showInfoCanvas}
-        PaymentTerm={paymentTerm}
-        setCustomsDeclarationDoc={setCustomsDeclarationDoc}
-        customsDeclaration ={customsDeclarationDoc}
-        setMainLabel={setMainLabel}
-        mainLabel={mainLabel}
-        referenceId={ referenceId}
+       modal={showInfoCanvas}
+       toggle={toggleInfoCanvas}
+       infoDetails={infoDetails}
+       setInfoDetails={setInfoDetails}
+       masterType={masterType}
+       setShowInfoCanvas={setShowInfoCanvas}
+       showInfoCanvas={showInfoCanvas}
+       setCustomsDeclarationDoc={setCustomsDeclarationDoc}
+       setMainLabel={setMainLabel}
+       referenceId={referenceId}
+       custDeclarationCheckboxValue={custDeclarationCheckboxValue}
+       setCustDeclarationCheckboxValue={setCustDeclarationCheckboxValue}
+       mainLabelCheckboxValue={mainLabelCheckboxValue}
+       setMainLabelCheckboxValue={setMainLabelCheckboxValue}
       />
       { /*****PaymentTerms,penalty,No of ply,Patterns,Carton Edge Finish Drop Down "+Add More" ****/ }
       <AddNewDropdownModal

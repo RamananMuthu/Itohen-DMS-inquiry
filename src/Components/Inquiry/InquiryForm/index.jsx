@@ -145,6 +145,8 @@ const index = () => {
   const [patternList,setPatternList]=useState([]);
   const [selected, setSelected] = useState("");
   const [paymentinstructionsDesc, setPaymentinstructionsDesc] = useState("");
+  const [ custDeclarationCheckboxValue, setCustDeclarationCheckboxValue ] = useState([]);
+  const [ mainLabelCheckboxValue, setMainLabelCheckboxValue ] = useState([]);
   const toggleart = () => setModalArt(!modalArt);
   const togglefabric = () => setModalfabric(!modalfabric);
   const toggleclr = () => setModalClr(!modalClr);
@@ -314,7 +316,6 @@ const index = () => {
     else if (!/^[0-9]+$/.test(totalQuantity)) {
       validerrors.totalQuantity = t("numbersOnlyAllowed");
     }
-
     if( validerrors.article ){
       scrollToSection(basicInfoValidation);
       selectedTab("basicStyleInfo")
@@ -340,8 +341,7 @@ const index = () => {
 
     /*********************************** COLOR TOTAL [DELETE] ***********/
     const getTotalColorWise = (typ=null) => 
-    {
-     
+    {     
       let tqty = 0;
       if (color.length > 0 && size.length > 0) {
         color.forEach((colorData) => {
@@ -351,7 +351,6 @@ const index = () => {
             let element = document.getElementById(colorData.id + "#" + sizeData.id);
             if (typeof (element) != 'undefined' && element != null) {
               if(typ=='delete'){
-                //console.log(colorData.id + "#" + sizeData.id,"typ==>",typ);
                 document.getElementById(colorData.id + "#" + sizeData.id).value='';
                 let t = 0;
                }else{
@@ -361,13 +360,9 @@ const index = () => {
              document.getElementById("totqty_"+colorData.id).value = astotval;
             }
           });
-         // console.log("totqty_" ,colorData.id,"@@@", astotval);
-        
-          
         });
       }
     }
-  
     /********************************** SIZE TOTAL [DELETE] ************/
     const getTotalSizeWise = (typ=null) => 
     {
@@ -383,8 +378,7 @@ const index = () => {
               document.getElementById(sizeData.id + "#" + colorData.id).value='';
               let t = 0;
             }else{
-              let t = document.getElementById(sizeData.id + "#" + colorData.id).value;
-            
+              let t = document.getElementById(sizeData.id + "#" + colorData.id).value;            
             }
             astotval += Number(t);
             }
@@ -3489,14 +3483,17 @@ const index = () => {
                             <option Value="" disabled>
                               {t("selectCartonEdgeFinish")}
                             </option>
-                            {cartonEdgeFinishList.map((cartonEdgeFinList) => (
+                            {cartonEdgeFinishList.length > 0 ?
+                            cartonEdgeFinishList.map((cartonEdgeFinList) => (
                               <option
                                 value={cartonEdgeFinList.content}
                                 title={cartonEdgeFinList.content}
                               >
                                 {cartonEdgeFinList.content}
                               </option>
-                            ))}
+                            )) :
+                            ""
+                          }
                             <option value="addNew">+{t("addNew")}</option>
                           </Input>
                         </InputGroup>
@@ -4018,15 +4015,15 @@ const index = () => {
         infoDetails={infoDetails}
         setInfoDetails={setInfoDetails}
         masterType={masterType}
-        setPaymentTerm={setPaymentTerm}
         setShowInfoCanvas={setShowInfoCanvas}
         showInfoCanvas={showInfoCanvas}
-        PaymentTerm={paymentTerm}
         setCustomsDeclarationDoc={setCustomsDeclarationDoc}
-        customsDeclaration ={customsDeclarationDoc}
         setMainLabel={setMainLabel}
-        mainLabel={mainLabel}
         referenceId={referenceId}
+        custDeclarationCheckboxValue={custDeclarationCheckboxValue}
+        setCustDeclarationCheckboxValue={setCustDeclarationCheckboxValue}
+        mainLabelCheckboxValue={mainLabelCheckboxValue}
+        setMainLabelCheckboxValue={setMainLabelCheckboxValue}
         // customsDeclarationID={customsDeclarationID}
         // setCustomsDeclarationID={setCustomsDeclarationID}
       />

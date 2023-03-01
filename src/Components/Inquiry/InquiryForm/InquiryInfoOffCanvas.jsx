@@ -6,57 +6,41 @@ import {
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
 import AddMoreModal from "./AddMoreModal";
-const InquiryInfoOffCanvas = ({ modal, toggle, infoDetails,setInfoDetails, masterType,
-  setPaymentTerm, setShowInfoCanvas, showInfoCanvas, PaymentTerm,setCustomsDeclarationDoc,customsDeclaration,setMainLabel,mainLabel,referenceId }) => {
+const InquiryInfoOffCanvas = ({ modal, toggle, infoDetails,setInfoDetails, masterType, setShowInfoCanvas, showInfoCanvas,setCustomsDeclarationDoc,setMainLabel,referenceId,custDeclarationCheckboxValue, setCustDeclarationCheckboxValue,mainLabelCheckboxValue, setMainLabelCheckboxValue }) => {
   const { t } = useTranslation();
   const [modalNew, setModalNew] = useState(false);
   const toggleNew = () => setModalNew(!modalNew);
-  const [checkboxIdValue, setCheckboxIdValue ] = useState([]);
+  // const [ custDeclarationCheckboxValue, setCustDeclarationCheckboxValue ] = useState([]);
+  // const [ mainLabelCheckboxValue, setMainLabelCheckboxValue ] = useState([]);
 
 /******************Save Cheched Factory************************/
   const saveChecked = (checkedData) => {
     var checkboxeschecked = [];
-    var checkBoxId = [];
     if( masterType=='CustomsDeclarationDocument'){
       let a = checkedData.infoDetails;
       var content = '<ul>';
       (a).map((mapData) => {
         if( document.getElementById(mapData.id).checked){
           checkboxeschecked.push(mapData.content);
-          checkBoxId.push(mapData.id);
           content =  content + '<li>' + mapData.content + '</li>';
         } 
       })
-       content =  content +'</ul>' ;
-       setCheckboxIdValue(checkBoxId);
-    // var checkboxeschecked = [];
-    // var markedCheckbox = document.querySelectorAll('input[type="checkbox"]');
-    // var checkboxLength = markedCheckbox.length;
-    // var content = customsDeclaration +'<ul>' ;
-    // for (var i = 0; i < checkboxLength; i++) {
-    //   if (markedCheckbox[i].checked) {
-    //     checkboxeschecked.push(markedCheckbox[i].value);
-    //     content =  content + '<li>' + markedCheckbox[i].value + '</li>';
-    //     console.log("@@@", markedCheckbox);
-    //   }
-    // }
-    // content =  content +'</ul>' ;
+      content =  content +'</ul>' ;
+      setCustDeclarationCheckboxValue(checkboxeschecked);
     }
     else if(masterType=='MainLabel'){
       var checkboxeschecked = [];
-      var checkBoxId = [];
       if( masterType=='MainLabel'){
-        let a = checkedData.infoDetails;
+        let b = checkedData.infoDetails;
         var content = '<ul>';
-        (a).map((mapData) => {
+        (b).map((mapData) => {
           if( document.getElementById(mapData.id).checked){
             checkboxeschecked.push(mapData.content);
-            checkBoxId.push(mapData.id);
             content =  content + '<li>' + mapData.content + '</li>';
           } 
         })
          content =  content +'</ul>' ;
-        setCheckboxIdValue(checkBoxId);
+         setMainLabelCheckboxValue(checkboxeschecked);
     }
     }
 
@@ -120,20 +104,37 @@ const InquiryInfoOffCanvas = ({ modal, toggle, infoDetails,setInfoDetails, maste
                         <Row>
                           <FormGroup className="m-t-15 ">
                             <div className="checkbox">
-                              { checkboxIdValue.includes(info.id) ? 
-                              <Input
-                                defaultChecked
-                                id={info.id}
-                                type="checkbox" name="CheckBox"
-                                value={info.content}
-                                />
-                                :
+                              {
+                                masterType == "CustomsDeclarationDocument" ? 
+                                custDeclarationCheckboxValue.includes(info.content) ?  
                                 <Input
-                                id={info.id}
-                                type="checkbox" name="CheckBox"
-                                value={info.content}
-                                />
+                                 defaultChecked
+                                 id={info.id}
+                                 type="checkbox" name="CheckBox"
+                                 value={info.content}
+                                 />
+                                 : 
+                                 <Input
+                                 id={info.id}
+                                 type="checkbox" name="CheckBox"
+                                 value={info.content}
+                                 /> 
+                                :
+                                mainLabelCheckboxValue.includes(info.content) ?  
+                                <Input
+                                 defaultChecked
+                                 id={info.id}
+                                 type="checkbox" name="CheckBox"
+                                 value={info.content}
+                                 />
+                                 : 
+                                 <Input
+                                 id={info.id}
+                                 type="checkbox" name="CheckBox"
+                                 value={info.content}
+                                 /> 
                               }
+                              
                               <Label for={info.id} style={{ textColor: "#4E90DE" }}>
                                 {info.content}
                               </Label>

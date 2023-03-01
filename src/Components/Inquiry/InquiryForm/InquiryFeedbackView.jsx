@@ -57,7 +57,6 @@ const InquiryFeedbackView = () => {
   const [filterstartDateDetails, setFilterStartDateDetails] = useState("");
   const [filterEndDateDetails, setFilterEndDateDetails] = useState("");
 
-  console.log("FeedbackFactory",FeedbackFactory)
   useEffect(() => {
     getInputParams["company_id"] = getLoginCompanyId;
     getInputParams["workspace_id"] = getWorkspaceId;
@@ -103,7 +102,6 @@ const InquiryFeedbackView = () => {
     axios
     .post(ServerUrl + "/factory-feedback-download", apiencrypt(getDownloadParams),{responseType: 'blob'})
     .then((response) => {
-        console.log(response.data);
         const currDate = new Date().toLocaleDateString();
         let namelist=   currDate + "-"+ "inquiry_feedback"+ Date.now()+".pdf"
         DownloadFile(response.data, namelist);

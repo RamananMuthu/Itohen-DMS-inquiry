@@ -12,62 +12,50 @@ const FormAddMoreModal = ({ modal, toggle, infoDetails,setInfoDetails,masterType
 
   const [customDecDoc, setCustomDecDoc] = useState("");
   const [mainLable,setMainLable]=useState("");
-  const onSaveHandle = () => {
-    if (masterType === "CustomsDeclarationDocument")
-    {
-    if (!customDecDoc) {
+
+  const contentValidation = () => {
+    
+    var cusDecDocument = [];
+    var mainLabDocument = [];
+    if( masterType === "CustomsDeclarationDocument" ){
+      infoDetails.map((mapData) => {
+        if( (mapData.content).indexOf(customDecDoc) !== -1 )
+        {
+          cusDecDocument.push(customDecDoc)
+        }
+      })
+      cusDecDocument.length > 0 ? 
       Swal.fire({
-        title: t("plsEnterCusDecDoc"),
-        icon: "error",
+        title: t("enterDifferentName"),
+        icon: "warning",
         button: t("okLabel"),
         timer: 2500,
-      });
-    } else {
-      axios
-        .post(ServerUrl + "/add-inquiry-master-data", apiencrypt({
-          type: "CustomsDeclarationDocument",
-          content: customDecDoc,
-          referenceId:referenceId
-        }))
-        .then((response) => {
-          response.data = apidecrypt(response.data);
-          if (response.data.status_code === 200) {
-            Swal.fire({
-              text: t(response.data.message),
-              icon: "success",
-              button: t("okLabel"),
-            }).then((result) => {
-              if (result.isConfirmed) {
-                toggle(false);
-                /* To show the new roles in the dropdown */
-                axios
-                  .post(ServerUrl + "/get-inquiry-master", apiencrypt({
-                    type: "CustomsDeclarationDocument",
-                    referenceId: referenceId}))
-                  .then((response) => {
-                    response.data = apidecrypt(response.data);
-                    setInfoDetails(response.data.data);
-                  });
-              }
-            });
-          }
-          /* To show error if the Role is already present*/
-          if (response.data.status_code === 401) {
-            Swal.fire({
-              title: t("cusDecDocExistAlert"),
-              text: t("enterDifferentName"),
-              icon: "error",
-              button: t("okLabel"),
-              timer: 2500,
-            });
-          }
-        });
+      })
+      :
+      onSaveHandle()
+    } else if(masterType === "MainLabel" ) {
+      infoDetails.map((mapData) => {
+        if( (mapData.content).indexOf(mainLable) !== -1){
+        mainLabDocument.push(mainLable);}
+      })
+      mainLabDocument.length > 0 ?    
+      Swal.fire({
+        title: t("enterDifferentName"),
+        icon: "warning",
+        button: t("okLabel"),
+        timer: 2500,
+      })
+      :
+      onSaveHandle()
     }
-}
-else if(masterType==="MainLabel"){
-    if (!mainLable) {
+  };
+
+  const onSaveHandle = () => {
+      if (masterType === "CustomsDeclarationDocument")
+      {
+      if (!customDecDoc) {
         Swal.fire({
-          title: t("plsEnterMainLabel"),
+          title: t("plsEnterCusDecDoc"),
           icon: "error",
           button: t("okLabel"),
           timer: 2500,
@@ -75,8 +63,8 @@ else if(masterType==="MainLabel"){
       } else {
         axios
           .post(ServerUrl + "/add-inquiry-master-data", apiencrypt({
-            type: "MainLabel",
-            content: mainLable,
+            type: "CustomsDeclarationDocument",
+            content: customDecDoc,
             referenceId:referenceId
           }))
           .then((response) => {
@@ -92,7 +80,7 @@ else if(masterType==="MainLabel"){
                   /* To show the new roles in the dropdown */
                   axios
                     .post(ServerUrl + "/get-inquiry-master", apiencrypt({
-                      type: "MainLabel",
+                      type: "CustomsDeclarationDocument",
                       referenceId: referenceId}))
                     .then((response) => {
                       response.data = apidecrypt(response.data);
@@ -104,7 +92,7 @@ else if(masterType==="MainLabel"){
             /* To show error if the Role is already present*/
             if (response.data.status_code === 401) {
               Swal.fire({
-                title: t("mainLabExistAlert"),
+                title: t("cusDecDocExistAlert"),
                 text: t("enterDifferentName"),
                 icon: "error",
                 button: t("okLabel"),
@@ -113,8 +101,57 @@ else if(masterType==="MainLabel"){
             }
           });
       }
-}
-
+      }
+      else if(masterType==="MainLabel"){
+          if (!mainLable) {
+              Swal.fire({
+                title: t("plsEnterMainLabel"),
+                icon: "error",
+                button: t("okLabel"),
+                timer: 2500,
+              });
+            } else {
+              axios
+                .post(ServerUrl + "/add-inquiry-master-data", apiencrypt({
+                  type: "MainLabel",
+                  content: mainLable,
+                  referenceId:referenceId
+                }))
+                .then((response) => {
+                  response.data = apidecrypt(response.data);
+                  if (response.data.status_code === 200) {
+                    Swal.fire({
+                      text: t(response.data.message),
+                      icon: "success",
+                      button: t("okLabel"),
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        toggle(false);
+                        /* To show the new roles in the dropdown */
+                        axios
+                          .post(ServerUrl + "/get-inquiry-master", apiencrypt({
+                            type: "MainLabel",
+                            referenceId: referenceId}))
+                          .then((response) => {
+                            response.data = apidecrypt(response.data);
+                            setInfoDetails(response.data.data);
+                          });
+                      }
+                    });
+                  }
+                  /* To show error if the Role is already present*/
+                  if (response.data.status_code === 401) {
+                    Swal.fire({
+                      title: t("mainLabExistAlert"),
+                      text: t("enterDifferentName"),
+                      icon: "error",
+                      button: t("okLabel"),
+                      timer: 2500,
+                    });
+                  }
+                });
+            }
+      }
   };
   return (
     <Modal isOpen={modal} toggle={toggle} centered>
@@ -131,7 +168,7 @@ else if(masterType==="MainLabel"){
       </ModalBody>
       <ModalFooter>
         <Btn  attrBtn={{ color: "btn secondaryBtn btn-sm", onClick: toggle }}>{t("close")}</Btn>
-        <Btn  attrBtn={{ color: "primary btn-sm", onClick: () => onSaveHandle() }}> {t("save")}</Btn>
+        <Btn  attrBtn={{ color: "primary btn-sm", onClick: () => {  contentValidation()} }}> {t("save")}</Btn>
       </ModalFooter>
     </Modal>
   );
