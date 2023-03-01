@@ -1,4 +1,4 @@
-import React , {useState}from "react";infoDetails
+import React , {useState}from "react";
 import { Offcanvas,
   OffcanvasBody,
   OffcanvasHeader,  Card, CardBody, Row ,Col,Input,Label, Button } from "reactstrap";
