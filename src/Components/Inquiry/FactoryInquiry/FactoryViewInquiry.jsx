@@ -61,6 +61,7 @@ const FactoryViewInquiry = () => {
   const [modalBuyerFilesDownload, setModalBuyerFileDownload] = useState(false);
   const toggleFactoryFilesDownload = () => setModalBuyerFileDownload(!modalBuyerFilesDownload);
   const [inquiryNo, setInquiryNo] = useState();
+  const [ pgNo, setPgNo ] = useState(0);
 
   const apiCall = (pageNumber) => {
     var getInputParams = {};
@@ -100,20 +101,18 @@ const FactoryViewInquiry = () => {
     getLoginUserType == "user" ?  (getWorkspaceType == "Factory") ? 
       apiCall()  : 
       window.location.href = `${process.env.PUBLIC_URL}/viewinquiry`
-      // window.location.href='/inquiry/viewinquiry'
     :
     (getWorkspaceType == "Factory") ?  
       (getStaff === "Staff" && getStaffPermission.includes("View Factory Inquiry")) || getStaff == null ? 
       apiCall() : 
       window.location.href = `${process.env.PUBLIC_URL}/inquirycontacts` 
-      // window.location.href='/inquirycontacts'
     :
       (getStaff === "Staff" && getStaffPermission.includes("View Inquiry")) || getStaff == null ? 
       window.location.href = `${process.env.PUBLIC_URL}/viewinquiry` 
-        // window.location.href='/inquiry/viewinquiry' 
         :
       window.location.href = `${process.env.PUBLIC_URL}/feedbackform` 
-        // window.location.href='/inquiry/feedbackform' 
+
+        setPgNo(() => "");
   }, []);
 
   const factoryDetails = (inquiryId, factoryId) => 
@@ -278,7 +277,12 @@ const FactoryViewInquiry = () => {
                                     scope="row"
                                     className="centerAlign middle "
                                   >
-                                    {index + 1}
+                                  {
+                                    pgNo >= 1 ?
+                                    ((index)+(20 * pgNo) + 1)
+                                    :
+                                    (index)+1
+                                  }
                                   </td>
                                   <td className="text-left middle"> {" "}  {"IN-" + inquirydtls.id}  </td>
                                   <td className="text-left middle "> {inquirydtls.style_no} </td>
@@ -481,8 +485,8 @@ const FactoryViewInquiry = () => {
               </PaginationItem>
               :
               <PaginationItem>
-                  <PaginationLink onClick={() => apiCall(link.label)}>{link.label}
-                  </PaginationLink>
+                      <PaginationLink onClick={() => {apiCall(link.label), setPgNo(link.label - 1)}}>{link.label}
+                      </PaginationLink>
             </PaginationItem>
             :""
             ))

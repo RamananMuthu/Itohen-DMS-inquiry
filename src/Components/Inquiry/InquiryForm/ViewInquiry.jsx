@@ -82,6 +82,7 @@ const ViewInquiry = () => {
 
   const [buyerFilterOffCanvas , setBuyerFilterOffCanvas] = useState(false);
   const toggleBuyerFilterCanvas = () => setBuyerFilterOffCanvas(!buyerFilterOffCanvas);
+  const [ pgNo, setPgNo ] = useState(0);
   const apiCall = (pageNumber) => {
     var getInputParams = {};
     getInputParams["company_id"] = getLoginCompanyId;
@@ -139,6 +140,7 @@ const ViewInquiry = () => {
       : 
       window.location.href = `${process.env.PUBLIC_URL}/inquirycontacts`
   
+      setPgNo(() => "");
   }, []);
 
   const factResponse = (inquiryId) => {
@@ -273,7 +275,14 @@ const ViewInquiry = () => {
                               inquiryDetails.map((inquirydtls, index) => (
                                 (inquirydtls.notification == null ? 
                                 <tr>
-                                  <td scope="row" className="centerAlign"> {(index) + 1} </td>
+                                  <td scope="row" className="centerAlign"> 
+                                  {
+                                    pgNo >= 1 ?
+                                    ((index)+(20 * pgNo) + 1)
+                                    :
+                                    (index)+1
+                                  } 
+                                  </td>
                                   <td className="centerAlign"> {"IN-" + inquirydtls.id} </td>
                                   <td className="centerAlign"> {inquirydtls.style_no} </td>
                                   <td className="centerAlign"> {PHPtoJSFormatConversion.format(new Date(inquirydtls.created_date))}</td>
@@ -286,8 +295,8 @@ const ViewInquiry = () => {
                                         title={t("viewInquiryDetails")} src={InquiryViewIcon}
                                       />
                                     </a>
-{/********** EDIT ICON ********/ }
-{getLoginUserType == "user" ?                                    
+                                  {/********** EDIT ICON ********/ }
+                                  {getLoginUserType == "user" ?                                    
                                     (inquirydtls.factory_ids == null ? 
                                       <>
                                          <img
@@ -494,7 +503,14 @@ const ViewInquiry = () => {
                                 </tr>
                                 :
                                 <tr >
-                                  <td scope="row" className="centerAlign"> {index + 1} </td>
+                                  <td scope="row" className="centerAlign"> 
+                                  {
+                                    pgNo >= 1 ?
+                                    ((index)+(20 * pgNo) + 1)
+                                    :
+                                    (index)+1
+                                  }  
+                                  </td>
                                   <td className="centerAlign"> {"IN-" + inquirydtls.id} </td>
                                   <td className="centerAlign"> {inquirydtls.style_no} </td>
                                   <td className="centerAlign"> {PHPtoJSFormatConversion.format(new Date(inquirydtls.created_date))}</td>
@@ -801,8 +817,8 @@ const ViewInquiry = () => {
               </PaginationItem>
               :
               <PaginationItem>
-                  <PaginationLink onClick={() => apiCall(link.label)}>{link.label}
-                  </PaginationLink>
+                    <PaginationLink onClick={() => {apiCall(link.label), setPgNo(link.label - 1)}}>{link.label}
+                    </PaginationLink>
             </PaginationItem>
             :""
             ))
