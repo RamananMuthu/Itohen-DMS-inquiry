@@ -296,25 +296,25 @@ const index = () => {
 
     let validerrors = {};
     if (!article) {
-      validerrors.article = t("selectArticleName");
+      validerrors.article = ("selectArticleName");
     }
     if (!styleNo.trim()) {
-      validerrors.styleNo = t("enterStyleNumber");
+      validerrors.styleNo = ("enterStyleNumber");
     }
     if (!fabricCom) {
-      validerrors.fabricCom = t("selectFabricComposition");
+      validerrors.fabricCom = ("selectFabricComposition");
     }
     if (!inquiryDueDate) {
-      validerrors.inquiryDueDate = t("enterInquiryDueDate");
+      validerrors.inquiryDueDate = ("enterInquiryDueDate");
     }
     if (!currency) {
-      validerrors.currency = t("enterCurrency");
+      validerrors.currency = ("enterCurrency");
     }
     if (!totalQuantity) {
-      validerrors.totalQuantity = t("enterTotQty");
+      validerrors.totalQuantity = ("enterTotQty");
     }
     else if (!/^[0-9]+$/.test(totalQuantity)) {
-      validerrors.totalQuantity = t("numbersOnlyAllowed");
+      validerrors.totalQuantity = ("numbersOnlyAllowed");
     }
     if( validerrors.article ){
       scrollToSection(basicInfoValidation);
@@ -1563,7 +1563,7 @@ const index = () => {
                           </InputGroup>
                           {validerrors.article && (
                             <span className="error-msg">
-                              {validerrors.article}
+                              {t(validerrors.article)}
                             </span>
                           )}
                         </FormGroup>
@@ -1583,7 +1583,7 @@ const index = () => {
                           </InputGroup>
                           {validerrors.styleNo && (
                             <span className="error-msg">
-                              {validerrors.styleNo}
+                              {t(validerrors.styleNo)}
                             </span>
                           )}
                         </FormGroup>
@@ -1681,7 +1681,7 @@ const index = () => {
                           </InputGroup>
                           {validerrors.fabricCom && (
                             <span className="error-msg">
-                              {validerrors.fabricCom}
+                              {t(validerrors.fabricCom)}
                             </span>
                           )}
                           <AddFabricModal
@@ -1798,7 +1798,7 @@ const index = () => {
                         </InputGroup>
                         {validerrors.inquiryDueDate && (
                           <span className="error-msg">
-                            {validerrors.inquiryDueDate}
+                            {t(validerrors.inquiryDueDate)}
                           </span>
                         )}
                       </FormGroup>
@@ -1859,7 +1859,7 @@ const index = () => {
                         </InputGroup>
                         {validerrors.currency && (
                           <span className="error-msg">
-                            {validerrors.currency}
+                            {t(validerrors.currency)}
                           </span>
                         )}
                       </FormGroup>
@@ -2080,7 +2080,7 @@ const index = () => {
                         </InputGroup>
                         {validerrors.totalQuantity && (
                           <span className="error-msg">
-                            {validerrors.totalQuantity}
+                            {t(validerrors.totalQuantity)}
                           </span>
                         )}
                       </FormGroup>
