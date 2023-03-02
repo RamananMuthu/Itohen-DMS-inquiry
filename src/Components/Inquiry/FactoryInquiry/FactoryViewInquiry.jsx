@@ -239,14 +239,15 @@ const FactoryViewInquiry = () => {
                 <Row className="g-12 m-t-20">
                   <Col md="12" lg="12" sm="12">
                     <Row className="g-12">
-                    <Col md="12" lg="12" sm="12">
+                    {inquiryDetails.length > 0 ?  
+                    <Col md="12" lg="12" sm="12">                    
                     <div className="cursor-pointer p-1 p-r-0 m-t-5 f-right" onClick={() => toggleFilterCanvas()}>
                         <img src={FilterIcon} />
                      </div>
                      <div className="cursor-pointer p-1 p-l-0 m-t-5 m-r-10 f-right" onClick={()=> toDownloadAsPdf()}>
                       <img src={DownloadIcon} />
                      </div>
-                    </Col>
+                    </Col> : "" }
                       <div className="table-responsive">
                         <table className="table shadow shadow-showcase  table-bordered">
                           <thead className="bg-primary">

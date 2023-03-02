@@ -156,13 +156,14 @@ const FactoryResponse = () => {
                                             />
                                         </Col>
                                     </Row>
+                                    {factoryRes.length > 0 ? 
                                     <Row>
                                     <Col md="12" lg="12" sm="12">
                                     <div className="cursor-pointer p-1 p-l-0 m-t-5 m-r-10 f-right" onClick={()=> toDownloadAsPdf()}>
                       <img src={DownloadIcon} />
                      </div>
                      </Col>
-                                    </Row>
+                                    </Row> : "" }
                                 </Col>
 
                                 <Row className="g-12 m-t-20">
