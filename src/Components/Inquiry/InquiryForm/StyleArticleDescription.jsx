@@ -66,10 +66,10 @@ const StyleArticleDescription = ({ modal, toggle,styleArtcileDesc,setStyleArticl
     ],
     uploader: { insertImageAsBase64URI: true },
 
-    placeholder: placeholder || t("startTyping"),
+    placeholder: t("startTyping"),
     hidePoweredByJodit: false,
   }),
-    [placeholder])
+    )
   return (
      
     <Modal  isOpen={modal} toggle={toggle} centered  style={{"max-width":"700px"}}>
