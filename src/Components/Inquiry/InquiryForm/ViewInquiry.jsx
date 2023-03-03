@@ -127,19 +127,21 @@ const ViewInquiry = () => {
 
   useEffect(() => 
   {
-       getLoginUserType == "user" ?  getWorkspaceType != "Factory" ? apiCall()  : 
+    getLoginUserType == "user" ?  getWorkspaceType != "Factory" ? apiCall()  : 
     window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry` 
     :
-    getWorkspaceType != "Factory" ?  
+      getWorkspaceType != "Factory" ?  
       (getStaff === "Staff" && getStaffPermission.includes("View Inquiry")) || getStaff == null ? 
       apiCall() :  
-      window.location.href = `${process.env.PUBLIC_URL}/feedbackform` 
+      (getStaff === "Staff" && getStaffPermission.includes("Create Inquiry")) ? window.location.href = `${process.env.PUBLIC_URL}/inquiryform` :
+      (getStaff === "Staff" && getStaffPermission.includes("View Factory FeedBack")) ? window.location.href = `${process.env.PUBLIC_URL}/feedbackview` :      
+      (getStaff === "Staff" &&  getStaffPermission.includes("Add Factory FeedBack")) ? window.location.href = `${process.env.PUBLIC_URL}/feedbackform` :
+      window.location.href = "/stafflogin"
     :
       (getStaff === "Staff" && getStaffPermission.includes("View Factory Inquiry")) || getStaff == null ? 
       window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry`
       : 
       window.location.href = `${process.env.PUBLIC_URL}/inquirycontacts`
-  
       setPgNo(() => "");
   }, []);
 
@@ -324,7 +326,7 @@ const ViewInquiry = () => {
                                    </>)
 
                                     :
-                                    (getStaff === "Staff" && getStaffPermission.includes("View Response")) || getStaff == null ?
+                                    (getStaff === "Staff" && getStaffPermission.includes("Edit Inquiry")) || getStaff == null ?
                                     (inquirydtls.factory_ids == null ? 
                                       <>
                                          <img
@@ -553,7 +555,7 @@ const ViewInquiry = () => {
                                        
                                   </>)
                                    :
-                                   (getStaff === "Staff" && getStaffPermission.includes("View Response")) || getStaff == null ?
+                                   (getStaff === "Staff" && getStaffPermission.includes("Edit Inquiry")) || getStaff == null ?
                                    (inquirydtls.factory_ids == null ? 
                                      <>
                                         <img

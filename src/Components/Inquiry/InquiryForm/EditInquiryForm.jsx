@@ -766,28 +766,22 @@ const editInquiryForm = () => {
       setPatternList(response.data.data);
     });      
   }
-
   useEffect(() => {
-    getLoginUserType == "user" ? getWorkspaceType != "Factory" ? apiCall() :
-      window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry`
-      //  window.location.href='/inquiry/factoryviewinquiry'
-      :
-      getWorkspaceType != "Factory" ?
-        (getStaff === "Staff" && getStaffPermission.includes("Add Inquiry")) || getStaff == null ?
-          apiCall() :
-          (getStaff === "Staff" && getStaffPermission.includes("View Inquiry")) || getStaff == null ?
-            window.location.href = `${process.env.PUBLIC_URL}/viewinquiry`
-            //  window.location.href='/viewinquiry' 
-            :
-            window.location.href = `${process.env.PUBLIC_URL}/feedbackform`
-        //  window.location.href='/feedbackform'
-        :
-        (getStaff === "Staff" && getStaffPermission.includes("View Factory Inquiry")) || getStaff == null ?
-          window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry` :
-          //  window.location.href='/inquiry/factoryviewinquiry' :  
-          window.location.href = `${process.env.PUBLIC_URL}/inquirycontacts`
-    //  window.location.href='/inquiry/inquirycontacts' 
 
+    getLoginUserType == "user" ? 
+        getWorkspaceType != "Factory" ? apiCall() : window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry`
+    :
+    getWorkspaceType != "Factory" ? 
+        (getStaff === "Staff" && getStaffPermission.includes("View Inquiry")) || getStaff == null ? 
+        (getStaff === "Staff" && getStaffPermission.includes("Edit Inquiry")) ? apiCall() : window.location.href = `${process.env.PUBLIC_URL}/viewinquiry` 
+      : 
+      (getStaff === "Staff" && getStaffPermission.includes("View Factory FeedBack")) ? window.location.href =` ${process.env.PUBLIC_URL}/feedbackview` :  
+      (getStaff === "Staff" && getStaffPermission.includes("Add Factory FeedBack")) ? window.location.href = `${process.env.PUBLIC_URL}/feedbackform` :
+      (getStaff === "Staff" && getStaffPermission.includes("Create Inquiry")) ? window.location.href = `${process.env.PUBLIC_URL}/inquiryform` :
+      window.location.href = "/stafflogin"
+    :
+    (getStaff === "Staff" && getStaffPermission.includes("View Factory Inquiry")) || getStaff == null ?
+        window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry` : window.location.href = `${process.env.PUBLIC_URL}/inquirycontacts`
         
     window.addEventListener("scroll", () => {
       scrollSticky();

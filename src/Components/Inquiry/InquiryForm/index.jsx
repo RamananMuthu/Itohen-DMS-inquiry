@@ -9,7 +9,7 @@ import {
   getLoginCompanyId, getWorkspaceId, getLoginUserId,
   getWorkspaceType, getStaff, getStaffPermission, getLoginStaffId, getLoginUserType
 } from "../../../Constant/LoginConstant";
-import { apiencrypt, apidecrypt } from "../../../helper";
+import { apiencrypt, apidecrypt ,decode, encode} from "../../../helper";
 import addIcon from "../../../assets/images/dms/icons/addIcon.svg";
 import imgUpload from "../../../assets/images/dms/icons/imgUpload.svg";
 import quantity from "../../../assets/images/dms/icons/quantity.svg";
@@ -624,25 +624,20 @@ const index = () => {
 
 
   useEffect(() => {
-    getLoginUserType == "user" ? getWorkspaceType != "Factory" ? apiCall() :
-      window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry`
-      //  window.location.href='/inquiry/factoryviewinquiry'
+
+        getLoginUserType == "user" ? getWorkspaceType != "Factory" ? apiCall() :
+        window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry`
       :
-      getWorkspaceType != "Factory" ?
-        (getStaff === "Staff" && getStaffPermission.includes("Add Inquiry")) || getStaff == null ?
-          apiCall() :
-          (getStaff === "Staff" && getStaffPermission.includes("View Inquiry")) || getStaff == null ?
-            window.location.href = `${process.env.PUBLIC_URL}/viewinquiry`
-            //  window.location.href='/viewinquiry' 
-            :
-            window.location.href = `${process.env.PUBLIC_URL}/feedbackform`
-        //  window.location.href='/feedbackform'
-        :
+        getWorkspaceType != "Factory" ?
+        (getStaff === "Staff" && getStaffPermission.includes("Create Inquiry")) || getStaff == null ? apiCall() :
+        (getStaff === "Staff" && getStaffPermission.includes("View Inquiry")) || getStaff == null ? window.location.href = `${process.env.PUBLIC_URL}/viewinquiry` :  
+        (getStaff === "Staff" && getStaffPermission.includes("View Factory FeedBack")) ? window.location.href = `${process.env.PUBLIC_URL}/feedbackview` :      
+        (getStaff === "Staff" &&  getStaffPermission.includes("Add Factory FeedBack")) ? window.location.href = `${process.env.PUBLIC_URL}/feedbackform` :
+         window.location.href = "/stafflogin"
+         :
         (getStaff === "Staff" && getStaffPermission.includes("View Factory Inquiry")) || getStaff == null ?
           window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry` :
-          //  window.location.href='/inquiry/factoryviewinquiry' :  
           window.location.href = `${process.env.PUBLIC_URL}/inquirycontacts`
-    //  window.location.href='/inquiry/inquirycontacts' 
 
         
     window.addEventListener("scroll", () => {
@@ -1445,6 +1440,7 @@ const index = () => {
           title={t("inquiry")}
         />
       </Row>
+     
       <Container fluid={true} className="general-widget topaln">
         <Col >
         {/************Tab to Scroll***************************/}
@@ -1512,6 +1508,8 @@ const index = () => {
                     </span>
                   </Col>
                 </Row>
+                {console.log("Permissions-decode",decode("VTJGc2RHVmtYMStRZ3N3UHlldUR3TXVabVBUQk9CN1QyQlQ5ZDlKMWhNWFBkSGREK0g1VXBtM1dXS3doRHBmTi85YkQzby95a2tVQzdDc0NCM1ZPaFdkbjJmV3A4aUVWeDh0SFNjT3RaSXVxbVExeUVmL2VVVnZ5RkxJWHp0cFVUZVo1UU0xdHQ5ajZ6eCtXVXRidkVyN1NkZXF0aC9oMDRsMmF6NWtzL1BROVZYL2NER3JCbGI4bGZaV3VrWnFxR2FCT3dhektpNVUrSVIrQjk5bloyWkNxdFA5bm0vS3JldVdIMFZWNUJndGRNUWU2blo0T2V6R3JqclZRRVNjMUZ0Q3pYcXVRSGprNU5CY2NNdEFNYjIzNmdFUkZNdCtoblVwS3RYTm9rY3JZWndFcTEzVnA5ZWcyMHR2KzVqQ2YxTlRSTDdTdTZ5VVY4c1FTbFowVU8wVW4xUDFSUkRnK2Q4Y054akNxZnVPREx6eHlvUkNTOVN4UjlETnpRVXJpYWhiZTNHc1F1WHhvVFI5SWxkYTJvTXRPbm9IUEJtVjZsVWpZcDl5Zi81UzNJNXdmK2QwRzBRNUtnV0RlcDNBK1VBalZ0R3ZJN3RUWVFrQnZhVzJlbDRPZ1lRSjc4M1NvQXRSalNodnNVRjlYQStEamt5TEtPZCtsclRRUUdOakhWQ0FFekpmNjBxT2hkMWtTbjZ2VHU2WENWNGZTVmt3ODNIbytkblBOWFhLdzdWVkQ0MG9vR2Rxa2FUeWxpblZVTmJjc0pITVlwandaL1Exa0FRQXhzN1JKdEROMThLYUtSUGp4em1ETUJPd1l1byt0cllSNGp3SDlGdCsrQlFrVEtEcTNSNktSTG5yOXhwVUFHQWZmWlF6SHRUSFc5ZzVQQVlOWDdvbE4xSkFNbTNmaHQ0cG50cVJPVmRkT2RndURWUXlrZUhwVDVLUGtWVWFTWVBEWGdwNzlTbk4zVmhTNWVRTVFZWkUvQ2IyV1dMelFrQVpSR3VFb3FxY0lmMmhsQmF0RmdJVHB5RWFGVHhZTmUvL3pubHRnLy9FcktVY1JvMUJFUUJhVUJEa1NzOWtpYlY4SzltbE90YmFsckZpMVFzUXhrcysvVHVERnFLV3kzaGdvTG1kaDFiOUZvTndnMDlMaWFRd2grUDhPR3dCMlFUcWdpN0JIdGg3YVd4Y0FBcVpOK1RBU1hLTW4xR050K0FBemc0Ukl3QUNiTDNrRW5xOGhrSjk5aWxpSzU3eDA1S1M0cW11dUdtMDVhT2dZUzByd21SdmxQUFROYkVNY1pSUzhCVVdIOXRNMEFzT2RRT3R5WmxRc2JuRT0="))}
+                {console.log("Permissions-encode",encode("Factory Add,Factory Edit,PCU Add,PCU Edit,Fabric Add,Article Add,Category Add,Color Add,Color Edit,Size Add,Size Edit,Contacts Add,View Staff,Staff Add,Staff Edit,Task Edit Template,Task File Upload,Add Order,View All Orders,Edit Order,Add Roles,View Permissions,Add Permissions,View Task Updates,Add Task Updates,View Data Input,Add Data Input,View Pending Task,Download Pending Task Report,View Calendar Configuration,Add/Edit Calendar Configuration,Buyer Add,Buyer Edit,Task File Delete,Edit Data Input,Edit Others Task,add_sub_task,delete_sub_task,Add Price,View Price,Edit Price,View Order Status,Complete Order,Cancel Order,Delete Order,View Report,Download Report,Inquiry Date,View Factory Inquiry,Add Response"))}
                 <Col lg="12">
                   <Row>
                     {/* Article Name, Style Number ,Sample Image*/}

@@ -35,10 +35,8 @@ const Notifications = () => {
                 } else {
                     localStorage.setItem("dateFormat", '');
                 }
-
-                // console.log("Permissions", decode("VTJGc2RHVmtYMThCL05ldzI4cGVPUVRwNm1EcHd0VWtHVTYvUStISUNKTjZFbVozQ1lUdXV0aHpWSm5lYWtkVW9XWUxiTDFGMFZ4VkZHVGM1a1pLVlZkZ2JiWkdkUk9zVUlzTHMxbm1mTXZyMFJNWm01aC9yMmlFSDM3eUxXMjVBU2V2T2t2bTRwdWdka0VEclU5VENOZWxDcS9JMmRyL3hxMExIRGdsTzI3TlVmWVBXSXYwNmNVcXQ1MHhndzh2WkFUY2trb2JaOUlGMFppQ3ZqVjVmUU96cG9WWE84L2lxL2Z4Y2N0cXViS0tqbXQxZGJkSWhSSUQ2eTB3NHliK3FQQktVMXZhLzFpTUFqSTJIaEJIS3ZYdjZKemJBYmh4K2RGcXdYRGhPbTdnUHhGKzU5Rzg4WmpUbTZHVXE3d2F5TDEyVTRiQ2gzUHd4NUo0ZWlRUHNCQ0Y5ZlVoV3I1K25NRG1BWFJMMlQ0eDZsWUluTWhMRURkVEcxSGkvb1JCTkhCc2dKcmxHMDhZdW94ejFzN2tHV3FzdDgrUG82dUdUeDlXcVFsZWpBZjdoZlFLZ3pCNG5DMlIyb0FCN0Jld2k4ZE5XMGFCeGJEcWZKZVFzUktYYmtobFRrQzJkTFVDQmhUODQweGozM0E9"));
-                // console.log("Permissions-Encode", encode("Permissions Factory Edit,PCU Edit,Color Edit,Size Edit,Contacts Add,View Staff,Task Edit Template,Add Order,View All Orders,Edit Order,Add Roles,View Permissions,Add Permissions,View Data Input,Add Data Input,View Pending Task,View Calendar Configuration,Buyer Edit,View Price,Cancel Order,View Inquiry,Add Inquiry,Sent Inquiry,View Factory Inquiry"))
                
+              
                 getLoginUserType == "user" ?  getWorkspaceType != "Factory" ? 
                     window.location.href = `${process.env.PUBLIC_URL}/viewinquiry`  : 
                     window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry` 

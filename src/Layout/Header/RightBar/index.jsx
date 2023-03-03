@@ -130,7 +130,7 @@ const Rightbar = () => {
                     
             <LI>
 
-            {(getStaff === "Staff" && getStaffPermission.includes("Add Inquiry")) || getStaff == null ?
+            {(getStaff === "Staff" && getStaffPermission.includes("Create Inquiry")) || getStaff == null ?
                     getWorkspaceType != "Factory" ?
                     <Link 
                         to={`${process.env.PUBLIC_URL}/inquiryform`}

@@ -57,7 +57,7 @@ const InquiryFeedbackView = () => {
   const [filterstartDateDetails, setFilterStartDateDetails] = useState("");
   const [filterEndDateDetails, setFilterEndDateDetails] = useState("");
 
-  useEffect(() => {
+  const apicall=()=>{
     getInputParams["company_id"] = getLoginCompanyId;
     getInputParams["workspace_id"] = getWorkspaceId;
     if(filterFeedbackFactoryDetails!="0"){
@@ -79,8 +79,26 @@ const InquiryFeedbackView = () => {
          setFactoryFeedback(response.data.data);
          setFeedbackFactoryDetails(response.data.factories);
          setFeedbackInquiryId(response.data.inquiries);
-      });
+      }); 
+  }
+
+  useEffect(() => {
+    getLoginUserType == "user" ?
+     getWorkspaceType != "Factory" ? apicall() :
+    window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry` 
+  :
+     getWorkspaceType != "Factory" ? 
+     (getStaff === "Staff" && getStaffPermission.includes("View Factory FeedBack")) ? apicall()  :  
+     (getStaff === "Staff" && getStaffPermission.includes("View Inquiry")) ? window.location.href = `${process.env.PUBLIC_URL}/viewinquiry` :  
+    (getStaff === "Staff" && getStaffPermission.includes("Create Inquiry")) ? window.location.href = `${process.env.PUBLIC_URL}/inquiryform` :
+    (getStaff === "Staff" && getStaffPermission.includes("Add Factory FeedBack")) ? window.location.href = `${process.env.PUBLIC_URL}/feedbackform` :
+    window.location.href = "/stafflogin" :
+    (getStaff === "Staff" && getStaffPermission.includes("View Factory Inquiry")) || getStaff == null ? 
+    window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry`
+    : 
+    window.location.href = `${process.env.PUBLIC_URL}/inquirycontacts`
   }, []);
+
   const toDownloadAsPdf =()=>{
     var getDownloadParams = {};
     getDownloadParams["company_id"] = getLoginCompanyId;

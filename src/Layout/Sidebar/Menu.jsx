@@ -18,18 +18,21 @@ export const MENUITEMS = [
                 : {}
             :
             {},
-            
-            getWorkspaceType == "Buyer" ||  getWorkspaceType == "PCU" && getWorkspaceType != "Factory"? 
-            { 
-                path: `${process.env.PUBLIC_URL}/feedbackform`, type: 'link', active: false, title: 'Feedback Form'
-            }  
-            : {},
-              
+            (getStaff === "Staff"&&getModules.includes("Inquiry")&&(getStaffPermission.includes('Add Factory FeedBack')))||getStaff == null?
+                getWorkspaceType == "Buyer" ||  getWorkspaceType == "PCU" && getWorkspaceType != "Factory"? 
+                { 
+                    path: `${process.env.PUBLIC_URL}/feedbackform`, type: 'link', active: false, title: 'Feedback Form'
+                }  
+                : {}
+            :
+            {},
+            (getStaff === "Staff"&&getModules.includes("Inquiry")&&(getStaffPermission.includes('View Factory FeedBack')))||getStaff == null?
             getWorkspaceType == "Buyer" ||  getWorkspaceType == "PCU" && getWorkspaceType != "Factory"?  
             { 
                 // path: `${process.env.PUBLIC_URL}/inquiry/factoryviewinquiry`, type: 'link', active: false, title: 'View Inquiry'
                  path: `${process.env.PUBLIC_URL}/feedbackview`,  type: 'link', active: false, title: 'Feedback View'
-            }  
+            } 
+            : {} 
             : {},
             (getStaff === "Staff"&&getModules.includes("Inquiry-Factory")&&(getStaffPermission.includes('View Factory Inquiry')))||getStaff == null?
             getWorkspaceType == "Factory" &&  getWorkspaceType != "PCU" && getWorkspaceType != "Buyer" ? 
@@ -37,9 +40,7 @@ export const MENUITEMS = [
                 path: `${process.env.PUBLIC_URL}/factoryviewinquiry`, type: 'link', active: false, title: 'View Inquiry'
             }  
             : {}
-            : {},
-
-            
+            : {},            
             getWorkspaceType == "Factory" &&  getWorkspaceType != "PCU" && getWorkspaceType != "Buyer" ? 
             { 
                 // path: `${process.env.PUBLIC_URL}/inquiry/factoryviewinquiry`, type: 'link', active: false, title: 'View Inquiry'

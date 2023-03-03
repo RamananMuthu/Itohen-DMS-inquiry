@@ -64,29 +64,34 @@ const FactoryResponse = () => {
         axios
         .post(ServerUrl + "/get-factory-list-response", apiencrypt(getFactoryListResInputParams))
         .then((response) => {
-          response.data = apidecrypt(response.data);
+          response.data = apidecrypt(response.data);        
           setFactoriesList(response.data.notifications);
           setCurrency(response.data.currency);
         });
 
     };
-
     useEffect(() => 
     {
-        getLoginUserType == "user" ?  getWorkspaceType != "Factory" ? apiCall()  : 
+    getLoginUserType == "user" ?  
+        getWorkspaceType != "Factory" ? apiCall()  : 
         window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry` 
-        :
+    :
         getWorkspaceType != "Factory" ?  
-          (getStaff === "Staff" && getStaffPermission.includes("View Response")) || getStaff == null ? 
-          apiCall() :  
-          window.location.href = `${process.env.PUBLIC_URL}/feedbackform` 
+          (getStaff === "Staff" && getStaffPermission.includes("View Inquiry")) || getStaff == null ? 
+          (getStaff === "Staff" && getStaffPermission.includes("View Response")) ? apiCall() :  window.location.href = `${process.env.PUBLIC_URL}/viewinquiry`
+            :  
+          (getStaff === "Staff" && getStaffPermission.includes("View Factory FeedBack")) ? window.location.href = `${process.env.PUBLIC_URL}/feedbackview`: 
+          (getStaff === "Staff" && getStaffPermission.includes("Add Factory FeedBack")) ? window.location.href =` ${process.env.PUBLIC_URL}/feedbackform` : 
+          (getStaff === "Staff" && getStaffPermission.includes("Create Inquiry")) ? window.location.href = `${process.env.PUBLIC_URL}/inquiryform` : 
+          window.location.href = "/stafflogin"
         :
           (getStaff === "Staff" && getStaffPermission.includes("View Factory Inquiry")) || getStaff == null ? 
           window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry`
-          : 
+            : 
           window.location.href = `${process.env.PUBLIC_URL}/inquirycontacts`
-       
     }, [])
+    
+
 
     const onGoBack=() => {
         window.location.href = `${process.env.PUBLIC_URL}/viewinquiry` 
@@ -164,6 +169,7 @@ const FactoryResponse = () => {
                      </div>
                      </Col>
                                     </Row> : "" }
+
                                 </Col>
 
                                 <Row className="g-12 m-t-20">

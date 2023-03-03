@@ -16,6 +16,9 @@ import {
   getWorkspaceId,
   getLoginUserId,
   getWorkspaceType,
+  getLoginUserType,
+  getStaff,
+  getStaffPermission 
 } from "../../../Constant/LoginConstant";
 import Swal from "sweetalert2";
 import { Breadcrumbs } from "../../../AbstractElements";
@@ -57,27 +60,35 @@ const FeedbackFormInquiry = () => {
   getInputParams["company_id"] = getLoginCompanyId;
   getInputParams["workspace_id"] = getWorkspaceId;
   getInputParams["user_id"] = getLoginUserId;
-
+  const apicall = () => {
+    setInquiryID(() => "");
+    setFactoryId(() => "");
+    setFactoryList(() => "");
+    setInquiryList(() => "");
+    axios
+    .post(ServerUrl + "/get-buyer-factory-list", apiencrypt(getInputParams))
+    .then((response) => {
+      response.data = apidecrypt(response.data);
+      setFactoryList(response.data.data);
+    });
+  }
   useEffect(() => {
-    if (
-      getWorkspaceType == "Buyer" ||
-      (getWorkspaceType == "PCU" && getWorkspaceType != "Factory")
-    ) {
-      setInquiryID(() => "");
-      setFactoryId(() => "");
-      setFactoryList(() => "");
-      setInquiryList(() => "");
+    getLoginUserType == "user" ?
+    getWorkspaceType != "Factory" ? apicall() : window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry` 
+  :
+    getWorkspaceType != "Factory" ? 
+    (getStaff === "Staff" && getStaffPermission.includes("Add Factory FeedBack")) ? apicall() :
+    (getStaff === "Staff" && getStaffPermission.includes("View Factory FeedBack")) ? window.location.href = `${process.env.PUBLIC_URL}/feedbackview` :  
+    (getStaff === "Staff" && getStaffPermission.includes("View Inquiry")) ? window.location.href = `${process.env.PUBLIC_URL}/viewinquiry` :  
+    (getStaff === "Staff" && getStaffPermission.includes("Create Inquiry")) ? window.location.href = `${process.env.PUBLIC_URL}/inquiryform` :
+    window.location.href = "/stafflogin" :
+    (getStaff === "Staff" && getStaffPermission.includes("View Factory Inquiry")) || getStaff == null ? 
+    window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry`
+    : 
+    window.location.href = `${process.env.PUBLIC_URL}/inquirycontacts`
+ }, []);
 
-      axios
-        .post(ServerUrl + "/get-buyer-factory-list", apiencrypt(getInputParams))
-        .then((response) => {
-          response.data = apidecrypt(response.data);
-          setFactoryList(response.data.data);
-        });
-    } else {
-      window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry` 
-    }
-  }, []);
+
 
   const feedbackFormDataApiCall = (inquiryIdValue) => {
     var feedbackFormDataInputParams = {};
@@ -178,6 +189,27 @@ const FeedbackFormInquiry = () => {
   };
 
   const getInquiryList = (id) => {
+    document.getElementById("inquiryId").selectedIndex = 0; 
+          setBtnStatus(true);
+          setInquiryID(() => "");
+          setRatingLowestPrice(() => "");
+          setRatingCommunication(() => "");
+          setRatingOnTimeDelivery(() => "");
+          setRatingLessQuantityIssues(() => "");
+          setRatingVBRelationship(() => "");
+          setRatingGoodSell(() => "");
+          setRatingOnTimeSampleSubmit(() => "");
+          setRatingCollabrative(() => "");
+
+          setLowestPriceComment(() => "");
+          setEffiCommunicationComment(() => "");
+          setOnTimeDeliveryComment(() => "");
+          setInquiryList(() => "");
+          setLessQuantityComment(() => "");
+          setVbRelationshipComment(() => "");
+          setGoodSellComment(() => "");
+          setOnTimeSampleSubmitComment(() => "");
+          setCollabrativeComment(() => "");
     var getInquiryId = {};
     getInquiryId["factory_id"] = id;
 
@@ -392,6 +424,7 @@ const FeedbackFormInquiry = () => {
                         <Input
                           className=""
                           name="Inquiry Id"
+                          id="inquiryId"
                           type="select"
                           defaultValue=""
                           onChange={(e) => {
