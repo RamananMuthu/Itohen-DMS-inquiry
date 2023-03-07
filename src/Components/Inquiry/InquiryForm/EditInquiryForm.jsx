@@ -42,6 +42,7 @@ import parse from 'html-react-parser';
 import { useSearchParams, } from "react-router-dom";
 import PaymentinstructionsModal from "./PaymentinstructionsModal";
 const editInquiryForm = () => {
+  var inquiryDetails = {};
   const { t } = useTranslation();
   const editor = useRef(null); // **** Using for jodit Editor**//
   const workspace_id = getWorkspaceId;
@@ -52,6 +53,7 @@ const editInquiryForm = () => {
     workspace_id: workspace_id,
   };
   const[inquiryFormDtl,setInquiryFormDtl]=React.useState([]);
+  const[inquiryFormSkuDtl, setInquiryFormSkuDtl] = useState([]);
  // const[ editReferenceId,setEditReferenceId]=React.useState("");
   const [color, setColor] = React.useState([]);
   const [size, setSize] = React.useState([]);
@@ -539,15 +541,77 @@ const editInquiryForm = () => {
       header.classList.remove("sticky");
     }
   };
-  const apiCall = () => {
+  const inquiryDetailsFn=( data, skuData)=> {
+      inquiryDetails["company_id"] = getLoginCompanyId;
+      inquiryDetails["workspace_id"] = getWorkspaceId;
+      inquiryDetails["staff_id"] = getLoginStaffId;
+      inquiryDetails["user_id"] = UserId;
+      inquiryDetails["inquiry_id"] = inquiry_id;
+      inquiryDetails["article_id"] =  data.article_id;
+      inquiryDetails["style_no"] = data.style_no;
+      inquiryDetails["fabric_type_id"] = data.fabric_type_id;
+      inquiryDetails["fabric_type"] = data.fabric_type;
+      inquiryDetails["fabric_GSM"] = data.fabric_GSM;
+      inquiryDetails["yarn_count"] = data.yarn_count;
+      inquiryDetails["style_article_description"] = data.style_article_description;
+      inquiryDetails["special_finish"] = data.special_finish;
+      inquiryDetails["total_qty"] = data.total_qty;
+      inquiryDetails["patterns"] = data.patterns;
+      inquiryDetails["jurisdiction"] = data.jurisdiction;
+      inquiryDetails["customs_declaraion_document"] = data.customs_declaraion_document;
+      inquiryDetails["penality"] = data.penality;
+      inquiryDetails["print_image"] = data.print_image;
+      inquiryDetails["print_size"] = data.print_size;
+      inquiryDetails["print_type"] = data.print_type;
+      inquiryDetails["print_no_of_colors"] = data.print_no_of_colors;
+      inquiryDetails["main_lable"] = data.main_lable;
+      inquiryDetails["washcare_lable"] = data.washcare_lable;
+      inquiryDetails["hangtag_lable"] = data.hangtag_lable;
+      inquiryDetails["barcode_lable"] = data.barcode_lable;
+      inquiryDetails["trims_nominations"] = data.trims_nominations;
+      inquiryDetails["poly_bag_size"] = data.poly_bag_size;
+      inquiryDetails["poly_bag_material"] = data.poly_bag_material;
+      inquiryDetails["carton_bag_dimensions"] = data.carton_bag_dimensions;
+      inquiryDetails["carton_color"] = data.carton_color;
+      inquiryDetails["carton_material"] = data.carton_material;
+      inquiryDetails["carton_edge_finish"] = data.carton_edge_finish;
+      inquiryDetails["carton_mark"] = data.carton_mark;
+      inquiryDetails["make_up"] = data.make_up;
+      inquiryDetails["films_cd"] = data.films_cd;
+      inquiryDetails["picture_card"] = data.picture_card;
+      inquiryDetails["inner_cardboard"] = data.inner_cardboard;
+      inquiryDetails["shipping_size"] = data.shipping_size;
+      inquiryDetails["air_frieght"] = data.air_frieght;
+      inquiryDetails["estimate_delivery_date"] = data.estimate_delivery_date;
+      inquiryDetails["due_date"] = data.due_date;
+      inquiryDetails["incoterms"] = data.incoterms;
+      inquiryDetails["payment_terms"] = data.payment_terms;
+      inquiryDetails["target_price"] = data.target_price;
+      inquiryDetails["forbidden_substance_info"] = data.forbidden_substance_info;
+      inquiryDetails["testing_requirements"] = data.testing_requirements;
+      inquiryDetails["sample_requirements"] = data.sample_requirements;
+      inquiryDetails["special_requests"] = data.special_requests;
+      inquiryDetails["currency"] = data.currency;
+      inquiryDetails["sku_details"] = skuData;
+      inquiryDetails["referenceId"] =  data.media_reference_id;
+      inquiryDetails["poly_bag_print"]=data.poly_bag_print;
+     // inquiryDetails['measurement_Chart'] = measure_chart_array;
+      inquiryDetails['payment_instructions']=data.payment_instructions;
+      return inquiryDetails;
+  };
+
+  const apiCall = () => 
+  {
       var custDeclValue = [];
       var mainLableValue = [];
       var editInquiryFormInputParams = {};
       editInquiryFormInputParams["inquiry_id"] =inquiry_id;
+
       axios
         .post(ServerUrl + "/inquiry-details", apiencrypt(editInquiryFormInputParams))
         .then((response) => {
           response.data = apidecrypt(response.data);
+          // inquiryDetailsFn(response.data);
           setInquiryFormDtl(response.data.data[0]);
           setReferenceId(response.data.data[0].media_reference_id);
           setStyleNo(response.data.data[0].style_no);
@@ -616,13 +680,13 @@ const editInquiryForm = () => {
          setMainLabelCheckboxValue(mainLableValue);
 
         });
-
         
       // ********** API call for SKU Quantity Ratio ************
       axios
       .post(ServerUrl + "/inquiry-sku", apiencrypt(editInquiryFormInputParams))
       .then((response) => {
         response.data = apidecrypt(response.data);
+        setInquiryFormSkuDtl(response.data.data);
         showColorSize( response.data.data.colors, response.data.data.sizes);
         showSkuQty(response.data.data.sku, response.data.data.colors, response.data.data.sizes);
       })
@@ -689,49 +753,49 @@ const editInquiryForm = () => {
           setAwsUrl(response.data.data.serverURL);
         }
       })
-    })
+      })
 
-    axios
-      .post(ServerUrl + "/get-color", apiencrypt(getInputParams))
-      .then((response) => {
-        response.data = apidecrypt(response.data);
-        setGetColor(response.data.data);
+      axios
+        .post(ServerUrl + "/get-color", apiencrypt(getInputParams))
+        .then((response) => {
+          response.data = apidecrypt(response.data);
+          setGetColor(response.data.data);
+        });
+      axios
+        .post(ServerUrl + "/get-user-article", apiencrypt(dataToSendAtStarting))
+        .then((response) => {
+          response.data = apidecrypt(response.data);
+          setArticles(response.data.data);
+        });
+      axios
+        .post(ServerUrl + "/get-user-fabric", apiencrypt(dataToSendAtStarting))
+        .then((response) => {
+          response.data = apidecrypt(response.data);
+          setFabrics(response.data.data);
+        });
+      axios
+        .post(ServerUrl + "/get-size", apiencrypt(getInputParams))
+        .then((response) => {
+          response.data = apidecrypt(response.data);
+          setGetSize(response.data.data);
+        });
+      axios
+        .get(ServerUrl + "/get-income-terms").then((response) => {
+          response.data = apidecrypt(response.data);
+          setIncomeTerms(response.data.data);
+        });
+      axios
+        .get(ServerUrl + "/get-currencies").then((response) => {
+          response.data = apidecrypt(response.data);
+          setCurrencies(response.data.data);
+        });    
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 400) {
+          setShowTopBtn(true);
+        } else {
+          setShowTopBtn(false);
+        }
       });
-    axios
-      .post(ServerUrl + "/get-user-article", apiencrypt(dataToSendAtStarting))
-      .then((response) => {
-        response.data = apidecrypt(response.data);
-        setArticles(response.data.data);
-      });
-    axios
-      .post(ServerUrl + "/get-user-fabric", apiencrypt(dataToSendAtStarting))
-      .then((response) => {
-        response.data = apidecrypt(response.data);
-        setFabrics(response.data.data);
-      });
-    axios
-      .post(ServerUrl + "/get-size", apiencrypt(getInputParams))
-      .then((response) => {
-        response.data = apidecrypt(response.data);
-        setGetSize(response.data.data);
-      });
-    axios
-      .get(ServerUrl + "/get-income-terms").then((response) => {
-        response.data = apidecrypt(response.data);
-        setIncomeTerms(response.data.data);
-      });
-    axios
-      .get(ServerUrl + "/get-currencies").then((response) => {
-        response.data = apidecrypt(response.data);
-        setCurrencies(response.data.data);
-      });    
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 400) {
-        setShowTopBtn(true);
-      } else {
-        setShowTopBtn(false);
-      }
-    });
   };
   /* SEPERATE DROP DOWN FUNCTION CALL - TO SET REFERENCE ID AFTER SET */
  const dropDownfn = (ref) =>{
@@ -817,6 +881,7 @@ const editInquiryForm = () => {
         file: file[0],
         company_id: company_id,
         workspace_id: workspace_id,
+        upload_type: 'edit'
       },
       {
         headers: {
@@ -928,6 +993,7 @@ const editInquiryForm = () => {
   const deleteImageFiles = (imageType, file) => {
     var media = {};
     media["media_id"] = file.media_id ? file.media_id : file.id;
+    media["upload_type"] = "edit";
     if (imageType == "MeasurementSheet") {
       Swal.fire({
         title: t("deleteConfirmationTitleAlert"),
@@ -1418,105 +1484,6 @@ const editInquiryForm = () => {
   // };
 
 
-  /****------- Inquiry Form Data Submission - Save ---------- ****/
-  const submitInquiryForm = (e) => {
-    let retval = validation();
-    if (Object.keys(retval).length == 0) {
-      let measure_chart_array = measurementChartData();
-      let sku = getQtyDetails();
-      var inquiryFormInputParams = {};
-      inquiryFormInputParams["company_id"] = getLoginCompanyId;
-      inquiryFormInputParams["workspace_id"] = getWorkspaceId;
-      inquiryFormInputParams["staff_id"] = getLoginStaffId;
-      inquiryFormInputParams["user_id"] = UserId;
-      inquiryFormInputParams["inquiry_id"] =inquiry_id;
-      inquiryFormInputParams["article_id"] = article;
-      inquiryFormInputParams["style_no"] = styleNo;
-      inquiryFormInputParams["fabric_type_id"] = fabricCom;
-      inquiryFormInputParams["fabric_type"] = fabricType;
-      inquiryFormInputParams["fabric_GSM"] = fabricGSM;
-      inquiryFormInputParams["yarn_count"] = yarnCount;
-      inquiryFormInputParams["style_article_description"] = styleArtcileDesc;
-      inquiryFormInputParams["special_finish"] = specialFinishes;
-      inquiryFormInputParams["total_qty"] = totalQuantity;
-      inquiryFormInputParams["patterns"] = patterns;
-      inquiryFormInputParams["jurisdiction"] = placesOfJurisdiction;
-      inquiryFormInputParams["customs_declaraion_document"] = customsDeclarationDoc;
-      inquiryFormInputParams["penality"] = penalty;
-      inquiryFormInputParams["print_image"] = printImage;
-      inquiryFormInputParams["print_size"] = printSize;
-      inquiryFormInputParams["print_type"] = printType;
-      inquiryFormInputParams["print_no_of_colors"] = noOfColors;
-      inquiryFormInputParams["main_lable"] = mainLabel;
-      inquiryFormInputParams["washcare_lable"] = washCareLabel;
-      inquiryFormInputParams["hangtag_lable"] = hangtag;
-      inquiryFormInputParams["barcode_lable"] = barcodeStickers;
-      inquiryFormInputParams["trims_nominations"] = trimsNotification;
-      inquiryFormInputParams["poly_bag_size"] = polybagSizeThickness;
-      inquiryFormInputParams["poly_bag_material"] = polybagMaterial;
-      inquiryFormInputParams["carton_bag_dimensions"] = cartonBoxDimension;
-      inquiryFormInputParams["carton_color"] = cartonColors;
-      inquiryFormInputParams["carton_material"] = cartonMaterial;
-      inquiryFormInputParams["carton_edge_finish"] = cartonEdgeFinish;
-      inquiryFormInputParams["carton_mark"] = cartonMarkDetails;
-      inquiryFormInputParams["make_up"] = makeUp;
-      inquiryFormInputParams["films_cd"] = flimsCD;
-      inquiryFormInputParams["picture_card"] = pictureCard;
-      inquiryFormInputParams["inner_cardboard"] = innerCardBoard;
-      inquiryFormInputParams["shipping_size"] = shippingSize;
-      inquiryFormInputParams["air_frieght"] = airFrieght;
-      inquiryFormInputParams["estimate_delivery_date"] = estimatedDeliveryDate;
-      inquiryFormInputParams["due_date"] = inquiryDueDate;
-      inquiryFormInputParams["incoterms"] = incomeTerm;
-      inquiryFormInputParams["payment_terms"] = paymentTerm;
-      inquiryFormInputParams["target_price"] = targetPrice;
-      inquiryFormInputParams["forbidden_substance_info"] = forbiddenSubstancesInfo;
-      inquiryFormInputParams["testing_requirements"] = testingRequirement;
-      inquiryFormInputParams["sample_requirements"] = sampleRequirement;
-      inquiryFormInputParams["special_requests"] = specialRequest;
-      inquiryFormInputParams["currency"] = currency;
-      inquiryFormInputParams["sku_details"] = sku;
-      inquiryFormInputParams["referenceId"] =  referenceId;
-      inquiryFormInputParams["poly_bag_print"]=printDetailsPolybag;
-     // inquiryFormInputParams['measurement_Chart'] = measure_chart_array;
-      inquiryFormInputParams['payment_instructions']=paymentinstructionsDesc;
-      axios
-        .post(ServerUrl + "/edit-inquiry", apiencrypt(inquiryFormInputParams))
-        .then((response) => {
-          response.data = apidecrypt(response.data);
-          if (response.data.status_code === 200) {
-            Swal.fire({
-              title: t("inquiryUpdateSuccess"),
-              icon: "success",
-              button: t("okLabel"),
-               allowOutsideClick: false,
-              //timer: 1000,
-            }).then((result) => {
-              if (result.isConfirmed) {
-                setTimeout(() => {
-                  window.location.href = `${process.env.PUBLIC_URL}/viewinquiry`
-                }, 100);
-                // window.location.href = "/inquiry/viewinquiry";
-              }
-            });
-          }
-          if (response.data.status_code === 401) {
-            Swal.fire({
-              title:
-                response.data.errors.article_id ||
-                response.data.errors.style_no ||
-                response.data.errors.fabric_type_id ||
-                response.data.errors.total_qty,
-              text: t("fieldMissing"),
-              icon: "Warning",
-              button: t("tryAgain"),
-              timer: 2500,
-            });
-          }
-        });
-    }
-  };
-
   const selectedTab = ( name ) => 
   {
         if(name == "basicStyleInfo"){
@@ -1577,6 +1544,109 @@ const editInquiryForm = () => {
         e.preventDefault();
     }
   }
+
+  /****------- Inquiry Form Data Submission - Save ---------- ****/
+  const submitInquiryForm = (e) => {
+    let retval = validation();
+    if (Object.keys(retval).length == 0) {
+      let measure_chart_array = measurementChartData();
+      let sku = getQtyDetails();
+      let existingData = inquiryDetailsFn(inquiryFormDtl, inquiryFormSkuDtl);
+      var inquiryFormInputParams = {};
+      inquiryFormInputParams["company_id"] = getLoginCompanyId;
+      inquiryFormInputParams["workspace_id"] = getWorkspaceId;
+      inquiryFormInputParams["staff_id"] = getLoginStaffId;
+      inquiryFormInputParams["user_id"] = UserId;
+      inquiryFormInputParams["inquiry_id"] =inquiry_id;
+      inquiryFormInputParams["article_id"] = article;
+      inquiryFormInputParams["style_no"] = styleNo;
+      inquiryFormInputParams["fabric_type_id"] = fabricCom;
+      inquiryFormInputParams["fabric_type"] = fabricType;
+      inquiryFormInputParams["fabric_GSM"] = fabricGSM;
+      inquiryFormInputParams["yarn_count"] = yarnCount;
+      inquiryFormInputParams["style_article_description"] = styleArtcileDesc;
+      inquiryFormInputParams["special_finish"] = specialFinishes;
+      inquiryFormInputParams["total_qty"] = totalQuantity;
+      inquiryFormInputParams["patterns"] = patterns;
+      inquiryFormInputParams["jurisdiction"] = placesOfJurisdiction;
+      inquiryFormInputParams["customs_declaraion_document"] = customsDeclarationDoc;
+      inquiryFormInputParams["penality"] = penalty;
+      inquiryFormInputParams["print_image"] = printImage;
+      inquiryFormInputParams["print_size"] = printSize;
+      inquiryFormInputParams["print_type"] = printType;
+      inquiryFormInputParams["print_no_of_colors"] = noOfColors;
+      inquiryFormInputParams["main_lable"] = mainLabel;
+      inquiryFormInputParams["washcare_lable"] = washCareLabel;
+      inquiryFormInputParams["hangtag_lable"] = hangtag;
+      inquiryFormInputParams["barcode_lable"] = barcodeStickers;
+      inquiryFormInputParams["trims_nominations"] = trimsNotification;
+      inquiryFormInputParams["poly_bag_size"] = polybagSizeThickness;
+      inquiryFormInputParams["poly_bag_material"] = polybagMaterial;
+      inquiryFormInputParams["carton_bag_dimensions"] = cartonBoxDimension;
+      inquiryFormInputParams["carton_color"] = cartonColors;
+      inquiryFormInputParams["carton_material"] = cartonMaterial;
+      inquiryFormInputParams["carton_edge_finish"] = cartonEdgeFinish;
+      inquiryFormInputParams["carton_mark"] = cartonMarkDetails;
+      inquiryFormInputParams["make_up"] = makeUp;
+      inquiryFormInputParams["films_cd"] = flimsCD;
+      inquiryFormInputParams["picture_card"] = pictureCard;
+      inquiryFormInputParams["inner_cardboard"] = innerCardBoard;
+      inquiryFormInputParams["shipping_size"] = shippingSize;
+      inquiryFormInputParams["air_frieght"] = airFrieght;
+      inquiryFormInputParams["estimate_delivery_date"] = estimatedDeliveryDate;
+      inquiryFormInputParams["due_date"] = inquiryDueDate;
+      inquiryFormInputParams["incoterms"] = incomeTerm;
+      inquiryFormInputParams["payment_terms"] = paymentTerm;
+      inquiryFormInputParams["target_price"] = targetPrice;
+      inquiryFormInputParams["forbidden_substance_info"] = forbiddenSubstancesInfo;
+      inquiryFormInputParams["testing_requirements"] = testingRequirement;
+      inquiryFormInputParams["sample_requirements"] = sampleRequirement;
+      inquiryFormInputParams["special_requests"] = specialRequest;
+      inquiryFormInputParams["currency"] = currency;
+      inquiryFormInputParams["sku_details"] = sku;
+      inquiryFormInputParams["referenceId"] =  referenceId;
+      inquiryFormInputParams["poly_bag_print"]=printDetailsPolybag;
+     // inquiryFormInputParams['measurement_Chart'] = measure_chart_array;
+      inquiryFormInputParams['payment_instructions']=paymentinstructionsDesc;
+      inquiryFormInputParams['inquiryDetails'] = existingData;
+
+      axios
+        .post(ServerUrl + "/edit-inquiry", apiencrypt(inquiryFormInputParams))
+        .then((response) => {
+          response.data = apidecrypt(response.data);
+          if (response.data.status_code === 200) {
+            Swal.fire({
+              title: t("inquiryUpdateSuccess"),
+              icon: "success",
+              button: t("okLabel"),
+               allowOutsideClick: false,
+              //timer: 1000,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                setTimeout(() => {
+                  window.location.href = `${process.env.PUBLIC_URL}/viewinquiry`
+                }, 100);
+                // window.location.href = "/inquiry/viewinquiry";
+              }
+            });
+          }
+          if (response.data.status_code === 401) {
+            Swal.fire({
+              title:
+                response.data.errors.article_id ||
+                response.data.errors.style_no ||
+                response.data.errors.fabric_type_id ||
+                response.data.errors.total_qty,
+              text: t("fieldMissing"),
+              icon: "Warning",
+              button: t("tryAgain"),
+              timer: 2500,
+            });
+          }
+        });
+    }
+  };
+  
   return (
     <Fragment>
       <Row className="pgbgcolor hdbgfixed" >
