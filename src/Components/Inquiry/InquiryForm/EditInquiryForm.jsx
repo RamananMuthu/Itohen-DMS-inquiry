@@ -994,8 +994,13 @@ const editInquiryForm = () => {
   /****------- Delete Image  ---------- ****/
   const deleteImageFiles = (imageType, file) => {
     var media = {};
+    media["company_id"] = getLoginCompanyId;
+    media["workspace_id"] = getWorkspaceId;
+    media["user_id"] = getLoginUserId;
+    media["staff_id"] = getLoginStaffId;
     media["media_id"] = file.media_id ? file.media_id : file.id;
     media["upload_type"] = "edit";
+    
     if (imageType == "MeasurementSheet") {
       Swal.fire({
         title: t("deleteConfirmationTitleAlert"),
@@ -1059,6 +1064,7 @@ const editInquiryForm = () => {
       });
     }
   };
+
   /****------- Press Enter - Next Field ---------- ****/
   function handleEnter(event) {
     if (
