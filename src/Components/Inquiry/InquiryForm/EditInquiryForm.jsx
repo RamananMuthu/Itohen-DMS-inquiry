@@ -1779,6 +1779,7 @@ const editInquiryForm = () => {
                             </InputGroupText>
 
                             <AddArticleModal
+                              referenceId={referenceId}
                               modal={modalArt}
                               toggle={toggleart}
                               companyId={company_id}
@@ -1914,6 +1915,7 @@ const editInquiryForm = () => {
                             </span>
                           )}
                           <AddFabricModal
+                            referenceId={referenceId}
                             modal={modalfabric}
                             toggle={togglefabric}
                             companyId={company_id}
