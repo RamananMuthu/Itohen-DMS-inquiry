@@ -881,6 +881,8 @@ const editInquiryForm = () => {
         file: file[0],
         company_id: company_id,
         workspace_id: workspace_id,
+        staff_id: getLoginStaffId,
+        user_id: getLoginUserId,
         upload_type: 'edit'
       },
       {
