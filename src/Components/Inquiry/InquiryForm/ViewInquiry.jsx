@@ -158,7 +158,10 @@ const ViewInquiry = () => {
   const deleteInquiry = (inquiryId) => {
     var deleteParams = {};
     deleteParams["inquiry_id"] = inquiryId.toString();
-    deleteParams["company_id"] = company_id;
+    deleteParams["company_id"] = getLoginCompanyId;
+    deleteParams["workspace_id"] = getWorkspaceId;
+    deleteParams["staff_id"] = getLoginStaffId;
+    deleteParams["user_id"] = getLoginUserId;
 
     var getInputParams = {};
     getInputParams["company_id"] = getLoginCompanyId;
