@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
 import { encode, decode, apiencrypt, apidecrypt } from "../../../helper";
 
-const FormAddArticalModal = ({ modal, toggle, companyId, workspaceId, article,setArticle }) => {
+const FormAddArticalModal = ({ modal, toggle, companyId, workspaceId, article,setArticle, referenceId }) => {
   const { t } = useTranslation();
 
   const [articleName, setArticleName] = useState("");
@@ -26,6 +26,7 @@ const FormAddArticalModal = ({ modal, toggle, companyId, workspaceId, article,se
           company_id: companyId,
           workspace_id: workspaceId,
           name: articleName,
+          referenceId: referenceId
         }))
         .then((response) => {
           response.data = apidecrypt(response.data);
