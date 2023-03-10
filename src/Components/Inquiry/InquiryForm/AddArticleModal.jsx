@@ -44,6 +44,7 @@ const FormAddArticalModal = ({ modal, toggle, companyId, workspaceId, article,se
                   .post(ServerUrl + "/get-user-article", apiencrypt({
                     company_id: companyId,
                     workspace_id: workspaceId,
+                    referenceId: referenceId
                   }))
                   .then((response) => {
                     response.data = apidecrypt(response.data);

@@ -43,6 +43,7 @@ const FormAddFabricModal = ({ modal, toggle, companyId, workspaceId, fabric, ref
                 .post(ServerUrl + "/get-user-fabric", apiencrypt({
                   company_id: companyId,
                   workspace_id: workspaceId,
+                  referenceId: referenceId
                 }))
                 .then((response) => {
                   response.data = apidecrypt(response.data)

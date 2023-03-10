@@ -46,10 +46,6 @@ const index = () => {
   const workspace_id = getWorkspaceId;
   const company_id = getLoginCompanyId;
   const UserId = getLoginUserId;
-  const dataToSendAtStarting = {
-    company_id: company_id,
-    workspace_id: workspace_id,
-  };
   const [color, setColor] = React.useState([]);
   const [size, setSize] = React.useState([]);
   const [files, setFiles] = useState([]);
@@ -184,6 +180,11 @@ const index = () => {
   const [paymentinstructionsModal, setpaymentinstructionsModal] = useState(false);
   const togglepaymentinstructions = () => setpaymentinstructionsModal(!paymentinstructionsModal);
 
+  const dataToSendAtStarting = {
+    company_id: company_id,
+    workspace_id: workspace_id,
+    referenceId: referenceId,  
+  };
   var getInputParams = {};
   getInputParams["company_id"] = getLoginCompanyId;
   getInputParams["workspace_id"] = getWorkspaceId;
