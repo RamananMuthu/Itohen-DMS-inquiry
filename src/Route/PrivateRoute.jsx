@@ -28,7 +28,7 @@ axios.interceptors.response.use(function (response) {
 
         localStorage.clear();
         // return "";
-        return window.location.href =`${process.env.PUBLIC_URL}/inquiry/adminlogin
+        return window.location.href =`${process.env.PUBLIC_URL}/inquiry/stafflogin
         `
        // Route.push('/userlogin');
        // return <Navigate exact to={`${process.env.PUBLIC_URL}/userlogin`} />
@@ -55,7 +55,7 @@ const PrivateRoute = () => {
        
              <Outlet />
              :
-             <Navigate exact to={`${process.env.PUBLIC_URL}/adminlogin`} />
+             <Navigate exact to={`${process.env.PUBLIC_URL}/stafflogin`} />
         
     );
 }
