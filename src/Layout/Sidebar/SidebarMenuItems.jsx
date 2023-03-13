@@ -218,7 +218,7 @@ const SidebarMenuItems = ({ setMainMenu, sidebartoogle, setNavActive }) => {
       {/* <LI className="dropdown list-group-item">
         <a href={`${process.env.PUBLIC_URL}/DMS_Manual.pdf`} className="nav-link menu-title" target={"_blank"}>
           <img src={help} width="12" style={{  width: '25px'}}/>
-          <span>Help</span> 
+          <span>{t("help")}</span> 
         </a>
       </LI> */}
       </UL>
