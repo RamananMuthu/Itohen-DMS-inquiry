@@ -224,6 +224,12 @@ const editInquiryForm = () => {
   const [ trimsStyle, setTrimsStyle ] = useState('u-step');
   const [ packingStyle, setPackingStyle ] = useState('u-step');
   const [ othersStyle, setOthersStyle ] = useState('u-step');
+
+  var payTermsContent =[];
+  var patternContent=[];
+  var printTypeContent =[];
+  var noOfPlyContent =[];
+  var cartonEdgeFinishContent=[];
   /****------- Tab Scroll ---------- ****/
   const scrollToSection = (elementRef) => {
     window.scrollTo({
@@ -799,36 +805,34 @@ const editInquiryForm = () => {
   };
   /* SEPERATE DROP DOWN FUNCTION CALL - TO SET REFERENCE ID AFTER SET */
  const dropDownfn = (ref) =>{
+  
     axios
-    .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "PaymentTerms",referenceId:  ref}))
+    .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "",referenceId:  ref}))
     .then((response) => {
       response.data = apidecrypt(response.data);
-      setPaymentTermList(response.data.data);
+      (response.data.data).map((inqmas)=>{                 
+        if(inqmas.type=="PaymentTerms"){
+          payTermsContent.push(inqmas)            
+        }   
+        if(inqmas.type=="Patterns"){
+          patternContent.push(inqmas)
+        }  
+        if(inqmas.type=="PrintType"){
+          printTypeContent.push(inqmas)
+        }  
+        if(inqmas.type=="NoofPly"){
+          noOfPlyContent.push(inqmas)
+         }            
+        if(inqmas.type=="CartonEdgeFinish"){
+          cartonEdgeFinishContent.push(inqmas)
+        }
+      })
+      setPaymentTermList(payTermsContent);
+      setPatternList(patternContent);
+      setPrintTypeList(printTypeContent);
+      setCartonEdgeFinishList(cartonEdgeFinishContent);
+      setNoOfPlyList(noOfPlyContent);
     });
-    axios
-    .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "PrintType",referenceId:  ref}))
-    .then((response) => {
-      response.data = apidecrypt(response.data);
-      setPrintTypeList(response.data.data);
-    });
-    axios
-    .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "NoofPly",referenceId:  ref}))
-    .then((response) => {
-      response.data = apidecrypt(response.data);
-      setNoOfPlyList(response.data.data);
-    });
-    axios
-    .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "CartonEdgeFinish",referenceId:  ref}))
-    .then((response) => {
-      response.data = apidecrypt(response.data);
-      setCartonEdgeFinishList(response.data.data);
-    });
-    axios
-    .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "Patterns",referenceId:  ref}))
-    .then((response) => {
-      response.data = apidecrypt(response.data);
-      setPatternList(response.data.data);
-    });      
   }
   useEffect(() => {
 
@@ -2870,12 +2874,12 @@ const editInquiryForm = () => {
                               {t("selectPatterns")}
                             </option>
                             { patternList.length > 0 ? 
-                            patternList.map((patternLists) => (
+                                patternList.map((patternLists) => (
                                 inquiryFormDtl.patterns==patternLists.content ? 
                                 <option
                                 value={patternLists.content}
                                 title={patternLists.content}
-                              selected>
+                                selected>
                                 {patternLists.content}
                               </option>:
                               <option
@@ -3761,7 +3765,7 @@ const editInquiryForm = () => {
                             <option value="" disabled>
                               {t("selectCartonEdgeFinish")}
                             </option>
-                            {cartonEdgeFinishList.length > 0 ?cartonEdgeFinishList.map((cartonEdgeFinList) => (
+                            {cartonEdgeFinishList.length > 0 ? cartonEdgeFinishList.map((cartonEdgeFinList) => (
                                 inquiryFormDtl.carton_edge_finish==cartonEdgeFinList.content ? 
                                 <option
                                 value={cartonEdgeFinList.content}
@@ -3775,10 +3779,7 @@ const editInquiryForm = () => {
                               >
                                 {cartonEdgeFinList.content}
                               </option>
-                            ))
-                              :
-                              ""
-                          }
+                            )):""}
                             <option value="addNew">+{t("addNew")}</option>
                           </Input>
                         </InputGroup>

@@ -136,8 +136,8 @@ const index = () => {
   const [showTopBtn, setShowTopBtn] = useState(false);
   const [paymentTermList,setPaymentTermList]= useState([]);
   const [printTypeList,setPrintTypeList]= useState([]);
-  const[noOfPlyList,setNoOfPlyList] = useState([]);
-  const[cartonEdgeFinishList,setCartonEdgeFinishList] = useState([]);
+  const [noOfPlyList,setNoOfPlyList] = useState([]);
+  const [cartonEdgeFinishList,setCartonEdgeFinishList] = useState([]);
   const [patternList,setPatternList]=useState([]);
   const [selected, setSelected] = useState("");
   const [paymentinstructionsDesc, setPaymentinstructionsDesc] = useState("");
@@ -211,6 +211,13 @@ const index = () => {
   const [ trimsStyle, setTrimsStyle ] = useState('u-step');
   const [ packingStyle, setPackingStyle ] = useState('u-step');
   const [ othersStyle, setOthersStyle ] = useState('u-step');
+ 
+var payTermsContent =[];
+var patternContent=[];
+var printTypeContent =[];
+var noOfPlyContent =[];
+var cartonEdgeFinishContent=[];
+
   /****------- Tab Scroll ---------- ****/
   const scrollToSection = (elementRef) => {
     window.scrollTo({
@@ -585,35 +592,32 @@ const index = () => {
         setCurrencies(response.data.data);
       });
       axios
-      .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "PaymentTerms",referenceId: referenceId}))
+      .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "",referenceId: referenceId}))
       .then((response) => {
-        response.data = apidecrypt(response.data);
-        setPaymentTermList(response.data.data);
+        response.data = apidecrypt(response.data);        
+        (response.data.data).map((inqmas)=>{                 
+          if(inqmas.type=="PaymentTerms"){
+            payTermsContent.push(inqmas)            
+          }   
+          if(inqmas.type=="Patterns"){
+            patternContent.push(inqmas)
+          }  
+          if(inqmas.type=="PrintType"){
+            printTypeContent.push(inqmas)
+          }  
+          if(inqmas.type=="NoofPly"){
+            noOfPlyContent.push(inqmas)
+           }            
+          if(inqmas.type=="CartonEdgeFinish"){
+            cartonEdgeFinishContent.push(inqmas)
+          }
+        })
+        setPaymentTermList(payTermsContent);
+        setPatternList(patternContent);
+        setPrintTypeList(printTypeContent);
+        setCartonEdgeFinishList(cartonEdgeFinishContent);
+        setNoOfPlyList(noOfPlyContent);
       });
-      axios
-      .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "PrintType",referenceId: referenceId}))
-      .then((response) => {
-        response.data = apidecrypt(response.data);
-        setPrintTypeList(response.data.data);
-      });
-      axios
-      .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "NoofPly",referenceId: referenceId}))
-      .then((response) => {
-        response.data = apidecrypt(response.data);
-        setNoOfPlyList(response.data.data);
-      });
-      axios
-      .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "CartonEdgeFinish",referenceId: referenceId}))
-      .then((response) => {
-        response.data = apidecrypt(response.data);
-        setCartonEdgeFinishList(response.data.data);
-      });
-      axios
-      .post(ServerUrl + "/get-inquiry-master", apiencrypt({type: "Patterns",referenceId: referenceId}))
-      .then((response) => {
-        response.data = apidecrypt(response.data);
-        setPatternList(response.data.data);
-      });      
     window.addEventListener("scroll", () => {
       if (window.scrollY > 400) {
         setShowTopBtn(true);
@@ -624,7 +628,6 @@ const index = () => {
   };
 
   useEffect(() => {
-
         getLoginUserType == "user" ? getWorkspaceType != "Factory" ? apiCall() :
         window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry`
       :
@@ -637,9 +640,7 @@ const index = () => {
          :
         (getStaff === "Staff" && getStaffPermission.includes("View Factory Inquiry")) || getStaff == null ?
           window.location.href = `${process.env.PUBLIC_URL}/factoryviewinquiry` :
-          window.location.href = `${process.env.PUBLIC_URL}/inquirycontacts`
-
-        
+          window.location.href = `${process.env.PUBLIC_URL}/inquirycontacts`        
     window.addEventListener("scroll", () => {
       scrollSticky();
       if (window.scrollY > 400) {
@@ -647,9 +648,7 @@ const index = () => {
       } else {
           setShowTopBtn(false);
       }
-  });
-
-  
+  }); 
   }, []);
 
 /***************Measurement Sheet Radio Button OnChange**********/
