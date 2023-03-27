@@ -124,10 +124,11 @@ const BillOfMaterial = () => {
 
   useEffect(() => {
     apiCall();
-     setToshow(0);
+    setToshow(0);
   }, []);
 
   const noDataShow=(data)=>{
+
     var noDataArray=[];
     var noDataObj ={};
     noDataObj['print_type']= data.print_type;
@@ -150,13 +151,23 @@ const BillOfMaterial = () => {
         noDataArray.push(noData);
       }     
     })
-    if(noDataArray.length>0){
-      setToshow(0);
+    
+    if(noDataArray.length == 0  && 
+      printImageFile.length == 0 &&
+      mainLableFile.length == 0 &&
+      washCareFile.length == 0 &&
+      hangtagFile.length == 0 &&
+      barcodeStickersFile.length == 0 &&
+      polybagFile.length == 0 &&            
+      cartonFile.length == 0 )
+    {
+        setToshow(1);
     }else{
-      setToshow(1);
+      setToshow(0);
     }
   }
-/*************PDF Dowmload*******/
+
+  /*************PDF Dowmload*******/
   const toDownloadAsPdf = () => {
     var InqRefParams = {};
     InqRefParams["user_id"] = UserId;
@@ -221,35 +232,7 @@ const BillOfMaterial = () => {
           }
         });
         /**To Show No Data **/ 
-         
-        // if(
-        //   printImageFile.length==0 &&
-        //   mainLableFile.length==0 &&
-        //   washCareFile.length==0 &&
-        //   hangtagFile.length==0 &&
-        //   barcodeStickersFile.length==0 &&
-        //   polybagFile.length==0 &&            
-        //   cartonFile.length==0 &&
-        //   (response.data.data[0].print_type=="" || response.data.data[0].print_type=="null") &&
-        //   (response.data.data[0].print_size==""|| response.data.data[0].print_size=="null") &&
-        //   (response.data.data[0].print_no_of_colors=="" || response.data.data[0].print_no_of_colors=="null")&&
-        //   (response.data.data[0].main_lable=="" || response.data.data[0].main_lable=="null") &&
-        //   (response.data.data[0].washcare_lable=="" || response.data.data[0].washcare_lable=="null") &&
-        //   (response.data.data[0].hangtag_lable=="" || response.data.data[0].hangtag_lable=="null") &&
-        //   (response.data.data[0].barcode_lable=="" || response.data.data[0].barcode_lable=="null") &&
-        //   (response.data.data[0].poly_bag_size=="" || response.data.data[0].poly_bag_size=="null") &&
-        //   (response.data.data[0].poly_bag_material=="" || response.data.data[0].poly_bag_material=="null") &&
-        //   (response.data.data[0].poly_bag_print =="" || response.data.data[0].poly_bag_print === "null" )&&
-        //   (response.data.data[0].carton_bag_dimensions=="" || response.data.data[0].carton_bag_dimensions=="null") &&
-        //   (response.data.data[0].carton_color=="" || response.data.data[0].carton_color=="null") &&
-        //   (response.data.data[0].carton_material=="" || response.data.data[0].carton_material=="null") &&
-        //   (response.data.data[0].carton_edge_finish=="" || response.data.data[0].carton_edge_finish=="null") &&
-        //   (response.data.data[0].carton_mark=="" || response.data.data[0].carton_mark=="null" )
-        //   ){
-        //     setToshow(1);
-        //   } else{
-        //     setToshow(0);
-        //   }        
+     
         setInquiryDetails(response.data.data);
         setPrintType(response.data.data[0].print_type);
         setPrintSize(response.data.data[0].print_size);
@@ -302,7 +285,6 @@ const BillOfMaterial = () => {
       </Row>
       <Container fluid={true} className="general-widget topaln">
         <Row>
-          {console.log("Inq",inquiryDetails)}
           <Col id="htmljoditListCSS" sm="12">
             <Card>
               <CardBody>
@@ -363,8 +345,6 @@ const BillOfMaterial = () => {
     
                 {/* {inquiryDetails.length > 0 ?
                   <> */}
-
-                  {console.log("setToshow", toShow)}
                     <Row className="g-12 m-t-20">
                       <Col md="12" lg="12" sm="12">
                         <Row className="g-12">
