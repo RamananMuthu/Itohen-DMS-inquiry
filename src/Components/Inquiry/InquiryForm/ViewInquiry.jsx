@@ -151,7 +151,7 @@ const ViewInquiry = () => {
   };
   
   const editInquiry = (inquiryId) => {
-    window.location.href = `${process.env.PUBLIC_URL}/editInquiryForm?id=` + encode(inquiryId);
+    window.location.href = `${process.env.PUBLIC_URL} /editinquiryform?id=` + encode(inquiryId);
     // window.location.href = "/inquiry/factoryresponse?id=" + encode(inquiryId);
   };  
   /**Delete Inquiry based on Id*********/

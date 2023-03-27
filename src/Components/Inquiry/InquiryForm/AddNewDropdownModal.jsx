@@ -4,6 +4,8 @@ import { Btn } from '../../../AbstractElements';
 import { ServerUrl } from '../../../Constant';
 import axios from "axios";
 import Swal from "sweetalert2";
+
+
 import { useTranslation } from "react-i18next";
 import { encode, decode, apiencrypt, apidecrypt } from "../../../helper";
 
@@ -12,9 +14,10 @@ const FormAddNewModal = ({ modal, toggle, infoDetails,setInfoDetails,masterType,
 
   const [payTerms, setPayTerms] = useState("");
   const [printTyp,setPrintTyp]=useState("");
-  const[plyList,sePlyList]=useState("");
+  const[plyList,setPlyList]=useState("");
   const[carEdgeFin,setCarEdgeFin]=useState("");
   const[pattern,setPattern]=useState("");
+
   const onSaveHandle = () => {
     if (masterType === "PaymentTerms")
     {
@@ -279,7 +282,7 @@ else if(masterType==="Patterns"){
         <Input
           className="form-control"
           type="text"
-          onChange={(e) => {masterType === "PaymentTerms" ? setPayTerms(e.target.value) : masterType==="PrintType"? setPrintTyp(e.target.value):masterType==="NoofPly"? sePlyList(e.target.value):masterType==="CartonEdgeFinish"? setCarEdgeFin(e.target.value):masterType==="Patterns"? setPattern(e.target.value) :"" }}
+          onChange={(e) => {masterType === "PaymentTerms" ? setPayTerms(e.target.value) : masterType==="PrintType"? setPrintTyp(e.target.value):masterType==="NoofPly"? setPlyList(e.target.value):masterType==="CartonEdgeFinish"? setCarEdgeFin(e.target.value):masterType==="Patterns"? setPattern(e.target.value) :"" }}
         />
       </ModalBody>
       <ModalFooter>

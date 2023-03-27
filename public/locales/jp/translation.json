@@ -1085,5 +1085,12 @@
     "viewComments":"View Comments",
     "editIcon":"Edit",
     "inquiryUpdateSuccess":"Inquiry Updated Successfully",
-    "editInquiry":"Edit Inquiry"
+    "editInquiry":"Edit Inquiry",
+    "********** Bill Of Material **********": "********** Bill Of Material **********",
+    "materialLabel":"Material Label",
+    "selectInquiry":"Select Inquiry",
+    "printImage":"Print Image",
+    "barcode":"Barcode",
+    "billOfMaterial":"Bill Of Material",
+    "polybagPrint" :"Print Details on Polybag"
 }

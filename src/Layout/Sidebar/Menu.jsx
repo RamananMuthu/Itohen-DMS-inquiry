@@ -34,6 +34,11 @@ export const MENUITEMS = [
             } 
             : {} 
             : {},
+            getWorkspaceType == "Buyer" ||  getWorkspaceType == "PCU" && getWorkspaceType != "Factory"?  
+            { 
+                // path: `${process.env.PUBLIC_URL}/inquiry/factoryviewinquiry`, type: 'link', active: false, title: 'View Inquiry'
+                 path: `${process.env.PUBLIC_URL}/billofmaterial`,  type: 'link', active: false, title: 'Bill Of Material'
+            } :{},
             (getStaff === "Staff"&&getModules.includes("Inquiry-Factory")&&(getStaffPermission.includes('View Factory Inquiry')))||getStaff == null?
             getWorkspaceType == "Factory" &&  getWorkspaceType != "PCU" && getWorkspaceType != "Buyer" ? 
             { 

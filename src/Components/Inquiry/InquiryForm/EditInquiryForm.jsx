@@ -1807,7 +1807,7 @@ const editInquiryForm = () => {
                             <Input
                               className=""
                               name="style Number"
-                              defaultValue ={styleNo}
+                              value ={styleNo}
                               placeholder={t("enterStyleNumber")}
                               onChange={(e) => setStyleNo(e.target.value)}
                             ></Input>
@@ -1938,7 +1938,7 @@ const editInquiryForm = () => {
                              maxLength="3"
                               className=""
                               name="Fabric GSM"
-                              defaultValue={fabricGSM}
+                              value={fabricGSM}
                               onKeyPress={(e) => handleKeyPress(e)}
                               placeholder={t("enterFabricGSM")}
                               onChange={(e) => setFabricGSM(e.target.value)}
@@ -1992,7 +1992,7 @@ const editInquiryForm = () => {
                           <Input
                             className=""
                             name="Yarn Count"
-                            defaultValue={fabricType}
+                            value={fabricType}
                             placeholder={t("enterFabricType")}
                             onChange={(e) => setFabricType(e.target.value)}
                           ></Input>
@@ -2006,7 +2006,7 @@ const editInquiryForm = () => {
                           <Input
                             className=""
                             name="Yarn Count"
-                            defaultValue={yarnCount}
+                            value={yarnCount}
                             placeholder={t("enterYarnCount")}
                             onChange={(e) => setYarnCount(e.target.value)}
                           ></Input>
@@ -2021,7 +2021,7 @@ const editInquiryForm = () => {
                             className=""
                             name="Inquiry Due Date"
                             type="date"
-                            defaultValue={inquiryDueDate}
+                            value={inquiryDueDate}
                             min={new Date().toISOString().split('T')[0]}
                           placeholder={t("selectInquiryDueDate")}
                             onChange={(e) => setInquiryDueDate(e.target.value)}
@@ -2112,7 +2112,7 @@ const editInquiryForm = () => {
                           <Input
                             className=""
                             name="Target Price"
-                            defaultValue={targetPrice}
+                            value={targetPrice}
                             placeholder={t("enterTargetPrice")}
                             onChange={(e) => setTargetPrice(e.target.value)}
                           ></Input>
@@ -2316,7 +2316,7 @@ const editInquiryForm = () => {
                             className=""
                             type="number"
                             name="Total Quantity"
-                            defaultValue={totalQuantity}
+                            value={totalQuantity}
                             placeholder={t("enterTotalQuantity")}
                             onChange={(e) => setTotalQuantity(e.target.value)}
                           ></Input>
@@ -2902,7 +2902,7 @@ const editInquiryForm = () => {
                             className=""
                             name="Place of Jurisdiction"
                             placeholder={t("enterPlaceofJurisdiction")}
-                            defaultValue={placesOfJurisdiction}
+                            value={placesOfJurisdiction}
                             onChange={(e) =>
                               setPlaceOfJurisdiction(e.target.value)
                             }
@@ -2955,7 +2955,7 @@ const editInquiryForm = () => {
                             className=""
                             name="Penalty"
                             placeholder={t("enterPenalty")}
-                            defaultValue={penalty}
+                            value={penalty}
                             onChange={(e) => setPenalty(e.target.value)}
                           ></Input>
                         </InputGroup>
@@ -3020,7 +3020,7 @@ const editInquiryForm = () => {
                           <Input
                             className=""
                             name="Print Size"
-                            defaultValue={printSize}
+                            value={printSize}
                             placeholder={t("enterPrintSize")}
                             onChange={(e) => setPrintSize(e.target.value)}
                           ></Input>
@@ -3034,7 +3034,7 @@ const editInquiryForm = () => {
                           <Input
                             className=""
                             name="No of Colors"
-                            defaultValue={noOfColors}
+                            value={noOfColors}
                             placeholder={t("enterNumberofcolors")}
                             onChange={(e) => setNoOfColors(e.target.value)}
                           ></Input>
@@ -3232,7 +3232,7 @@ const editInquiryForm = () => {
                           <Input
                             className=""
                             name="Wash Care Label"
-                            defaultValue={washCareLabel}
+                            value={washCareLabel}
                             placeholder={t("enterWashCareLabel")}
                             onChange={(e) => setWashCareLabel(e.target.value)}
                           ></Input>
@@ -3319,7 +3319,7 @@ const editInquiryForm = () => {
                           <Input
                             className=""
                             name="Hangtag"
-                            defaultValue={hangtag}
+                            value={hangtag}
                             placeholder={t("enterHangtag")}
                             onChange={(e) => setHangtag(e.target.value)}
                           ></Input>
@@ -3402,7 +3402,7 @@ const editInquiryForm = () => {
                           <Input
                             className=""
                             name="Barcode Stickers"
-                            defaultValue={barcodeStickers}
+                            value={barcodeStickers}
                             placeholder={t("enterBarcodestickers")}
                             onChange={(e) => setBarcodeStickers(e.target.value)}
                           ></Input>
@@ -3555,7 +3555,7 @@ const editInquiryForm = () => {
                           <Input
                             className=""
                             name="Polybag Size & thickness"
-                            defaultValue={polybagSizeThickness}
+                            value={polybagSizeThickness}
                             placeholder={t("enterPolybagSizeThickness")}
                             onChange={(e) =>
                               setPolybagSizeThickness(e.target.value)
@@ -3571,7 +3571,7 @@ const editInquiryForm = () => {
                           <Input
                             className=""
                             name="Polybag Material"
-                            defaultValue={polybagMaterial}
+                            value={polybagMaterial}
                             placeholder={t("enterPolybagMaterial")}
                             onChange={(e) => setPolybagMaterial(e.target.value)}
                           ></Input>
@@ -3585,7 +3585,7 @@ const editInquiryForm = () => {
                           <Input
                             className=""
                             name="Print Details on Polybag"
-                            defaultValue={printDetailsPolybag}
+                            value={printDetailsPolybag}
                             placeholder={t("enterPrintDetailsPolybag")}
                             onChange={(e) =>
                               setPrintDetailsPolybag(e.target.value)
@@ -3681,7 +3681,7 @@ const editInquiryForm = () => {
                           <Input
                             className=""
                             name="Carton Box Dimensions"
-                             defaultValue={cartonBoxDimension}
+                            value={cartonBoxDimension}
                             placeholder={t("enterCartonBoxDimensions")}
                             onChange={(e) =>
                               setCartonBoxDimension(e.target.value)
@@ -3697,7 +3697,7 @@ const editInquiryForm = () => {
                           <Input
                             className=""
                             name="Carton Color"
-                            defaultValue={cartonColors}
+                            value={cartonColors}
                             placeholder={t("enterCartonColor")}
                             onChange={(e) => setCartonColors(e.target.value)}
                           ></Input>
@@ -3792,7 +3792,7 @@ const editInquiryForm = () => {
                           <Input
                             className=""
                             name="Carton Mark Details"
-                            defaultValue={cartonMarkDetails}
+                            value={cartonMarkDetails}
                             placeholder={t("enterCartonMarkDetails")}
                             onChange={(e) => setCartonMarkDetails(e.target.value)}
                           ></Input>
@@ -3962,7 +3962,7 @@ const editInquiryForm = () => {
                           <Input
                             className=""
                             name="Make-Up"
-                            defaultValue={makeUp}
+                            value={makeUp}
                             placeholder={t("enterMakeUp")}
                             onChange={(e) => setMakeUp(e.target.value)}
                           ></Input>
@@ -3975,7 +3975,7 @@ const editInquiryForm = () => {
                         <InputGroup>
                           <Input
                             className=""
-                            defaultValue={flimsCD}
+                            value={flimsCD}
                             name="Films/CD"
                             placeholder={t("enterFilmsCD")}
                             onChange={(e) => setFlimsCD(e.target.value)}
@@ -3990,7 +3990,7 @@ const editInquiryForm = () => {
                           <Input
                             className=""
                             name="Picture-Card"
-                            defaultValue={pictureCard}
+                            value={pictureCard}
                             placeholder={t("enterPictureCard")}
                             onChange={(e) => setPictureCard(e.target.value)}
                           ></Input>
@@ -4009,7 +4009,7 @@ const editInquiryForm = () => {
                           <Input
                             className=""
                             name="Inner Cardboard"
-                            defaultValue={innerCardBoard}
+                            value={innerCardBoard}
                             placeholder={t("enterInnerCardboard")}
                             onChange={(e) => setInnerCardBoard(e.target.value)}
                           ></Input>
@@ -4023,7 +4023,7 @@ const editInquiryForm = () => {
                           <Input
                             className=""
                             name="Estimated Delivery Date"
-                            defaultValue={estimatedDeliveryDate}
+                            value={estimatedDeliveryDate}
                             placeholder={t("estimatedDeliveryDateETAETD")}
                             type="date"
                             min={new Date().toISOString().split('T')[0]}
@@ -4041,7 +4041,7 @@ const editInquiryForm = () => {
                           <Input
                             className=""
                             name="Shipping Size"
-                            defaultValue={shippingSize}
+                            value={shippingSize}
                             placeholder={t("enterShippingSize")}
                             onChange={(e) => setShippingSize(e.target.value)}
                           ></Input>
@@ -4058,7 +4058,7 @@ const editInquiryForm = () => {
                           <Input
                             className=""
                             name="Air Freight"
-                            defaultValue={airFrieght}
+                            value={airFrieght}
                             placeholder={t("enterAirFreight")}
                             onChange={(e) => setAirFrieght(e.target.value)}
                           ></Input>

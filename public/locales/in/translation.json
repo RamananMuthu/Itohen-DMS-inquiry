@@ -1085,5 +1085,12 @@
     "viewComments":"टिप्पणियाँ देखें",
     "editIcon":"संपादन करना",
     "inquiryUpdateSuccess":"पूछताछ सफलतापूर्वक अपडेट की गई",
-    "editInquiry":"पूछताछ संपादित करें"
+    "editInquiry":"पूछताछ संपादित करें",
+    "********** Bill Of Material **********": "********** Bill Of Material **********",
+    "materialLabel":"सामग्री लेबल",
+    "selectInquiry":"पूछताछ का चयन करें",
+    "printImage":"प्रिंट छवि",
+    "barcode":"बारकोड",
+    "billOfMaterial":"सामग्री का बिल",
+    "polybagPrint":"पॉलीबैग पर प्रिंट विवरण"
 }
